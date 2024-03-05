@@ -15,8 +15,6 @@ if [[ "${BRANCH_NAME}" == *"/"* ]];then
     JIRA_ID=`echo ${BRANCH_NAME} | cut -d '/' -f2`
 fi
 
-echo `JIRA 이슈 티켓 번호 : ${JIRA_ID}`
-
 if [[ ${PROJECT_NAME} == '' ]]; then
     echo "Project name is not found."
 		exit
