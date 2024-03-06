@@ -8,4 +8,4 @@
 - [기능 명세서](https://www.notion.so/todays-jiwoo/359c01f26b73420b80f354c323c44792?pvs=4) 완성
 
 ### 2024/03/06(수)
-- MVP 위한 [스토리보드](https://www.notion.so/todays-jiwoo/BACKEND-6e95d681a8a4436a8c0843b00bc80e98?pvs=4) 작성
+- MVP 위한 [스토리보드](https://www.notion.so/todays-jiwoo/MVP-29836330364648f7b73d75d104587122?pvs=4) 작성
