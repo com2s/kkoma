@@ -1,0 +1,29 @@
+#!/usr/bin/env sh
+
+COMMIT_MSG_FILE=$1
+BRANCH_NAME=`git rev-parse --abbrev-ref HEAD`
+PROJECT_NAME=''
+
+FIRST_LINE=$(head -n1 "$COMMIT_MSG_FILE")
+if [[ $FIRST_LINE =~ ^Merge|^Revert|^Amend|^Reset|^Rebase|^Tag ]]; then
+  exit 0
+fi
+
+if [[ "${BRANCH_NAME}" == *"/"* ]];then
+	  PREFIX=`echo ${BRANCH_NAME} | cut -d '/' -f1`
+    PROJECT_NAME=`echo ${BRANCH_NAME} | cut -d '/' -f2 | cut -d '-' -f1`
+    JIRA_ID=`echo ${BRANCH_NAME} | cut -d '/' -f2`
+fi
+
+if [[ ${PROJECT_NAME} == '' ]]; then
+    echo "Project name is not found."
+		exit
+fi
+
+# if the last line of commit includes #$issue_number, don't add it again
+LAST_LINE=$(tail -n1 "$COMMIT_MSG_FILE")
+if [ `echo $LAST_LINE | grep -c "#$JIRA_ID"` -eq 0 ]; then
+  SUBJECT=$(cat "$COMMIT_MSG_FILE" | cut -d':' -f2)
+  echo "" >> "$COMMIT_MSG_FILE"
+  echo "#$JIRA_ID" >> "$COMMIT_MSG_FILE"
+fi
