@@ -1,3 +1,4 @@
+@import "@/styles/variables";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -16,18 +17,43 @@
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+//font
+
+@for $i from 1 through length($headingFontList) {
+  /* 리스트 길이 만큼 순회 */
+  h#{$i} {
+    font-size: nth($headingFontList, $i);
+    font-weight: bold;
+    color: $color-text1;
+  }
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.text-body {
+  font-size: $fs-5;
+  font-weight: $fw-medium;
+  color: $color-text1;
+}
+
+.text-body2 {
+  font-size: $fs-6;
+  font-weight: $fw-medium;
+  color: $color-text1;
+}
+
+.text-caption {
+  font-size: $fs-7;
+  font-weight: $fw-medium;
+  color: $color-text1;
+}
+
+.text-button {
+  font-size: $fs-4;
+  font-weight: $fw-medium;
+  color: $color-text1;
+}
+
+.text-logo {
+  font-family: "Oliver";
+  font-size: $fs-4;
+  color: $color-text1;
 }

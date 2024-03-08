@@ -1,0 +1,76 @@
+//flex-box
+@mixin flex($align: center, $justify: center, $direction: row) {
+  display: flex;
+  flex-direction: $direction;
+  align-items: $align;
+  justify-content: $justify;
+}
+
+//padding
+@mixin pad($left, $right, $top, $bottom) {
+  padding-left: $left !important;
+  padding-right: $right !important;
+  padding-top: $top !important;
+  padding-bottom: $bottom !important;
+}
+
+@mixin pad-h($left, $right) {
+  padding-left: $left !important;
+  padding-right: $right !important;
+}
+
+@mixin pad-v($top, $bottom) {
+  padding-top: $top !important;
+  padding-bottom: $bottom !important;
+}
+
+//margin
+@mixin mar($left, $right, $top, $bottom) {
+  margin-left: $left !important;
+  margin-right: $right !important;
+  margin-top: $top !important;
+  margin-bottom: $bottom !important;
+}
+
+@mixin mar-h($left, $right) {
+  margin-left: $left !important;
+  margin-right: $right !important;
+}
+
+@mixin mar-v($top, $bottom) {
+  margin-top: $top !important;
+  margin-bottom: $bottom !important;
+}
+
+//shadow
+@mixin sha-drop() {
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+@mixin sha-inset() {
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+}
+
+//screen
+
+$breakpoint-tablet: 1024px; /* 함수 선언 */
+$breakpoint-mobile: 640px; /* 변수 선언 */
+
+/* $break-point 이하 */
+@mixin max-screen($break-point) {
+  @media screen and (max-width: $break-point) {
+    @content;
+  }
+}
+/* $break-point 이상 */
+@mixin max-screen($break-point) {
+  @media screen and (min-width: $break-point) {
+    @content;
+  }
+}
+/* $break-point-min이상、$break-point-max이하 */
+@mixin screen($break-point-min, $break-point-max) {
+  @media screen and (min-width: $break-point-min) and (max-width: $break-point-max) {
+    @content;
+  }
+}
