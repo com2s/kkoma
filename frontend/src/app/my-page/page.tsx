@@ -1,5 +1,5 @@
 import styles from "@/styles/my-page.module.scss";
-import TopBar from "@/components/top-bar";
+import TopBar from "@/components/common/top-bar";
 
 async function getChildren() {
   await new Promise((resolve) => setTimeout(resolve, 1000));
