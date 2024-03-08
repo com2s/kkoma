@@ -22,11 +22,6 @@ const Header = () => {
   const [value, setValue] = React.useState(-1);
 
   const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
-
-  const handleClick = () => {
-    alert("로그인 버튼이 클릭되었습니다!");
-  };
 
   const StyledFab = styled(Fab)({
     width: 80,
@@ -95,7 +90,7 @@ const Header = () => {
             >
               {/* <AddIcon fontSize="large"/> */}
                 <Image
-                    src="/chicken-home.png"
+                    src="/chicken-home.svg"
                     alt="Home Logo"
                     className="dark:invert z-2"
                     width={50}
