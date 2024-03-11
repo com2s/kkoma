@@ -1,0 +1,15 @@
+.card {
+  @include flex(center, flex-start, column);
+  @include pad-v(rem(10), rem(25));
+  gap: rem(10);
+  width: 100%;
+  border-radius: rem(15);
+  background-color: $color-light-yellow;
+  .btn-container {
+    @include flex(center, flex-end, row);
+    width: 90%;
+    .btn {
+      color: $color-text2;
+    }
+  }
+}

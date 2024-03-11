@@ -3,7 +3,7 @@ import { Noto_Sans_KR } from "next/font/google";
 import "./globals.scss";
 import Navigation from "@/components/common/navigation";
 
-const notoSansKr = Noto_Sans_KR({ subsets: ["latin"] });
+const notoSansKr = Noto_Sans_KR({ subsets: ["cyrillic"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",

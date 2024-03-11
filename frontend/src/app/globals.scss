@@ -1,23 +1,17 @@
-@import "@/styles/variables";
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+body {
+  min-width: 360px;
+  max-width: 600px;
+  margin: 0;
 }
 
 //font
+@font-face {
+  font-family: "UhBeeSe_hyun";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_five@.2.0/UhBeeSe_hyun.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
 
 @for $i from 1 through length($headingFontList) {
   /* 리스트 길이 만큼 순회 */
@@ -25,6 +19,7 @@
     font-size: nth($headingFontList, $i);
     font-weight: bold;
     color: $color-text1;
+    margin: 0;
   }
 }
 
@@ -56,4 +51,18 @@
   font-family: "Oliver";
   font-size: $fs-4;
   color: $color-text1;
+}
+
+.text-deco {
+  font-family: "UhBeeSe_hyun";
+  font-size: $fs-3;
+  color: $color-text1;
+}
+
+.c-text2 {
+  color: $color-text2;
+}
+
+.c-text3 {
+  color: $color-text3;
 }
