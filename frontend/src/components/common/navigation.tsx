@@ -73,7 +73,7 @@ const Header = () => {
               href="/lists"
             />
             <BottomNavigationAction
-              label="내 페이지"
+              label="내 정보"
                 icon={<PersonOutlineIcon />}
               component={Link}
               href="/my-page"
@@ -92,7 +92,7 @@ const Header = () => {
                 <Image
                     src="/chicken-home.svg"
                     alt="Home Logo"
-                    className="dark:invert z-2"
+                    className="z-2"
                     width={50}
                     height={24}
                     priority
