@@ -14,7 +14,7 @@ $color-text5: #f5f5f5;
 $color-white: #ffffff;
 
 //px -> rem
-$browser-context: 12; // 브라우저의 기본 폰트
+$browser-context: 16; // 브라우저의 기본 폰트
 
 @function rem($pixels, $context: $browser-context) {
   @return #{$pixels/$context}rem;
