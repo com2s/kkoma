@@ -34,19 +34,15 @@ export default async function MyPage() {
   const children = await getChildren();
   return (
     <div className={styles.container}>
-      {/* <div className="fixed top-0 left-0 w-full z-50"> */}
-        <TopBar />
-      {/* </div>
-      <div className="px-4 mt-14"> */}
-        <MyProfile />
-        <MyPoints />
-        <MyPageList />
-        <ul className={styles.ul}>
-          {children.map((child) => (
-            <li key={child.id}>{child.name}</li>
-          ))}
-        </ul>
-      {/* </div> */}
+      <TopBar />
+      <MyProfile />
+      <MyPoints />
+      <MyPageList />
+      <ul className={styles.ul}>
+        {children.map((child) => (
+          <li key={child.id}>{child.name}</li>
+        ))}
+      </ul>
     </div>
   );
 }

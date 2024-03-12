@@ -2,20 +2,20 @@
 
 import styles from "@/components/my-page/my-profile.module.scss";
 import "@/app/globals.scss";
+import Avatar from '@mui/material/Avatar';
 import Image from "next/image";
 import Link from "next/link";
 
 export default function MyProfile() {
   return (
     <div className={styles.container}>
-      <Image
+      <Avatar
         src="/chicken-home.svg"
         alt="Profile Image"
-        width={50}
-        height={24}
-        className={`${styles.responsiveImg} pr-4`} // 여기에 추가된 클래스를 사용합니다.
-        priority
+        // sx={{ width: 56, height: 56 }}
+        className={`${styles.responsiveImg} mr-4`} // 여기에 추가된 클래스를 사용합니다.
       />
+      {/* <Avatar {...stringAvatar('Kent Dodds')} /> */}
       <div className={`${styles.nickname} min-w-32 text-pretty mr-1 `}>
         <span className="text-body">닉네임 닉네임 닉네임 닉네임 닉네임 닉네임</span>
         <span className="text-slate-500">주소주소 주소주소 주소주소 주소주소 주소</span>
