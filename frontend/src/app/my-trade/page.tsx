@@ -45,7 +45,7 @@ function a11yProps(index: number) {
 }
 
 export async function getDeal() {
-  new Promise((resolve) => setTimeout(resolve, 500));
+  // new Promise((resolve) => setTimeout(resolve, 500));
   const myDeal = [
     {
       id: "1",
@@ -188,8 +188,8 @@ export async function getDeal() {
       time: "2024-02-14 05:36",
       views: 8,
       likes: 18,
-      status: "판매",
-      status2: "판매 중",
+      status: "구매",
+      status2: "요청 중",
     },
     {
       id: "13",
