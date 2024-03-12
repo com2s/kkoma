@@ -34,10 +34,10 @@ export default async function MyPage() {
   const children = await getChildren();
   return (
     <div className={styles.container}>
-      <div className="fixed top-0 left-0 w-full z-50">
+      {/* <div className="fixed top-0 left-0 w-full z-50"> */}
         <TopBar />
-      </div>
-      <div className="px-4 mt-14">
+      {/* </div>
+      <div className="px-4 mt-14"> */}
         <MyProfile />
         <MyPoints />
         <MyPageList />
@@ -46,7 +46,7 @@ export default async function MyPage() {
             <li key={child.id}>{child.name}</li>
           ))}
         </ul>
-      </div>
+      {/* </div> */}
     </div>
   );
 }

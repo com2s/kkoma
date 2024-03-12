@@ -94,7 +94,7 @@ const Header = () => {
                     alt="Home Logo"
                     className="z-2"
                     width={50}
-                    height={24}
+                    height={50}
                     priority
                 />
             </StyledFab>

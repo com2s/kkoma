@@ -1,17 +1,17 @@
 .container {
     // height: calc(100vh - 80px);
-    
     overflow: auto;
-    margin-bottom: 110px;
+    margin: rem(10) rem(16) rem(110);
+    // margin-bottom: 110px;
     // 너비가 432px 이상일 때 좌우 여백을 10px으로 설정
 }
 
 .ul {
     // height: 100px;
     li {
-        height: 60px;
-        padding: 10px;
-        margin: 10px;
-        border: 1px solid #000;
+        height: rem(60);
+        padding: rem(10);
+        margin: rem(10);
+        border: rem(1) solid #000;
     }
 }
