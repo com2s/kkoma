@@ -6,12 +6,12 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: rem(30) rem(20);
+    padding: rem(30) 0;
     margin-bottom: rem(10);
 }
 
 .nickname {
-    width: 100%;
+    width: 50%;
     // height: 36px;
     flex-grow: 0;
     display: flex;
@@ -24,7 +24,7 @@
 }
 
 .responsiveImg {
-    width: 20%; /* 화면 너비의 20% */
+    width: 15%; /* 화면 너비의 20% */
     min-width: rem(70); /* 최소 너비는 70px */
     max-width: rem(90); /* 최대 너비는 90px */
     height: auto;

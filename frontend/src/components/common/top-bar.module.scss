@@ -4,7 +4,7 @@
   left: 0;
   z-index: 1000;
   // 하단 그림자 효과
-  box-shadow: 0px rem(2) rgba(0, 0, 0, 0.1);
+  // box-shadow: 0px rem(2) rgba(0, 0, 0, 0.1);
   @include flex(center, space-between, row);
   background-color: white;
   width: 100%;

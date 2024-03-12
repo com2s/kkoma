@@ -21,7 +21,7 @@ export default function MyProfile() {
         <span className="text-slate-500">주소주소 주소주소 주소주소 주소주소 주소</span>
       </div>
       <Link href="/my-page/my-profile" passHref>
-        <span className="text-center font-medium min-w-28 bg-gray-100 flex justify-center items-center p-2 rounded-lg cursor-pointer">
+        <span className="text-center font-medium min-w-28 bg-gray-100 flex justify-center items-center py-1 rounded-lg cursor-pointer">
           프로필 보기
         </span>
       </Link>

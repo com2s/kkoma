@@ -2,7 +2,6 @@ import { Suspense } from "react";
 import styles from "@/components/my-page/my-page.module.scss";
 import TopBar2 from "@/components/common/top-bar2";
 
-
 // export const metadata: Metadata = {
 //   title: "My Page",
 //   description: "User's personal page",
@@ -27,16 +26,12 @@ export default async function MyProfileDetail() {
   const children = await getChildren();
   return (
     <div className={styles.container}>
-      <div className="fixed top-0 left-0 w-full z-50">
-        <TopBar2 />
-      </div>
-      <div className="px-4 mt-14">
-        <ul className={styles.ul}>
-          {children.map((child) => (
-            <li key={child.id}>{child.name}</li>
-          ))}
-        </ul>
-      </div>
+      <TopBar2 />
+      <ul className={styles.ul}>
+        {children.map((child) => (
+          <li key={child.id}>{child.name}</li>
+        ))}
+      </ul>
     </div>
   );
 }
