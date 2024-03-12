@@ -23,3 +23,7 @@
 - ERD 완성
 - 일정 산출 / 역할 분담
 - [인프라 기초 설계](https://www.notion.so/todays-jiwoo/8531ed812a8547cfa43658dbda239088?pvs=4)
+
+### 2024/03/12(화)
+- EC2 서버 설정
+- docker compose 구성
