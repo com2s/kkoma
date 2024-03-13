@@ -14,16 +14,4 @@
   margin: auto;
   width: 100%;
   padding: rem(5);
-  .logo {
-    @include flex(center, flex-start, row);
-    gap: rem(10);
-  }
-  .notifications {
-    // width: rem(30);
-    color: $color-text2;
-  }
-}
-
-.headerSpacer {
-  height: rem(45); // 상단 바의 높이와 동일하게 설정
 }

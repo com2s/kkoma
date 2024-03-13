@@ -239,7 +239,7 @@ export async function getDeal() {
       views: 112,
       likes: 39,
       status: "구매",
-      status2: "구매 중",
+      status2: "요청 중",
     },
   ];
   return myDeal;
