@@ -34,10 +34,12 @@ const Header = () => {
     margin: "0 auto",
     "&.MuiFab-root": {
       // MUI Fab 루트에 대한 스타일을 재정의
-      boxShadow: theme.shadows[2], // 이는 elevation 2에 해당하는 그림자입니다.
+      boxShadow: theme.shadows[1], // 이는 elevation 1에 해당하는 그림자입니다.
       backgroundColor: 'white',
     },
   });
+
+  
 
   return (
     <header>
@@ -45,6 +47,8 @@ const Header = () => {
           position="fixed"
           color="default"
           sx={{ top: "auto", bottom: 0 }}
+          elevation={2}
+          
         >
           <BottomNavigation
             showLabels
@@ -94,7 +98,8 @@ const Header = () => {
                     alt="Home Logo"
                     className="z-2"
                     width={50}
-                    height={24}
+                    height={50}
+                    // style={{ height: 'auto' }}
                     priority
                 />
             </StyledFab>
