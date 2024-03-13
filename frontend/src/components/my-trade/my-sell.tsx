@@ -11,7 +11,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import styles from "@/components/my-trade/sell-buy.module.scss";
-import { getDeal } from "@/app/my-trade/page";
+import { getDeal } from "@/components/my-trade/my-prdt-ftn";
 
 interface Deal {
   id: string;
@@ -26,7 +26,7 @@ interface Deal {
   status2: string;
 }
 
-export default async function MySell() {
+export default function MySell() {
   const [deals, setDeals] = useState<Deal[]>([]);
   const [selectedChip, setSelectedChip] = useState<string>("모두");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -41,6 +41,7 @@ export default async function MySell() {
       setDeals(sellingDeals);
     };
     fetchSelling();
+    console.log("fetchSelling");
   }, []);
 
   const handleChipClick = (chip: string) => {
@@ -82,62 +83,62 @@ export default async function MySell() {
       <div>
         {filteredDeals.map((deal) => (
           <Card key={deal.id} variant="outlined" className={styles.card}>
-            <div className={styles.cardLayout}>
-              <Avatar
-                alt="Product Image"
-                src={deal.url}
-                sx={{ width: 80, height: 80 }}
-                className={styles.avatar}
-                variant="square"
-              />
-              <CardContent sx={{ padding: 1 }} className={styles.cardMiddle}>
-                <Typography variant="h6" component="div">
-                  {deal.title}
-                </Typography>
-                <Typography color="text.secondary">
-                  {deal.productName}
-                </Typography>
-                <Typography variant="body2">
-                  {deal.town} | {deal.time}
-                </Typography>
-                <Typography variant="body2">
-                  Views: {deal.views} | Likes: {deal.likes}
-                </Typography>
-              </CardContent>
-              <CardContent
-                sx={{
-                  padding: 0,
-                  margin: "auto",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
+            <Avatar
+              alt="Product Image"
+              src={deal.url}
+              sx={{ width: 80, height: 80 }}
+              className={styles.avatar}
+              variant="square"
+            />
+            <CardContent sx={{ padding: 1 }} className={styles.cardMiddle}>
+              <Typography variant="h6" component="div">
+                {deal.title}
+              </Typography>
+              <Typography color="text.secondary">{deal.productName}</Typography>
+              <Typography variant="body2">
+                {deal.town} | {deal.time}
+              </Typography>
+              <Typography variant="body2">
+                Views: {deal.views} | Likes: {deal.likes}
+              </Typography>
+            </CardContent>
+            <CardContent
+              sx={{
+                padding: 0,
+                margin: "auto",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <IconButton
+                aria-label="settings"
+                onClick={(e) => handleMenuClick(e, deal.id)} // 클릭 핸들러에 deal.id 전달
+              >
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                // open={open && openMenuId === deal.id} // 현재 카드의 메뉴만 열림
+                open={open}
+                onClose={handleMenuClose}
+                PaperProps={{
+                  elevation: 1,
                 }}
               >
-                <IconButton
-                  aria-label="settings"
-                  onClick={(e) => handleMenuClick(e, deal.id)} // 클릭 핸들러에 deal.id 전달
-                >
-                  <MoreVertIcon />
-                </IconButton>
-                <Menu
-                  anchorEl={anchorEl}
-                  open={open && openMenuId === deal.id} // 현재 카드의 메뉴만 열림
-                  onClose={handleMenuClose}
-                >
-                  <MenuItem onClick={handleMenuClose}>
-                    열린 카드 id : {openMenuId}
-                  </MenuItem>
-                  <MenuItem onClick={handleMenuClose}>2번째 버튼 임시</MenuItem>
-                </Menu>
-                <Typography
-                  variant="body2"
-                  color="primary"
-                  sx={{ mt: 2 }} // 메뉴 버튼과의 간격을 조절하려면 여기 값을 조정하세요.
-                >
-                  {deal.status2}
-                </Typography>
-              </CardContent>
-            </div>
+                <MenuItem onClick={handleMenuClose}>
+                  열린 카드 id : {openMenuId}
+                </MenuItem>
+                <MenuItem onClick={handleMenuClose}>2번째 버튼 임시</MenuItem>
+              </Menu>
+              <Typography
+                variant="body2"
+                color="primary"
+                sx={{ mt: 2 }} // 메뉴 버튼과의 간격을 조절하려면 여기 값을 조정하세요.
+              >
+                {deal.status2}
+              </Typography>
+            </CardContent>
           </Card>
         ))}
       </div>
