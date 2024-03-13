@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   min-width: 360px;
   max-width: 600px;
@@ -50,6 +54,12 @@ body {
 .text-logo {
   font-family: "Oliver";
   font-size: $fs-4;
+  color: $color-text1;
+}
+
+.text-big-logo {
+  font-family: "Oliver";
+  font-size: rem(40);
   color: $color-text1;
 }
 

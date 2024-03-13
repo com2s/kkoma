@@ -1,0 +1,26 @@
+.container {
+  @include flex();
+  position: fixed;
+  bottom: rem(10);
+  width: calc(100% - rem(20));
+  .btn {
+    @include flex();
+    @include text-button;
+    background-color: $color-yellow;
+    border-radius: rem(10);
+    width: 100%;
+  }
+}
+
+.wide {
+  height: rem(56);
+}
+
+.normal {
+  height: rem(48);
+}
+
+.small {
+  height: fit-content;
+  padding-top: rem(13);
+}
