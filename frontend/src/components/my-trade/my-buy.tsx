@@ -11,7 +11,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import styles from "@/components/my-trade/sell-buy.module.scss";
-import { getDeal } from "@/components/my-trade/my-prdt-ftn";
+import { getDeal } from "@/components/my-trade/my-trade-ftn";
 
 interface Deal {
   id: string;
@@ -104,7 +104,7 @@ export default function MyBuy() {
             <CardContent
               sx={{
                 padding: 0,
-                margin: "auto",
+                margin: 0,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -128,8 +128,19 @@ export default function MyBuy() {
               </Menu>
               <Typography
                 variant="body2"
-                color="primary"
-                sx={{ mt: 2 }} // 메뉴 버튼과의 간격을 조절하려면 여기 값을 조정하세요.
+                sx={{
+                  mt: 2,
+                  fontWeight: "bold",
+                  color:
+                  // deal.status2 의 값에 따라 색상을 다르게 표시
+                    deal.status2 === "요청 취소"
+                      ? "crimson"
+                      : deal.status2 === "거래 완료"
+                      ? "dimgray"
+                      : deal.status2 === "요청 중"
+                      ? "orange"
+                      : "black", // 기본값
+                }}
               >
                 {deal.status2}
               </Typography>
