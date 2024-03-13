@@ -222,9 +222,6 @@ export default function ListPage() {
         <Fab
           color="primary"
           sx={{
-            // position: "fixed",
-            // bottom: 80,
-            // right: 20,
             "&.MuiFab-root": {
               // MUI Fab 루트에 대한 스타일을 재정의
               boxShadow: theme.shadows[2], // 이는 elevation 1에 해당하는 그림자입니다.

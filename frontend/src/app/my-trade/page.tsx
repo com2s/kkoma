@@ -63,9 +63,6 @@ export default function MyTradePage() {
             aria-label="basic tabs example"
             centered
             variant="fullWidth"
-            // textColor="secondary"
-            // indicatorColor="secondary"
-
             // Tabs 컨테이너 스타일
             sx={{
               ".MuiTabs-indicator": {
@@ -85,8 +82,6 @@ export default function MyTradePage() {
             }}
           >
             <Tab label="판매" {...a11yProps(0)} />
-            {/* 기본 텍스트 색 바꾸려면... */}
-            {/* <Tab label="Item One" {...a11yProps(0)} sx={{ color: '#ff682e' }} /> */}
             <Tab label="구매" {...a11yProps(1)} />
             {/* <Tab label="Item Three" {...a11yProps(2)} /> */}
           </Tabs>

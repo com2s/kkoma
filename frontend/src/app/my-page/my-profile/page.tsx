@@ -2,13 +2,8 @@ import { Suspense } from "react";
 import styles from "@/components/my-page/my-page.module.scss";
 import TopBar2 from "@/components/common/top-bar2";
 
-// export const metadata: Metadata = {
-//   title: "My Page",
-//   description: "User's personal page",
-// };
-
 async function getChildren() {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  // await new Promise((resolve) => setTimeout(resolve, 1000));
   // 로딩을 확인하기 위해 임의의 시간(ms) 지연
   return [
     { id: 1, name: "Child 1" },
@@ -17,6 +12,7 @@ async function getChildren() {
     { id: 4, name: "Child 4" },
     { id: 5, name: "Child 5" },
   ];
+  // TODO: 데이터 페칭
   // const response = await fetch(API_URL);
   // const json = await response.json();
   // return json;
