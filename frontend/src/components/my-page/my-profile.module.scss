@@ -6,12 +6,12 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 40px 20px;
-    margin-bottom: 10px;
+    padding: rem(30) 0;
+    margin-bottom: rem(10);
 }
 
 .nickname {
-    width: 100%;
+    width: 50%;
     // height: 36px;
     flex-grow: 0;
     display: flex;
@@ -24,8 +24,10 @@
 }
 
 .responsiveImg {
-    width: 20%; /* 화면 너비의 20% */
-    min-width: 70px; /* 최소 너비는 50px */
-    max-width: 90px; /* 최대 너비는 80px */
-    height: auto; /* 이미지 비율을 유지 */
+    width: 15%; /* 화면 너비의 20% */
+    min-width: rem(70); /* 최소 너비는 70px */
+    max-width: rem(90); /* 최대 너비는 90px */
+    height: auto;
+    // padding: rem(20);
+    aspect-ratio: 1/1; /* 가로 세로 비율은 1:1 */
   }

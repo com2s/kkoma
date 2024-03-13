@@ -1,0 +1,24 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  // 하단 그림자 효과
+  // box-shadow: 0px rem(2) rgba(0, 0, 0, 0.1);
+  @include flex(center, space-between, row);
+  background-color: white;
+  width: 100%;
+  padding: rem(5);
+  .logo {
+    @include flex(center, flex-start, row);
+    gap: rem(10);
+  }
+  .notifications {
+    // width: rem(30);
+    color: $color-text2;
+  }
+}
+
+.headerSpacer {
+  height: rem(45); // 상단 바의 높이와 동일하게 설정
+}
