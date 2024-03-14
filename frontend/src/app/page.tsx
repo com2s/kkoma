@@ -1,4 +1,4 @@
-import HeaderWithLogo from "@/components/common/headers";
+import TopBar from "@/components/common/top-bar";
 import BabyCard from "@/components/home/babyCard";
 import RecommandProductList from "@/components/home/recommandProductList";
 import Navigation from "@/components/common/navigation";
@@ -9,7 +9,7 @@ export default function Home() {
     <div>
       <Navigation />
       <div className={styles.home}>
-        <HeaderWithLogo />
+        <TopBar />
         <BabyCard />
         <RecommandProductList />
       </div>
