@@ -36,7 +36,7 @@ const Header = () => {
       // MUI Fab 루트에 대한 스타일을 재정의
       // boxShadow: "0 -2px 0px 1px rgba(0, 0, 0, 0.1), 0px -1px 0px 0px rgba(0, 0, 0, 0.06)",
       boxShadow: theme.shadows[0], // 이는 elevation 1에 해당하는 그림자입니다.
-      border : "1px solid rgba(0, 0, 0, 0.2)",
+      border: "1px solid rgba(0, 0, 0, 0.2)",
       backgroundColor: "white",
     },
   });
