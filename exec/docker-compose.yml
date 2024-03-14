@@ -43,12 +43,13 @@ services:
     networks:
       - backend
 
-#  api:
-#    container_name: api
-#    restart: always
-#    networks:
-#      - backend
-#      - frontend
+  api:
+    image: loverduck97/kkoma-backend:latest
+    container_name: api
+    restart: always
+    networks:
+      - backend
+      - frontend
 #
 #  app:
 #    container_name: app
