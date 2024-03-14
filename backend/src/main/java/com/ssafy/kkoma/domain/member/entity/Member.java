@@ -5,7 +5,10 @@ import com.ssafy.kkoma.domain.location.entity.Location;
 
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
+import com.ssafy.kkoma.global.jwt.dto.JwtTokenDto;
+import com.ssafy.kkoma.global.util.DateTimeUtils;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -55,4 +58,23 @@ public class Member extends BaseTimeEntity {
 	private String refreshToken;
 
 	private LocalDateTime tokenExpirationTime;
+
+	@Builder
+	public Member(MemberType memberType, String email, String name, String profileImage, Role role) {
+		this.memberType = memberType;
+		this.email = email;
+		this.name = name;
+		this.profileImage = profileImage;
+		this.role = role;
+	}
+
+	public void updateRefreshToken(JwtTokenDto jwtTokenDto) {
+		this.refreshToken = jwtTokenDto.getRefreshToken();
+		this.tokenExpirationTime = DateTimeUtils.convertToLocalDateTime(jwtTokenDto.getRefreshTokenExpireTime());
+	}
+
+	public void expireRefreshToken(LocalDateTime now) {
+		this.tokenExpirationTime = now;
+	}
+
 }
