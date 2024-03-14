@@ -47,6 +47,9 @@ services:
     image: loverduck97/kkoma-backend:latest
     container_name: api
     restart: always
+    ports:
+      - 4000:8080
+
     networks:
       - backend
       - frontend
