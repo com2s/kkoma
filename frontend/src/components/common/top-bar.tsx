@@ -3,7 +3,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import styles from "./top-bar.module.scss";
 import Link from "next/link";
 
-export default function HeaderWithLogo() {
+export default function TopBar() {
   return (
     <>
       <div className={styles.header}>
