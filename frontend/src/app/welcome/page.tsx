@@ -1,5 +1,6 @@
 import Logo from "/public/images/logo-icon.svg";
 import KakaoLoginBtn from "@/components/welcome/kakaoLoginBtn";
+import { ButtonContainer } from "@/components/common/buttons";
 import styles from "./login.module.scss";
 
 export default function Join() {
@@ -9,7 +10,9 @@ export default function Join() {
       <p className="text-big-logo">KKOMA</p>
       <Logo />
       <div className={styles.loginBtn}>
-        <KakaoLoginBtn>카카오로 시작</KakaoLoginBtn>
+        <ButtonContainer>
+          <KakaoLoginBtn>카카오로 시작</KakaoLoginBtn>
+        </ButtonContainer>
       </div>
     </section>
   );
