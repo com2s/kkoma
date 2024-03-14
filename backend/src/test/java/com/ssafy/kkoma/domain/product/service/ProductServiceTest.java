@@ -37,11 +37,7 @@ class ProductServiceTest {
 	    // given
 		List<Product> products = new ArrayList<>();
 		for (int i = 0; i < 10; i++) {
-	    	products.add(productRepository.save(Product.builder().title(TITLE).build()));
-		}
-
-		for (Product product : products) {
-		 	productImageRepository.save(ProductImage.builder().product(product).filename(IMAGE_URL).build());
+	    	products.add(productRepository.save(Product.builder().title(TITLE).thumbnailImage(IMAGE_URL).build()));
 		}
 
 	    // when
