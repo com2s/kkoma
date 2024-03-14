@@ -46,6 +46,7 @@ public class Product extends BaseTimeEntity {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "location_id")
 	private Location location;
+	private String thumbnailImage;
 
 	@Column(length = 50)
 	private String placeDetail;
@@ -55,18 +56,14 @@ public class Product extends BaseTimeEntity {
 
 	@Column(columnDefinition = "text")
 	private String description;
-
 	private int price;
 
 	@Enumerated(EnumType.STRING)
 	private ProductType condition;
 
 	private Long viewCount;
-
 	private Long wishCount;
-
 	private Long offerCount;
-
 	private LocalDateTime deletedAt;
 
 }

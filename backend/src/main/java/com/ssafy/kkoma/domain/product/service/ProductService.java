@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.kkoma.domain.product.dto.response.ProductSummary;
-import com.ssafy.kkoma.domain.product.dto.response.ProductThumbnail;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.domain.product.entity.ProductImage;
 import com.ssafy.kkoma.domain.product.repository.ProductImageRepository;
@@ -27,17 +26,7 @@ public class ProductService {
 		List<Product> products = productRepository.findAll();
 
 		return products.stream()
-			.map(product -> {
-				ProductImage productImage = productImageRepository.findTop1ByProductId(product.getId());
-				return ProductSummary.builder()
-					.id(product.getId())
-					.title(product.getTitle())
-					.price(product.getPrice())
-					.condition(product.getCondition())
-					.elapsedMinutes(Duration.between(product.getCreatedAt(), LocalDateTime.now()).toMinutes())
-					.productThumbnail(ProductThumbnail.fromEntity(productImage))
-					.build();
-			})
+			.map(ProductSummary::fromEntity)
 			.collect(Collectors.toList());
 	}
 
