@@ -17,6 +17,7 @@ html {
     font-size: nth($headingFontList, $i);
     font-weight: bold;
     color: $color-text1;
+    line-height: normal;
   }
 }
 
@@ -36,6 +37,7 @@ html {
   font-size: $fs-7;
   font-weight: $fw-medium;
   color: $color-text1;
+  line-height: normal;
 }
 
 .text-button {

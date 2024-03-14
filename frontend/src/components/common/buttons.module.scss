@@ -4,6 +4,8 @@
   position: fixed;
   bottom: rem(10);
   width: calc(100% - rem(20));
+  margin: auto;
+  max-width: 580px;
 }
 
 .btn {
