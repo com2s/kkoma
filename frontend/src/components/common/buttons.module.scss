@@ -1,26 +1,34 @@
 .container {
-  @include flex();
+  @include flex(center, space-around, row);
+  gap: rem(12);
   position: fixed;
   bottom: rem(10);
   width: calc(100% - rem(20));
-  .btn {
-    @include flex();
-    @include text-button;
-    background-color: $color-yellow;
-    border-radius: rem(10);
-    width: 100%;
-  }
+}
+
+.btn {
+  @include flex();
+  background-color: $color-yellow;
+  border-radius: rem(10);
+  width: 100%;
 }
 
 .wide {
+  @include text-button;
   height: rem(56);
 }
 
 .normal {
+  @include text-body;
   height: rem(48);
 }
 
+.gray {
+  background-color: $color-text5;
+}
+
 .small {
+  @include text-caption;
   height: fit-content;
   padding-top: rem(13);
 }

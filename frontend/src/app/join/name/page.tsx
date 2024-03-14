@@ -1,5 +1,5 @@
 import UploadBtn from "@/components/join/uploadBtn";
-import { WideBtn } from "@/components/common/buttons";
+import { ButtonContainer, NormalBtn } from "@/components/common/buttons";
 import TextField from "@mui/material/TextField";
 
 export default function AddName() {
@@ -12,8 +12,9 @@ export default function AddName() {
         variant="standard"
         sx={{ width: "100%", fontWeight: "bold" }}
       />
-
-      <WideBtn next={"/join/phone"}>다음</WideBtn>
+      <ButtonContainer>
+        <NormalBtn next={"/join/phone"}>다음</NormalBtn>
+      </ButtonContainer>
     </>
   );
 }

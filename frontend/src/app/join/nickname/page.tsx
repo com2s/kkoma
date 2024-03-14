@@ -1,4 +1,4 @@
-import { WideBtn } from "@/components/common/buttons";
+import { ButtonContainer, NormalBtn } from "@/components/common/buttons";
 import TextField from "@mui/material/TextField";
 
 export default function AddNickname() {
@@ -11,7 +11,9 @@ export default function AddNickname() {
         variant="standard"
         sx={{ width: "100%", fontWeight: "bold" }}
       />
-      <WideBtn next={"/join/name"}>다음</WideBtn>
+      <ButtonContainer>
+        <NormalBtn next={"/join/name"}>다음</NormalBtn>
+      </ButtonContainer>
     </>
   );
 }

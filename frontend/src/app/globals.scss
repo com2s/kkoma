@@ -5,17 +5,9 @@
 body {
   min-width: 360px;
   max-width: 600px;
-  margin: 0;
 }
 
 //font
-@font-face {
-  font-family: "UhBeeSe_hyun";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_five@.2.0/UhBeeSe_hyun.woff")
-    format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
 
 @for $i from 1 through length($headingFontList) {
   /* 리스트 길이 만큼 순회 */
@@ -23,7 +15,6 @@ body {
     font-size: nth($headingFontList, $i);
     font-weight: bold;
     color: $color-text1;
-    margin: 0;
   }
 }
 

@@ -1,4 +1,4 @@
-import { WideBtn } from "@/components/common/buttons";
+import { ButtonContainer, NormalBtn } from "@/components/common/buttons";
 import TextField from "@mui/material/TextField";
 
 export default function AddPhone() {
@@ -11,8 +11,9 @@ export default function AddPhone() {
         variant="standard"
         sx={{ width: "100%", fontWeight: "bold" }}
       />
-
-      <WideBtn next={"/join/complate"}>완료</WideBtn>
+      <ButtonContainer>
+        <NormalBtn next={"/join/complate"}>완료</NormalBtn>
+      </ButtonContainer>
     </>
   );
 }

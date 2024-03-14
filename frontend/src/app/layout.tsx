@@ -3,7 +3,6 @@ import { Noto_Sans_KR } from "next/font/google";
 import { ThemeProvider } from "@mui/material";
 import theme from "@/utils/theme";
 import "./globals.scss";
-import Navigation from "@/components/common/navigation";
 
 const notoSansKr = Noto_Sans_KR({ subsets: ["cyrillic"] });
 
