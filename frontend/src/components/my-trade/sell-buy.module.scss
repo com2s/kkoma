@@ -1,0 +1,32 @@
+.chips {
+    padding: rem(16) rem(8);
+}
+
+.card {
+    border: rem(0);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: rem(15) 0;
+
+    // margin-bottom: rem(10);
+    .cardMiddle {
+        width: 55%;
+    }
+}
+
+// .card {
+//     border: rem(0);
+//     .cardLayout {
+//         display: flex;
+//         flex-direction: row;
+//         justify-content: space-between;
+//         align-items: center;
+//         padding: rem(15) 0;
+//         // margin-bottom: rem(10);
+//         .cardMiddle {
+//             width: 55%;
+//         }
+//     }
+// }

@@ -34,14 +34,30 @@ const Header = () => {
     margin: "0 auto",
     "&.MuiFab-root": {
       // MUI Fab 루트에 대한 스타일을 재정의
-      boxShadow: theme.shadows[2], // 이는 elevation 2에 해당하는 그림자입니다.
+      // boxShadow: "0 -2px 0px 1px rgba(0, 0, 0, 0.1), 0px -1px 0px 0px rgba(0, 0, 0, 0.06)",
+      boxShadow: theme.shadows[0], // 이는 elevation 1에 해당하는 그림자입니다.
+      border: "1px solid rgba(0, 0, 0, 0.2)",
       backgroundColor: "white",
     },
   });
 
   return (
     <header>
-      <AppBar position="fixed" color="default" sx={{ top: "auto", bottom: 0 }}>
+      <AppBar
+        position="fixed"
+        color="default"
+        sx={{
+          top: "auto",
+          left: 0,
+          bottom: 0,
+          maxWidth: "600px",
+          minWidth: "320px",
+          margin: "auto",
+          // boxShadow: '0 -3px 0px 0px rgba(0, 0, 0, 0.2)', // 상단 그림자만 설정
+          borderTop: "1px solid rgba(0, 0, 0, 0.2)",
+        }}
+        elevation={0} // 기본 그림자 제거
+      >
         <BottomNavigation
           showLabels
           value={value}
@@ -89,8 +105,9 @@ const Header = () => {
             src="/chicken-home.svg"
             alt="Home Logo"
             className="z-2"
-            width={48}
-            height={60}
+            width={50}
+            height={50}
+            // style={{ height: 'auto' }}
             priority
           />
         </StyledFab>

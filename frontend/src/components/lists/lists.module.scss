@@ -1,0 +1,44 @@
+.container {
+    // height: calc(100vh - 80px);
+    // @include flex(flex-start, flex-start, column);
+    overflow: auto;
+    margin: rem(10) rem(16) rem(150);
+    // margin-bottom: 110px;
+}
+
+.chips {
+    padding: rem(1) rem(4);
+}
+
+.box {
+    margin: rem(0);
+}
+
+.chip {
+    margin-top: rem(4);
+}
+
+.card {
+    border: rem(0);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: rem(15) 0;
+
+    // margin-bottom: rem(10);
+    .cardMiddle {
+        width: 55%;
+    }
+}
+
+.fab {
+    position: fixed;
+    bottom: rem(80);
+    right: rem(20);
+    z-index: 1100;
+    @media (min-width: 600px){
+        right: 50%;
+        transform: translateX(rem(280));
+    }
+}
