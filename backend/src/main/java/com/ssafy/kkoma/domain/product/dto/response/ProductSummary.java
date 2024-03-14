@@ -4,11 +4,13 @@ import com.ssafy.kkoma.domain.product.constant.ProductType;
 
 import com.ssafy.kkoma.domain.product.entity.Product;
 import lombok.Builder;
+import lombok.Getter;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Builder
+@Getter
 public class ProductSummary {
 
 	private Long id;
@@ -23,7 +25,7 @@ public class ProductSummary {
 		return ProductSummary.builder()
 				.id(product.getId())
 				.thumbnailImage(product.getThumbnailImage())
-				.title(product.getThumbnailImage())
+				.title(product.getTitle())
 				.dealPlace(product.getPlaceDetail())
 				.price(product.getPrice())
 				.condition(product.getCondition())
