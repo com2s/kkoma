@@ -12,8 +12,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import com.ssafy.kkoma.domain.product.dto.response.ProductSummary;
 import com.ssafy.kkoma.domain.product.entity.Product;
-import com.ssafy.kkoma.domain.product.entity.ProductImage;
-import com.ssafy.kkoma.domain.product.repository.ProductImageRepository;
 import com.ssafy.kkoma.domain.product.repository.ProductRepository;
 
 @SpringBootTest
@@ -22,9 +20,6 @@ class ProductServiceTest {
 
 	@Autowired
 	private ProductRepository productRepository;
-
-	@Autowired
-	private ProductImageRepository productImageRepository;
 
 	@Autowired
 	private ProductService productService;
