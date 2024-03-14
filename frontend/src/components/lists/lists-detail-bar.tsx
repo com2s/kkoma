@@ -26,7 +26,7 @@ export default function TopBar2() {
   const router = useRouter();
   return (
     <>
-    <div className={`${styles.header} bg-white text-black h-12 flex items-center justify-between px-4 fixed top-0 left-0 right-0`}>
+    <div className={`${styles.header} bg-white text-black h-12 flex items-center`}>
       <div className="flex justify-start basis-1/3">
         <Button
           onClick={() => router.back()}

@@ -3,6 +3,9 @@ import { Noto_Sans_KR } from "next/font/google";
 import "./globals.scss";
 import Navigation from "@/components/common/navigation";
 
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 const notoSansKr = Noto_Sans_KR({ subsets: ["cyrillic"] });
 
 export const metadata: Metadata = {

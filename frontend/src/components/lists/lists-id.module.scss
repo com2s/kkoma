@@ -2,5 +2,30 @@
     // height: calc(100vh - 80px);
     // @include flex(flex-start, flex-start, column);
     overflow: auto;
-    margin: rem(10) rem(16) rem(150);
+    margin: rem(10) rem(16) rem(50);
+    // padding-bottom: rem(100);
+    background-color: bisque;
+}
+
+.carousel {
+    width: 100%;
+    margin: rem(10) 0;
+    padding: 0;
+}
+
+.slick-slider {
+    width: 50px;
+}
+
+.slick-list {
+    width: 50%;
+}
+
+.slick-arrow {
+    font-size: rem(50);
+    color: $color-text1;
+    z-index: 1000;
+    &::before {
+        color: blue;
+    }
 }

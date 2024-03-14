@@ -24,8 +24,8 @@ import {
 } from "@mui/material";
 
 import AddIcon from "@mui/icons-material/Add";
-import EditIcon from "@mui/icons-material/Edit";
 import MenuIcon from "@mui/icons-material/Menu";
+import EditIcon from "@mui/icons-material/Edit";
 import SearchIcon from "@mui/icons-material/Search";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import UnfoldLessIcon from "@mui/icons-material/UnfoldLess";
@@ -218,7 +218,7 @@ export default function ListPage() {
           </IconButton> */}
         </Box>
       </Stack>
-      <Link href="lists/write">
+      <Link href="lists/create">
         <Fab
           color="primary"
           sx={{
