@@ -1,0 +1,5 @@
+.plan {
+  @include flex(flex-start, flex-start, column);
+  gap: rem(20);
+  margin: rem(10) rem(16) rem(110);
+}

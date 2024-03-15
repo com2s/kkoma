@@ -74,7 +74,7 @@ const Header = () => {
             component={Link}
             href="/my-trade"
           />
-          <BottomNavigationAction label="" disabled />
+          <BottomNavigationAction label="1" disabled />
           <BottomNavigationAction
             label="모아보기"
             icon={<GridViewIcon />}

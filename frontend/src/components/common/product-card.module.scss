@@ -1,0 +1,5 @@
+.card {
+  @include pad-v(rem(10), rem(10));
+  @include flex(center, space-between, row);
+  width: 100%;
+}
