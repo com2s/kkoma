@@ -47,9 +47,10 @@ services:
     image: loverduck97/kkoma-backend:latest
     container_name: api
     restart: always
+    env_file:
+      - .env
     ports:
       - 4000:8080
-
     networks:
       - backend
       - frontend
@@ -58,6 +59,8 @@ services:
     image: loverduck97/kkoma-frontend:latest
     container_name: app
     restart: always
+    env_file:
+      - .env
     ports:
       - 3000:3000
     networks:
