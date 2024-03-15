@@ -55,6 +55,7 @@ services:
       - frontend
 
   app:
+    image: loverduck97/kkoma-frontend:latest
     container_name: app
     restart: always
     ports:
