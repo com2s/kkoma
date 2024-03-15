@@ -94,15 +94,4 @@ public class Member extends BaseTimeEntity {
 		this.phone = updateMemberRequestDto.getPhone();
 	}
 
-	public void setKid(Kid kid) {
-		this.kids.add(kid);
-		kid.setMember(this);
-	}
-
-	public void setKids(List<Kid> kids) {
-		for (Kid kid : kids) {
-			kid.setMember(this);
-		}
-		this.kids = kids;
-	}
 }
