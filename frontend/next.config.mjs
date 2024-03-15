@@ -16,6 +16,7 @@ const nextConfig = {
     includePaths: [path.join(__dirname, "styles")],
     prependData: `@import "src/styles/_variables.scss"; @import "src/styles/_mixins.scss";`,
   },
+  output: 'standalone',
 };
 
 export default nextConfig;

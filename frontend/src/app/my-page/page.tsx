@@ -5,13 +5,8 @@ import MyProfile from "@/components/my-page/my-profile";
 import MyPoints from "@/components/my-page/my-points";
 import MyPageList from "@/components/my-page/my-page-list";
 
-// export const metadata: Metadata = {
-//   title: "My Page",
-//   description: "User's personal page",
-// };
-
 async function getChildren() {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  // await new Promise((resolve) => setTimeout(resolve, 1000));
   // 로딩을 확인하기 위해 임의의 시간(ms) 지연
   return [
     { id: 1, name: "Child 1" },
@@ -25,6 +20,7 @@ async function getChildren() {
     { id: 9, name: "Child 9" },
     { id: 10, name: "Child 10" },
   ];
+  // TODO: 데이터 페칭
   // const response = await fetch(API_URL);
   // const json = await response.json();
   // return json;

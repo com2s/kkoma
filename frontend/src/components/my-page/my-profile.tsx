@@ -13,8 +13,9 @@ export default function MyProfile() {
         src="/chicken-home.svg"
         alt="Profile Image"
         // sx={{ width: 56, height: 56 }}
-        className={`${styles.responsiveImg} mr-4`} // 여기에 추가된 클래스를 사용합니다.
+        className={`${styles.responsiveImg} mr-4`}
       />
+      {/* 프로필사진이 없을 경우? */}
       {/* <Avatar {...stringAvatar('Kent Dodds')} /> */}
       <div className={`${styles.nickname} min-w-32 text-pretty mr-1 `}>
         <span className="text-body">닉네임 닉네임 닉네임 닉네임 닉네임 닉네임</span>

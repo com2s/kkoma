@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import styles from "@/components/common/top-bar2.module.scss";
 import Button from "@mui/material/Button"; // Material-UI 버튼 사용
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew"; // Material-UI 뒤로 가기 아이콘
 
@@ -25,20 +26,20 @@ export default function TopBar2() {
   const router = useRouter();
   return (
     <>
-    <div className="bg-white text-black h-12 flex items-center justify-between px-4 fixed top-0 left-0 right-0">
+    <div className={`${styles.header} bg-white text-black h-12 flex items-center`}>
       <div className="flex justify-start basis-1/3">
         <Button
           onClick={() => router.back()}
           startIcon={<ArrowBackIosNewIcon />}
+          sx={{ color: "black" }}
         >
-          뒤로 가기
         </Button>
       </div>
-      <span className="basis-1/3 text-center font-bold">페이지 타이틀</span>
+      <span className="basis-1/3 text-center font-semibold">페이지 타이틀</span>
       <div className="flex justify-end basis-1/3">
-        <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+        {/* <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
           알림
-        </button>
+        </button> */}
       </div>
     </div>
     <div className="h-12"></div> {/* 상단 바 높이만큼의 빈 공간 */}

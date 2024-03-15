@@ -14,9 +14,7 @@ import ListAltIcon from "@mui/icons-material/ListAlt";
 import GridViewIcon from "@mui/icons-material/GridView";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import Image from "next/image";
-// import { Menu, MenuItem } from "@mui/material";
 
 const Header = () => {
   const [value, setValue] = React.useState(-1);
@@ -35,8 +33,8 @@ const Header = () => {
     "&.MuiFab-root": {
       // MUI Fab 루트에 대한 스타일을 재정의
       // boxShadow: "0 -2px 0px 1px rgba(0, 0, 0, 0.1), 0px -1px 0px 0px rgba(0, 0, 0, 0.06)",
-      boxShadow: theme.shadows[0], // 이는 elevation 1에 해당하는 그림자입니다.
-      border : "1px solid rgba(0, 0, 0, 0.2)",
+      boxShadow: theme.shadows[0], // 이는 elevation 0에 해당하는 그림자
+      border: "1px solid rgba(0, 0, 0, 0.2)",
       backgroundColor: "white",
     },
   });
@@ -53,7 +51,6 @@ const Header = () => {
           maxWidth: "600px",
           minWidth: "320px",
           margin: "auto",
-          // boxShadow: '0 -3px 0px 0px rgba(0, 0, 0, 0.2)', // 상단 그림자만 설정
           borderTop: "1px solid rgba(0, 0, 0, 0.2)",
         }}
         elevation={0} // 기본 그림자 제거
@@ -107,7 +104,6 @@ const Header = () => {
             className="z-2"
             width={50}
             height={50}
-            // style={{ height: 'auto' }}
             priority
           />
         </StyledFab>

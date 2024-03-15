@@ -74,3 +74,62 @@ $breakpoint-mobile: 640px; /* 변수 선언 */
     @content;
   }
 }
+
+//font
+@font-face {
+  font-family: "UhBeeSe_hyun";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_five@.2.0/UhBeeSe_hyun.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@mixin text-body {
+  font-size: $fs-5;
+  font-weight: $fw-medium;
+  color: $color-text1;
+}
+
+@mixin text-body2 {
+  font-size: $fs-6;
+  font-weight: $fw-medium;
+  color: $color-text1;
+}
+
+@mixin text-caption {
+  font-size: $fs-7;
+  font-weight: $fw-medium;
+  color: $color-text1;
+}
+
+@mixin text-button {
+  font-size: $fs-4;
+  font-weight: $fw-medium;
+  color: $color-text1;
+}
+
+@mixin text-logo {
+  font-family: "Oliver";
+  font-size: $fs-4;
+  color: $color-text1;
+}
+
+@mixin text-big-logo {
+  font-family: "Oliver";
+  font-size: rem(40);
+  color: $color-text1;
+}
+
+@mixin text-deco {
+  font-family: "UhBeeSe_hyun";
+  font-size: $fs-3;
+  color: $color-text1;
+}
+
+@mixin c-text2 {
+  color: $color-text2;
+}
+
+@mixin c-text3 {
+  color: $color-text3;
+}

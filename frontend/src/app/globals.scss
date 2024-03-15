@@ -1,23 +1,19 @@
-// @import "@/styles/variables";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+// 캐러셀을 쓰기 위해...
+@import "slick-carousel/slick/slick.css";
+@import "slick-carousel/slick/slick-theme.css";
+
 html {
-  min-width: 360px;
+  min-width: 320px;
   max-width: 600px;
   margin: 0 auto;
   // border: 1px solid black;
 }
 
 //font
-@font-face {
-  font-family: "UhBeeSe_hyun";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_five@.2.0/UhBeeSe_hyun.woff")
-    format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
 
 @for $i from 1 through length($headingFontList) {
   /* 리스트 길이 만큼 순회 */
@@ -25,7 +21,7 @@ html {
     font-size: nth($headingFontList, $i);
     font-weight: bold;
     color: $color-text1;
-    margin: 0;
+    line-height: normal;
   }
 }
 
@@ -45,6 +41,7 @@ html {
   font-size: $fs-7;
   font-weight: $fw-medium;
   color: $color-text1;
+  line-height: normal;
 }
 
 .text-button {
@@ -56,6 +53,12 @@ html {
 .text-logo {
   font-family: "Oliver";
   font-size: $fs-4;
+  color: $color-text1;
+}
+
+.text-big-logo {
+  font-family: "Oliver";
+  font-size: rem(40);
   color: $color-text1;
 }
 
