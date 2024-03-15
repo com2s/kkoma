@@ -10,6 +10,9 @@ const nextConfig = {
       test: /\.svg$/,
       use: ["@svgr/webpack"],
     });
+    config.module.exports = {
+      output: 'standalone',
+    }
     return config;
   },
   sassOptions: {
