@@ -1,6 +1,4 @@
 .container {
-    // width: 20%;
-    // height: 76px;
     flex-grow: 0;
     display: flex;
     flex-direction: row;
@@ -12,7 +10,6 @@
 
 .nickname {
     width: 50%;
-    // height: 36px;
     flex-grow: 0;
     display: flex;
     flex-direction: column;
@@ -28,6 +25,5 @@
     min-width: rem(70); /* 최소 너비는 70px */
     max-width: rem(90); /* 최대 너비는 90px */
     height: auto;
-    // padding: rem(20);
     aspect-ratio: 1/1; /* 가로 세로 비율은 1:1 */
   }
