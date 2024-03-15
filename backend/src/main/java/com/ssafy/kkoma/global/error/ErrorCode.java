@@ -33,7 +33,10 @@ public enum ErrorCode {
     OFFER_NOT_EXISTS(HttpStatus.BAD_REQUEST, "O-001", "해당 거래 요청은 존재하지 않습니다."),
 
     // OfferDetail
-    OFFER_DETAIL_NOT_EXISTS(HttpStatus.BAD_REQUEST, "OD-001", "해당 거래에 대한 거래 요청 시간이 존재하지 않습니다.")
+    OFFER_DETAIL_NOT_EXISTS(HttpStatus.BAD_REQUEST, "OD-001", "해당 거래에 대한 거래 요청 시간이 존재하지 않습니다."),
+
+    // Temparary
+    UPDATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "T-004", "회원 정보를 수정에 실패하였습니다.")
     ;
 
     ErrorCode(HttpStatus httpStatus, String errorCode, String message) {
