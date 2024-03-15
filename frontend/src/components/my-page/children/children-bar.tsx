@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import styles from "@/components/common/top-bar2.module.scss";
 import Button from "@mui/material/Button"; // Material-UI 버튼 사용
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew"; // Material-UI 뒤로 가기 아이콘
 
 // 차후 각 페이지 별로 상단에 고정된 헤더를 만들기 위한 템플릿으로 사용합니다.
@@ -22,38 +23,21 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew"; // Materi
 // AppBar 컴포넌트는 상단에 고정된 헤더를 만들 때 사용합니다.
 // 그래서 이 컴포넌트에 쓰면 헤더가 중복이 되어 에러가 발생합니다.
 
-// 인터페이스
-// 매개변수는 받지만 반환값은 없는 함수를 정의합니다.
-interface TopBar2Props {
-  onFormSubmit: () => void;
-}
-
-// 만약 반환값이 있다면 다음과 같이 정의합니다. (예시)
-// interface TopBar2Props {
-//   onFormSubmit: (param: string) => number;
-// }
-
-export default function TopBar2({ onFormSubmit }: TopBar2Props) {
+export default function TopBar2() {
   const router = useRouter();
   return (
     <>
       <div className={styles.header}>
-        <Link href="/lists">
-          <Button
-            // onClick={() => router.back()} // 뒤로 가기 기능을 쓸 경우...
-            startIcon={<ArrowBackIosNewIcon />}
-            sx={{ color: "black" }}
-          ></Button>
-        </Link>
+        <Button
+          onClick={() => router.back()}
+          startIcon={<ArrowBackIosNewIcon />}
+          sx={{ color: "black", height: "32px" }}
+        ></Button>
         <span className={styles.logo}>페이지 타이틀</span>
         <div className={styles.notifications}>
-          <button
-            type="submit"
-            onClick={onFormSubmit}
-            className="text-red-500 font-bold rounded"
-          >
-            <span>작성</span>
-          </button>
+          <Button disabled>
+            <FavoriteBorderIcon />
+          </Button>
         </div>
       </div>
       <div className={styles.headerSpacer}></div>{" "}

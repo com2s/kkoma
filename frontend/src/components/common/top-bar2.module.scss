@@ -5,7 +5,7 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
-  // 하단 그림자 효과
+  // 하단 그림자 효과가 필요할 경우...
   // box-shadow: 0px rem(2) rgba(0, 0, 0, 0.1);
   @include flex(center, space-between, row);
   background-color: white;
@@ -13,5 +13,20 @@
   max-width: 600px;
   margin: auto;
   width: 100%;
-  padding: rem(5);
+  padding: rem(10) rem(10);
+  .logo {
+    @include flex(center, flex-start, row);
+    gap: rem(10);
+    font-size: 1.1rem;
+  }
+  .notifications {
+    color: $color-text2;
+    display: flex;
+    height: rem(51);
+    width: rem(51);
+  }
+}
+
+.headerSpacer {
+  height: rem(71); // 상단 바의 높이와 동일하게 설정
 }

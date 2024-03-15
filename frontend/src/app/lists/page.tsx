@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import TopBar from "@/components/common/top-bar";
 import styles from "@/components/lists/lists.module.scss";
 import { getProducts } from "@/components/lists/lists-ftn";
+import Navigation from "@/components/common/navigation";
 
 import Link from "next/link";
 import Chip from "@mui/material/Chip";
@@ -293,6 +294,7 @@ export default function ListPage() {
           </Link>
         ))}
       </div>
+      <Navigation />
     </div>
   );
 }

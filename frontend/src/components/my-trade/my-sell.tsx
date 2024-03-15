@@ -132,9 +132,11 @@ export default function MySell() {
               </Menu>
               <Typography
                 variant="body2"
+                textAlign={"center"}
                 sx={{
                   mt: 2,
                   fontWeight: "bold",
+                  width: "55px",
                   color:
                   // deal.status2 의 값에 따라 색상을 다르게 표시
                     deal.status2 === "거래 중"

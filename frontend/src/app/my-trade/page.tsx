@@ -2,6 +2,7 @@
 
 import React, { Suspense, use, useState } from "react";
 import TopBar from "@/components/common/top-bar";
+import Navigation from "@/components/common/navigation";
 import styles from "@/components/my-trade/my-trade.module.scss";
 import MySell from "@/components/my-trade/my-sell";
 import MyBuy from "@/components/my-trade/my-buy";
@@ -101,6 +102,7 @@ export default function MyTradePage() {
         Item Three
       </CustomTabPanel> */}
       </Box>
+      <Navigation />
     </div>
   );
 }

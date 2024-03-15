@@ -4,7 +4,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import styles from "@/components/common/top-bar2.module.scss";
 import Button from "@mui/material/Button"; // Material-UI 버튼 사용
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew"; // Material-UI 뒤로 가기 아이콘
+import { useState } from "react";
+import { IconButton } from "@mui/material";
 
 // 차후 각 페이지 별로 상단에 고정된 헤더를 만들기 위한 템플릿으로 사용합니다.
 // 사용 예시
@@ -24,25 +28,40 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew"; // Materi
 
 export default function TopBar2() {
   const router = useRouter();
+  const [liked, setLiked] = useState(false);
+  const likeFtn = () => {
+    setLiked(!liked);
+    if (liked) {
+      alert("좋아요 취소");
+    } else {
+      alert("좋아요");
+    }
+  }
+
   return (
     <>
-    <div className={`${styles.header} bg-white text-black h-12 flex items-center`}>
-      <div className="flex justify-start basis-1/3">
+      <div className={styles.header}>
         <Button
           onClick={() => router.back()}
           startIcon={<ArrowBackIosNewIcon />}
-          sx={{ color: "black" }}
-        >
-        </Button>
+          sx={{ color: "black", height: "32px" }}
+        ></Button>
+        <span className={styles.logo}>페이지 타이틀</span>
+        <div className={styles.notifications}>
+          <IconButton
+            aria-label="delete"
+            onClick={() => likeFtn()}
+          >
+            {liked ? (
+              <FavoriteIcon sx={{ color: "red" }} fontSize="large" />
+            ) : (
+              <FavoriteBorderIcon />
+            )}
+          </IconButton>
+        </div>
       </div>
-      <span className="basis-1/3 text-center font-semibold">페이지 타이틀</span>
-      <div className="flex justify-end basis-1/3">
-        {/* <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-          알림
-        </button> */}
-      </div>
-    </div>
-    <div className="h-12"></div> {/* 상단 바 높이만큼의 빈 공간 */}
+      <div className={styles.headerSpacer}></div>{" "}
+      {/* 상단 바 높이만큼의 빈 공간 */}
     </>
   );
 }
