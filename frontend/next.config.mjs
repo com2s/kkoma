@@ -10,15 +10,13 @@ const nextConfig = {
       test: /\.svg$/,
       use: ["@svgr/webpack"],
     });
-    config.module.exports = {
-      output: 'standalone',
-    }
     return config;
   },
   sassOptions: {
     includePaths: [path.join(__dirname, "styles")],
     prependData: `@import "src/styles/_variables.scss"; @import "src/styles/_mixins.scss";`,
   },
+  output: 'standalone',
 };
 
 export default nextConfig;
