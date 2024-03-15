@@ -9,7 +9,6 @@ export default function recommandProductList() {
         <ProductCard />
         <ProductCard />
         <ProductCard />
-        <ProductCard />
       </div>
     </div>
   );

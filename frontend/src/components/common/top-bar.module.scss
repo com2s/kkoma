@@ -13,7 +13,7 @@
   max-width: 600px;
   margin: auto;
   width: 100%;
-  padding: rem(5);
+  padding: rem(16) rem(10);
   .logo {
     @include flex(center, flex-start, row);
     gap: rem(10);

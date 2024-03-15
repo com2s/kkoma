@@ -1,0 +1,11 @@
+.container {
+  @include flex();
+  width: 100%;
+  .uploadBtn {
+    display: block;
+    width: rem(190);
+    height: rem(190);
+    border-radius: 50%;
+    background-color: $color-text4;
+  }
+}
