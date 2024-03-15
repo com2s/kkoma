@@ -9,7 +9,6 @@ export default function BabyBirth() {
       <GenderBtn />
       <ButtonContainer>
         <SubBtn next={"/baby/complate"}>건너뛰기</SubBtn>
-        <NormalBtn next={"/baby/complate"}>완료</NormalBtn>
       </ButtonContainer>
     </>
   );
