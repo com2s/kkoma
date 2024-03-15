@@ -53,12 +53,14 @@ services:
     networks:
       - backend
       - frontend
-#
-#  app:
-#    container_name: app
-#    restart: always
-#    networks:
-#      - frontend
+
+  app:
+    container_name: app
+    restart: always
+    ports:
+      - 3000:3000
+    networks:
+      - frontend
 
 networks:
   backend:
