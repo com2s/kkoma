@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import styles from "@/components/my-page/my-page.module.scss";
-import TopBar2 from "@/components/common/top-bar2";
+import TopBar2 from "@/components/my-page/my-page-profile";
 
 async function getChildren() {
   // await new Promise((resolve) => setTimeout(resolve, 1000));
