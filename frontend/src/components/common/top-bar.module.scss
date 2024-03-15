@@ -5,7 +5,7 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
-  // 하단 그림자 효과
+  // 하단 그림자 효과가 필요할 경우...
   // box-shadow: 0px rem(2) rgba(0, 0, 0, 0.1);
   @include flex(center, space-between, row);
   background-color: white;
@@ -19,7 +19,6 @@
     gap: rem(10);
   }
   .notifications {
-    // width: rem(30);
     color: $color-text2;
   }
 }

@@ -4,6 +4,9 @@ import { ThemeProvider } from "@mui/material";
 import theme from "@/utils/theme";
 import "./globals.scss";
 
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 const notoSansKr = Noto_Sans_KR({ subsets: ["cyrillic"] });
 
 export const metadata: Metadata = {
