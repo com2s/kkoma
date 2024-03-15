@@ -1,5 +1,6 @@
 package com.ssafy.kkoma.domain.member.entity;
 
+import com.ssafy.kkoma.api.member.dto.UpdateMemberRequestDto;
 import com.ssafy.kkoma.domain.common.entity.BaseTimeEntity;
 import com.ssafy.kkoma.domain.location.entity.Location;
 
@@ -8,13 +9,16 @@ import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.global.jwt.dto.JwtTokenDto;
 import com.ssafy.kkoma.global.util.DateTimeUtils;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseTimeEntity {
 
 	@Id
@@ -77,4 +81,10 @@ public class Member extends BaseTimeEntity {
 		this.tokenExpirationTime = now;
 	}
 
+	public void updateMemberInfo(UpdateMemberRequestDto updateMemberRequestDto) {
+		this.profileImage = updateMemberRequestDto.getProfileImage();
+		this.nickname = updateMemberRequestDto.getNickname();
+		this.name = updateMemberRequestDto.getName();
+		this.phone = updateMemberRequestDto.getPhone();
+	}
 }
