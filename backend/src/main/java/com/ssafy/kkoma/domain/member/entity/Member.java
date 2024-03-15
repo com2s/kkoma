@@ -8,13 +8,16 @@ import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.global.jwt.dto.JwtTokenDto;
 import com.ssafy.kkoma.global.util.DateTimeUtils;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseTimeEntity {
 
 	@Id
