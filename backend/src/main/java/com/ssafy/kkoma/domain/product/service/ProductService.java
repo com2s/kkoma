@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import com.ssafy.kkoma.domain.member.dto.response.MemberSummaryResponse;
 import com.ssafy.kkoma.domain.product.dto.response.ProductDetailResponse;
 import com.ssafy.kkoma.global.error.ErrorCode;
+import com.ssafy.kkoma.global.error.exception.BusinessException;
 import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -58,6 +59,11 @@ public class ProductService {
 				.offerCount(product.getOfferCount())
 				.viewCount(product.getViewCount())
 				.build();
+	}
+
+	public Product findProductById(Long productId){
+		return productRepository.findById(productId)
+				.orElseThrow(() -> new BusinessException(ErrorCode.PRODUCT_NOT_EXISTS));
 	}
 
 }
