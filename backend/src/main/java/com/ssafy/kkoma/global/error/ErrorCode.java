@@ -23,6 +23,13 @@ public enum ErrorCode {
     ALREADY_REGISTERED_MEMBER(HttpStatus.BAD_REQUEST, "M-002", "이미 가입된 회원 입니다."),
     MEMBER_NOT_EXISTS(HttpStatus.BAD_REQUEST, "M-003", "해당 회원은 존재하지 않습니다."),
 
+    // Product
+    PRODUCT_NOT_EXISTS(HttpStatus.BAD_REQUEST, "P-001", "해당 거래 글은 존재하지 않습니다."),
+
+    // Category
+    CATEGORY_NOT_EXISTS(HttpStatus.BAD_REQUEST, "C-001", "해당 카테고리는 존재하지 않습니다.");
+    ;
+
     // Temporary
     UPDATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "T-004", "회원 정보를 수정에 실패하였습니다.");
 
