@@ -2,6 +2,7 @@ package com.ssafy.kkoma.domain.kid.entity;
 
 import java.time.LocalDate;
 
+import com.ssafy.kkoma.api.kid.dto.UpdateKidRequestDto;
 import com.ssafy.kkoma.domain.common.entity.BaseTimeEntity;
 import com.ssafy.kkoma.domain.kid.constant.GenderType;
 import com.ssafy.kkoma.domain.member.entity.Member;
@@ -42,4 +43,14 @@ public class Kid extends BaseTimeEntity {
 
 	private Integer shoeSize;
 
+	public void setMember(Member member) {
+		this.member = member;
+		member.getKids().add(this);
+	}
+
+	public void updateKidInfo(UpdateKidRequestDto updateKidRequestDto) {
+		this.name = updateKidRequestDto.getName();
+		this.birthDate = updateKidRequestDto.getBirthDate();
+		this.gender = updateKidRequestDto.getGender();
+	}
 }

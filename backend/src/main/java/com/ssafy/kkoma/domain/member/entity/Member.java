@@ -2,6 +2,7 @@ package com.ssafy.kkoma.domain.member.entity;
 
 import com.ssafy.kkoma.api.member.dto.UpdateMemberRequestDto;
 import com.ssafy.kkoma.domain.common.entity.BaseTimeEntity;
+import com.ssafy.kkoma.domain.kid.entity.Kid;
 import com.ssafy.kkoma.domain.location.entity.Location;
 
 import com.ssafy.kkoma.domain.member.constant.MemberType;
@@ -15,6 +16,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -63,6 +66,9 @@ public class Member extends BaseTimeEntity {
 
 	private LocalDateTime tokenExpirationTime;
 
+	@OneToMany(mappedBy = "member")
+	private List<Kid> kids = new ArrayList<>();
+
 	@Builder
 	public Member(MemberType memberType, String email, String name, String profileImage, Role role) {
 		this.memberType = memberType;
@@ -87,4 +93,5 @@ public class Member extends BaseTimeEntity {
 		this.name = updateMemberRequestDto.getName();
 		this.phone = updateMemberRequestDto.getPhone();
 	}
+
 }
