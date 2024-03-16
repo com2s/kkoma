@@ -37,32 +37,27 @@ export default function TopBar2({ onFormSubmit }: TopBar2Props) {
   const router = useRouter();
   return (
     <>
-      <div
-        className={`${styles.header} bg-white text-black h-12 flex items-center`}
-      >
-        <div className="flex justify-start basis-1/3">
-          <Link href="/lists">
-            <Button
-              // onClick={() => router.back()} // 뒤로 가기 기능을 쓸 경우...
-              startIcon={<ArrowBackIosNewIcon />}
-              sx={{ color: "black" }}
-            ></Button>
-          </Link>
-        </div>
-        <span className="basis-1/3 text-center font-semibold">
-          페이지 타이틀
-        </span>
-        <div className="flex justify-end basis-1/3">
+      <div className={styles.header}>
+        <Link href="/lists">
+          <Button
+            // onClick={() => router.back()} // 뒤로 가기 기능을 쓸 경우...
+            startIcon={<ArrowBackIosNewIcon />}
+            sx={{ color: "black" }}
+          ></Button>
+        </Link>
+        <span className={styles.logo}>페이지 타이틀</span>
+        <div className={styles.notifications}>
           <button
             type="submit"
             onClick={onFormSubmit}
-            className="text-red-500 font-bold py-2 px-4 rounded"
+            className="text-red-500 font-bold rounded"
           >
-            작성
+            <span>작성</span>
           </button>
         </div>
       </div>
-      <div className="h-12"></div> {/* 상단 바 높이만큼의 빈 공간 */}
+      <div className={styles.headerSpacer}></div>{" "}
+      {/* 상단 바 높이만큼의 빈 공간 */}
     </>
   );
 }

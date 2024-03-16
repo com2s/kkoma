@@ -2,30 +2,38 @@
     // height: calc(100vh - 80px);
     // @include flex(flex-start, flex-start, column);
     overflow: auto;
-    margin: rem(10) rem(16) rem(50);
-    // padding-bottom: rem(100);
-    background-color: bisque;
+    margin: rem(10) rem(16) // padding-bottom: rem(100);
 }
 
 .carousel {
-    width: 100%;
-    margin: rem(10) 0;
+    max-width: rem(480);
+    min-width: rem(340);
+    max-height: rem(300);
+    margin: rem(20) auto;
+    // background-color: gray;
     padding: 0;
 }
 
-.slick-slider {
-    width: 50px;
+.image {
+    width: 100%;
+    height: 100%;
+    max-height: rem(300);
+    // margin: rem(10) rem(20);
+    padding: rem(5) rem(60);
 }
 
-.slick-list {
-    width: 50%;
+.btn {
+    @include flex();
+    background-color: $color-yellow;
+    border-radius: rem(10);
+    width: 100%;
 }
 
-.slick-arrow {
-    font-size: rem(50);
-    color: $color-text1;
-    z-index: 1000;
-    &::before {
-        color: blue;
-    }
+.normal {
+    @include text-body;
+    height: rem(48);
+}
+
+.gray {
+    background-color: $color-text5;
 }

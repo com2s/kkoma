@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-// 캐러셀을 쓰기 위해...
-@import "slick-carousel/slick/slick.css";
-@import "slick-carousel/slick/slick-theme.css";
-
 html {
   min-width: 320px;
   max-width: 600px;
