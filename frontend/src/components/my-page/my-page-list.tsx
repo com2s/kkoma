@@ -8,51 +8,47 @@ import RoomOutlinedIcon from "@mui/icons-material/RoomOutlined";
 import QueryBuilderIcon from "@mui/icons-material/QueryBuilder";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+
 export default function MyPageList() {
   return (
     <div className={styles.myList}>
-      <ul>
-        <li>
-          <Link href="/my-page/wish-list">
-            <div>
-              <FavoriteBorderIcon>icon</FavoriteBorderIcon>
-              <span>찜 목록</span>
-            </div>
-          </Link>
-        </li>
-        <li>
-          <Link href="/my-page/recent">
-            <div>
-              <PlaylistAddIcon>icon</PlaylistAddIcon>
-              <span>최근 열람한 글</span>
-            </div>
-          </Link>
-        </li>
-        <li>
-          <Link href="/my-page/wish-locate">
-            <div>
-              <RoomOutlinedIcon>icon</RoomOutlinedIcon>
-              <span>거래 희망 장소 설정</span>
-            </div>
-          </Link>
-        </li>
-        <li>
-          <Link href="/my-page/children">
-            <div>
-              <QueryBuilderIcon>icon</QueryBuilderIcon>
-              <span>아이 정보 변경</span>
-            </div>
-          </Link>
-        </li>
-        <li>
-          <Link href="/my-page/edit-account">
-            <div>
-              <PersonOutlineIcon>icon</PersonOutlineIcon>
-              <span>계정 정보 변경</span>
-            </div>
-          </Link>
-        </li>
-      </ul>
+      <List>
+        <ListItem button component={Link} href="/my-page/wish-list">
+          <ListItemIcon>
+            <FavoriteBorderIcon />
+          </ListItemIcon>
+          <ListItemText primary="찜 목록" />
+        </ListItem>
+        <ListItem button component={Link} href="/my-page/recent">
+          <ListItemIcon>
+            <PlaylistAddIcon />
+          </ListItemIcon>
+          <ListItemText primary="최근 열람한 글" />
+        </ListItem>
+        <ListItem button component={Link} href="/my-page/wish-locate">
+          <ListItemIcon>
+            <RoomOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText primary="거래 희망 장소 설정" />
+        </ListItem>
+        <ListItem button component={Link} href="/my-page/children">
+          <ListItemIcon>
+            <QueryBuilderIcon />
+          </ListItemIcon>
+          <ListItemText primary="아이 정보 변경" />
+        </ListItem>
+        <ListItem button component={Link} href="/my-page/edit-account">
+          <ListItemIcon>
+            <PersonOutlineIcon />
+          </ListItemIcon>
+          <ListItemText primary="계정 정보 변경" />
+        </ListItem>
+      </List>
     </div>
   );
 }
+

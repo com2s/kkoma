@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 
 
-export function generateMetadata() {
-    return {
+export const metadata: Metadata = {
       title: "Create Post",
       description: "Creating a post",
     };
-  }
+
 
 export default function ProductListLayout({
     children,

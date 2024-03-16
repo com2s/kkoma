@@ -1,5 +1,7 @@
 package com.ssafy.kkoma.domain.member.service;
 
+import com.ssafy.kkoma.api.member.dto.MemberInfoResponseDto;
+import com.ssafy.kkoma.api.member.dto.UpdateMemberRequestDto;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.member.repository.MemberRepository;
 import com.ssafy.kkoma.global.error.ErrorCode;
@@ -51,6 +53,18 @@ public class MemberService {
     public Member findMemberByMemberId(Long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.MEMBER_NOT_EXISTS));
+    }
+
+    public MemberInfoResponseDto updateMemberInfo(Long memberId, UpdateMemberRequestDto updateMemberRequestDto) {
+        Member member = findMemberByMemberId(memberId);
+        member.updateMemberInfo(updateMemberRequestDto);
+        Member savedMember;
+        try {
+            savedMember = memberRepository.save(member);
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.UPDATE_FAIL);
+        }
+        return MemberInfoResponseDto.of(savedMember);
     }
 
 }

@@ -1,9 +1,7 @@
 "use client";
 
 import styles from "@/components/my-page/my-profile.module.scss";
-import "@/app/globals.scss";
 import Avatar from '@mui/material/Avatar';
-import Image from "next/image";
 import Link from "next/link";
 
 export default function MyProfile() {
@@ -18,7 +16,7 @@ export default function MyProfile() {
       {/* 프로필사진이 없을 경우? */}
       {/* <Avatar {...stringAvatar('Kent Dodds')} /> */}
       <div className={`${styles.nickname} min-w-32 text-pretty mr-1 `}>
-        <span className="text-body">닉네임 닉네임 닉네임 닉네임 닉네임 닉네임</span>
+        <h4 className="">닉네임 닉네임 닉네임 닉네임 닉네임 닉네임</h4>
         <span className="text-slate-500">주소주소 주소주소 주소주소 주소주소 주소</span>
       </div>
       <Link href="/my-page/my-profile" passHref>
