@@ -7,6 +7,7 @@ import com.ssafy.kkoma.domain.location.entity.Location;
 
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
+import com.ssafy.kkoma.domain.point.entity.Point;
 import com.ssafy.kkoma.global.jwt.dto.JwtTokenDto;
 import com.ssafy.kkoma.global.util.DateTimeUtils;
 import jakarta.persistence.*;
@@ -69,6 +70,9 @@ public class Member extends BaseTimeEntity {
 	@OneToMany(mappedBy = "member")
 	private List<Kid> kids = new ArrayList<>();
 
+	@OneToOne(fetch = FetchType.LAZY)
+	private Point point;
+
 	@Builder
 	public Member(MemberType memberType, String email, String name, String profileImage, Role role) {
 		this.memberType = memberType;
@@ -92,6 +96,10 @@ public class Member extends BaseTimeEntity {
 		this.nickname = updateMemberRequestDto.getNickname();
 		this.name = updateMemberRequestDto.getName();
 		this.phone = updateMemberRequestDto.getPhone();
+	}
+
+	public void setPoint(Point point) {
+		this.point = point;
 	}
 
 }

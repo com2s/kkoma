@@ -25,6 +25,7 @@ public enum ErrorCode {
 
     // Kid
     KID_NOT_EXIST(HttpStatus.BAD_REQUEST, "K-001", "해당 아이는 존재하지 않습니다."),
+    KID_NOT_MATCHED(HttpStatus.BAD_REQUEST, "K-002", "해당 아이를 회원 정보에서 찾을 수 없습니다."),
 
     // Product
     PRODUCT_NOT_EXISTS(HttpStatus.BAD_REQUEST, "P-001", "해당 거래 글은 존재하지 않습니다."),
@@ -38,9 +39,11 @@ public enum ErrorCode {
     // OfferDetail
     OFFER_DETAIL_NOT_EXISTS(HttpStatus.BAD_REQUEST, "OD-001", "해당 거래에 대한 거래 요청 시간이 존재하지 않습니다."),
 
-    // Temparary
-    UPDATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "T-004", "회원 정보를 수정에 실패하였습니다.")
-    ;
+    // Point
+    POINT_NOT_EXISTS(HttpStatus.BAD_REQUEST, "POINT-001", "해당 포인트는 존재하지 않습니다."),
+
+    // Temparary,
+    UPDATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "T-004", "회원 정보를 수정에 실패하였습니다.");
 
     ErrorCode(HttpStatus httpStatus, String errorCode, String message) {
         this.httpStatus = httpStatus;

@@ -3,6 +3,7 @@ package com.ssafy.kkoma.api.member.controller;
 import com.ssafy.kkoma.api.member.dto.MemberInfoResponseDto;
 import com.ssafy.kkoma.api.member.dto.UpdateMemberRequestDto;
 import com.ssafy.kkoma.api.member.service.MemberInfoService;
+import com.ssafy.kkoma.domain.member.dto.response.MemberSummaryResponse;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.member.service.MemberService;
 import com.ssafy.kkoma.global.jwt.service.TokenManager;
@@ -13,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/member")
+@RequestMapping("/api/members")
 @RequiredArgsConstructor
 public class MemberInfoController {
 
@@ -30,6 +31,16 @@ public class MemberInfoController {
         return ResponseEntity.ok(memberInfoResponseDto);
     }
 
+    @GetMapping("/summary")
+    public ResponseEntity<MemberSummaryResponse> getMemberSummary(@MemberInfo MemberInfoDto memberInfoDto) {
+
+        Long memberId = memberInfoDto.getMemberId();
+        MemberSummaryResponse memberSummaryResponse = memberInfoService.getMemberSummary(memberId);
+
+        return ResponseEntity.ok(memberSummaryResponse);
+    }
+
+
     @PutMapping("/")
     public ResponseEntity<?> updateMember(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody UpdateMemberRequestDto updateMemberRequestDto) {
 
@@ -38,4 +49,5 @@ public class MemberInfoController {
 
         return ResponseEntity.ok(memberInfoResponseDto);
     }
+
 }

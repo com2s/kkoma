@@ -8,14 +8,14 @@ import lombok.Getter;
 import java.time.LocalDate;
 
 @Getter @Builder
-public class KidInfoResponseDto {
+public class KidSummaryResponseDto {
 
     private String name;
     private LocalDate birthDate;
     private GenderType gender;
 
-    public static KidInfoResponseDto of(Kid savedKid) {
-            return KidInfoResponseDto.builder()
+    public static KidSummaryResponseDto of(Kid savedKid) {
+            return KidSummaryResponseDto.builder()
                     .name(savedKid.getName())
                     .birthDate(savedKid.getBirthDate())
                     .gender(savedKid.getGender())

@@ -1,6 +1,7 @@
 package com.ssafy.kkoma.api.member.service;
 
 import com.ssafy.kkoma.api.member.dto.MemberInfoResponseDto;
+import com.ssafy.kkoma.domain.member.dto.response.MemberSummaryResponse;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,11 @@ public class MemberInfoService {
     public MemberInfoResponseDto getMemberInfo(Long memberId) {
         Member member = memberService.findMemberByMemberId(memberId);
         return MemberInfoResponseDto.of(member);
+    }
+
+    public MemberSummaryResponse getMemberSummary(Long memberId) {
+        Member member = memberService.findMemberByMemberId(memberId);
+        return MemberSummaryResponse.fromEntity(member);
     }
 
 }
