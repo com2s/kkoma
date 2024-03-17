@@ -8,19 +8,23 @@ import lombok.Getter;
 @Getter @Builder
 public class MemberInfoResponseDto {
 
-    private Long memberId;
+    private Long id;
+    private String profileImage;
     private String email;
-    private String memberName;
-    private String profile;
+    private String nickname;
+    private String name;
+    private String phone;
     private Role role;
 
     public static MemberInfoResponseDto of(Member member) {
         return MemberInfoResponseDto.builder()
-                .memberId(member.getId())
-                .memberName(member.getName())
+                .id(member.getId())
+                .name(member.getName())
                 .email(member.getEmail())
-                .profile(member.getProfileImage())
+                .nickname(member.getNickname())
+                .profileImage(member.getProfileImage())
                 .role(member.getRole())
+                .phone(member.getPhone())
                 .build();
     }
 

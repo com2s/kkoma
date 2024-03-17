@@ -1,9 +1,15 @@
 package com.ssafy.kkoma.domain.member.service;
 
+import com.ssafy.kkoma.api.kid.service.KidService;
 import com.ssafy.kkoma.api.member.dto.MemberInfoResponseDto;
 import com.ssafy.kkoma.api.member.dto.UpdateMemberRequestDto;
+import com.ssafy.kkoma.api.point.repository.PointRepository;
+import com.ssafy.kkoma.api.point.service.PointService;
+import com.ssafy.kkoma.domain.kid.entity.Kid;
+import com.ssafy.kkoma.domain.kid.repository.KidRepository;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.member.repository.MemberRepository;
+import com.ssafy.kkoma.domain.point.entity.Point;
 import com.ssafy.kkoma.global.error.ErrorCode;
 import com.ssafy.kkoma.global.error.exception.AuthenticationException;
 import com.ssafy.kkoma.global.error.exception.BusinessException;
@@ -21,10 +27,31 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PointRepository pointRepository;
+    private final KidRepository kidRepository;
 
     public Member registerMember(Member member) {
         validateDuplicateMember(member);
-        return memberRepository.save(member);
+        Member savedMember = memberRepository.save(member);
+        createKid(savedMember.getId());
+        createPoint(savedMember.getId());
+        return savedMember;
+    }
+
+    public Kid createKid(Long memberId) {
+        Member member = findMemberByMemberId(memberId);
+        Kid kid = new Kid();
+        Kid savedKid = kidRepository.save(kid);
+        savedKid.setMember(member);
+        return savedKid;
+    }
+
+    public Point createPoint(Long memberId) {
+        Member savedMember = findMemberByMemberId(memberId);
+        Point point = new Point();
+        Point savedPoint = pointRepository.save(point);
+        savedMember.setPoint(savedPoint);
+        return savedPoint;
     }
 
     private void validateDuplicateMember(Member member) {
