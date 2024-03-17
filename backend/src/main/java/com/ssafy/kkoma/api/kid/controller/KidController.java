@@ -8,12 +8,14 @@ import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.member.service.MemberService;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfoDto;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Kid")
 @RestController
 @RequestMapping("/api/kids")
 @RequiredArgsConstructor
@@ -21,6 +23,7 @@ public class KidController {
 
     private final KidService kidService;
 
+    @Tag(name = "Kid", description = "to get kid summary list")
     @GetMapping("/summary")
     public ResponseEntity<List<KidSummaryResponseDto>> getKidSummaryDtos(@MemberInfo MemberInfoDto memberInfoDto) {
 
@@ -30,6 +33,7 @@ public class KidController {
         return ResponseEntity.ok(kidSummaryResponseDtos);
     }
 
+    @Tag(name = "Kid", description = "to get a kid summary")
     @GetMapping("/summary/{kidId}")
     public ResponseEntity<KidSummaryResponseDto> getKidSummaryDtos(@PathVariable Long kidId, @MemberInfo MemberInfoDto memberInfoDto) {
 
@@ -39,6 +43,7 @@ public class KidController {
         return ResponseEntity.ok(kidSummaryResponseDto);
     }
 
+    @Tag(name = "Kid", description = "to update a kid")
     @PutMapping
     public ResponseEntity<KidSummaryResponseDto> updateKid(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody UpdateKidRequestDto updateKidRequestDto) {
 
