@@ -1,12 +1,11 @@
 package com.ssafy.kkoma.api.kid.service;
 
-import com.ssafy.kkoma.api.kid.dto.KidSummaryResponseDto;
-import com.ssafy.kkoma.api.kid.dto.UpdateKidRequestDto;
+import com.ssafy.kkoma.api.kid.dto.response.KidSummaryResponse;
+import com.ssafy.kkoma.api.kid.dto.request.UpdateKidRequest;
 import com.ssafy.kkoma.domain.kid.entity.Kid;
 import com.ssafy.kkoma.domain.kid.repository.KidRepository;
 import com.ssafy.kkoma.domain.member.entity.Member;
-import com.ssafy.kkoma.domain.member.repository.MemberRepository;
-import com.ssafy.kkoma.domain.member.service.MemberService;
+import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.global.error.ErrorCode;
 import com.ssafy.kkoma.global.error.exception.BusinessException;
 import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
@@ -23,7 +22,7 @@ public class KidService {
     private final KidRepository kidRepository;
     private final MemberService memberService;
 
-    public KidSummaryResponseDto updateKidInfo(Long memberId, UpdateKidRequestDto updateKidRequestDto) {
+    public KidSummaryResponse updateKidInfo(Long memberId, UpdateKidRequest updateKidRequest) {
         Member member = memberService.findMemberByMemberId(memberId);
         List<Kid> kids = member.getKids();
         Kid kid;
@@ -32,17 +31,17 @@ public class KidService {
         } else {
             kid = member.getKids().get(0);
         }
-        kid.updateKidInfo(updateKidRequestDto);
-        return KidSummaryResponseDto.of(kid);
+        kid.updateKidInfo(updateKidRequest);
+        return KidSummaryResponse.fromEntity(kid);
     }
 
-    public KidSummaryResponseDto updateKidInfo(Long kidId, Long memberId, UpdateKidRequestDto updateKidRequestDto) {
+    public KidSummaryResponse updateKidInfo(Long kidId, Long memberId, UpdateKidRequest updateKidRequest) {
         Member member = memberService.findMemberByMemberId(memberId);
         List<Kid> kids = member.getKids();
         for (Kid kid : kids) {
             if (kid.getId() == kidId) {
-                kid.updateKidInfo(updateKidRequestDto);
-                return KidSummaryResponseDto.of(kid);
+                kid.updateKidInfo(updateKidRequest);
+                return KidSummaryResponse.fromEntity(kid);
             }
         }
 
@@ -54,23 +53,23 @@ public class KidService {
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.KID_NOT_EXIST));
     }
 
-    public List<KidSummaryResponseDto> getKids(Long memberId) {
+    public List<KidSummaryResponse> getKids(Long memberId) {
         Member member = memberService.findMemberByMemberId(memberId);
 
-        List<KidSummaryResponseDto> kidSummaryResponseDtos = new ArrayList<>();
+        List<KidSummaryResponse> kidSummaryResponseDtos = new ArrayList<>();
         List<Kid> kids = member.getKids();
         for (Kid kid : kids) {
-            kidSummaryResponseDtos.add(KidSummaryResponseDto.of(kid));
+            kidSummaryResponseDtos.add(KidSummaryResponse.fromEntity(kid));
         }
 
         return kidSummaryResponseDtos;
     }
 
-    public KidSummaryResponseDto getKid(Long kidId, Long memberId) {
+    public KidSummaryResponse getKid(Long kidId, Long memberId) {
         Kid kid = findKidByKidId(kidId);
         if (kid.getMember().getId() != memberId) {
             throw new BusinessException(ErrorCode.KID_NOT_MATCHED);
         }
-        return KidSummaryResponseDto.of(kid);
+        return KidSummaryResponse.fromEntity(kid);
     }
 }

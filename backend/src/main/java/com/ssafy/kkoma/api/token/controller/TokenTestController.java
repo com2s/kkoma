@@ -23,7 +23,7 @@ public class TokenTestController {
 
     @Tag(name = "Token", description = "to create a JWT")
     @GetMapping("/create")
-    public JwtTokenDto createJwtTokenDto() {
+    public JwtTokenDto getSampleJwtTokenDto() {
         return tokenManager.createJwtTokenDto(1L, Role.ADMIN);
     }
 
