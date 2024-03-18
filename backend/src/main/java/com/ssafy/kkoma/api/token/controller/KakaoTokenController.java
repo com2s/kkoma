@@ -24,6 +24,12 @@ public class KakaoTokenController {
     @Value("${kakao.client.secret}")
     private String clientSecret;
 
+    @Value("${kkoma.domain}")
+    private String domain;
+
+    @Value("${server.port}")
+    private String host;
+
     @Tag(name = "Token")
     @Operation(summary = "to get a kakao token (REDIRECT URI for Social Login)")
     @GetMapping("/oauth/kakao/callback")
@@ -34,7 +40,7 @@ public class KakaoTokenController {
                 .client_secret(clientSecret)
                 .grant_type("authorization_code")
                 .code(code)
-                .redirect_uri("http://localhost:8080/oauth/kakao/callback")
+                .redirect_uri("http://" + domain + ":" + host + "/oauth/kakao/callback")
                 .build();
         KakaoTokenDto.Response kakaoToken = kakaoTokenClient.requestKakaoToken(contentType, kakaoTokenRequestDto);
         return kakaoToken;
