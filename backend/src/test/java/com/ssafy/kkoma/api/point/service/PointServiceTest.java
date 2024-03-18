@@ -33,7 +33,6 @@ class PointServiceTest {
     @Autowired
     private MemberRepository memberRepository;
 
-
     @Test
     void 존재하는_포인트_아이디로_포인트_찾기() {
         // given

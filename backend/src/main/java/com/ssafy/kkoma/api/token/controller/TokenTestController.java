@@ -1,16 +1,20 @@
 package com.ssafy.kkoma.api.token.controller;
 
+import com.ssafy.kkoma.api.member.service.MemberService;
+import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
+import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.global.jwt.dto.JwtTokenDto;
 import com.ssafy.kkoma.global.jwt.service.TokenManager;
+import com.ssafy.kkoma.global.util.RandomStringGenerator;
 import io.jsonwebtoken.Claims;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Random;
 
 @Tag(name = "Token")
 @Slf4j
@@ -20,14 +24,34 @@ import org.springframework.web.bind.annotation.RestController;
 public class TokenTestController {
 
     private final TokenManager tokenManager;
+    private final MemberService memberService;
 
-    @Tag(name = "Token", description = "to create a JWT")
+    @Tag(name = "Token")
+    @Operation(summary = "to create a member and a JWT")
     @GetMapping("/create")
     public JwtTokenDto getSampleJwtTokenDto() {
-        return tokenManager.createJwtTokenDto(1L, Role.ADMIN);
+        final String RANDOM_STRING = RandomStringGenerator.randomUUID(12);
+        Member member = Member.builder()
+                .name(RANDOM_STRING)
+                .email(RANDOM_STRING + "@kakao.com")
+                .role(Role.USER)
+                .memberType(MemberType.KAKAO)
+                .build();
+        Member registeredMember = memberService.registerMember(member);
+        return tokenManager.createJwtTokenDto(registeredMember.getId(), registeredMember.getRole());
     }
 
-    @Tag(name = "Token", description = "to validate a JWT")
+
+    @Tag(name = "Token")
+    @Operation(summary = "to create a JWT")
+    @GetMapping("/create/{memberId}")
+    public JwtTokenDto getJwtTokenDto(@PathVariable Long memberId) {
+        Member member = memberService.findMemberByMemberId(memberId);
+        return tokenManager.createJwtTokenDto(member.getId(), member.getRole());
+    }
+
+    @Tag(name = "Token")
+    @Operation(summary = "to validate a JWT")
     @GetMapping("/valid")
     public String validJwtToken(@RequestParam String token) {
         tokenManager.validateToken(token);

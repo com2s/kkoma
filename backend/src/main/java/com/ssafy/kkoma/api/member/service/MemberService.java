@@ -92,4 +92,8 @@ public class MemberService {
         return MemberInfoResponse.fromEntity(savedMember);
     }
 
+    public int getPointBalance(Long memberId) {
+        Member member = findMemberByMemberId(memberId);
+        return member.getPoint().getBalance();
+    }
 }

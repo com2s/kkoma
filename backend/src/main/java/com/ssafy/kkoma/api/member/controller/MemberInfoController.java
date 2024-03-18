@@ -8,6 +8,9 @@ import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.global.jwt.service.TokenManager;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfoDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +26,8 @@ public class MemberInfoController {
     private final MemberInfoService memberInfoService;
     private final MemberService memberService;
 
-    @Tag(name = "Member", description = "to get a member info")
+    @Tag(name = "Member")
+    @Operation(summary = "to get a member info", security = { @SecurityRequirement(name = "bearer-key") })
     @GetMapping("/info")
     public ResponseEntity<MemberInfoResponse> getMemberInfo(@MemberInfo MemberInfoDto memberInfoDto) {
 
@@ -33,7 +37,8 @@ public class MemberInfoController {
         return ResponseEntity.ok(memberInfoResponse);
     }
 
-    @Tag(name = "Member", description = "to get a member summary")
+    @Tag(name = "Member")
+    @Operation(summary = "to get a member summary", security = { @SecurityRequirement(name = "bearer-key") })
     @GetMapping("/summary")
     public ResponseEntity<MemberSummaryResponse> getMemberSummary(@MemberInfo MemberInfoDto memberInfoDto) {
 
@@ -43,7 +48,8 @@ public class MemberInfoController {
         return ResponseEntity.ok(memberSummaryResponse);
     }
 
-    @Tag(name = "Member", description = "to update a member")
+    @Tag(name = "Member")
+    @Operation(summary = "to update a member", security = { @SecurityRequirement(name = "bearer-key") })
     @PutMapping("/")
     public ResponseEntity<?> updateMember(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody UpdateMemberRequest updateMemberRequest) {
 

@@ -4,6 +4,8 @@ import com.ssafy.kkoma.api.point.dto.PointSummaryResponse;
 import com.ssafy.kkoma.api.point.service.PointService;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfoDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +21,8 @@ public class PointController {
 
     private final PointService pointService;
 
-    @Tag(name = "Point", description = "to get a point summary")
+    @Tag(name = "Point")
+    @Operation(summary = "to get a point summary", security = { @SecurityRequirement(name = "bearer-key") })
     @GetMapping("/summary")
     public ResponseEntity<PointSummaryResponse> getPointSummary(@MemberInfo MemberInfoDto memberInfoDto) {
         PointSummaryResponse pointSummary = pointService.getPointSummary(memberInfoDto.getMemberId());

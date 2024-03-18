@@ -5,6 +5,8 @@ import com.ssafy.kkoma.api.kid.dto.request.UpdateKidRequest;
 import com.ssafy.kkoma.api.kid.service.KidService;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfoDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +22,8 @@ public class KidController {
 
     private final KidService kidService;
 
-    @Tag(name = "Kid", description = "to get kid summary list")
+    @Tag(name = "Kid")
+    @Operation(summary = "to get kid summary list", security = { @SecurityRequirement(name = "bearer-key") })
     @GetMapping("/summary")
     public ResponseEntity<List<KidSummaryResponse>> getKidSummaryDtos(@MemberInfo MemberInfoDto memberInfoDto) {
 
@@ -30,7 +33,8 @@ public class KidController {
         return ResponseEntity.ok(kidSummaryResponseDtos);
     }
 
-    @Tag(name = "Kid", description = "to get a kid summary")
+    @Tag(name = "Kid")
+    @Operation(summary = "to get a kid summary", security = { @SecurityRequirement(name = "bearer-key") })
     @GetMapping("/summary/{kidId}")
     public ResponseEntity<KidSummaryResponse> getKidSummaryDtos(@PathVariable Long kidId, @MemberInfo MemberInfoDto memberInfoDto) {
 
@@ -40,7 +44,8 @@ public class KidController {
         return ResponseEntity.ok(kidSummaryResponseDto);
     }
 
-    @Tag(name = "Kid", description = "to update a kid")
+    @Tag(name = "Kid")
+    @Operation(summary = "to update a kid", security = { @SecurityRequirement(name = "bearer-key") })
     @PutMapping
     public ResponseEntity<KidSummaryResponse> updateKid(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody UpdateKidRequest updateKidRequest) {
 
@@ -51,6 +56,8 @@ public class KidController {
         return ResponseEntity.ok(kidSummaryResponseDto);
     }
 
+    @Tag(name = "Kid")
+    @Operation(summary = "to update a kid", security = { @SecurityRequirement(name = "bearer-key") })
     @PutMapping("/{kidId}")
     public ResponseEntity<KidSummaryResponse> updateKid(@PathVariable Long kidId, @MemberInfo MemberInfoDto memberInfoDto, @RequestBody UpdateKidRequest updateKidRequest) {
 
