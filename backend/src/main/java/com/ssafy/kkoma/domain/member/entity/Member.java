@@ -1,6 +1,6 @@
 package com.ssafy.kkoma.domain.member.entity;
 
-import com.ssafy.kkoma.api.member.dto.UpdateMemberRequestDto;
+import com.ssafy.kkoma.api.member.dto.request.UpdateMemberRequest;
 import com.ssafy.kkoma.domain.common.entity.BaseTimeEntity;
 import com.ssafy.kkoma.domain.kid.entity.Kid;
 import com.ssafy.kkoma.domain.location.entity.Location;
@@ -91,11 +91,11 @@ public class Member extends BaseTimeEntity {
 		this.tokenExpirationTime = now;
 	}
 
-	public void updateMemberInfo(UpdateMemberRequestDto updateMemberRequestDto) {
-		this.profileImage = updateMemberRequestDto.getProfileImage();
-		this.nickname = updateMemberRequestDto.getNickname();
-		this.name = updateMemberRequestDto.getName();
-		this.phone = updateMemberRequestDto.getPhone();
+	public void updateMemberInfo(UpdateMemberRequest updateMemberRequest) {
+		this.profileImage = updateMemberRequest.getProfileImage();
+		this.nickname = updateMemberRequest.getNickname();
+		this.name = updateMemberRequest.getName();
+		this.phone = updateMemberRequest.getPhone();
 	}
 
 	public void setPoint(Point point) {

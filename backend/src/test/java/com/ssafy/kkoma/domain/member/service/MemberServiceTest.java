@@ -1,7 +1,8 @@
 package com.ssafy.kkoma.domain.member.service;
 
-import com.ssafy.kkoma.api.member.dto.MemberInfoResponseDto;
-import com.ssafy.kkoma.api.member.dto.UpdateMemberRequestDto;
+import com.ssafy.kkoma.api.member.dto.response.MemberInfoResponse;
+import com.ssafy.kkoma.api.member.dto.request.UpdateMemberRequest;
+import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.domain.member.entity.Member;
@@ -33,13 +34,13 @@ class MemberServiceTest {
 
         Member savedMember = memberRepository.save(member);
 
-        UpdateMemberRequestDto updateMemberRequestDto = UpdateMemberRequestDto.builder()
+        UpdateMemberRequest updateMemberRequest = UpdateMemberRequest.builder()
                         .name("lee")
                         .build();
 
-        MemberInfoResponseDto memberInfoResponseDto = memberService.updateMemberInfo(savedMember.getId(), updateMemberRequestDto);
+        MemberInfoResponse memberInfoResponse = memberService.updateMemberInfo(savedMember.getId(), updateMemberRequest);
 
-        assertEquals("lee", memberInfoResponseDto.getName());
+        assertEquals("lee", memberInfoResponse.getName());
     }
 
     @Test

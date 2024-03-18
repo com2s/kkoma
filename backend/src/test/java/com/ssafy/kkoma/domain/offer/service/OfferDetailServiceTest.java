@@ -1,12 +1,11 @@
 package com.ssafy.kkoma.domain.offer.service;
 
-import com.ssafy.kkoma.domain.member.repository.MemberRepository;
-import com.ssafy.kkoma.domain.offer.dto.request.OfferTimeRequest;
+import com.ssafy.kkoma.api.offer.service.OfferDetailService;
+import com.ssafy.kkoma.api.offer.dto.OfferTimeRequest;
 import com.ssafy.kkoma.domain.offer.entity.Offer;
 import com.ssafy.kkoma.domain.offer.repository.OfferDetailRepository;
 import com.ssafy.kkoma.domain.offer.repository.OfferRepository;;
 import com.ssafy.kkoma.domain.product.entity.Product;
-import com.ssafy.kkoma.domain.product.repository.CategoryRepository;
 import com.ssafy.kkoma.domain.product.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.util.Date;
 
+// todo request, response로 분할
 public class OauthLoginDto {
 
     @Getter @Setter
@@ -29,7 +30,7 @@ public class OauthLoginDto {
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
         private Date refreshTokenExpireTime;
 
-        public static Response of(JwtTokenDto jwtTokenDto) {
+        public static Response fromEntity(JwtTokenDto jwtTokenDto) {
 
             return Response.builder()
                     .grantType(jwtTokenDto.getGrantType())

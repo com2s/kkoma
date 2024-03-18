@@ -1,11 +1,8 @@
 package com.ssafy.kkoma.api.kid.controller;
 
-import com.ssafy.kkoma.api.kid.dto.KidSummaryResponseDto;
-import com.ssafy.kkoma.api.kid.dto.UpdateKidRequestDto;
+import com.ssafy.kkoma.api.kid.dto.response.KidSummaryResponse;
+import com.ssafy.kkoma.api.kid.dto.request.UpdateKidRequest;
 import com.ssafy.kkoma.api.kid.service.KidService;
-import com.ssafy.kkoma.domain.kid.entity.Kid;
-import com.ssafy.kkoma.domain.member.entity.Member;
-import com.ssafy.kkoma.domain.member.service.MemberService;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfoDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,40 +22,40 @@ public class KidController {
 
     @Tag(name = "Kid", description = "to get kid summary list")
     @GetMapping("/summary")
-    public ResponseEntity<List<KidSummaryResponseDto>> getKidSummaryDtos(@MemberInfo MemberInfoDto memberInfoDto) {
+    public ResponseEntity<List<KidSummaryResponse>> getKidSummaryDtos(@MemberInfo MemberInfoDto memberInfoDto) {
 
         Long memberId = memberInfoDto.getMemberId();
-        List<KidSummaryResponseDto> kidSummaryResponseDtos = kidService.getKids(memberId);
+        List<KidSummaryResponse> kidSummaryResponseDtos = kidService.getKids(memberId);
 
         return ResponseEntity.ok(kidSummaryResponseDtos);
     }
 
     @Tag(name = "Kid", description = "to get a kid summary")
     @GetMapping("/summary/{kidId}")
-    public ResponseEntity<KidSummaryResponseDto> getKidSummaryDtos(@PathVariable Long kidId, @MemberInfo MemberInfoDto memberInfoDto) {
+    public ResponseEntity<KidSummaryResponse> getKidSummaryDtos(@PathVariable Long kidId, @MemberInfo MemberInfoDto memberInfoDto) {
 
         Long memberId = memberInfoDto.getMemberId();
-        KidSummaryResponseDto kidSummaryResponseDto = kidService.getKid(kidId, memberId);
+        KidSummaryResponse kidSummaryResponseDto = kidService.getKid(kidId, memberId);
 
         return ResponseEntity.ok(kidSummaryResponseDto);
     }
 
     @Tag(name = "Kid", description = "to update a kid")
     @PutMapping
-    public ResponseEntity<KidSummaryResponseDto> updateKid(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody UpdateKidRequestDto updateKidRequestDto) {
+    public ResponseEntity<KidSummaryResponse> updateKid(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody UpdateKidRequest updateKidRequest) {
 
         Long memberId = memberInfoDto.getMemberId();
 
-        KidSummaryResponseDto kidSummaryResponseDto = kidService.updateKidInfo(memberId, updateKidRequestDto);
+        KidSummaryResponse kidSummaryResponseDto = kidService.updateKidInfo(memberId, updateKidRequest);
 
         return ResponseEntity.ok(kidSummaryResponseDto);
     }
 
     @PutMapping("/{kidId}")
-    public ResponseEntity<KidSummaryResponseDto> updateKid(@PathVariable Long kidId, @MemberInfo MemberInfoDto memberInfoDto, @RequestBody UpdateKidRequestDto updateKidRequestDto) {
+    public ResponseEntity<KidSummaryResponse> updateKid(@PathVariable Long kidId, @MemberInfo MemberInfoDto memberInfoDto, @RequestBody UpdateKidRequest updateKidRequest) {
 
         Long memberId = memberInfoDto.getMemberId();
-        KidSummaryResponseDto kidSummaryResponseDto = kidService.updateKidInfo(kidId, memberId, updateKidRequestDto);
+        KidSummaryResponse kidSummaryResponseDto = kidService.updateKidInfo(kidId, memberId, updateKidRequest);
 
         return ResponseEntity.ok(kidSummaryResponseDto);
     }

@@ -1,5 +1,6 @@
 package com.ssafy.kkoma.domain.offer.service;
 
+import com.ssafy.kkoma.api.offer.service.OfferService;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.domain.member.entity.Member;
@@ -10,7 +11,6 @@ import com.ssafy.kkoma.domain.product.entity.Category;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.domain.product.repository.CategoryRepository;
 import com.ssafy.kkoma.domain.product.repository.ProductRepository;
-import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
