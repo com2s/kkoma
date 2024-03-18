@@ -244,3 +244,36 @@ export async function getDeal() {
   ];
   return myDeal;
 }
+
+export async function getRequesters() {
+  const requesters = [
+    { 
+      userId : "1",
+      url : "/temp-img.svg",
+      times : [
+        { start : "2024-03-05 12:40", end : "2024-03-05 15:00" },
+        { start : "2024-03-06 12:40", end : "2024-03-06 15:00" },
+        { start : "2024-03-07 12:40", end : "2024-03-07 15:00" },
+      ],
+    },
+    { 
+      userId : "2",
+      url : "/temp-img.svg",
+      times : [
+        { start : "2024-03-05 12:40", end : "2024-03-05 15:00" },
+        { start : "2024-03-06 12:40", end : "2024-03-06 15:00" },
+        { start : "2024-03-07 12:40", end : "2024-03-07 15:00" },
+      ],
+    },
+    { 
+      userId : "3",
+      url : "/temp-img.svg",
+      times : [
+        { start : "2024-03-05 12:40", end : "2024-03-05 15:00" },
+        { start : "2024-03-06 12:40", end : "2024-03-06 15:00" },
+        { start : "2024-03-07 12:40", end : "2024-03-07 15:00" },
+      ],
+    },
+  ];
+  return requesters;
+}

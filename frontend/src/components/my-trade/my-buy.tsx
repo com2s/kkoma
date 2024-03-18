@@ -59,6 +59,15 @@ export default function MyBuy() {
     setOpenMenuId(null); // 메뉴 닫을 때 ID 초기화
   };
 
+  const handleMenuCloseAndCancel = () => {
+    // 거래 요청을 취소할 것인지 확인하고 진행
+    if (window.confirm("거래 요청을 취소하시겠습니까?")) {
+      // 여기에 거래 요청 취소 API 호출 코드 추가
+      handleMenuClose();
+      console.log("거래 요청 취소");
+    }
+  };
+
   const filteredDeals = deals
     .filter((deal) =>
       selectedChip === "모두" ? true : deal.status2 === selectedChip
@@ -66,7 +75,7 @@ export default function MyBuy() {
     .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
 
   return (
-    <div>
+    <React.Fragment>
       <Stack direction="row" spacing={1.5} className={styles.chips}>
         {["모두", "요청 중", "요청 취소", "거래 완료"].map((chip) => (
           <Chip
@@ -120,10 +129,11 @@ export default function MyBuy() {
                 open={open && openMenuId === deal.id} // 현재 카드의 메뉴만 열림
                 onClose={handleMenuClose}
               >
-                <MenuItem onClick={handleMenuClose}>
-                  열린 카드 id : {openMenuId}
+                <MenuItem onClick={handleMenuCloseAndCancel}>
+                  {/* 거래 id : {openMenuId}  */}
+                  거래 요청 취소
                 </MenuItem>
-                <MenuItem onClick={handleMenuClose}>2번째 버튼 임시</MenuItem>
+                {/* <MenuItem onClick={handleMenuClose}>2번째 버튼 임시</MenuItem> */}
               </Menu>
               <Typography
                 variant="body2"
@@ -133,7 +143,7 @@ export default function MyBuy() {
                   fontWeight: "bold",
                   width: "55px",
                   color:
-                  // deal.status2 의 값에 따라 색상을 다르게 표시
+                    // deal.status2 의 값에 따라 색상을 다르게 표시
                     deal.status2 === "요청 취소"
                       ? "crimson"
                       : deal.status2 === "거래 완료"
@@ -149,6 +159,6 @@ export default function MyBuy() {
           </Card>
         ))}
       </div>
-    </div>
+    </React.Fragment>
   );
 }
