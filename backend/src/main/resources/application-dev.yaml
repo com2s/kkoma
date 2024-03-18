@@ -26,3 +26,14 @@ token:
   secret:
   access-token-expiration-time:
   refresh-token-expiration-time:
+
+cloud:
+  aws:
+    credentials:
+      accessKey:
+      secretKey:
+    region:
+      static: ap-northeast-2
+    s3:
+      bucket: kkoma
+
