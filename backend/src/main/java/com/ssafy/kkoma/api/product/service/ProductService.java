@@ -17,8 +17,10 @@ import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.domain.product.repository.ProductRepository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ProductService {
 

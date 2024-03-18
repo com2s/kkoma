@@ -2,6 +2,7 @@ package com.ssafy.kkoma.api.token.controller;
 
 import com.ssafy.kkoma.external.oauth.client.KakaoTokenClient;
 import com.ssafy.kkoma.external.oauth.dto.KakaoTokenDto;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,7 +24,8 @@ public class KakaoTokenController {
     @Value("${kakao.client.secret}")
     private String clientSecret;
 
-    @Tag(name = "Token", description = "to get a kakao token (REDIRECT URI for Social Login)")
+    @Tag(name = "Token")
+    @Operation(summary = "to get a kakao token (REDIRECT URI for Social Login)")
     @GetMapping("/oauth/kakao/callback")
     public KakaoTokenDto.Response loginCallback(String code) {
         String contentType = "application/x-www-form-urlencoded;charset=utf-8";
