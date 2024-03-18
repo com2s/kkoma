@@ -18,6 +18,14 @@ public class Point {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private int balance;
+	private int balance = 0;
+
+	public void addBalance(int value) {
+		this.balance += value;
+	}
+
+	public void subBalance(int value) {
+		this.balance -= value;
+	}
 
 }
