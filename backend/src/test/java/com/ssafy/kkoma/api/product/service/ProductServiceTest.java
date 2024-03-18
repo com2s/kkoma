@@ -1,4 +1,4 @@
-package com.ssafy.kkoma.domain.product.service;
+package com.ssafy.kkoma.api.product.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 

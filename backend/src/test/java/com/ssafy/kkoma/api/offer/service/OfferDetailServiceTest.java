@@ -1,4 +1,4 @@
-package com.ssafy.kkoma.domain.offer.service;
+package com.ssafy.kkoma.api.offer.service;
 
 import com.ssafy.kkoma.api.offer.service.OfferDetailService;
 import com.ssafy.kkoma.api.offer.dto.OfferTimeRequest;

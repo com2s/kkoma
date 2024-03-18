@@ -1,4 +1,4 @@
-package com.ssafy.kkoma.domain.offer.service;
+package com.ssafy.kkoma.api.offer.service;
 
 import com.ssafy.kkoma.api.offer.service.OfferService;
 import com.ssafy.kkoma.domain.member.constant.MemberType;

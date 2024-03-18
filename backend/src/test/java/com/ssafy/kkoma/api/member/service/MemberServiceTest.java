@@ -1,4 +1,4 @@
-package com.ssafy.kkoma.domain.member.service;
+package com.ssafy.kkoma.api.member.service;
 
 import com.ssafy.kkoma.api.member.dto.response.MemberInfoResponse;
 import com.ssafy.kkoma.api.member.dto.request.UpdateMemberRequest;
