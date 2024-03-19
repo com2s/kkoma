@@ -16,7 +16,7 @@ export default function BabyBirth() {
 
   return (
     <>
-      <Title title="아이 생년월일을 알려주세요" subtitle="제품 추천에 도움을 줄게요" />
+      <Title title={`아이의\n생년월일을 알려주세요`} subtitle="제품 추천에 도움을 줄게요" />
       <FormControlLabel
         control={<Checkbox checked={isBirthYet} onChange={handelChange} />}
         label="아직 출산 전이에요"

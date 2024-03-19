@@ -24,7 +24,6 @@ const Header = () => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down(370));
 
   const StyledFab = styled(Fab)(({ theme }) => {
-
     return {
       width: isSmallScreen ? "60px" : "80px",
       height: isSmallScreen ? "60px" : "80px",
@@ -103,7 +102,7 @@ const Header = () => {
           <BottomNavigationAction
             label="1"
             disabled
-            sx={{ padding: "0", width: "0px", }}
+            sx={{ padding: "0", width: "0px" }}
             hidden={isHidden}
           />
           <BottomNavigationAction
@@ -121,28 +120,28 @@ const Header = () => {
             sx={{ padding: "0", minWidth: "55px" }}
           />
         </BottomNavigation>
-        <Link href="/"
+        <Link
+          href="/"
           onClick={() => {
             setValue(-1);
           }}
           hidden={isHidden}
-          >
-        <StyledFab
-          //   color="white"
-          aria-label="add"
-          size="large"
-          
         >
-          {/* <AddIcon fontSize="large"/> */}
-          <Image
-            src="/chicken-home.svg"
-            alt="Home Logo"
-            className="z-2"
-            width={size.width}
-            height={size.height}
-            priority
-          />
-        </StyledFab>
+          <StyledFab
+            //   color="white"
+            aria-label="add"
+            size="large"
+          >
+            {/* <AddIcon fontSize="large"/> */}
+            <Image
+              src="/chicken-home.svg"
+              alt="Home Logo"
+              className="z-2"
+              width={size.width}
+              height={size.height}
+              priority
+            />
+          </StyledFab>
         </Link>
       </AppBar>
     </header>
