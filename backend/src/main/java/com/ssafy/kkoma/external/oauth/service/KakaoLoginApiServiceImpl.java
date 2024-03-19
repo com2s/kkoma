@@ -32,9 +32,9 @@ public class KakaoLoginApiServiceImpl implements SocialLoginApiService {
     private String clientSecret;
 
     @Value("${kkoma.domain}")
-    private String serverDomain;
+    private String clientDomain;
 
-    @Value("${server.port}")
+    @Value("${kkoma.client-port}")
     private String serverPort;
 
     @Override
@@ -45,7 +45,7 @@ public class KakaoLoginApiServiceImpl implements SocialLoginApiService {
                 .client_secret(clientSecret)
                 .grant_type("authorization_code")
                 .code(code)
-                .redirect_uri("http://" + serverDomain + ":" + serverPort + "/oauth/kakao/callback")
+                .redirect_uri("http://" + clientDomain + ":" + serverPort + "/oauth/kakao")
                 .build();
         KakaoTokenDto.Response kakaoToken = kakaoTokenClient.requestKakaoToken(contentType, kakaoTokenRequestDto);
         return kakaoToken;

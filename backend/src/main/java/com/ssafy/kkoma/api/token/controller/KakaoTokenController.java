@@ -10,6 +10,7 @@ import com.ssafy.kkoma.external.oauth.service.KakaoLoginApiServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Token")
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class KakaoTokenController {
 
     private final KakaoLoginApiServiceImpl kakaoLoginApiService;
@@ -33,6 +35,7 @@ public class KakaoTokenController {
     @GetMapping("/oauth/kakao/callback")
     public @ResponseBody OauthLoginDto.Response loginCallback(String code) {
         KakaoTokenDto.Response kakaoToken = kakaoLoginApiService.getKakaoToken(code);
+        log.info("kakaoToken={}", kakaoToken.toString());
         return oauthLoginService.oauthLogin(kakaoToken.getAccess_token(), MemberType.KAKAO);
     }
 
