@@ -64,4 +64,13 @@ public class OfferService {
         return offerResponseList;
     }
 
+    public Offer updateOfferStatusFromSentToAccepted(Long offerId){
+        Offer offer = offerRepository.findById(offerId)
+            .orElseThrow(() -> new EntityNotFoundException(ErrorCode.OFFER_NOT_EXISTS));
+
+        offer.setStatus(OfferType.ACCEPTED);
+
+        return offer;
+    }
+
 }

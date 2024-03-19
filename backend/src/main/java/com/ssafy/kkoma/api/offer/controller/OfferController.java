@@ -1,9 +1,12 @@
 package com.ssafy.kkoma.api.offer.controller;
 
+import com.ssafy.kkoma.api.deal.service.DealService;
 import com.ssafy.kkoma.api.offer.dto.request.OfferTimeRequest;
 import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
 import com.ssafy.kkoma.api.offer.service.OfferDetailService;
 import com.ssafy.kkoma.api.offer.service.OfferService;
+import com.ssafy.kkoma.domain.deal.request.DealTimeRequest;
+import com.ssafy.kkoma.domain.offer.entity.Offer;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfoDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,6 +26,7 @@ public class OfferController {
 
     private final OfferService offerService;
     private final OfferDetailService offerDetailService;
+    private final DealService dealService;
 
     @Tag(name = "Offer")
     @Operation(security = { @SecurityRequirement(name = "bearer-key") })
@@ -44,4 +48,16 @@ public class OfferController {
         return ResponseEntity.ok(offerResponseList);
     }
 
+    @Tag(name = "Offer")
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
+    @PatchMapping("/{offerId}")
+    public ResponseEntity<?> changeOfferStatus(@PathVariable Long offerId, @RequestParam String type, @RequestBody DealTimeRequest dealTimeRequest){
+        if(type.equals("accept")){
+            Offer offer = offerService.updateOfferStatusFromSentToAccepted(offerId);
+
+            dealService.createDeal(offer, dealTimeRequest);
+        }
+
+        return ResponseEntity.ok().build();
+    }
 }
