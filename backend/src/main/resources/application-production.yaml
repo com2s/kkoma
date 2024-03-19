@@ -38,4 +38,5 @@ cloud:
       bucket: kkoma
 
 kkoma:
-  domain:
+  domain: ${KKOMA_DOMAIN}
+  client-port: ${KKOMA_CLIENT_PORT}
