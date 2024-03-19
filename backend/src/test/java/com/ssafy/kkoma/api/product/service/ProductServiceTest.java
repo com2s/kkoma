@@ -7,16 +7,14 @@ import java.util.List;
 
 import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
 import com.ssafy.kkoma.api.product.dto.ProductCreateResponse;
-import com.ssafy.kkoma.api.product.service.ProductService;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.member.repository.MemberRepository;
 import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
+import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.domain.product.entity.Category;
 import com.ssafy.kkoma.domain.product.repository.CategoryRepository;
-import com.ssafy.kkoma.domain.product.repository.ProductImageRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -82,7 +80,7 @@ class ProductServiceTest {
 	}
 
     @Test
-    void createProduct() {
+    void 거래_글_생성() {
 		// given
 		Category category = categoryRepository.save(Category.builder().name("유모차").build());
 		Member member = memberRepository.save(Member.builder().name(NAME).memberType(MemberType.KAKAO).role(Role.USER).build());

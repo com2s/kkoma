@@ -3,11 +3,14 @@ package com.ssafy.kkoma.api.member.service;
 import com.ssafy.kkoma.api.member.dto.response.MemberInfoResponse;
 import com.ssafy.kkoma.api.member.dto.request.UpdateMemberRequest;
 import com.ssafy.kkoma.api.point.repository.PointRepository;
+import com.ssafy.kkoma.api.product.dto.ProductSummary;
 import com.ssafy.kkoma.domain.kid.entity.Kid;
 import com.ssafy.kkoma.domain.kid.repository.KidRepository;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.member.repository.MemberRepository;
 import com.ssafy.kkoma.domain.point.entity.Point;
+import com.ssafy.kkoma.domain.product.constant.ProductType;
+import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.global.error.ErrorCode;
 import com.ssafy.kkoma.global.error.exception.AuthenticationException;
 import com.ssafy.kkoma.global.error.exception.BusinessException;
@@ -17,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -95,6 +100,19 @@ public class MemberService {
     public int getPointBalance(Long memberId) {
         Member member = findMemberByMemberId(memberId);
         return member.getPoint().getBalance();
+    }
+
+    public List<ProductSummary> getMyProducts(Long memberId) {
+        Member member = findMemberByMemberId(memberId);
+        List<Product> products = member.getProducts();
+        List<ProductSummary> productSummaries = new ArrayList<>();
+        for (Product product : products) {
+            ProductType productType = product.getStatus();
+            if (productType == ProductType.SALE || productType == ProductType.SOLD) {
+                productSummaries.add(ProductSummary.fromEntity(product));
+            }
+        }
+        return productSummaries;
     }
 
 }

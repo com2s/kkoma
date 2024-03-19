@@ -8,6 +8,7 @@ import com.ssafy.kkoma.domain.location.entity.Location;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.domain.point.entity.Point;
+import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.global.jwt.dto.JwtTokenDto;
 import com.ssafy.kkoma.global.util.DateTimeUtils;
 import jakarta.persistence.*;
@@ -70,6 +71,9 @@ public class Member extends BaseTimeEntity {
 	@OneToMany(mappedBy = "member")
 	private List<Kid> kids = new ArrayList<>();
 
+	@OneToMany(mappedBy = "member")
+	private List<Product> products = new ArrayList<>();
+
 	@OneToOne(fetch = FetchType.LAZY)
 	private Point point;
 
@@ -80,6 +84,8 @@ public class Member extends BaseTimeEntity {
 		this.name = name;
 		this.profileImage = profileImage;
 		this.role = role;
+		this.products = new ArrayList<>();
+		this.kids = new ArrayList<>();
 	}
 
 	public void updateRefreshToken(JwtTokenDto jwtTokenDto) {

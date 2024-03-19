@@ -11,6 +11,7 @@ import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
 import com.ssafy.kkoma.api.product.dto.ProductCreateResponse;
 import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
 import com.ssafy.kkoma.domain.member.entity.Member;
+import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.domain.product.entity.ProductImage;
 import com.ssafy.kkoma.global.error.ErrorCode;
 import com.ssafy.kkoma.global.error.exception.BusinessException;
