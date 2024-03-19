@@ -21,9 +21,9 @@ const Header = () => {
   const [value, setValue] = React.useState(-1);
 
   const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down(370));
 
   const StyledFab = styled(Fab)(({ theme }) => {
-    const isSmallScreen = useMediaQuery(theme.breakpoints.down(370));
 
     return {
       width: isSmallScreen ? "60px" : "80px",

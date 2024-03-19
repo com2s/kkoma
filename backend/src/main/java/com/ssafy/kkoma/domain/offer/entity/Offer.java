@@ -38,7 +38,7 @@ public class Offer extends BaseTimeEntity {
 	private Product product;
 
 	@Enumerated(EnumType.STRING)
-	private OfferType condition;
+	private OfferType status;
 
 	private LocalDateTime repliedAt;
 

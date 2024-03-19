@@ -50,7 +50,7 @@ class OfferServiceTest {
         Offer offer = offerService.findOfferByOfferId(offerId);
 
         // then
-        assertEquals(OfferType.SENT, offer.getCondition());
+        assertEquals(OfferType.SENT, offer.getStatus());
     }
 
     @Test

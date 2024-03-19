@@ -3,8 +3,8 @@ package com.ssafy.kkoma.domain.product.entity;
 import java.time.LocalDateTime;
 
 import com.ssafy.kkoma.domain.common.entity.BaseTimeEntity;
-import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.location.entity.Location;
+import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.product.constant.ProductType;
 
 import jakarta.persistence.*;
@@ -49,7 +49,7 @@ public class Product extends BaseTimeEntity {
 	private int price;
 
 	@Enumerated(EnumType.STRING)
-	private ProductType condition;
+	private ProductType status;
 
 	private Long viewCount;
 	private Long wishCount;

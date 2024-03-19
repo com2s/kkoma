@@ -17,7 +17,7 @@ public class ProductDetailResponse {
     private String description;
     private String categoryName;
     private int price;
-    private ProductType condition;
+    private ProductType status;
     private String dealPlace;
     private Long elapsedMinutes;
     private MemberSummaryResponse memberSummary;
