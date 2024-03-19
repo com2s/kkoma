@@ -113,4 +113,20 @@ class OfferServiceTest {
         assertEquals(3, offerResponseList.get(0).getOfferTimes().size());
     }
 
+    @Test
+    @Transactional
+    public void 거래_요청_수락() throws Exception{
+        // given
+        Category category = categoryRepository.save(Category.builder().name("유모차").build());
+        Member member = memberRepository.save(Member.builder().name(NAME).memberType(MemberType.KAKAO).role(Role.USER).build());
+        Product product = productRepository.save(Product.builder().title(TITLE).thumbnailImage(IMAGE_URL).category(category).member(member).build());
+        Offer offer = offerRepository.save(Offer.builder().product(product).member(member).build());
+
+        // when
+        Offer newOffer = offerService.updateOfferStatusFromSentToAccepted(offer.getId());
+
+        // then
+        assertEquals(OfferType.ACCEPTED, newOffer.getStatus());
+    }
+
 }
