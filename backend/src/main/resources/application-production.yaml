@@ -36,3 +36,6 @@ cloud:
       static: ap-northeast-2
     s3:
       bucket: kkoma
+
+kkoma:
+  domain:
