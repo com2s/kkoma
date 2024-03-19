@@ -47,6 +47,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "/api/logout",
                         "/api/access-token/issue",
                         "/api/test/token/**",
+                        "/api/oauth/kakao",
                         "/login",
 
                         "/favicon.ico",
