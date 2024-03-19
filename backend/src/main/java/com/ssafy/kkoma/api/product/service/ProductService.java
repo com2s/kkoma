@@ -53,7 +53,7 @@ public class ProductService {
 				.description(product.getDescription())
 				.categoryName(categoryName)
 				.price(product.getPrice())
-				.condition(product.getCondition())
+				.status(product.getStatus())
 				.dealPlace(product.getPlaceDetail())
 				.elapsedMinutes(Duration.between(product.getCreatedAt(), LocalDateTime.now()).toMinutes())
 				.memberSummary(memberSummaryResponse)
