@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
+import com.ssafy.kkoma.api.product.dto.ProductCreateResponse;
 import com.ssafy.kkoma.api.product.service.ProductService;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
@@ -13,6 +15,7 @@ import com.ssafy.kkoma.domain.member.repository.MemberRepository;
 import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
 import com.ssafy.kkoma.domain.product.entity.Category;
 import com.ssafy.kkoma.domain.product.repository.CategoryRepository;
+import com.ssafy.kkoma.domain.product.repository.ProductImageRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +42,10 @@ class ProductServiceTest {
 
 	@Autowired
 	private ProductService productService;
+
+	@Autowired
+
+	private ProductImageRepository productImageRepository;
 
 	private static final String TITLE = "TITLE";
 	private static final String IMAGE_URL = "IMAGE_URL";
@@ -82,5 +89,25 @@ class ProductServiceTest {
 		memberRepository.deleteAll();
 		productRepository.deleteAll();
 	}
+
+    @Test
+    void createProduct() {
+	/*	// given
+		Category category = categoryRepository.save(Category.builder().name("유모차").build());
+		Member member = memberRepository.save(Member.builder().name(NAME).memberType(MemberType.KAKAO).role(Role.USER).build());
+		ProductCreateRequest productCreateRequest = ProductCreateRequest.builder()
+				.title("TITLE")
+				.productImages(List.of("...", "..."))
+				.description("...")
+				.price(10000)
+				.categoryId(category.getId())
+				.build();
+
+		// when
+		ProductCreateResponse productCreateResponse = productService.createProduct(member.getId(), productCreateRequest);
+
+		// then
+		assertEquals("TITLE", productCreateResponse.getTitle());*/
+    }
 
 }

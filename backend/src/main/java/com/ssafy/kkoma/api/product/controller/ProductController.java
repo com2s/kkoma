@@ -1,15 +1,16 @@
 package com.ssafy.kkoma.api.product.controller;
 
+import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
+import com.ssafy.kkoma.api.product.dto.ProductCreateResponse;
 import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
 import com.ssafy.kkoma.api.product.dto.ProductSummary;
 import com.ssafy.kkoma.api.product.service.ProductService;
+import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
+import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfoDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,4 +38,10 @@ public class ProductController {
         return ResponseEntity.ok(productDetailResponse);
     }
 
+    @Tag(name = "Product")
+    @PostMapping
+    public ResponseEntity<ProductCreateResponse> createProduct(@MemberInfo MemberInfoDto memberInfoDto, ProductCreateRequest productCreateRequest) {
+        ProductCreateResponse productCreateResponse = productService.createProduct(memberInfoDto.getMemberId(), productCreateRequest);
+        return ResponseEntity.ok().body(productCreateResponse);
+    }
 }

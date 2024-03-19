@@ -56,4 +56,7 @@ public class Product extends BaseTimeEntity {
 	private Long offerCount;
 	private LocalDateTime deletedAt;
 
+	public void setMember(Member member) {
+		this.member = member;
+	}
 }

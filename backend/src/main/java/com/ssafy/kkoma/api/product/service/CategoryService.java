@@ -22,4 +22,11 @@ public class CategoryService {
         return category.getName();
     }
 
+    public Category findCategoryById(Integer categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.CATEGORY_NOT_EXISTS));
+
+        return category;
+    }
+
 }
