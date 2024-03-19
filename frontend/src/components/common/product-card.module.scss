@@ -1,5 +1,7 @@
 .card {
   @include pad-v(rem(10), rem(10));
-  @include flex(center, space-between, row);
+  @include flex(center, flex-start, row);
+  gap: rem(10);
   width: 100%;
+  border-bottom: 1px solid $color-text4;
 }

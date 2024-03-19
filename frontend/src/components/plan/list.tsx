@@ -1,10 +1,14 @@
+"use client";
+
 import { PlanCard } from "@/types/plan";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 let date: Date = new Date();
 
 const list: Array<PlanCard> = [
   {
+    id: 1,
     thumbnail_image: "https://picsum.photos/250/250",
     price: 0,
     title: "1번 글입니다.",
@@ -12,6 +16,7 @@ const list: Array<PlanCard> = [
     created_at: new Date("2024-03-11"),
   },
   {
+    id: 2,
     thumbnail_image: "https://picsum.photos/250/250",
     price: 0,
     title: "2번 글입니다.",
@@ -21,6 +26,8 @@ const list: Array<PlanCard> = [
 ];
 
 function DealCard(deal: PlanCard, key: number) {
+  const router = useRouter();
+
   if (date !== deal.created_at) {
     return (
       <div key={key} className="w-full">
@@ -32,8 +39,8 @@ function DealCard(deal: PlanCard, key: number) {
             deal.created_at.getDate()}
         </div>
         <div className="flex gap-3 w-full my-2">
-          <img
-            src={deal.thumbnail_image}
+          <Image
+            src={deal?.thumbnail_image}
             alt="thumb"
             width="90"
             height="90"
@@ -48,7 +55,12 @@ function DealCard(deal: PlanCard, key: number) {
             <div className="text-caption c-text3">{deal.place_detail} &#183; 11:00</div>
           </div>
         </div>
-        <button className="flex bg-slate-50 text-caption w-full rounded-sm py-1 justify-center my-2">
+        <button
+          className="flex bg-slate-50 text-caption w-full rounded-sm py-1 justify-center my-2"
+          onClick={() => {
+            router.push(`/plan/${deal.id}/qr`);
+          }}
+        >
           거래 확정하기
         </button>
       </div>

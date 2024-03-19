@@ -6,8 +6,8 @@ export default function JoinComplate() {
   return (
     <>
       <Title
-        title="회원가입이 완료되었어요!"
-        subtitle="아이 정보를 입력하면 제품을 추천해줄 수 있어요."
+        title={`회원가입이\n완료되었어요!`}
+        subtitle={`아이 정보를 입력하면\n제품을 추천해줄 수 있어요.`}
       />
       <div className="flex w-full justify-center">
         <Logo />

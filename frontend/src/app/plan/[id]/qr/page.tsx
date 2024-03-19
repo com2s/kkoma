@@ -2,20 +2,25 @@ import TopBar3 from "@/components/common/top-bar3";
 import Title from "@/components/common/title";
 import styles from "./qr.module.scss";
 import { ProductCard } from "@/components/common/product-card";
-import Image from "next/image";
+import QRCode from "@/components/plan/qr-img";
+import { ProductSm } from "@/types/product";
 
-export default function DealQR() {
+const product: ProductSm = {
+  id: 1,
+  thumbnail_image: "https://picsum.photos/40/40",
+  title: "제품 샘플입니다.",
+  price: 13000,
+};
+
+export default function DealPay() {
   return (
     <div className={styles.qr}>
       <TopBar3 />
-      <Title title="거래를 확정해주세요" subtitle="qr코드를 스캔해주세요" />
-      <ProductCard />
-      <Image
-        src="https://chart.apis.google.com/chart?cht=qr&chs=250x250&chl=http://j10a308.p.ssafy.io:3000"
-        alt="qrcode"
-        width="250"
-        height="250"
-      />
+      <Title title="거래를 확정해주세요" subtitle="QR코드를 스캔해주세요" />
+      <ProductCard product={product} />
+      <div className="flex justify-center w-full">
+        <QRCode />
+      </div>
     </div>
   );
 }

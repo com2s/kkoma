@@ -1,7 +1,8 @@
 export interface PlanCard {
-  thumbnail_image: String;
-  price: Number;
-  title: String;
-  place_detail: String;
+  id: number;
+  thumbnail_image: string;
+  price: number;
+  title: string;
+  place_detail: string;
   created_at: Date;
 }
