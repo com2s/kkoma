@@ -58,5 +58,6 @@ public class Product extends BaseTimeEntity {
 
 	public void setMember(Member member) {
 		this.member = member;
+		member.getProducts().add(this);
 	}
 }

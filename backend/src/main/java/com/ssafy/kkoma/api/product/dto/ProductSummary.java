@@ -22,6 +22,9 @@ public class ProductSummary {
 	private Long elapsedMinutes;
 
 	public static ProductSummary fromEntity(Product product){
+		LocalDateTime createdAt = product.getCreatedAt();
+		Duration elapsedDuration = (createdAt != null) ? Duration.between(createdAt, LocalDateTime.now()) : null;
+
 		return ProductSummary.builder()
 				.id(product.getId())
 				.thumbnailImage(product.getThumbnailImage())
@@ -29,7 +32,7 @@ public class ProductSummary {
 				.dealPlace(product.getPlaceDetail())
 				.price(product.getPrice())
 				.status(product.getStatus())
-				.elapsedMinutes(Duration.between(product.getCreatedAt(), LocalDateTime.now()).toMinutes())
+				.elapsedMinutes((elapsedDuration != null) ? elapsedDuration.toMinutes() : null)
 				.build();
 	}
 

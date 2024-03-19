@@ -5,6 +5,7 @@ import com.ssafy.kkoma.api.product.dto.ProductCreateResponse;
 import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
 import com.ssafy.kkoma.api.product.dto.ProductSummary;
 import com.ssafy.kkoma.api.product.service.ProductService;
+import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfoDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -44,4 +45,5 @@ public class ProductController {
         ProductCreateResponse productCreateResponse = productService.createProduct(memberInfoDto.getMemberId(), productCreateRequest);
         return ResponseEntity.ok().body(productCreateResponse);
     }
+
 }
