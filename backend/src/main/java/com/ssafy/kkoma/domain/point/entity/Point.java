@@ -18,9 +18,14 @@ public class Point {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	private Member member;
+	private int balance = 0;
 
-	private int balance;
+	public void addBalance(int value) {
+		this.balance += value;
+	}
+
+	public void subBalance(int value) {
+		this.balance -= value;
+	}
 
 }

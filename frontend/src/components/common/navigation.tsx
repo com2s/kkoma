@@ -1,7 +1,7 @@
 // use client는 import보다 더 먼저 나와야 합니다.
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Button from "@mui/material/Button";
 import AppBar from "@mui/material/AppBar";
@@ -15,29 +15,51 @@ import GridViewIcon from "@mui/icons-material/GridView";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import { useTheme } from "@mui/material/styles";
 import Image from "next/image";
+import { useMediaQuery } from "@mui/material";
 
 const Header = () => {
   const [value, setValue] = React.useState(-1);
 
   const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down(370));
 
-  const StyledFab = styled(Fab)({
-    width: 80,
-    height: 80,
-    position: "absolute",
-    zIndex: 1,
-    top: -30,
-    left: 0,
-    right: 0,
-    margin: "0 auto",
-    "&.MuiFab-root": {
-      // MUI Fab 루트에 대한 스타일을 재정의
-      // boxShadow: "0 -2px 0px 1px rgba(0, 0, 0, 0.1), 0px -1px 0px 0px rgba(0, 0, 0, 0.06)",
-      boxShadow: theme.shadows[0], // 이는 elevation 0에 해당하는 그림자
-      border: "1px solid rgba(0, 0, 0, 0.2)",
-      backgroundColor: "white",
-    },
+  const StyledFab = styled(Fab)(({ theme }) => {
+    return {
+      width: isSmallScreen ? "60px" : "80px",
+      height: isSmallScreen ? "60px" : "80px",
+      position: "absolute",
+      zIndex: 1,
+      top: isSmallScreen ? "-24px" : "-30px", // Adjust top position as well if needed
+      left: 0,
+      right: 0,
+      margin: "0 auto",
+      "&.MuiFab-root": {
+        boxShadow: theme.shadows[0],
+        border: "1px solid rgba(0, 0, 0, 0.2)",
+        backgroundColor: "white",
+      },
+    };
   });
+
+  const [size, setSize] = useState({ width: 50, height: 50 });
+  const [isHidden, setIsHidden] = useState(false);
+
+  useEffect(() => {
+    const updateSize = () => {
+      if (window.innerWidth > 370) {
+        setSize({ width: 50, height: 50 });
+        setIsHidden(false);
+      } else {
+        setSize({ width: 40, height: 40 });
+        setIsHidden(true);
+      }
+    };
+
+    window.addEventListener("resize", updateSize);
+    updateSize(); // Initial check
+
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
 
   return (
     <header>
@@ -67,46 +89,60 @@ const Header = () => {
             icon={<EventAvailableIcon />}
             component={Link}
             href="/plan"
+            // 화면 크기가 400px 이하일 때는 패딩 없애기
+            sx={{ padding: "0", minWidth: "55px" }}
           />
           <BottomNavigationAction
             label="내 거래"
             icon={<ListAltIcon />}
             component={Link}
             href="/my-trade"
+            sx={{ padding: "0", minWidth: "55px" }}
           />
-          <BottomNavigationAction label="1" disabled />
+          <BottomNavigationAction
+            label="1"
+            disabled
+            sx={{ padding: "0", width: "0px" }}
+            hidden={isHidden}
+          />
           <BottomNavigationAction
             label="모아보기"
             icon={<GridViewIcon />}
             component={Link}
             href="/lists"
+            sx={{ padding: "0", minWidth: "55px" }}
           />
           <BottomNavigationAction
             label="내 정보"
             icon={<PersonOutlineIcon />}
             component={Link}
             href="/my-page"
+            sx={{ padding: "0", minWidth: "55px" }}
           />
         </BottomNavigation>
-        <StyledFab
-          //   color="white"
-          aria-label="add"
-          size="large"
+        <Link
           href="/"
           onClick={() => {
             setValue(-1);
           }}
+          hidden={isHidden}
         >
-          {/* <AddIcon fontSize="large"/> */}
-          <Image
-            src="/chicken-home.svg"
-            alt="Home Logo"
-            className="z-2"
-            width={50}
-            height={50}
-            priority
-          />
-        </StyledFab>
+          <StyledFab
+            //   color="white"
+            aria-label="add"
+            size="large"
+          >
+            {/* <AddIcon fontSize="large"/> */}
+            <Image
+              src="/chicken-home.svg"
+              alt="Home Logo"
+              className="z-2"
+              width={size.width}
+              height={size.height}
+              priority
+            />
+          </StyledFab>
+        </Link>
       </AppBar>
     </header>
   );

@@ -1,0 +1,28 @@
+.card {
+    border: rem(0);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: rem(15);
+
+    .cardMiddle {
+        width: 55%;
+        min-width: rem(180);
+        padding: auto;
+    }
+
+    .btns {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 0;
+
+        @media screen and (min-width: 360px) {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+    }
+}

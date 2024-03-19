@@ -1,7 +1,7 @@
 package com.ssafy.kkoma.api.logout.service;
 
 import com.ssafy.kkoma.domain.member.entity.Member;
-import com.ssafy.kkoma.domain.member.service.MemberService;
+import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.global.error.ErrorCode;
 import com.ssafy.kkoma.global.error.exception.AuthenticationException;
 import com.ssafy.kkoma.global.jwt.constant.TokenType;

@@ -4,6 +4,7 @@ import TopBar from "@/components/common/top-bar";
 import MyProfile from "@/components/my-page/my-profile";
 import MyPoints from "@/components/my-page/my-points";
 import MyPageList from "@/components/my-page/my-page-list";
+import Navigation from "@/components/common/navigation";
 
 async function getChildren() {
   // await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -34,11 +35,7 @@ export default async function MyPage() {
       <MyProfile />
       <MyPoints />
       <MyPageList />
-      <ul className={styles.ul}>
-        {children.map((child) => (
-          <li key={child.id}>{child.name}</li>
-        ))}
-      </ul>
+      <Navigation />
     </div>
   );
 }

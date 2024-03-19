@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import Card from "@mui/material/Card";
@@ -11,6 +11,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import styles from "@/components/my-trade/sell-buy.module.scss";
 import { getDeal } from "@/components/my-trade/my-trade-ftn";
+import Link from "next/link";
 
 interface Deal {
   id: string;
@@ -40,7 +41,7 @@ export default function MySell() {
       setDeals(sellingDeals);
     };
     fetchSelling();
-    console.log("fetchSelling");
+    // console.log("fetchSelling");
   }, []);
 
   const handleChipClick = (chip: string) => {
@@ -60,6 +61,22 @@ export default function MySell() {
     setOpenMenuId(null); // 메뉴 닫을 때 ID 초기화
   };
 
+  const [isTradeRequestDialogOpen, setIsTradeRequestDialogOpen] =
+    useState(false);
+
+  const handleRequestOpen = () => {
+    setIsTradeRequestDialogOpen(true); // 다이얼로그를 여는 함수
+    handleMenuClose(); // 메뉴를 닫음
+  };
+
+  const handleMenuCloseAndDelete = () => {
+    if (window.confirm("이 판매글을 삭제하시겠습니까?")) {
+      // 여기에 판매글 삭제 API 호출 코드 추가
+      handleMenuClose();
+      console.log("판매글 삭제");
+    }
+  };
+
   const filteredDeals = deals
     .filter((deal) =>
       selectedChip === "모두" ? true : deal.status2 === selectedChip
@@ -67,7 +84,7 @@ export default function MySell() {
     .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
 
   return (
-    <div>
+    <React.Fragment>
       <Stack direction="row" spacing={1.5} className={styles.chips}>
         {["모두", "판매 중", "거래 완료"].map((chip) => (
           <Chip
@@ -111,32 +128,37 @@ export default function MySell() {
               }}
             >
               <IconButton
-                aria-label="settings"
+                aria-label="menu"
                 onClick={(e) => handleMenuClick(e, deal.id)} // 클릭 핸들러에 deal.id 전달
               >
                 <MoreVertIcon />
               </IconButton>
               <Menu
                 anchorEl={anchorEl}
-                // open={open && openMenuId === deal.id} // 현재 카드의 메뉴만 열림
-                open={open}
+                open={open && openMenuId === deal.id} // 현재 카드의 메뉴만 열림
+                // open={open}
                 onClose={handleMenuClose}
                 PaperProps={{
                   elevation: 1,
                 }}
               >
-                <MenuItem onClick={handleMenuClose}>
-                  열린 카드 id : {openMenuId}
+                <Link href={`/my-trade/${deal.id}`}>
+                  <MenuItem onClick={handleRequestOpen}>거래요청목록</MenuItem>
+                </Link>
+
+                <MenuItem onClick={handleMenuCloseAndDelete}>
+                  판매글 삭제
                 </MenuItem>
-                <MenuItem onClick={handleMenuClose}>2번째 버튼 임시</MenuItem>
               </Menu>
               <Typography
                 variant="body2"
+                textAlign={"center"}
                 sx={{
                   mt: 2,
                   fontWeight: "bold",
+                  width: "55px",
                   color:
-                  // deal.status2 의 값에 따라 색상을 다르게 표시
+                    // deal.status2 의 값에 따라 색상을 다르게 표시
                     deal.status2 === "거래 중"
                       ? "crimson"
                       : deal.status2 === "거래 완료"
@@ -152,6 +174,6 @@ export default function MySell() {
           </Card>
         ))}
       </div>
-    </div>
+    </React.Fragment>
   );
 }

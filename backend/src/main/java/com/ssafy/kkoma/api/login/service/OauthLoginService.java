@@ -4,7 +4,7 @@ import com.ssafy.kkoma.api.login.dto.OauthLoginDto;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.domain.member.entity.Member;
-import com.ssafy.kkoma.domain.member.service.MemberService;
+import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.external.oauth.model.OAuthAttributes;
 import com.ssafy.kkoma.external.oauth.service.SocialLoginApiService;
 import com.ssafy.kkoma.external.oauth.service.SocialLoginApiServiceFactory;
@@ -46,7 +46,7 @@ public class OauthLoginService {
             oauthMember.updateRefreshToken(jwtTokenDto);
         }
 
-        return OauthLoginDto.Response.of(jwtTokenDto);
+        return OauthLoginDto.Response.fromEntity(jwtTokenDto);
     }
 
 }

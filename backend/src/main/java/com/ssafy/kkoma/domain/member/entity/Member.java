@@ -1,20 +1,28 @@
 package com.ssafy.kkoma.domain.member.entity;
 
+import com.ssafy.kkoma.api.member.dto.request.UpdateMemberRequest;
 import com.ssafy.kkoma.domain.common.entity.BaseTimeEntity;
+import com.ssafy.kkoma.domain.kid.entity.Kid;
 import com.ssafy.kkoma.domain.location.entity.Location;
 
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
+import com.ssafy.kkoma.domain.point.entity.Point;
 import com.ssafy.kkoma.global.jwt.dto.JwtTokenDto;
 import com.ssafy.kkoma.global.util.DateTimeUtils;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseTimeEntity {
 
 	@Id
@@ -59,6 +67,12 @@ public class Member extends BaseTimeEntity {
 
 	private LocalDateTime tokenExpirationTime;
 
+	@OneToMany(mappedBy = "member")
+	private List<Kid> kids = new ArrayList<>();
+
+	@OneToOne(fetch = FetchType.LAZY)
+	private Point point;
+
 	@Builder
 	public Member(MemberType memberType, String email, String name, String profileImage, Role role) {
 		this.memberType = memberType;
@@ -75,6 +89,17 @@ public class Member extends BaseTimeEntity {
 
 	public void expireRefreshToken(LocalDateTime now) {
 		this.tokenExpirationTime = now;
+	}
+
+	public void updateMemberInfo(UpdateMemberRequest updateMemberRequest) {
+		this.profileImage = updateMemberRequest.getProfileImage();
+		this.nickname = updateMemberRequest.getNickname();
+		this.name = updateMemberRequest.getName();
+		this.phone = updateMemberRequest.getPhone();
+	}
+
+	public void setPoint(Point point) {
+		this.point = point;
 	}
 
 }

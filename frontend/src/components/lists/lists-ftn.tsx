@@ -1,6 +1,6 @@
 export async function getProducts() {
   // new Promise((resolve) => setTimeout(resolve, 500));
-  const prdts = [
+  const products = [
     {
       id: "1",
       url: "/temp-img.svg",
@@ -8,7 +8,7 @@ export async function getProducts() {
       productName: "Product 1",
       town: "동네 2",
       time: "2024-02-28 05:20",
-      views: 2,
+      views: 20,
       likes: 11,
       status: "거래 중",
     },
@@ -63,8 +63,8 @@ export async function getProducts() {
       productName: "Product 6",
       town: "동네 3",
       time: "2024-02-12 11:17",
-      views: 30,
-      likes: 45,
+      views: 50,
+      likes: 15,
       status: "거래 완료",
     },
     {
@@ -97,7 +97,7 @@ export async function getProducts() {
       town: "동네 7",
       time: "2024-02-14 23:03",
       views: 97,
-      likes: 3,
+      likes: 23,
       status: "판매 중",
     },
     {
@@ -118,7 +118,7 @@ export async function getProducts() {
       productName: "Product 11",
       town: "동네 5",
       time: "2024-03-04 01:08",
-      views: 4,
+      views: 84,
       likes: 37,
       status: "거래 중",
     },
@@ -152,7 +152,7 @@ export async function getProducts() {
       town: "동네 4",
       time: "2024-03-02 06:25",
       views: 43,
-      likes: 47,
+      likes: 17,
       status: "거래 완료",
     },
     {
@@ -173,8 +173,8 @@ export async function getProducts() {
       productName: "Product 16",
       town: "동네 9",
       time: "2024-03-08 13:59",
-      views: 3,
-      likes: 14,
+      views: 30,
+      likes: 11,
       status: "거래 완료",
     },
     {
@@ -184,7 +184,7 @@ export async function getProducts() {
       productName: "Product 17",
       town: "동네 3",
       time: "2024-02-18 17:28",
-      views: 16,
+      views: 160,
       likes: 36,
       status: "판매 중",
     },
@@ -196,7 +196,7 @@ export async function getProducts() {
       town: "동네 3",
       time: "2024-02-14 02:40",
       views: 98,
-      likes: 1,
+      likes: 11,
       status: "거래 중",
     },
     {
@@ -206,7 +206,7 @@ export async function getProducts() {
       productName: "Product 19",
       town: "동네 10",
       time: "2024-02-20 19:22",
-      views: 10,
+      views: 109,
       likes: 39,
       status: "판매 중",
     },
@@ -217,11 +217,55 @@ export async function getProducts() {
       productName: "Product 20",
       town: "동네 6",
       time: "2024-03-09 20:35",
-      views: 15,
+      views: 150,
       likes: 46,
       status: "거래 완료",
     },
   ];
 
-  return prdts;
+  return products;
+}
+
+export async function getProductDetail(id: string) {
+  const products = await getProducts();
+  const product = products.find((p) => p.id === id);
+  if (!product) {
+    throw new Error("상품이 존재하지 않습니다.");
+  }
+
+  return product;
+}
+
+export async function getImages(id: string) {
+  const images = [
+    {
+      img: "/chicken-home.svg",
+      title: "Breakfast",
+    },
+    {
+      img: "/next.svg",
+      title: "Burger",
+    },
+    {
+      img: "/temp-img.svg",
+      title: "Camera",
+    },
+    {
+      img: "/vercel.svg",
+      title: "Coffee",
+    },
+    {
+      img: "/images/baby-img.png",
+      title: "Hats",
+    },
+    {
+      img: "/images/logo-icon.svg",
+      title: "Honey",
+    },
+    {
+      img: "/images/sample1.webp",
+      title: "Basketball",
+    },
+  ];
+  return images;
 }
