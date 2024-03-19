@@ -70,8 +70,8 @@ export default function MyRequest({ params: { dealId } }: IParams) {
     <React.Fragment>
       <TopBar2 />
       {/* <h1>{id}</h1> */}
-      {requesters?.map((requester) => (
-        <Card key={requester.userId} variant="outlined" className={styles.card}>
+      {requesters?.map((requester, key) => (
+        <Card key={key} variant="outlined" className={styles.card}>
           <Avatar
             alt="Product Image"
             src={requester.url}
@@ -84,8 +84,8 @@ export default function MyRequest({ params: { dealId } }: IParams) {
               판매자 {requester.userId}
             </Typography>
             {/* <Typography color="text.secondary">{requester.productName}</Typography> */}
-            {requester.times?.map((time) => (
-              <Typography variant="body2">
+            {requester.times?.map((time, key) => (
+              <Typography key={key} variant="body2">
                 {formatTimeRange(time.start, time.end)}
               </Typography>
             ))}

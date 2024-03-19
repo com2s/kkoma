@@ -1,6 +1,7 @@
 "use client";
 
 import TopBar2 from "@/components/my-trade/my-request-calender-bar";
+import Calendar from "@/components/common/calendar";
 import Image from "next/image";
 import React, { useState } from "react";
 import Dialog from "@mui/material/Dialog";
@@ -28,6 +29,12 @@ const Transition = React.forwardRef(function Transition(
 
 export default function MyTradeCalender() {
   const [open, setOpen] = useState(false);
+  const [parentData, setParentData] = useState('');
+
+  const handleData = (data: string) => {
+    setParentData(data);
+  };
+
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -55,7 +62,7 @@ export default function MyTradeCalender() {
           className="mx-auto my-6"
         />
       </div>
-      <div className="my-8">캘린더 영역</div>
+      <Calendar sendDataToParent={handleData}></Calendar>
       <div className="flex justify-center">
         <button
           className="my-8 w-5/6 h-14 bg-primary rounded-xl
