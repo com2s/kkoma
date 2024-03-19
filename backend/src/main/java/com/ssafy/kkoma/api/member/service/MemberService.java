@@ -96,4 +96,5 @@ public class MemberService {
         Member member = findMemberByMemberId(memberId);
         return member.getPoint().getBalance();
     }
+
 }
