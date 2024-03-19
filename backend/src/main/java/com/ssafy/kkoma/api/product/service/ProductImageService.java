@@ -1,5 +1,6 @@
 package com.ssafy.kkoma.api.product.service;
 
+import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.domain.product.entity.ProductImage;
 import com.ssafy.kkoma.domain.product.repository.ProductImageRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,4 +26,16 @@ public class ProductImageService {
 
         return images;
     }
+
+    public List<ProductImage> createProductImages(List<String> productImageUrls, Product product) {
+        List<ProductImage> ret = new ArrayList<>();
+        for (String productImageUrl :
+                productImageUrls) {
+            ProductImage productImage = ProductImage.builder().productImage(productImageUrl).product(product).build();
+            ProductImage savedProductImage = productImageRepository.save(productImage);
+            ret.add(savedProductImage);
+        }
+        return ret;
+    }
+
 }
