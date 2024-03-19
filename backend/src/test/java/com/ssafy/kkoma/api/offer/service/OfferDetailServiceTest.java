@@ -4,7 +4,7 @@ import com.ssafy.kkoma.api.offer.service.OfferDetailService;
 import com.ssafy.kkoma.api.offer.dto.OfferTimeRequest;
 import com.ssafy.kkoma.domain.offer.entity.Offer;
 import com.ssafy.kkoma.domain.offer.repository.OfferDetailRepository;
-import com.ssafy.kkoma.domain.offer.repository.OfferRepository;;
+import com.ssafy.kkoma.domain.offer.repository.OfferRepository;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.domain.product.repository.ProductRepository;
 import org.junit.jupiter.api.Test;

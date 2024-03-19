@@ -45,7 +45,8 @@ class ProductServiceTest {
 	private static final String NAME = "NAME";
 
 	@Test
-	public void 글_목록_전체_조회하기() throws Exception{
+	@Transactional
+	public void 글_목록_전체_조회하기() throws Exception {
 	    // given
 		List<Product> products = new ArrayList<>();
 		for (int i = 0; i < 10; i++) {

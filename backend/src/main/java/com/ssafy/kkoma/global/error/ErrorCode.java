@@ -43,7 +43,10 @@ public enum ErrorCode {
     POINT_NOT_EXISTS(HttpStatus.BAD_REQUEST, "POINT-001", "해당 포인트는 존재하지 않습니다."),
 
     // Temparary,
-    UPDATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "T-004", "회원 정보를 수정에 실패하였습니다.");
+    UPDATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "T-004", "회원 정보를 수정에 실패하였습니다."),
+
+    // Util
+    S3UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "U-001", "이미지 업로드에 실패하였습니다.");
 
     ErrorCode(HttpStatus httpStatus, String errorCode, String message) {
         this.httpStatus = httpStatus;
