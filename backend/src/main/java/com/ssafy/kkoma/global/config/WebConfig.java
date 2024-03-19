@@ -47,7 +47,13 @@ public class WebConfig implements WebMvcConfigurer {
                         "/api/logout",
                         "/api/access-token/issue",
                         "/api/test/token/**",
-                        "/login"
+                        "/login",
+
+                        "/favicon.ico",
+                        "/error",
+                        "/swagger-ui/**",
+                        "/swagger-resources/**",
+                        "/v3/api-docs/**"
                 );
 
         registry.addInterceptor(adminAuthorizationInterceptor)
