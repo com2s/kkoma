@@ -16,7 +16,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material";
+import { Box, Tab, Tabs, useTheme } from "@mui/material";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -28,15 +28,73 @@ const Transition = React.forwardRef(function Transition(
 });
 
 export default function MyTradeCalender() {
+  const [value, setValue] = useState(0);
   const [open, setOpen] = useState(false);
-  const [parentData, setParentData] = useState('');
+  const [parentDate0, setParentDate0] = useState("");
+  const [parentDate1, setParentDate1] = useState("");
+  const [parentDate2, setParentDate2] = useState("");
+  const [parentTime0, setParentTime0] = useState("");
+  const [parentTime1, setParentTime1] = useState("");
+  const [parentTime2, setParentTime2] = useState("");
 
-  const handleData = (data: string) => {
-    setParentData(data);
+  const handleDate0 = (data: string) => {
+    if (data) {
+      const date = new Date(data);
+      const formattedDate = new Intl.DateTimeFormat("ko-KR", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).format(date);
+      setParentDate0(formattedDate);
+    } else {
+      setParentDate0("");
+    }
+  };
+
+  const handleDate1 = (data: string) => {
+    if (data) {
+      const date = new Date(data);
+      const formattedDate = new Intl.DateTimeFormat("ko-KR", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).format(date);
+      setParentDate1(formattedDate);
+    } else {
+      setParentDate1("");
+    }
+  };
+
+  const handleDate2 = (data: string) => {
+    if (data) {
+      const date = new Date(data);
+      const formattedDate = new Intl.DateTimeFormat("ko-KR", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).format(date);
+      setParentDate2(formattedDate);
+    } else {
+      setParentDate2("");
+    }
+  };
+
+  const handleTime0 = (data: string) => {
+    setParentTime0(data);
+  };
+  const handleTime1 = (data: string) => {
+    setParentTime1(data);
+  };
+  const handleTime2 = (data: string) => {
+    setParentTime2(data);
   };
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -46,10 +104,17 @@ export default function MyTradeCalender() {
     setOpen(false);
   };
 
+  function a11yProps(index: number) {
+    return {
+      id: `simple-tab-${index}`,
+      "aria-controls": `simple-tabpanel-${index}`,
+    };
+  }
+
   return (
     <React.Fragment>
       <TopBar2 />
-      <div className="px-4 my-14">
+      <div className="px-4 my-12 mx-2">
         <h1>거래하고 싶은 시간을 선택해주세요.</h1>
         <p className="my-6 text-gray-400">
           거래 가능 시간은 최대 3개까지 선택할 수 있어요.
@@ -62,10 +127,108 @@ export default function MyTradeCalender() {
           className="mx-auto my-6"
         />
       </div>
-      <Calendar sendDataToParent={handleData}></Calendar>
+      <Box sx={{ borderBottom: 0, borderColor: "divider" }}>
+        {/* 탭 쓰려했으나 캘린더의 반응 문제로 취소 */}
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="basic tabs example"
+          variant="fullWidth"
+          sx={{ margin: "0 auto", width: "100%", maxWidth: "500px" }}
+        >
+          <Tab
+            label={
+              <div style={{ textAlign: "center" }}>
+                {parentDate0 ? (
+                  <div>
+                    <p>{parentDate0}</p>
+                    <p className="mt-2">{parentTime0}</p>
+                  </div>
+                ) : (
+                  <p>날짜 선택</p>
+                )}
+              </div>
+            }
+            {...a11yProps(0)}
+            sx={{
+              border: "solid 1px black",
+              margin: "8px",
+              borderRadius: "12px",
+              height: "5rem",
+              minWidth: "3rem",
+            }}
+          />
+          <Tab
+            label={
+              <div style={{ textAlign: "center" }}>
+                {parentDate1 ? (
+                  <p>
+                    {parentDate1}
+                    <br />
+                    {parentTime1}
+                  </p>
+                ) : (
+                  <p>추가 날짜 선택</p>
+                )}
+              </div>
+            }
+            {...a11yProps(1)}
+            sx={{
+              border: "solid 1px black",
+              margin: "8px",
+              borderRadius: "12px",
+              minWidth: "3rem",
+            }}
+          />
+          <Tab
+            label={
+              <div style={{ textAlign: "center" }}>
+                {parentDate2 ? (
+                  <p>
+                    {parentDate2}
+                    <br />
+                    {parentTime2}
+                  </p>
+                ) : (
+                  <p>추가 날짜 선택</p>
+                )}
+              </div>
+            }
+            {...a11yProps(2)}
+            sx={{
+              border: "solid 1px black",
+              margin: "8px",
+              borderRadius: "12px",
+              minWidth: "3rem",
+            }}
+          />
+        </Tabs>
+      </Box>
+      <div>
+        {value === 0 && (
+          <Calendar
+            sendDateToParent={handleDate0}
+            sendTimeToParent={handleTime0}
+          ></Calendar>
+        )}
+
+        {value === 1 && (
+          <Calendar
+            sendDateToParent={handleDate1}
+            sendTimeToParent={handleTime1}
+          ></Calendar>
+        )}
+
+        {value === 2 && (
+          <Calendar
+            sendDateToParent={handleDate2}
+            sendTimeToParent={handleTime2}
+          ></Calendar>
+        )}
+      </div>
       <div className="flex justify-center">
         <button
-          className="my-8 w-5/6 h-14 bg-primary rounded-xl
+          className="mt-12 mb-8 w-5/6 h-16 bg-primary rounded-xl
          bg-yellow-400 text-black"
           onClick={handleClickOpen}
         >
@@ -73,12 +236,20 @@ export default function MyTradeCalender() {
         </button>
       </div>
       <Dialog
-        fullScreen={fullScreen}
+        // fullScreen={fullScreen}
+        fullScreen
         open={open}
         onClose={handleClose}
         TransitionComponent={Transition}
+        sx={{
+          "& .MuiDialog-paper": {
+            maxWidth: "800px", // 최대 너비 설정
+            width: "100%", // 너비는 화면 크기에 따라 조정되도록 설정
+            maxHeight: "100vh", // 최대 높이를 화면 높이와 동일하게 설정
+          },
+        }}
       >
-        {fullScreen === true && (
+        <div className="flex justify-between">
           <IconButton
             color="inherit"
             onClick={handleClose}
@@ -91,35 +262,19 @@ export default function MyTradeCalender() {
           >
             <ArrowBackIosNewIcon />
           </IconButton>
-        )}
-        {fullScreen === false && (
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <IconButton
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-              sx={{
-                aspectRatio: "1",
-                maxWidth: "40px",
-                margin: 1,
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
-          </div>
-        )}
-        <List>
-          <ListItemButton>
-            <ListItemText primary="거래 수락이 완료되었어요!" secondary="이제 1대1 채팅이 가능해요!" />
-          </ListItemButton>
-          <Divider />
-          <ListItemButton>
-            <ListItemText
-              primary="이미지 영역"
-              secondary="이 아래에도 버튼 필요"
-            />
-          </ListItemButton>
-        </List>
+          <IconButton
+            color="inherit"
+            onClick={handleClose}
+            aria-label="close"
+            size="large"
+            sx={{
+              aspectRatio: "1",
+              margin: 2,
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </div>
       </Dialog>
     </React.Fragment>
   );
