@@ -16,7 +16,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
@@ -38,7 +42,7 @@ public class Offer extends BaseTimeEntity {
 	private Product product;
 
 	@Enumerated(EnumType.STRING)
-	private OfferType condition;
+	private OfferType status;
 
 	private LocalDateTime repliedAt;
 

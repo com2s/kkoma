@@ -33,7 +33,7 @@ public class OfferService {
 
         return offerRepository.save(Offer.builder().member(member)
                 .product(product)
-                .condition(OfferType.SENT)
+                .status(OfferType.SENT)
                 .build())
                 .getId();
     }

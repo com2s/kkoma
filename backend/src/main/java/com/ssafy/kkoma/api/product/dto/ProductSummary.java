@@ -18,7 +18,7 @@ public class ProductSummary {
 	private String title;
 	private String dealPlace;
 	private int price;
-	private ProductType condition;
+	private ProductType status;
 	private Long elapsedMinutes;
 
 	public static ProductSummary fromEntity(Product product){
@@ -28,7 +28,7 @@ public class ProductSummary {
 				.title(product.getTitle())
 				.dealPlace(product.getPlaceDetail())
 				.price(product.getPrice())
-				.condition(product.getCondition())
+				.status(product.getStatus())
 				.elapsedMinutes(Duration.between(product.getCreatedAt(), LocalDateTime.now()).toMinutes())
 				.build();
 	}
