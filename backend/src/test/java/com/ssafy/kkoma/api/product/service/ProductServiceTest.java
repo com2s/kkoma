@@ -43,10 +43,6 @@ class ProductServiceTest {
 	@Autowired
 	private ProductService productService;
 
-	@Autowired
-
-	private ProductImageRepository productImageRepository;
-
 	private static final String TITLE = "TITLE";
 	private static final String IMAGE_URL = "IMAGE_URL";
 	private static final String NAME = "NAME";
@@ -56,6 +52,8 @@ class ProductServiceTest {
 	public void 글_목록_전체_조회하기() throws Exception {
 	    // given
 		List<Product> products = new ArrayList<>();
+		List<ProductSummary> productSummariesBefore = productService.getProducts();
+		int sizeBefore = productSummariesBefore.size();
 		for (int i = 0; i < 10; i++) {
 	    	products.add(productRepository.save(Product.builder().title(TITLE).thumbnailImage(IMAGE_URL).build()));
 		}
@@ -64,7 +62,7 @@ class ProductServiceTest {
 		List<ProductSummary> productSummaries = productService.getProducts();
 
 		// then
-		assertEquals(10, productSummaries.size());
+		assertEquals(sizeBefore + 10, productSummaries.size());
 	}
 
 	@Test
@@ -83,16 +81,9 @@ class ProductServiceTest {
 		assertEquals(TITLE, productDetailResponse.getTitle());
 	}
 
-	@AfterEach
-	void deleteAll() {
-		categoryRepository.deleteAll();
-		memberRepository.deleteAll();
-		productRepository.deleteAll();
-	}
-
     @Test
     void createProduct() {
-	/*	// given
+		// given
 		Category category = categoryRepository.save(Category.builder().name("유모차").build());
 		Member member = memberRepository.save(Member.builder().name(NAME).memberType(MemberType.KAKAO).role(Role.USER).build());
 		ProductCreateRequest productCreateRequest = ProductCreateRequest.builder()
@@ -107,7 +98,7 @@ class ProductServiceTest {
 		ProductCreateResponse productCreateResponse = productService.createProduct(member.getId(), productCreateRequest);
 
 		// then
-		assertEquals("TITLE", productCreateResponse.getTitle());*/
+		assertEquals("TITLE", productCreateResponse.getTitle());
     }
 
 }
