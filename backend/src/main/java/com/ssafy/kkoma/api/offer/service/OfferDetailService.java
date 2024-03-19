@@ -1,6 +1,6 @@
 package com.ssafy.kkoma.api.offer.service;
 
-import com.ssafy.kkoma.api.offer.dto.OfferTimeRequest;
+import com.ssafy.kkoma.api.offer.dto.request.OfferTimeRequest;
 import com.ssafy.kkoma.domain.offer.entity.Offer;
 import com.ssafy.kkoma.domain.offer.entity.OfferDetail;
 import com.ssafy.kkoma.domain.offer.repository.OfferDetailRepository;
@@ -24,12 +24,15 @@ public class OfferDetailService {
         Offer offer = offerService.findOfferByOfferId(offerId);
 
         for (OfferTimeRequest offerTime :  offerTimeRequestList) {
-            offerDetailRepository.save(OfferDetail.builder()
-                    .offer(offer)
-                    .offerDate(offerTime.getOfferDate())
-                    .startTime(offerTime.getStartTime())
-                    .endTime(offerTime.getEndTime())
-                    .build());
+            OfferDetail offerDetail = OfferDetail.builder()
+                .offerDate(offerTime.getOfferDate())
+                .startTime(offerTime.getStartTime())
+                .endTime(offerTime.getEndTime())
+                .build();
+
+            offerDetail.setOffer(offer);
+
+            offerDetailRepository.save(offerDetail);
         }
     }
 

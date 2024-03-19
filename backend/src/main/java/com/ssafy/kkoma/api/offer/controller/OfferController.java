@@ -1,6 +1,7 @@
 package com.ssafy.kkoma.api.offer.controller;
 
-import com.ssafy.kkoma.api.offer.dto.OfferTimeRequest;
+import com.ssafy.kkoma.api.offer.dto.request.OfferTimeRequest;
+import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
 import com.ssafy.kkoma.api.offer.service.OfferDetailService;
 import com.ssafy.kkoma.api.offer.service.OfferService;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
@@ -32,6 +33,15 @@ public class OfferController {
         offerDetailService.createOfferDetail(offerId, offerTimeRequestList);
 
         return ResponseEntity.ok().build();
+    }
+
+    @Tag(name = "Offer")
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
+    @GetMapping("/products/{productId}")
+    public ResponseEntity<List<OfferResponse>> getOffers(@PathVariable Long productId){
+        List<OfferResponse> offerResponseList = offerService.getOffers(productId);
+
+        return ResponseEntity.ok(offerResponseList);
     }
 
 }

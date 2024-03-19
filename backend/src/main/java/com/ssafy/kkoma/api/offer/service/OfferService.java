@@ -1,9 +1,17 @@
 package com.ssafy.kkoma.api.offer.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.ssafy.kkoma.api.member.dto.response.MemberProfileResponse;
+import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
+import com.ssafy.kkoma.api.offer.dto.response.OfferTimeResponse;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.domain.offer.constant.OfferType;
 import com.ssafy.kkoma.domain.offer.entity.Offer;
+import com.ssafy.kkoma.domain.offer.entity.OfferDetail;
 import com.ssafy.kkoma.domain.offer.repository.OfferRepository;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.api.product.service.ProductService;
@@ -36,6 +44,24 @@ public class OfferService {
                 .status(OfferType.SENT)
                 .build())
                 .getId();
+    }
+
+    public List<OfferResponse> getOffers(Long productId){
+        List<OfferResponse> offerResponseList = new ArrayList<>();
+
+        List<Offer> offerList = offerRepository.findAllOffersByProductId(productId)
+            .orElseThrow(() -> new EntityNotFoundException(ErrorCode.OFFER_NOT_EXISTS));
+
+        for (Offer offer : offerList){
+            System.out.println("###" + offer.getMember().getId());
+            offerResponseList.add(OfferResponse.builder()
+                .id(offer.getId())
+                .memberProfile(MemberProfileResponse.fromEntity(offer.getMember()))
+                .offerTimes(offer.getOfferDetails().stream().map(OfferTimeResponse::fromEntity).toList())
+                .build());
+        }
+
+        return offerResponseList;
     }
 
 }
