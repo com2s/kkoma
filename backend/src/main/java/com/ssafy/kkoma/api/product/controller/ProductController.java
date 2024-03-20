@@ -41,7 +41,7 @@ public class ProductController {
 
     @Tag(name = "Product")
     @PostMapping
-    public ResponseEntity<ProductCreateResponse> createProduct(@MemberInfo MemberInfoDto memberInfoDto, ProductCreateRequest productCreateRequest) {
+    public ResponseEntity<ProductCreateResponse> createProduct(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody  ProductCreateRequest productCreateRequest) {
         ProductCreateResponse productCreateResponse = productService.createProduct(memberInfoDto.getMemberId(), productCreateRequest);
         return ResponseEntity.ok().body(productCreateResponse);
     }
