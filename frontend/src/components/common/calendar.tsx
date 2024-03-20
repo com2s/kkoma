@@ -4,8 +4,7 @@ import React, { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 // import "@/components/common/calendar.module.scss"; // scss import
-import { Select, MenuItem, Slider, Typography, Box, Button, IconButton } from "@mui/material";
-import { SelectChangeEvent } from "@mui/material/Select";
+import { Slider, Typography, Box, Button, IconButton } from "@mui/material";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 // 부모 컴포넌트 (ParentComponent.tsx)
 // import React, { useState } from 'react';
@@ -42,7 +41,6 @@ export default function ChildComponent({
   const [value, setValue] = useState<Value>(new Date());
   const [date, setDate] = useState(""); // 날짜
   const [time, setTime] = useState(""); // 시간
-  const [hour, setHour] = useState("00"); // 분
   const [minute, setMinute] = useState<number>(0);
 
   const handleDateChange = (value: Value) => {
@@ -61,17 +59,11 @@ export default function ChildComponent({
   }
 
   const handleSetTime = () => {
-    const selectedTime = hour + ":" + minute.toString().padStart(2, "0");
-    console.log("clicked", hour, minute, selectedTime);
+    const selectedTime = `${Math.floor(minute / 60)} : ${(minute % 60).toString().padStart(2, "0")}`;
     setTime(selectedTime);
     console.log("selectedTime : ", time);
     sendTimeToParent(selectedTime);
   }
-
-  const handleHourChange = (event: SelectChangeEvent) => {
-    setHour(event.target.value as string);
-    console.log("hour: ", event.target.value);
-  };
 
   const handleMinuteChange = (event: Event, newValue: number | number[]) => {
     setMinute(newValue as number);
@@ -81,7 +73,6 @@ export default function ChildComponent({
   const resetValues = () => {
     setValue(new Date());
     setDate("");
-    setHour("00");
     setMinute(0);
     setTime("");
     sendDateToParent("");
@@ -89,39 +80,13 @@ export default function ChildComponent({
   };
 
   // 분 슬라이더를 위한 값
-  const MAX = 50;
-  const MIN = 0;
-  const marks = [
-    {
-      value: 0,
-      label: '',
-    },
-    {
-      value: 10,
-      label: '',
-    },
-    {
-      value: 20,
-      label: '',
-    },
-    {
-      value: 30,
-      label: '',
-    },
-    {
-      value: 40,
-      label: '',
-    },
-    {
-      value: 50,
-      label: '',
-    },
-    // {
-    //   value: 60,
-    //   label: '',
-    // },
-  ];
+  const startTime = '11:00'
+  const endTime = '18:00'
 
+  // 위 시간을 분 단위로 변경
+  const MAX = 60 * parseInt(endTime.split(':')[0]) + parseInt(endTime.split(':')[1])
+  const MIN = 60 * parseInt(startTime.split(':')[0]) + parseInt(startTime.split(':')[1])
+ 
   return (
     <div className={`text-center my-6 mx-1`}>
       {date? 
@@ -141,7 +106,7 @@ export default function ChildComponent({
       />
         {date && (
       <Box sx={{ marginY: 6, marginX:'auto', display: "flex", maxWidth: '500px' }}>
-        <Select
+        {/* <Select
           labelId="hour-select-label"
           id="hour-select"
           value={hour}
@@ -156,21 +121,22 @@ export default function ChildComponent({
               {index.toString().padStart(2, "0")}시
             </MenuItem>
           ))}
-        </Select>
+        </Select> */}
         <div className="w-full px-8">
           <Slider
             aria-labelledby="minute-slider"
             defaultValue={0}
-            marks={marks}
             value={minute}
             onChange={handleMinuteChange}
-            step={null}
-            min={0}
-            max={60}
+            step={10}
+            min={MIN}
+            max={MAX}
             valueLabelDisplay="on"
             valueLabelFormat={(value) =>
-              `${value.toString().padStart(2, "0")}분`
+              // `${value.toString().padStart(2, "0")}분`
+              `${Math.floor(value / 60)}시 ${(minute % 60).toString().padStart(2, "0")}분`
             }
+            className="text-yellow-400 w-5/6"
           />
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Typography
@@ -178,23 +144,23 @@ export default function ChildComponent({
           onClick={() => setMinute(MIN)}
           sx={{ cursor: 'pointer' }}
         >
-          {MIN}분
+          {startTime}
         </Typography>
         <Typography
           variant="body2"
           onClick={() => setMinute(MAX)}
-          sx={{ cursor: 'pointer', marginRight: '1.7rem'}}
+          sx={{ cursor: 'pointer' }}
         >
-          {MAX}분
+          {endTime}
         </Typography>
       </Box>
         </div>
         <Button variant="outlined" onClick={handleSetTime}>
-          {hour}:{minute.toString().padStart(2, "0")} 선택
+          {`${Math.floor(minute / 60)}시 ${(minute % 60).toString().padStart(2, "0")}분`} 선택
+          {/* {`${(Math.floor(minute / 60)).toString().padStart(2, "0")}시 ${(minute % 60).toString().padStart(2, "0")}분`} 선택 */}
         </Button>
       </Box>
         )}
-      {/* <div className="text-gray-500 mt-4">{value?.toString()}</div> */}
     </div>
   );
 }

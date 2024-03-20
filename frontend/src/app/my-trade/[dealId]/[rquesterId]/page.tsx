@@ -141,8 +141,8 @@ export default function MyTradeCalender() {
               <div style={{ textAlign: "center" }}>
                 {parentDate0 ? (
                   <div>
-                    <p>{parentDate0}</p>
-                    <p className="mt-2">{parentTime0}</p>
+                    <p className="text-[16px]">{parentDate0}</p>
+                    <p className="mt-1 text-[16px]">{parentTime0}</p>
                   </div>
                 ) : (
                   <p>날짜 선택</p>
@@ -162,11 +162,10 @@ export default function MyTradeCalender() {
             label={
               <div style={{ textAlign: "center" }}>
                 {parentDate1 ? (
-                  <p>
-                    {parentDate1}
-                    <br />
-                    {parentTime1}
-                  </p>
+                  <div>
+                  <p className="text-[16px]">{parentDate1}</p>
+                  <p className="mt-1 text-[16px]">{parentTime1}</p>
+                </div>
                 ) : (
                   <p>추가 날짜 선택</p>
                 )}
@@ -184,11 +183,10 @@ export default function MyTradeCalender() {
             label={
               <div style={{ textAlign: "center" }}>
                 {parentDate2 ? (
-                  <p>
-                    {parentDate2}
-                    <br />
-                    {parentTime2}
-                  </p>
+                  <div>
+                  <p className="text-[16px]">{parentDate2}</p>
+                  <p className="mt-1 text-[16px]">{parentTime2}</p>
+                </div>
                 ) : (
                   <p>추가 날짜 선택</p>
                 )}
@@ -243,7 +241,7 @@ export default function MyTradeCalender() {
         TransitionComponent={Transition}
         sx={{
           "& .MuiDialog-paper": {
-            maxWidth: "800px", // 최대 너비 설정
+            maxWidth: "600px", // 최대 너비 설정
             width: "100%", // 너비는 화면 크기에 따라 조정되도록 설정
             maxHeight: "100vh", // 최대 높이를 화면 높이와 동일하게 설정
           },
