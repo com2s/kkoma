@@ -145,17 +145,19 @@ export default function MyTradeCalender() {
                     <p className="mt-1 text-[16px]">{parentTime0}</p>
                   </div>
                 ) : (
-                  <p>날짜 선택</p>
+                  <p>시간 선택</p>
                 )}
               </div>
             }
             {...a11yProps(0)}
             sx={{
-              border: "solid 1px black",
               margin: "8px",
               borderRadius: "12px",
               height: "5rem",
               minWidth: "3rem",
+              "&.MuiTab-root": {
+                bgcolor: "#f5f5f5"
+              },
             }}
           />
           <Tab
@@ -167,16 +169,18 @@ export default function MyTradeCalender() {
                   <p className="mt-1 text-[16px]">{parentTime1}</p>
                 </div>
                 ) : (
-                  <p>추가 날짜 선택</p>
+                  <p>추가 시간 선택</p>
                 )}
               </div>
             }
             {...a11yProps(1)}
             sx={{
-              border: "solid 1px black",
               margin: "8px",
               borderRadius: "12px",
               minWidth: "3rem",
+              "&.MuiTab-root": {
+                bgcolor: "#f5f5f5"
+              },
             }}
           />
           <Tab
@@ -188,16 +192,18 @@ export default function MyTradeCalender() {
                   <p className="mt-1 text-[16px]">{parentTime2}</p>
                 </div>
                 ) : (
-                  <p>추가 날짜 선택</p>
+                  <p>추가 시간 선택</p>
                 )}
               </div>
             }
             {...a11yProps(2)}
             sx={{
-              border: "solid 1px black",
               margin: "8px",
               borderRadius: "12px",
               minWidth: "3rem",
+              "&.MuiTab-root": {
+                bgcolor: "#f5f5f5"
+              },
             }}
           />
         </Tabs>
@@ -226,7 +232,7 @@ export default function MyTradeCalender() {
       </div>
       <div className="flex justify-center">
         <button
-          className="mt-12 mb-8 w-5/6 h-16 bg-primary rounded-xl
+          className="mt-8 mb-8 w-5/6 h-16 bg-primary rounded-xl
          bg-yellow-400 text-black"
           onClick={handleClickOpen}
         >
