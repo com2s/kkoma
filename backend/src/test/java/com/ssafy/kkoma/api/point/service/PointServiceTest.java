@@ -8,6 +8,9 @@ import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.member.repository.MemberRepository;
 import com.ssafy.kkoma.domain.point.entity.Point;
+import com.ssafy.kkoma.domain.product.entity.Product;
+import com.ssafy.kkoma.domain.product.repository.ProductRepository;
+import com.ssafy.kkoma.global.error.exception.BusinessException;
 import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,9 @@ class PointServiceTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @Test
     void 존재하는_포인트_아이디로_포인트_찾기() {
@@ -76,6 +82,25 @@ class PointServiceTest {
 
         // then
         assertEquals(BALANCE, pointSummary.getBalance());
+    }
+
+    @Test
+    @Transactional
+    public void 물건_가격보다_포인트가_적으면_거래_요청_실패() throws Exception{
+        // given
+        Point point = new Point();
+        point.addBalance(5000);
+        Member member1 = memberRepository.save(Member.builder().name("NAME").memberType(MemberType.KAKAO).role(Role.USER).build());
+        Member member2 = memberRepository.save(Member.builder().name("NAME").memberType(MemberType.KAKAO).role(Role.USER).build());
+        member2.setPoint(point);
+        Product product = productRepository.save(Product.builder().title("TITLE").thumbnailImage("IMAGE_URL").member(member1).price(10000).build());
+
+        // when
+
+
+        // then
+        assertThrows(BusinessException.class, () -> pointService.comparePointsToPrice(member2.getId(), product.getId()));
+
     }
 
 }
