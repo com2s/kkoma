@@ -2,7 +2,7 @@ package com.ssafy.kkoma.api.point.service;
 
 import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.api.point.dto.PointSummaryResponse;
-import com.ssafy.kkoma.api.point.repository.PointRepository;
+import com.ssafy.kkoma.domain.point.repository.PointRepository;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.domain.member.entity.Member;
@@ -16,8 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -94,9 +92,6 @@ class PointServiceTest {
         Member member2 = memberRepository.save(Member.builder().name("NAME").memberType(MemberType.KAKAO).role(Role.USER).build());
         member2.setPoint(point);
         Product product = productRepository.save(Product.builder().title("TITLE").thumbnailImage("IMAGE_URL").member(member1).price(10000).build());
-
-        // when
-
 
         // then
         assertThrows(BusinessException.class, () -> pointService.comparePointsToPrice(member2.getId(), product.getId()));
