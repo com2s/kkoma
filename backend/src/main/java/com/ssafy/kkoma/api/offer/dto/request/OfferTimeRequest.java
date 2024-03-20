@@ -1,4 +1,4 @@
-package com.ssafy.kkoma.api.offer.dto;
+package com.ssafy.kkoma.api.offer.dto.request;
 
 import lombok.Getter;
 

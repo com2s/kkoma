@@ -31,4 +31,9 @@ public class OfferDetail {
 	private LocalTime startTime;
 	private LocalTime endTime;
 
+	public void setOffer(Offer offer) {
+		this.offer = offer;
+		offer.getOfferDetails().add(this);
+	}
+
 }
