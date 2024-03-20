@@ -247,7 +247,6 @@ export default function ChildComponent({
           */}
         </Box>
       </StyledCalendarWrapper>
-
     </div>
   );
 }

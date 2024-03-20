@@ -2,17 +2,13 @@
 
 import TopBar2 from "@/components/my-trade/my-request-calender-bar";
 import Calendar from "@/components/common/calendar";
+import Accept from "@/components/my-trade/accept";
 import Image from "next/image";
 import React, { useState } from "react";
 import Dialog from "@mui/material/Dialog";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemButton from "@mui/material/ListItemButton";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -156,7 +152,7 @@ export default function MyTradeCalender() {
               height: "5rem",
               minWidth: "3rem",
               "&.MuiTab-root": {
-                bgcolor: "#f5f5f5"
+                bgcolor: "#f5f5f5",
               },
             }}
           />
@@ -165,9 +161,9 @@ export default function MyTradeCalender() {
               <div style={{ textAlign: "center" }}>
                 {parentDate1 ? (
                   <div>
-                  <p className="text-[16px]">{parentDate1}</p>
-                  <p className="mt-1 text-[16px]">{parentTime1}</p>
-                </div>
+                    <p className="text-[16px]">{parentDate1}</p>
+                    <p className="mt-1 text-[16px]">{parentTime1}</p>
+                  </div>
                 ) : (
                   <p>추가 시간 선택</p>
                 )}
@@ -179,7 +175,7 @@ export default function MyTradeCalender() {
               borderRadius: "12px",
               minWidth: "3rem",
               "&.MuiTab-root": {
-                bgcolor: "#f5f5f5"
+                bgcolor: "#f5f5f5",
               },
             }}
           />
@@ -188,9 +184,9 @@ export default function MyTradeCalender() {
               <div style={{ textAlign: "center" }}>
                 {parentDate2 ? (
                   <div>
-                  <p className="text-[16px]">{parentDate2}</p>
-                  <p className="mt-1 text-[16px]">{parentTime2}</p>
-                </div>
+                    <p className="text-[16px]">{parentDate2}</p>
+                    <p className="mt-1 text-[16px]">{parentTime2}</p>
+                  </div>
                 ) : (
                   <p>추가 시간 선택</p>
                 )}
@@ -202,7 +198,7 @@ export default function MyTradeCalender() {
               borderRadius: "12px",
               minWidth: "3rem",
               "&.MuiTab-root": {
-                bgcolor: "#f5f5f5"
+                bgcolor: "#f5f5f5",
               },
             }}
           />
@@ -266,18 +262,17 @@ export default function MyTradeCalender() {
           >
             <ArrowBackIosNewIcon />
           </IconButton>
-          <IconButton
-            color="inherit"
+        </div>
+        <Accept />
+        {/* 우선 임시로 닫는 버튼 */}
+        <div className="flex justify-center">
+          <button
+            className="mt-8 mb-8 w-5/6 h-16 bg-primary rounded-xl
+         bg-yellow-400 text-black"
             onClick={handleClose}
-            aria-label="close"
-            size="large"
-            sx={{
-              aspectRatio: "1",
-              margin: 2,
-            }}
           >
-            <CloseIcon />
-          </IconButton>
+            <h3>채팅하러 가기</h3>
+          </button>
         </div>
       </Dialog>
     </React.Fragment>
