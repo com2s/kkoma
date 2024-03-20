@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class PointController {
 
     private final PointService pointService;
-    private final ProductService productService;
 
     @Tag(name = "Point")
     @Operation(summary = "to get a point summary", security = {@SecurityRequirement(name = "bearer-key")})

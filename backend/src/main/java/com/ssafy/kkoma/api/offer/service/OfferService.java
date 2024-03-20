@@ -2,18 +2,15 @@ package com.ssafy.kkoma.api.offer.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.ssafy.kkoma.api.member.dto.response.MemberProfileResponse;
 import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
 import com.ssafy.kkoma.api.offer.dto.response.OfferTimeResponse;
 import com.ssafy.kkoma.api.point.service.PointHistoryService;
-import com.ssafy.kkoma.api.point.service.PointService;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.domain.offer.constant.OfferType;
 import com.ssafy.kkoma.domain.offer.entity.Offer;
-import com.ssafy.kkoma.domain.offer.entity.OfferDetail;
 import com.ssafy.kkoma.domain.offer.repository.OfferRepository;
 import com.ssafy.kkoma.domain.point.constant.PointChangeType;
 import com.ssafy.kkoma.domain.point.entity.PointHistory;

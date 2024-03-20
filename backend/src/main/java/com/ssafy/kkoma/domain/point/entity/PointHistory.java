@@ -3,7 +3,6 @@ package com.ssafy.kkoma.domain.point.entity;
 import com.ssafy.kkoma.domain.common.entity.BaseTimeEntity;
 import com.ssafy.kkoma.domain.point.constant.PointChangeType;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
