@@ -1,3 +1,4 @@
-export default function Loading() {
-    return <h1>Loading... 💢</h1>
+import Loading from "@/components/common/loading";
+export default function LoadingPage() {
+  return <Loading />;
 }

@@ -10,8 +10,8 @@ import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import { styled } from "@mui/material/styles";
 import Fab from "@mui/material/Fab";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
-import ListAltIcon from "@mui/icons-material/ListAlt";
-import GridViewIcon from "@mui/icons-material/GridView";
+import FormatListBulletedRoundedIcon from "@mui/icons-material/FormatListBulletedRounded";
+import GridViewRoundedIcon from "@mui/icons-material/GridViewRounded";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import { useTheme } from "@mui/material/styles";
 import Image from "next/image";
@@ -34,9 +34,9 @@ const Header = () => {
       right: 0,
       margin: "0 auto",
       "&.MuiFab-root": {
-        boxShadow: theme.shadows[0],
-        border: "1px solid rgba(0, 0, 0, 0.2)",
         backgroundColor: "white",
+        borderRadius: "50%",
+        boxShadow: "0 -2px 4px 0 rgba(210, 210, 210, 0.25)",
       },
     };
   });
@@ -73,7 +73,7 @@ const Header = () => {
           maxWidth: "600px",
           minWidth: "320px",
           margin: "auto",
-          borderTop: "1px solid rgba(0, 0, 0, 0.2)",
+          borderRadius: "15px 15px 0 0",
         }}
         elevation={0} // 기본 그림자 제거
       >
@@ -83,6 +83,10 @@ const Header = () => {
           onChange={(event, newValue) => {
             setValue(newValue);
           }}
+          sx={{
+            borderRadius: "15px 15px 0 0",
+            boxShadow: "0 -2px 4px 0 rgba(210, 210, 210, 0.25)",
+          }}
         >
           <BottomNavigationAction
             label="거래 일정"
@@ -90,34 +94,29 @@ const Header = () => {
             component={Link}
             href="/plan"
             // 화면 크기가 400px 이하일 때는 패딩 없애기
-            sx={{ padding: "0", minWidth: "55px" }}
+            sx={{ minWidth: "55px" }}
           />
           <BottomNavigationAction
             label="내 거래"
-            icon={<ListAltIcon />}
+            icon={<FormatListBulletedRoundedIcon />}
             component={Link}
             href="/my-trade"
-            sx={{ padding: "0", minWidth: "55px" }}
+            sx={{ minWidth: "55px" }}
           />
-          <BottomNavigationAction
-            label="1"
-            disabled
-            sx={{ padding: "0", width: "0px" }}
-            hidden={isHidden}
-          />
+          <BottomNavigationAction label="1" disabled sx={{ width: "0px" }} hidden={isHidden} />
           <BottomNavigationAction
             label="모아보기"
-            icon={<GridViewIcon />}
+            icon={<GridViewRoundedIcon />}
             component={Link}
             href="/lists"
-            sx={{ padding: "0", minWidth: "55px" }}
+            sx={{ minWidth: "55px" }}
           />
           <BottomNavigationAction
             label="내 정보"
             icon={<PersonOutlineIcon />}
             component={Link}
             href="/my-page"
-            sx={{ padding: "0", minWidth: "55px" }}
+            sx={{ minWidth: "55px" }}
           />
         </BottomNavigation>
         <Link
