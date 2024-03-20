@@ -1,4 +1,4 @@
-package com.ssafy.kkoma.api.point.repository;
+package com.ssafy.kkoma.domain.point.repository;
 
 import com.ssafy.kkoma.domain.point.entity.Point;
 import org.springframework.data.jpa.repository.JpaRepository;
