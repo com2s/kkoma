@@ -5,15 +5,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ssafy.kkoma.api.product.service.ProductService;
+import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
+import com.ssafy.kkoma.api.product.dto.ProductCreateResponse;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.member.repository.MemberRepository;
 import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
+import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.domain.product.entity.Category;
 import com.ssafy.kkoma.domain.product.repository.CategoryRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -45,9 +46,12 @@ class ProductServiceTest {
 	private static final String NAME = "NAME";
 
 	@Test
-	public void 글_목록_전체_조회하기() throws Exception{
+	@Transactional
+	public void 글_목록_전체_조회하기() throws Exception {
 	    // given
 		List<Product> products = new ArrayList<>();
+		List<ProductSummary> productSummariesBefore = productService.getProducts();
+		int sizeBefore = productSummariesBefore.size();
 		for (int i = 0; i < 10; i++) {
 	    	products.add(productRepository.save(Product.builder().title(TITLE).thumbnailImage(IMAGE_URL).build()));
 		}
@@ -56,7 +60,7 @@ class ProductServiceTest {
 		List<ProductSummary> productSummaries = productService.getProducts();
 
 		// then
-		assertEquals(10, productSummaries.size());
+		assertEquals(sizeBefore + 10, productSummaries.size());
 	}
 
 	@Test
@@ -75,11 +79,24 @@ class ProductServiceTest {
 		assertEquals(TITLE, productDetailResponse.getTitle());
 	}
 
-	@AfterEach
-	void deleteAll() {
-		categoryRepository.deleteAll();
-		memberRepository.deleteAll();
-		productRepository.deleteAll();
-	}
+    @Test
+    void 거래_글_생성() {
+		// given
+		Category category = categoryRepository.save(Category.builder().name("유모차").build());
+		Member member = memberRepository.save(Member.builder().name(NAME).memberType(MemberType.KAKAO).role(Role.USER).build());
+		ProductCreateRequest productCreateRequest = ProductCreateRequest.builder()
+				.title("TITLE")
+				.productImages(List.of("...", "..."))
+				.description("...")
+				.price(10000)
+				.categoryId(category.getId())
+				.build();
+
+		// when
+		ProductCreateResponse productCreateResponse = productService.createProduct(member.getId(), productCreateRequest);
+
+		// then
+		assertEquals("TITLE", productCreateResponse.getTitle());
+    }
 
 }

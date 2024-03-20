@@ -84,6 +84,13 @@ $breakpoint-mobile: 640px; /* 변수 선언 */
   font-style: normal;
 }
 
+@font-face {
+  font-family: "Oliver";
+  src: url("../../public/fonts/Oliver-Regular.ttf");
+  font-weight: 400;
+  font-style: normal;
+}
+
 @mixin text-body {
   font-size: $fs-5;
   font-weight: $fw-medium;
@@ -110,7 +117,7 @@ $breakpoint-mobile: 640px; /* 변수 선언 */
 
 @mixin text-logo {
   font-family: "Oliver";
-  font-size: $fs-4;
+  font-size: $fs-3;
   color: $color-text1;
 }
 

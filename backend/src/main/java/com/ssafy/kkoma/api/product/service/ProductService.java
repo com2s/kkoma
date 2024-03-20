@@ -6,7 +6,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.ssafy.kkoma.api.member.dto.response.MemberSummaryResponse;
+import com.ssafy.kkoma.api.member.service.MemberService;
+import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
+import com.ssafy.kkoma.api.product.dto.ProductCreateResponse;
 import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
+import com.ssafy.kkoma.domain.member.entity.Member;
+import com.ssafy.kkoma.domain.product.constant.ProductType;
+import com.ssafy.kkoma.domain.product.entity.ProductImage;
 import com.ssafy.kkoma.global.error.ErrorCode;
 import com.ssafy.kkoma.global.error.exception.BusinessException;
 import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
@@ -27,6 +33,7 @@ public class ProductService {
 	private final ProductRepository productRepository;
 	private final ProductImageService productImageService;
 	private final CategoryService categoryService;
+	private final MemberService memberService;
 
 	public List<ProductSummary> getProducts(){
 		List<Product> products = productRepository.findAll();
@@ -66,6 +73,23 @@ public class ProductService {
 	public Product findProductById(Long productId){
 		return productRepository.findById(productId)
 				.orElseThrow(() -> new BusinessException(ErrorCode.PRODUCT_NOT_EXISTS));
+	}
+
+    public ProductCreateResponse createProduct(Long memberId, ProductCreateRequest productCreateRequest) {
+		Product product = Product.builder()
+				.title(productCreateRequest.getTitle())
+				.description(productCreateRequest.getDescription())
+				.category(categoryService.findCategoryById(productCreateRequest.getCategoryId()))
+				.price(productCreateRequest.getPrice())
+				.build();
+
+		Member member = memberService.findMemberByMemberId(memberId);
+		product.setMember(member);
+
+		List<String> productImageUrls = productCreateRequest.getProductImages();
+		List<ProductImage> productImages = productImageService.createProductImages(productImageUrls, product);
+		Product savedProduct = productRepository.save(product);
+		return ProductCreateResponse.fromEntity(savedProduct, productImages);
 	}
 
 }

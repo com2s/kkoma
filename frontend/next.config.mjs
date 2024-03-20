@@ -5,6 +5,22 @@ import path from "path";
 const __dirname = path.resolve();
 
 const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "chart.apis.google.com",
+        port: "",
+        pathname: "/chart/**",
+      },
+      {
+        protocol: "https",
+        hostname: "picsum.photos",
+        port: "",
+        pathname: "/**",
+      },
+    ],
+  },
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,

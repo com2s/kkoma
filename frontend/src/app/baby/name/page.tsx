@@ -5,7 +5,7 @@ import { ButtonContainer, SubBtn, NormalBtn } from "@/components/common/buttons"
 export default function BabyName() {
   return (
     <>
-      <Title title="아이의 이름을 알려주세요" subtitle="별명이나 태명도 좋아요" />
+      <Title title={`아이의\n이름을 알려주세요`} subtitle="별명이나 태명도 좋아요" />
       <TextField
         id="standard-basic"
         label="이름"
