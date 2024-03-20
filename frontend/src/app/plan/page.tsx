@@ -4,10 +4,12 @@ import styles from "./plan.module.scss";
 import { DealList } from "@/components/plan/list";
 export default function Plan() {
   return (
-    <div className={styles.plan}>
-      <Navigation />
+    <>
       <TopBar />
-      <DealList />
-    </div>
+      <div className={styles.plan}>
+        <Navigation />
+        <DealList />
+      </div>
+    </>
   );
 }
