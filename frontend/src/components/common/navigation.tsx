@@ -74,6 +74,7 @@ const Header = () => {
           minWidth: "320px",
           margin: "auto",
           borderRadius: "15px 15px 0 0",
+          boxShadow: "0 -15px 15px 0 white",
         }}
         elevation={0} // 기본 그림자 제거
       >
