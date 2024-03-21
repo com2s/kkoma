@@ -3,15 +3,22 @@ package com.ssafy.kkoma.api.offer.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssafy.kkoma.api.deal.dto.request.DealTimeRequest;
+import com.ssafy.kkoma.api.deal.service.DealService;
 import com.ssafy.kkoma.api.member.dto.response.MemberProfileResponse;
 import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
 import com.ssafy.kkoma.api.offer.dto.response.OfferTimeResponse;
 import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
+import com.ssafy.kkoma.api.point.service.PointHistoryService;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.domain.offer.constant.OfferType;
 import com.ssafy.kkoma.domain.offer.entity.Offer;
 import com.ssafy.kkoma.domain.offer.repository.OfferRepository;
+
+import com.ssafy.kkoma.domain.point.constant.PointChangeType;
+import com.ssafy.kkoma.domain.point.entity.PointHistory;
+
 import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.api.product.service.ProductService;
@@ -29,6 +36,8 @@ public class OfferService {
     private final OfferRepository offerRepository;
     private final MemberService memberService;
     private final ProductService productService;
+    private final PointHistoryService pointHistoryService;
+    private final DealService dealService;
 
     public Offer findOfferByOfferId(Long offerId) {
         return offerRepository.findById(offerId)
@@ -37,7 +46,16 @@ public class OfferService {
 
     public Long createOffer(Long memberId, Long productId) {
         Member member = memberService.findMemberByMemberId(memberId);
-        Product product = productService.findProductById(productId);
+        Product product = productService.findProductByProductId(productId);
+
+        member.getPoint().subBalance(product.getPrice());
+
+        pointHistoryService.createPointHistory(PointHistory.builder()
+            .point(member.getPoint())
+            .amount(product.getPrice())
+            .pointChangeType(PointChangeType.USE)
+            .balanceAfterChange(member.getPoint().getBalance())
+            .build());
 
         Offer offer = Offer.builder()
             .product(product)
@@ -66,11 +84,12 @@ public class OfferService {
         return offerResponseList;
     }
 
-    public Offer updateOfferStatusFromSentToAccepted(Long offerId) {
-        Offer offer = offerRepository.findById(offerId)
-            .orElseThrow(() -> new EntityNotFoundException(ErrorCode.OFFER_NOT_EXISTS));
+    public Offer acceptOffer(Long offerId, DealTimeRequest dealTimeRequest){
+        Offer offer = findOfferByOfferId(offerId);
 
-        offer.setStatus(OfferType.ACCEPTED);
+        offer.updateStatus(OfferType.ACCEPTED);
+        offer.getProduct().updateStatus(ProductType.MID);
+        dealService.createDeal(offer, dealTimeRequest); // TODO: deal entity 말고 변환해줘야 되는 것 같은데
 
         return offer;
     }

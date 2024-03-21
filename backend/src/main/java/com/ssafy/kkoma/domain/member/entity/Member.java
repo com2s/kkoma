@@ -81,6 +81,9 @@ public class Member extends BaseTimeEntity {
 	@OneToOne(fetch = FetchType.LAZY)
 	private Point point;
 
+	private boolean memberInfoCompleted;
+	private boolean kidInfoCompleted;
+
 	@Builder
 	public Member(MemberType memberType, String email, String name, String profileImage, Role role) {
 		this.memberType = memberType;
@@ -90,7 +93,8 @@ public class Member extends BaseTimeEntity {
 		this.role = role;
 		this.products = new ArrayList<>();
 		this.kids = new ArrayList<>();
-	}
+        memberInfoCompleted = false;
+    }
 
 	public void updateRefreshToken(JwtTokenDto jwtTokenDto) {
 		this.refreshToken = jwtTokenDto.getRefreshToken();
@@ -106,10 +110,19 @@ public class Member extends BaseTimeEntity {
 		this.nickname = updateMemberRequest.getNickname();
 		this.name = updateMemberRequest.getName();
 		this.phone = updateMemberRequest.getPhone();
+		this.memberInfoCompleted = true;
 	}
 
 	public void setPoint(Point point) {
 		this.point = point;
+	}
+
+	public void setMemberInfoCompleted(boolean additionalInfoCompleted) {
+		this.memberInfoCompleted = additionalInfoCompleted;
+	}
+
+	public void setKidInfoCompleted(boolean kidInfoCompleted) {
+		this.kidInfoCompleted = kidInfoCompleted;
 	}
 
 }

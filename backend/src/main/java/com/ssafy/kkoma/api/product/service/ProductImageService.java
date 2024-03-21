@@ -17,7 +17,7 @@ public class ProductImageService {
 
     private final ProductImageRepository productImageRepository;
 
-    public List<String> getProductImages(Long productId){
+    public List<String> getProductImageUrls(Long productId){
         List<ProductImage> productImages = productImageRepository.findAllProductImagesByProductId(productId);
         List<String> images = new ArrayList<>();
         for (ProductImage productImage : productImages) {
@@ -29,8 +29,7 @@ public class ProductImageService {
 
     public List<ProductImage> createProductImages(List<String> productImageUrls, Product product) {
         List<ProductImage> ret = new ArrayList<>();
-        for (String productImageUrl :
-                productImageUrls) {
+        for (String productImageUrl : productImageUrls) {
             ProductImage productImage = ProductImage.builder().productImage(productImageUrl).product(product).build();
             ProductImage savedProductImage = productImageRepository.save(productImage);
             ret.add(savedProductImage);

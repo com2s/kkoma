@@ -5,6 +5,7 @@ import com.ssafy.kkoma.global.interceptor.AuthenticationInterceptor;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfoArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -25,16 +26,12 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/**")
-                .allowedOrigins("http://70.12.246.249:3000/**") // external origins
-                .allowedMethods(
-                        HttpMethod.GET.name(),
-                        HttpMethod.POST.name(),
-                        HttpMethod.PUT.name(),
-                        HttpMethod.PATCH.name(),
-                        HttpMethod.DELETE.name(),
-                        HttpMethod.OPTIONS.name()
-                );
+        registry.addMapping("/**")
+//                .allowedOrigins("*") // external origins // "http://70.12.246.249:3000", "https://j10a308.p.ssafy.io"
+                .allowedMethods("*")
+                .allowedHeaders("*")
+                .allowedOriginPatterns("*")
+                .allowCredentials(true);
     }
 
     @Override
@@ -43,19 +40,27 @@ public class WebConfig implements WebMvcConfigurer {
                 .order(1)
                 .addPathPatterns("/api/**")
                 .excludePathPatterns(
+
+                        "/api/health",
                         "/api/oauth/login",
                         "/api/logout",
                         "/api/access-token/issue",
                         "/api/test/token/**",
                         "/api/oauth/kakao",
                         "/login",
-
+                        "/h2-console/**",
                         "/favicon.ico",
                         "/error",
                         "/swagger-ui/**",
                         "/swagger-resources/**",
                         "/v3/api-docs/**"
-                );
+                )
+                // Preflight 요청이 아닌 경우에만 인증 헤더를 검사하도록 조건 추가
+                .excludePathPatterns();
+
+        ;
+
+
 
         registry.addInterceptor(adminAuthorizationInterceptor)
                 .order(2)
