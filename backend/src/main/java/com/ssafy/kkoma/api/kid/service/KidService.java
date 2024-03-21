@@ -34,6 +34,7 @@ public class KidService {
             kid = member.getKids().get(0);
         }
         kid.updateKidInfo(updateKidRequest);
+        member.setKidInfoCompleted(true);
         return KidSummaryResponse.fromEntity(kid);
     }
 

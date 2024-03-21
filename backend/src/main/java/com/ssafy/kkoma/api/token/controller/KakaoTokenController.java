@@ -27,11 +27,6 @@ public class KakaoTokenController {
     private final KakaoLoginApiServiceImpl kakaoLoginApiService;
     private final OauthLoginService oauthLoginService;
 
-//    @GetMapping("/login")
-//    public String login() {
-//        return "loginForm";
-//    }
-
     @Tag(name = "Token")
     @Operation(summary = "to get a kakao token")
     @GetMapping("/oauth/kakao")

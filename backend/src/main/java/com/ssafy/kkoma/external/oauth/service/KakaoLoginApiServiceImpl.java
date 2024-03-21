@@ -35,7 +35,7 @@ public class KakaoLoginApiServiceImpl implements SocialLoginApiService {
     private String clientDomain;
 
     @Value("${kkoma.client-port}")
-    private String serverPort;
+    private String clientPort;
 
     @Override
     public KakaoTokenDto.Response getKakaoToken(String code) {
@@ -45,7 +45,7 @@ public class KakaoLoginApiServiceImpl implements SocialLoginApiService {
                 .client_secret(clientSecret)
                 .grant_type("authorization_code")
                 .code(code)
-                .redirect_uri("https://" + clientDomain + "/oauth/kakao")
+                .redirect_uri("https://" + clientDomain + "/api/oauth/kakao")
                 .build();
         KakaoTokenDto.Response kakaoToken = kakaoTokenClient.requestKakaoToken(contentType, kakaoTokenRequestDto);
         return kakaoToken;
