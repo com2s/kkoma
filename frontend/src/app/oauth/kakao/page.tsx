@@ -24,9 +24,10 @@ export default function KakaoOauth() {
 
   try {
     doLogin();
-  } catch {
-    console.log("error in kakao login");
-    //TODO: error 후 redirect 필요
+    router.replace("/join/profile");
+  } catch (e) {
+    console.error(e);
+    router.replace("/error");
   }
 
   return <Loading />;
