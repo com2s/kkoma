@@ -1,7 +1,5 @@
 package com.ssafy.kkoma.domain.product.constant;
 
-public enum ProductType {
-
-	SALE, PROGRESS, SOLD
-
+public enum MyProductType {
+	SELL, BUY
 }

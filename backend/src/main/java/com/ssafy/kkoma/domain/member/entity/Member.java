@@ -7,6 +7,7 @@ import com.ssafy.kkoma.domain.location.entity.Location;
 
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
+import com.ssafy.kkoma.domain.offer.entity.Offer;
 import com.ssafy.kkoma.domain.point.entity.Point;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.global.jwt.dto.JwtTokenDto;
@@ -73,6 +74,9 @@ public class Member extends BaseTimeEntity {
 
 	@OneToMany(mappedBy = "member")
 	private List<Product> products = new ArrayList<>();
+
+	@OneToMany(mappedBy = "member")
+	private List<Offer> offers = new ArrayList<>();
 
 	@OneToOne(fetch = FetchType.LAZY)
 	private Point point;

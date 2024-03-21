@@ -10,8 +10,15 @@ import com.ssafy.kkoma.api.member.dto.response.MemberSummaryResponse;
 import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
 import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
+import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
 import com.ssafy.kkoma.domain.member.entity.Member;
+
+import com.ssafy.kkoma.domain.offer.entity.Offer;
+import com.ssafy.kkoma.domain.product.constant.MyProductType;
+import com.ssafy.kkoma.domain.product.constant.ProductType;
+
 import com.ssafy.kkoma.domain.product.entity.Category;
+
 import com.ssafy.kkoma.domain.product.entity.ProductImage;
 import com.ssafy.kkoma.global.error.ErrorCode;
 import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
@@ -53,6 +60,19 @@ public class ProductService {
 		String categoryName = categoryService.getCategoryName(product.getCategory().getId());
 
 		return buildProductDetailResponse(product, productImageUrls, categoryName, product.getMember());
+	}
+
+	public ProductInfoResponse getProductInfoResponse(Long productId) {
+
+		Product product = productRepository.findById(productId)
+			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.PRODUCT_NOT_EXISTS));
+
+		return ProductInfoResponse.fromEntity(product, MyProductType.BUY);
+	}
+
+	public Product findProductById(Long productId){
+		return productRepository.findById(productId)
+				.orElseThrow(() -> new BusinessException(ErrorCode.PRODUCT_NOT_EXISTS));
 	}
 
     public ProductDetailResponse createProduct(Long memberId, ProductCreateRequest productCreateRequest) {
