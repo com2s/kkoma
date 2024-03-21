@@ -72,8 +72,7 @@ public class OfferService {
     public Offer acceptOffer(Long offerId, DealTimeRequest dealTimeRequest){
         Offer offer = findOfferByOfferId(offerId);
 
-        offer.setStatus(OfferType.ACCEPTED);
-        // offer.getProduct().setStatus(ProductType.MID);
+        offer.updateStatus(OfferType.ACCEPTED);
         offer.getProduct().updateStatus(ProductType.MID);
         dealService.createDeal(offer, dealTimeRequest); // TODO: deal entity 말고 변환해줘야 되는 것 같은데
 
