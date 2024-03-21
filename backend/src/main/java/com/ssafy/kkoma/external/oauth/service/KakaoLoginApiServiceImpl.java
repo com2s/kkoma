@@ -45,8 +45,8 @@ public class KakaoLoginApiServiceImpl implements SocialLoginApiService {
                 .client_secret(clientSecret)
                 .grant_type("authorization_code")
                 .code(code)
-//                .redirect_uri(clientHost + "/oauth/kakao")
-                .redirect_uri("http://localhost:8080/api/oauth/kakao")
+                .redirect_uri(clientHost + "/oauth/kakao")
+//                .redirect_uri("http://localhost:8080/api/oauth/kakao")
                 .build();
         KakaoTokenDto.Response kakaoToken = kakaoTokenClient.requestKakaoToken(contentType, kakaoTokenRequestDto);
         return kakaoToken;
