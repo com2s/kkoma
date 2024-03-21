@@ -3,6 +3,7 @@ package com.ssafy.kkoma.api.offer.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssafy.kkoma.api.deal.dto.request.DealTimeRequest;
 import com.ssafy.kkoma.api.deal.service.DealService;
 import com.ssafy.kkoma.api.member.dto.response.MemberProfileResponse;
 import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
@@ -15,6 +16,7 @@ import com.ssafy.kkoma.domain.offer.entity.Offer;
 import com.ssafy.kkoma.domain.offer.repository.OfferRepository;
 import com.ssafy.kkoma.domain.point.constant.PointChangeType;
 import com.ssafy.kkoma.domain.point.entity.PointHistory;
+import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.api.product.service.ProductService;
 import com.ssafy.kkoma.global.error.ErrorCode;
@@ -32,6 +34,7 @@ public class OfferService {
     private final MemberService memberService;
     private final ProductService productService;
     private final PointHistoryService pointHistoryService;
+    private final DealService dealService;
 
     public Offer findOfferByOfferId(Long offerId) {
         return offerRepository.findById(offerId)

@@ -1,27 +1,17 @@
 package com.ssafy.kkoma.api.deal.service;
 
-import java.util.UUID;
-
 import org.springframework.stereotype.Service;
 
+import com.ssafy.kkoma.api.deal.dto.request.DealTimeRequest;
 import com.ssafy.kkoma.domain.deal.entity.Deal;
 import com.ssafy.kkoma.domain.deal.repository.DealRepository;
-import com.ssafy.kkoma.domain.deal.request.DealTimeRequest;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.offer.entity.Offer;
 import com.ssafy.kkoma.domain.product.entity.Product;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ssafy.kkoma.api.member.service.MemberService;
-import com.ssafy.kkoma.api.point.service.PointService;
-import com.ssafy.kkoma.api.product.service.ProductService;
-import com.ssafy.kkoma.domain.deal.entity.Deal;
-import com.ssafy.kkoma.domain.deal.repository.DealRepository;
-import com.ssafy.kkoma.domain.member.entity.Member;
-import com.ssafy.kkoma.domain.point.entity.Point;
 import com.ssafy.kkoma.domain.product.constant.ProductType;
-import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.global.error.ErrorCode;
 import com.ssafy.kkoma.global.error.exception.BusinessException;
 import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;

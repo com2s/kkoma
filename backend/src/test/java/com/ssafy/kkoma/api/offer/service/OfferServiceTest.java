@@ -1,7 +1,7 @@
 package com.ssafy.kkoma.api.offer.service;
 
+import com.ssafy.kkoma.api.deal.dto.request.DealTimeRequest;
 import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
-import com.ssafy.kkoma.domain.deal.request.DealTimeRequest;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.domain.member.entity.Member;
