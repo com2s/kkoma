@@ -5,8 +5,10 @@ import com.ssafy.kkoma.api.offer.dto.request.OfferTimeRequest;
 import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
 import com.ssafy.kkoma.api.offer.service.OfferDetailService;
 import com.ssafy.kkoma.api.offer.service.OfferService;
+import com.ssafy.kkoma.domain.deal.entity.Deal;
 import com.ssafy.kkoma.domain.deal.request.DealTimeRequest;
 import com.ssafy.kkoma.domain.offer.entity.Offer;
+import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfoDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -53,9 +55,7 @@ public class OfferController {
     @PatchMapping("/{offerId}")
     public ResponseEntity<?> changeOfferStatus(@PathVariable Long offerId, @RequestParam String type, @RequestBody DealTimeRequest dealTimeRequest){
         if(type.equals("accept")){
-            Offer offer = offerService.updateOfferStatusFromSentToAccepted(offerId);
-
-            dealService.createDeal(offer, dealTimeRequest);
+            Offer offer = offerService.acceptOffer(offerId, dealTimeRequest);
         }
 
         return ResponseEntity.ok().build();

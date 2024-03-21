@@ -1,6 +1,7 @@
 package com.ssafy.kkoma.api.offer.service;
 
 import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
+import com.ssafy.kkoma.domain.deal.request.DealTimeRequest;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.domain.member.entity.Member;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -120,10 +122,12 @@ class OfferServiceTest {
         Category category = categoryRepository.save(Category.builder().name("유모차").build());
         Member member = memberRepository.save(Member.builder().name(NAME).memberType(MemberType.KAKAO).role(Role.USER).build());
         Product product = productRepository.save(Product.builder().title(TITLE).thumbnailImage(IMAGE_URL).category(category).member(member).build());
+
         Offer offer = offerRepository.save(Offer.builder().product(product).member(member).build());
+        DealTimeRequest dealTimeRequest = DealTimeRequest.builder().selectedTime(LocalDateTime.now()).build();
 
         // when
-        Offer newOffer = offerService.updateOfferStatusFromSentToAccepted(offer.getId());
+        Offer newOffer = offerService.acceptOffer(offer.getId(), dealTimeRequest);
 
         // then
         assertEquals(OfferType.ACCEPTED, newOffer.getStatus());
