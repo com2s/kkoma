@@ -3,6 +3,7 @@ package com.ssafy.kkoma.domain.deal.entity;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.ssafy.kkoma.api.kid.dto.request.UpdateKidRequest;
 import com.ssafy.kkoma.domain.common.entity.BaseTimeEntity;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.product.entity.Product;
@@ -51,4 +52,7 @@ public class Deal extends BaseTimeEntity {
 
 	private LocalDateTime cancelledAt;
 
+	public void updateIsCompleted(Boolean status) {
+		this.isCompleted = status;
+	}
 }

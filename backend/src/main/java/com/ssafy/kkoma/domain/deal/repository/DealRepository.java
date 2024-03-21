@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.ssafy.kkoma.domain.deal.entity.Deal;
+import com.ssafy.kkoma.domain.kid.entity.Kid;
 import com.ssafy.kkoma.domain.product.entity.Product;
 
 @Repository

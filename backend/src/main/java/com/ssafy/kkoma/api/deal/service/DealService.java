@@ -29,6 +29,7 @@ import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class DealService {
 
@@ -41,7 +42,6 @@ public class DealService {
 			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.DEAL_NOT_EXISTS));
 	}
 
-	@Transactional
 	public Deal createDeal(Offer offer, DealTimeRequest dealTimeRequest){
 		return dealRepository.save(Deal.builder()
 			.member(offer.getMember())
@@ -51,6 +51,7 @@ public class DealService {
 
 	// 상품 상태가 '거래중'이고 구매자가 맞는지 확인
 	public String getCode(Long dealId, Long memberId){
+		System.out.println("dealId: " + dealId + " memberId: " + memberId);
 		Deal deal = findDealByDealId(dealId);
 		System.out.println(deal.toString());
 
@@ -69,19 +70,17 @@ public class DealService {
 
 	public Deal finishDeal(Long dealId, Long memberId, String code) {
 		Deal deal = findDealByDealId(dealId);
-		System.out.println(deal.toString());
 
 		if (!deal.getCode().equals(code)) { // 무효한 코드
 			throw new BusinessException(ErrorCode.INVALID_CODE);
 		}
 
-		System.out.println("why not working ???");
-
 		Product product = deal.getProduct();
-		System.out.println(product);
-
 		Member seller = product.getMember();
-		System.out.println(seller.toString());
+
+		if (!product.getStatus().equals(ProductType.MID)) { // 거래 중이 아닌 상품
+			throw new BusinessException(ErrorCode.DEAL_INVALID_STATUS);
+		}
 
 		if (!seller.getId().equals(memberId)) { // 판매자가 아님
 			throw new BusinessException(ErrorCode.INVALID_SELLER);
@@ -90,9 +89,11 @@ public class DealService {
 		// 판매자에게 포인트 넣어주기
 		seller.getPoint().addBalance(product.getPrice());
 
-		// 물건 status 변경
-		// product.setStatus(ProductType.SOLD);
+		// 상품 status 변경
 		product.updateStatus(ProductType.SOLD);
+
+		// 거래 status 변경
+		deal.updateIsCompleted(Boolean.TRUE);
 
 		return deal;
 	}
