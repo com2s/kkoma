@@ -1,6 +1,6 @@
 // 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 
 // fetch 함수를 사용할 때 method, headers, body 등을 명시적으로 지정하지 않으면 기본값이 적용됩니다:
 
@@ -119,9 +119,6 @@ deleteData('https://api.example.com/data/1')
 
 
 export default function Test() {
-  const [value, setValue] = useState(new Date());
-
-
   return (
     <div>
       <h1>Test</h1>
