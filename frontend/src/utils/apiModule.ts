@@ -16,14 +16,13 @@ const APIModule = async ({ action, method, data }: APIProps) => {
     data = JSON.stringify(data);
   }
 
-  // const accessToken = await getAccessToken();
+  const accessToken = await getAccessToken();
 
   const res = await fetch(`${baseURL}${action}`, {
     method: method,
     headers: {
       "Content-Type": "application/json",
-      Authorization:
-        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBQ0NFU1MiLCJpYXQiOjE3MTEwMTI4NjIsImV4cCI6MTcyMzEwODg2MiwibWVtYmVySWQiOjU4LCJyb2xlIjoiVVNFUiJ9.wqWhTgpIVOoP1ZovYRxMOyHmY6vRDSz34nE-LdrkqxeSVrYqtuJ_waW3KN9jjJDLnRZRfKSUDp0w51oj2sI2EQ",
+      Authorization: accessToken ?? "",
     },
     body: data,
   });
