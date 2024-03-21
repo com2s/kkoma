@@ -46,7 +46,7 @@ public class Member extends BaseTimeEntity {
 	@Column(length = 50)
 	private String nickname;
 
-	@Column(length = 11)
+	@Column(length = 20)
 	private String phone;
 
 	@Column
