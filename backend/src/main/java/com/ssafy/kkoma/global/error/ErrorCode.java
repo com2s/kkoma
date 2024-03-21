@@ -46,7 +46,8 @@ public enum ErrorCode {
     UPDATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "T-004", "회원 정보를 수정에 실패하였습니다."),
 
     // Util
-    S3UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "U-001", "이미지 업로드에 실패하였습니다.");
+    IMAGE_NOT_EXISTS(HttpStatus.BAD_REQUEST, "U-001", "업로드 한 이미지가 비어있습니다."),
+    S3UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "U-002", "이미지 업로드에 실패하였습니다.");
 
     ErrorCode(HttpStatus httpStatus, String errorCode, String message) {
         this.httpStatus = httpStatus;
