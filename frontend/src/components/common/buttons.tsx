@@ -5,7 +5,7 @@ import styles from "./buttons.module.scss";
 
 interface btnProps {
   children: String;
-  next: String;
+  next: String | Function;
   disabled?: boolean;
 }
 
@@ -30,12 +30,16 @@ export function WideBtn({ children, next }: btnProps) {
 export function NormalBtn({ children, next, disabled }: btnProps) {
   const router = useRouter();
 
+  const onclickBtn = () => {
+    if (typeof next === "string") {
+      router.push(`${next}`);
+    } else if (typeof next === "function") {
+      next();
+    }
+  };
+
   return (
-    <button
-      className={`${styles.btn} ${styles.normal}`}
-      onClick={() => router.push(`${next}`)}
-      disabled={disabled}
-    >
+    <button className={`${styles.btn} ${styles.normal}`} onClick={onclickBtn} disabled={disabled}>
       <div>{children}</div>
     </button>
   );

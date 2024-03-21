@@ -1,5 +1,8 @@
+"use client";
+
 import TopBar3 from "@/components/common/top-bar3";
 import styles from "./join.module.scss";
+import { RecoilRoot } from "recoil";
 
 export default function JoinLayout({
   children,
@@ -7,9 +10,11 @@ export default function JoinLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className={styles.join}>
-      <TopBar3 />
-      {children}
-    </div>
+    <RecoilRoot>
+      <div className={styles.join}>
+        <TopBar3 />
+        {children}
+      </div>
+    </RecoilRoot>
   );
 }
