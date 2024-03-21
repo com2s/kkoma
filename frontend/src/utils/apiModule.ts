@@ -22,7 +22,5 @@ const APIModule = async ({ action, method, data }: APIProps) => {
     },
     body: data,
   });
-
-  console.log("res in api module=", res);
   return res;
 };
