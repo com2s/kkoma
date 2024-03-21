@@ -3,7 +3,5 @@ export const kakaoLogin = async (code: string) => {
 
   const res = await fetch(`${baseURL}/oauth/kakao?code=${code}`);
 
-  console.log("res in kakaoLogin=", res);
-
   return res;
 };
