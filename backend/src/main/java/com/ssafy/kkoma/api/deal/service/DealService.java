@@ -42,7 +42,7 @@ public class DealService {
 		Deal deal = findDealByDealId(dealId);
 
 		Product product = deal.getProduct();
-		if (!product.getStatus().equals(ProductType.MID)) { // 거래 중이 아닌 상품
+		if (!product.getStatus().equals(ProductType.PROGRESS)) { // 거래 중이 아닌 상품
 			throw new BusinessException(ErrorCode.DEAL_INVALID_STATUS);
 		}
 
@@ -64,7 +64,7 @@ public class DealService {
 		Product product = deal.getProduct();
 		Member seller = product.getMember();
 
-		if (!product.getStatus().equals(ProductType.MID)) { // 거래 중이 아닌 상품
+		if (!product.getStatus().equals(ProductType.PROGRESS)) { // 거래 중이 아닌 상품
 			throw new BusinessException(ErrorCode.DEAL_INVALID_STATUS);
 		}
 
