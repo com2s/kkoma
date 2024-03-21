@@ -5,6 +5,7 @@ import com.ssafy.kkoma.global.interceptor.AuthenticationInterceptor;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfoArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -39,6 +40,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .order(1)
                 .addPathPatterns("/api/**")
                 .excludePathPatterns(
+
+                        "/api/health",
                         "/api/oauth/login",
                         "/api/logout",
                         "/api/access-token/issue",
@@ -51,7 +54,13 @@ public class WebConfig implements WebMvcConfigurer {
                         "/swagger-ui/**",
                         "/swagger-resources/**",
                         "/v3/api-docs/**"
-                );
+                )
+                // Preflight 요청이 아닌 경우에만 인증 헤더를 검사하도록 조건 추가
+                .excludePathPatterns();
+
+        ;
+
+
 
         registry.addInterceptor(adminAuthorizationInterceptor)
                 .order(2)
