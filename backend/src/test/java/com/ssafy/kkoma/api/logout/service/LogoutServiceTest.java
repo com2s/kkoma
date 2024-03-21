@@ -1,6 +1,6 @@
 package com.ssafy.kkoma.api.logout.service;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.springframework.transaction.annotation.Transactional;
 
 class LogoutServiceTest {
 

@@ -22,7 +22,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Transactional
 class MemberServiceTest {
 
     @Autowired
@@ -35,6 +34,7 @@ class MemberServiceTest {
     ProductRepository productRepository;
 
     @Test
+    @Transactional
     void 회원_정보_수정() {
 
         Member member = Member.builder()
@@ -55,6 +55,7 @@ class MemberServiceTest {
     }
 
     @Test
+    @Transactional
     void 포인트_생성() {
         // given
         Member member = Member.builder()
@@ -74,6 +75,7 @@ class MemberServiceTest {
     }
 
     @Test
+    @Transactional
     void 나의_판매글_조회() {
         // given
         Member member = Member.builder()

@@ -43,7 +43,7 @@ public class OfferService {
 
     public Long createOffer(Long memberId, Long productId) {
         Member member = memberService.findMemberByMemberId(memberId);
-        Product product = productService.findProductById(productId);
+        Product product = productService.findProductByProductId(productId);
 
         member.getPoint().subBalance(product.getPrice());
 

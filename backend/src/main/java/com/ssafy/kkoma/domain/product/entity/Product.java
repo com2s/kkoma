@@ -56,9 +56,15 @@ public class Product extends BaseTimeEntity {
 	@Enumerated(EnumType.STRING)
 	private ProductType status = ProductType.SALE;
 
-	private Long viewCount;
-	private Long wishCount;
-	private Long offerCount;
+	@Builder.Default
+	private Long viewCount = 0L;
+
+	@Builder.Default
+	private Long wishCount = 0L;
+
+	@Builder.Default
+	private Long offerCount = 0L;
+
 	private LocalDateTime deletedAt;
 
 	public void setMember(Member member) {
