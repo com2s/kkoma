@@ -11,6 +11,7 @@ import com.ssafy.kkoma.domain.offer.entity.Offer;
 import com.ssafy.kkoma.domain.offer.entity.OfferDetail;
 import com.ssafy.kkoma.domain.offer.repository.OfferDetailRepository;
 import com.ssafy.kkoma.domain.offer.repository.OfferRepository;
+import com.ssafy.kkoma.domain.point.entity.Point;
 import com.ssafy.kkoma.domain.product.entity.Category;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.domain.product.repository.CategoryRepository;
@@ -26,7 +27,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
@@ -59,11 +59,15 @@ class OfferServiceTest {
     public void 거래_요청_성공() throws Exception{
         // given
         Category category = categoryRepository.save(Category.builder().name("유모차").build());
-        Member member = memberRepository.save(Member.builder().name(NAME).memberType(MemberType.KAKAO).role(Role.USER).build());
-        Product product = productRepository.save(Product.builder().title(TITLE).thumbnailImage(IMAGE_URL).category(category).member(member).build());
+        Member member1 = memberRepository.save(Member.builder().name(NAME).memberType(MemberType.KAKAO).role(Role.USER).build());
+        Member member2 = memberRepository.save(Member.builder().name(NAME).memberType(MemberType.KAKAO).role(Role.USER).build());
+        Point point = new Point();
+        point.addBalance(10000);
+        member2.setPoint(point);
+        Product product = productRepository.save(Product.builder().title(TITLE).thumbnailImage(IMAGE_URL).category(category).member(member1).price(20000).build());
 
         // when
-        Long offerId = offerService.createOffer(member.getId(), product.getId());
+        Long offerId = offerService.createOffer(member2.getId(), product.getId());
         Offer offer = offerService.findOfferByOfferId(offerId);
 
         // then

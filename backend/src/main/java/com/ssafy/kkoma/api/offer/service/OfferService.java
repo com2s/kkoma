@@ -2,21 +2,19 @@ package com.ssafy.kkoma.api.offer.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.ssafy.kkoma.api.deal.service.DealService;
 import com.ssafy.kkoma.api.member.dto.response.MemberProfileResponse;
 import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
 import com.ssafy.kkoma.api.offer.dto.response.OfferTimeResponse;
-import com.ssafy.kkoma.domain.deal.entity.Deal;
-import com.ssafy.kkoma.domain.deal.request.DealTimeRequest;
+import com.ssafy.kkoma.api.point.service.PointHistoryService;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.domain.offer.constant.OfferType;
 import com.ssafy.kkoma.domain.offer.entity.Offer;
-import com.ssafy.kkoma.domain.offer.entity.OfferDetail;
 import com.ssafy.kkoma.domain.offer.repository.OfferRepository;
-import com.ssafy.kkoma.domain.product.constant.ProductType;
+import com.ssafy.kkoma.domain.point.constant.PointChangeType;
+import com.ssafy.kkoma.domain.point.entity.PointHistory;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.api.product.service.ProductService;
 import com.ssafy.kkoma.global.error.ErrorCode;
@@ -33,16 +31,25 @@ public class OfferService {
     private final OfferRepository offerRepository;
     private final MemberService memberService;
     private final ProductService productService;
-    private final DealService dealService;
+    private final PointHistoryService pointHistoryService;
 
-    public Offer findOfferByOfferId(Long offerId){
+    public Offer findOfferByOfferId(Long offerId) {
         return offerRepository.findById(offerId)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.OFFER_NOT_EXISTS));
     }
 
-    public Long createOffer(Long memberId, Long productId){
+    public Long createOffer(Long memberId, Long productId) {
         Member member = memberService.findMemberByMemberId(memberId);
         Product product = productService.findProductById(productId);
+
+        member.getPoint().subBalance(product.getPrice());
+
+        pointHistoryService.createPointHistory(PointHistory.builder()
+            .point(member.getPoint())
+            .amount(product.getPrice())
+            .pointChangeType(PointChangeType.USE)
+            .balanceAfterChange(member.getPoint().getBalance())
+            .build());
 
         return offerRepository.save(Offer.builder().member(member)
                 .product(product)
@@ -51,14 +58,13 @@ public class OfferService {
                 .getId();
     }
 
-    public List<OfferResponse> getOffers(Long productId){
+    public List<OfferResponse> getOffers(Long productId) {
         List<OfferResponse> offerResponseList = new ArrayList<>();
 
         List<Offer> offerList = offerRepository.findAllOffersByProductId(productId)
             .orElseThrow(() -> new EntityNotFoundException(ErrorCode.OFFER_NOT_EXISTS));
 
         for (Offer offer : offerList){
-            System.out.println("###" + offer.getMember().getId());
             offerResponseList.add(OfferResponse.builder()
                 .id(offer.getId())
                 .memberProfile(MemberProfileResponse.fromEntity(offer.getMember()))

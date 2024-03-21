@@ -2,7 +2,7 @@ package com.ssafy.kkoma.api.member.service;
 
 import com.ssafy.kkoma.api.member.dto.response.MemberInfoResponse;
 import com.ssafy.kkoma.api.member.dto.request.UpdateMemberRequest;
-import com.ssafy.kkoma.api.point.repository.PointRepository;
+import com.ssafy.kkoma.domain.point.repository.PointRepository;
 import com.ssafy.kkoma.api.product.dto.ProductSummary;
 import com.ssafy.kkoma.domain.kid.entity.Kid;
 import com.ssafy.kkoma.domain.kid.repository.KidRepository;
