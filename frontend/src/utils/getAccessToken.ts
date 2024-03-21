@@ -17,19 +17,18 @@ export const getAccessToken = async () => {
 
   const refreshToken = getItemWithExpireTime("refreshToken");
   if (refreshToken) {
-    //TODO: refreshToken을 header로 보내줌
     const grantType = LocalStorage.getItem("grantType");
     const res = await fetch(`${baseURL}/access-token/issue`, {
       headers: {
         Authorization: `${grantType} ${refreshToken}`,
       },
     });
-    //TODO: 받아온 accesstoken 다시 저장
-    console.log(res.json);
+    const obj = await res.json();
+    setItemWithExpireTime("accessToken", obj.accessToken, obj.accessTokenExpireTime);
   }
 
-  //TODO: 로그아웃. 다시 로그인 필요
-  console.log("암것도 없네...");
-
-  window.location.href = "/error";
+  if (typeof window !== "undefined") {
+    alert("로그인이 필요합니다.");
+    window.location.href = "/welcome";
+  }
 };
