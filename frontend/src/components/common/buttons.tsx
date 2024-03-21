@@ -6,6 +6,7 @@ import styles from "./buttons.module.scss";
 interface btnProps {
   children: String;
   next: String;
+  disabled: boolean;
 }
 
 export function ButtonContainer({
@@ -26,11 +27,15 @@ export function WideBtn({ children, next }: btnProps) {
   );
 }
 
-export function NormalBtn({ children, next }: btnProps) {
+export function NormalBtn({ children, next, disabled }: btnProps) {
   const router = useRouter();
 
   return (
-    <button className={`${styles.btn} ${styles.normal}`} onClick={() => router.push(`${next}`)}>
+    <button
+      className={`${styles.btn} ${styles.normal}`}
+      onClick={() => router.push(`${next}`)}
+      disabled={disabled}
+    >
       <div>{children}</div>
     </button>
   );
