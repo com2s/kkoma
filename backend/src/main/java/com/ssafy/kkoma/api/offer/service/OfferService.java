@@ -2,19 +2,17 @@ package com.ssafy.kkoma.api.offer.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.ssafy.kkoma.api.member.dto.response.MemberProfileResponse;
 import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
 import com.ssafy.kkoma.api.offer.dto.response.OfferTimeResponse;
 import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
-import com.ssafy.kkoma.api.product.dto.ProductSummary;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.domain.offer.constant.OfferType;
 import com.ssafy.kkoma.domain.offer.entity.Offer;
-import com.ssafy.kkoma.domain.offer.entity.OfferDetail;
 import com.ssafy.kkoma.domain.offer.repository.OfferRepository;
+import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.api.product.service.ProductService;
 import com.ssafy.kkoma.global.error.ErrorCode;
@@ -77,15 +75,33 @@ public class OfferService {
         return offer;
     }
 
-    public List<ProductInfoResponse> getOfferingProducts(Long memberId) {
+    public List<ProductInfoResponse> getNotProgressOfferingProducts(Long memberId) {
         List<Offer> offers = memberService.getMyOffers(memberId);
-        List<Long> productIds = offers.stream().map(offer -> offer.getProduct().getId()).toList();
 
         List<ProductInfoResponse> productInfoResponses = new ArrayList<>();
-        for (Long productId : productIds) {
-            productInfoResponses.add(productService.getProductInfoResponse(productId));
+        for (Offer offer : offers) {
+            if (OfferType.SENT.equals(offer.getStatus()) || OfferType.CANCELLED.equals(offer.getStatus())) {
+                productInfoResponses.add(productService.getProductInfoResponse(offer.getProduct().getId()));
+            }
+            else if (OfferType.ACCEPTED.equals(offer.getStatus()) && ProductType.SOLD.equals(offer.getProduct().getStatus())) {
+                productInfoResponses.add(productService.getProductInfoResponse(offer.getProduct().getId()));
+            }
         }
 
         return productInfoResponses;
     }
+
+    public List<ProductInfoResponse> getProgressOfferingProducts(Long memberId) {
+        List<Offer> offers = memberService.getMyOffers(memberId);
+
+        List<ProductInfoResponse> productInfoResponses = new ArrayList<>();
+        for (Offer offer : offers) {
+            if (OfferType.ACCEPTED.equals(offer.getStatus()) && ProductType.PROGRESS.equals(offer.getProduct().getStatus())) {
+                productInfoResponses.add(productService.getProductInfoResponse(offer.getProduct().getId()));
+            }
+        }
+
+        return productInfoResponses;
+    }
+
 }
