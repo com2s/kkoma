@@ -2,7 +2,7 @@
 
 import React, { Suspense } from "react";
 import styles from "@/components/lists/lists-id.module.scss";
-import { getImages } from "@/components/lists/lists-ftn";
+import { getImages, getProductDetail } from "@/components/lists/lists-ftn";
 
 import TopBar2 from "@/components/lists/lists-detail-bar";
 import Profile from "@/components/lists/lists-detail-profile";
@@ -42,8 +42,35 @@ interface IParams {
 //   };
 // }
 
+interface DetailParams {
+    "id": number,
+    "productImages": string[],
+    "title": string,
+    "description": string,
+    "categoryName": string,
+    "price": number,
+    "status": "SALE",
+    "dealPlace": string,
+    "elapsedMinutes": number,
+    "memberSummary": {
+      "profileImage": string,
+      "nickname": string,
+      "preferredPlace": string
+    },
+    "wishCount": number,
+    "offerCount": number,
+    "viewCount": number,
+  }
+
+
 export default async function ProductDetail({ params: { id } }: IParams) {
-  const images = await getImages(id);
+  if (!id) return <div>상품 정보가 없습니다.</div>;
+  const product: DetailParams = await getProductDetail(id);
+  if (product.productImages.length === 0) {
+    product.productImages = await getImages();
+  }
+
+  // console.log(product)
 
   const settings = {
     centerMode: true,
@@ -64,11 +91,11 @@ export default async function ProductDetail({ params: { id } }: IParams) {
       <TopBar2 />
       <div className={styles.carousel}>
         <Slider {...settings}>
-          {images.map((img, index) => (
+          {product.productImages.map((img, index) => (
             <div key={index} className={styles.image}>
               <Image
-                src={img.img}
-                alt={`Slide ${index + 1}: ${img.title}`}
+                src={img[0]==='/' ? img : `/${img}`} // Route of the image file
+                alt={`Slide ${index + 1}`}
                 priority
                 width={300} // Adjust as needed
                 height={300} // Adjust as needed
@@ -78,8 +105,8 @@ export default async function ProductDetail({ params: { id } }: IParams) {
           ))}
         </Slider>
       </div>
-      <Profile id={id} />
-      <Content id={id} />
+      <Profile propsId={id} memberSummary={product.memberSummary} />
+      <Content propsId={id} product={product}/>
       <Accordion className="mt-4">
         {/* 거래 장소 선택(필수항목) */}
         <AccordionSummary

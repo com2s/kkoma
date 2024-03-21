@@ -6,15 +6,21 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Link from "next/link";
 
 interface UserProfileProps {
-    id: string;
+    propsId: string;
+    memberSummary: {
+        profileImage: string;
+        nickname: string;
+        preferredPlace: string;
+    };
 }
 
-export default function UserProfile(props: UserProfileProps) {
+export default function UserProfile({propsId, memberSummary}: UserProfileProps) {
+  console.log("UserProfileProps: ", memberSummary);
 
   return (
     <div className={styles.container}>
       <Avatar
-        src="/chicken-home.svg"
+        src={memberSummary.profileImage}
         alt="Profile Image"
         // sx={{ width: 56, height: 56 }}
         className={`${styles.responsiveImg} mr-4`}
@@ -22,8 +28,8 @@ export default function UserProfile(props: UserProfileProps) {
       {/* 프로필사진이 없을 경우? */}
       {/* <Avatar {...stringAvatar('Kent Dodds')} /> */}
       <div className={`${styles.nickname} min-w-32 text-pretty mr-1 `}>
-        <h4 className="">닉네임(id:{props.id})</h4>
-        <span className="text-slate-500">주소주소 주소주소 주소주소 주소</span>
+        <h4 className="">{memberSummary.nickname}</h4>
+        <span className="text-slate-500">{memberSummary.preferredPlace??'미정'}</span>
       </div>
       <button onClick={() => alert("유저 프로필 보기")} className="min-w-28">
         <ArrowForwardIosIcon />

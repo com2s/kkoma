@@ -33,15 +33,13 @@ import UnfoldLessIcon from "@mui/icons-material/UnfoldLess";
 
 // 인터페이스
 interface Product {
-  id: string;
-  url: string;
-  price: string;
-  productName: string;
-  town: string;
-  time: string;
-  views: number;
-  likes: number;
+  id: number;
+  thumbnailImage: string;
+  title: string;
+  dealPlace: string;
+  price: number;
   status: string;
+  elapsedMinutes: number;
 }
 
 // 옵션 데이터
@@ -114,13 +112,23 @@ export default function ListPage() {
   const filteredProducts = products
     .filter(
       (product) =>
-        chips.status === "거래 상태" ? true : product.status === chips.status
+        chips.status === "거래 상태"
+          ? true
+          : product.status === "SALE"
+          ? chips.status === "판매 중"
+          : product.status === "MID"
+          ? chips.status === "거래 중"
+          : product.status === "SOLD"
+          ? chips.status === "거래 완료"
+          : false
       // chips.region, chips.age 에 대해서도 마찬가지로 가능
     )
     .filter((product) =>
-      product.productName.toLowerCase().includes(searchText.toLowerCase())
+      product.title.toLowerCase().includes(searchText.toLowerCase())
     )
-    .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
+    .sort((a, b) => a.elapsedMinutes - b.elapsedMinutes);
+
+  console.log(products);
 
   return (
     <div className={styles.container}>
@@ -239,28 +247,36 @@ export default function ListPage() {
       {/* 본문 리스트 시작 */}
       <div>
         {filteredProducts.map((product) => (
-          <Link href={`/lists/${product.id}`} key={product.id}>
+          <Link href={`/lists/${product.id}`} key={product.id} prefetch={false}>
             <Card key={product.id} variant="outlined" className={styles.card}>
               <Avatar
                 alt="Product Image"
-                src={product.url}
+                src={
+                  product.thumbnailImage ?? "/temp-img.svg"
+                  // product.thumbnailImage
+                  //   ? product.thumbnailImage[0] === "/"
+                  //   ? product.thumbnailImage
+                  //   : `/${product.thumbnailImage}`
+                  //   : "/temp-img.svg"
+                }
                 sx={{ width: 80, height: 80 }}
                 className={styles.avatar}
                 variant="square"
               />
               <CardContent sx={{ padding: 1 }} className={styles.cardMiddle}>
-                <Typography variant="h6" component="div">
-                  {parseInt(product.price).toLocaleString()}원
+                <Typography variant="h5" component="div">
+                  {product.price.toLocaleString()}원
                 </Typography>
-                <Typography color="text.secondary">
-                  {product.productName}
-                </Typography>
-                <Typography variant="body2">
-                  {product.town} | {product.time}
+                <Typography variant="body1" color="text.secondary">
+                  {product.title ?? "제목 없음"}
                 </Typography>
                 <Typography variant="body2">
+                  {product.dealPlace ?? "거래 장소 null"} |{" "}
+                  {product.elapsedMinutes ?? 0}분 전
+                </Typography>
+                {/* <Typography variant="body2">
                   Views: {product.views} | Likes: {product.likes}
-                </Typography>
+                </Typography> */}
               </CardContent>
               <CardContent
                 sx={{
@@ -271,23 +287,26 @@ export default function ListPage() {
                   alignItems: "center",
                 }}
               >
-                <Typography variant="body2">닉네임</Typography>
                 <Typography
                   variant="body1"
                   sx={{
                     mt: 2,
                     fontWeight: "bold",
                     color:
-                      product.status === "거래 중"
+                      product.status === "SALE"
                         ? "crimson"
-                        : product.status === "거래 완료"
+                        : product.status === "SOLD"
                         ? "dimgray"
-                        : product.status === "판매 중"
+                        : product.status === "MID"
                         ? "orange"
                         : "black", // 기본값
                   }}
                 >
-                  {product.status}
+                  {product.status === "SALE"
+                    ? "판매 중"
+                    : product.status === "SOLD"
+                    ? "거래 완료"
+                    : "거래 중"}
                 </Typography>
               </CardContent>
             </Card>
