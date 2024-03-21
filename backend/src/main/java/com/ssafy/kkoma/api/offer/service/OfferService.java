@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import com.ssafy.kkoma.api.member.dto.response.MemberProfileResponse;
 import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
 import com.ssafy.kkoma.api.offer.dto.response.OfferTimeResponse;
+import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
+import com.ssafy.kkoma.api.product.dto.ProductSummary;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.domain.offer.constant.OfferType;
@@ -30,30 +32,32 @@ public class OfferService {
     private final MemberService memberService;
     private final ProductService productService;
 
-    public Offer findOfferByOfferId(Long offerId){
+    public Offer findOfferByOfferId(Long offerId) {
         return offerRepository.findById(offerId)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.OFFER_NOT_EXISTS));
     }
 
-    public Long createOffer(Long memberId, Long productId){
+    public Long createOffer(Long memberId, Long productId) {
         Member member = memberService.findMemberByMemberId(memberId);
         Product product = productService.findProductById(productId);
 
-        return offerRepository.save(Offer.builder().member(member)
-                .product(product)
-                .status(OfferType.SENT)
-                .build())
-                .getId();
+        Offer offer = Offer.builder()
+            .product(product)
+            .status(OfferType.SENT)
+            .build();
+
+        offer.setMember(member);
+
+        return offerRepository.save(offer).getId();
     }
 
-    public List<OfferResponse> getOffers(Long productId){
+    public List<OfferResponse> getOffers(Long productId) {
         List<OfferResponse> offerResponseList = new ArrayList<>();
 
         List<Offer> offerList = offerRepository.findAllOffersByProductId(productId)
             .orElseThrow(() -> new EntityNotFoundException(ErrorCode.OFFER_NOT_EXISTS));
 
         for (Offer offer : offerList){
-            System.out.println("###" + offer.getMember().getId());
             offerResponseList.add(OfferResponse.builder()
                 .id(offer.getId())
                 .memberProfile(MemberProfileResponse.fromEntity(offer.getMember()))
@@ -64,7 +68,7 @@ public class OfferService {
         return offerResponseList;
     }
 
-    public Offer updateOfferStatusFromSentToAccepted(Long offerId){
+    public Offer updateOfferStatusFromSentToAccepted(Long offerId) {
         Offer offer = offerRepository.findById(offerId)
             .orElseThrow(() -> new EntityNotFoundException(ErrorCode.OFFER_NOT_EXISTS));
 
@@ -73,4 +77,15 @@ public class OfferService {
         return offer;
     }
 
+    public List<ProductInfoResponse> getOfferingProducts(Long memberId) {
+        List<Offer> offers = memberService.getMyOffers(memberId);
+        List<Long> productIds = offers.stream().map(offer -> offer.getProduct().getId()).toList();
+
+        List<ProductInfoResponse> productInfoResponses = new ArrayList<>();
+        for (Long productId : productIds) {
+            productInfoResponses.add(productService.getProductInfoResponse(productId));
+        }
+
+        return productInfoResponses;
+    }
 }

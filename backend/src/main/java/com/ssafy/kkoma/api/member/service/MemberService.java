@@ -3,12 +3,16 @@ package com.ssafy.kkoma.api.member.service;
 import com.ssafy.kkoma.api.member.dto.response.MemberInfoResponse;
 import com.ssafy.kkoma.api.member.dto.request.UpdateMemberRequest;
 import com.ssafy.kkoma.api.point.repository.PointRepository;
+import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
 import com.ssafy.kkoma.api.product.dto.ProductSummary;
+import com.ssafy.kkoma.api.product.service.ProductService;
 import com.ssafy.kkoma.domain.kid.entity.Kid;
 import com.ssafy.kkoma.domain.kid.repository.KidRepository;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.member.repository.MemberRepository;
+import com.ssafy.kkoma.domain.offer.entity.Offer;
 import com.ssafy.kkoma.domain.point.entity.Point;
+import com.ssafy.kkoma.domain.product.constant.MyProductType;
 import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.global.error.ErrorCode;
@@ -23,6 +27,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -102,17 +107,24 @@ public class MemberService {
         return member.getPoint().getBalance();
     }
 
-    public List<ProductSummary> getMyProducts(Long memberId) {
+    public List<ProductInfoResponse> getMyProducts(Long memberId) {
         Member member = findMemberByMemberId(memberId);
         List<Product> products = member.getProducts();
-        List<ProductSummary> productSummaries = new ArrayList<>();
+        List<ProductInfoResponse> productInfos = new ArrayList<>();
         for (Product product : products) {
             ProductType productType = product.getStatus();
             if (productType == ProductType.SALE || productType == ProductType.SOLD) {
-                productSummaries.add(ProductSummary.fromEntity(product));
+                productInfos.add(ProductInfoResponse.fromEntity(product, MyProductType.SELL));
             }
         }
-        return productSummaries;
+
+        return productInfos;
+    }
+
+    public List<Offer> getMyOffers(Long memberId) {
+        Member member = findMemberByMemberId(memberId);
+
+        return member.getOffers();
     }
 
 }

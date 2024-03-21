@@ -10,7 +10,10 @@ import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
 import com.ssafy.kkoma.api.product.dto.ProductCreateResponse;
 import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
+import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
 import com.ssafy.kkoma.domain.member.entity.Member;
+import com.ssafy.kkoma.domain.offer.entity.Offer;
+import com.ssafy.kkoma.domain.product.constant.MyProductType;
 import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.domain.product.entity.ProductImage;
 import com.ssafy.kkoma.global.error.ErrorCode;
@@ -68,6 +71,14 @@ public class ProductService {
 				.offerCount(product.getOfferCount())
 				.viewCount(product.getViewCount())
 				.build();
+	}
+
+	public ProductInfoResponse getProductInfoResponse(Long productId) {
+
+		Product product = productRepository.findById(productId)
+			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.PRODUCT_NOT_EXISTS));
+
+		return ProductInfoResponse.fromEntity(product, MyProductType.BUY);
 	}
 
 	public Product findProductById(Long productId){
