@@ -11,11 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.kkoma.api.deal.dto.request.DealTimeRequest;
 import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.api.offer.service.OfferService;
 import com.ssafy.kkoma.domain.deal.entity.Deal;
 import com.ssafy.kkoma.domain.deal.repository.DealRepository;
-import com.ssafy.kkoma.domain.deal.request.DealTimeRequest;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.domain.member.entity.Member;

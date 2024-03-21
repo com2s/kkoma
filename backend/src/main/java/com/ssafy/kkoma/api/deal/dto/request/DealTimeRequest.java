@@ -1,4 +1,4 @@
-package com.ssafy.kkoma.domain.deal.request;
+package com.ssafy.kkoma.api.deal.dto.request;
 
 import java.time.LocalDateTime;
 
@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class DealTimeRequest {
+
 	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private LocalDateTime selectedTime;
 
