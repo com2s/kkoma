@@ -3,6 +3,7 @@ package com.ssafy.kkoma.api.member.service;
 import com.ssafy.kkoma.api.member.dto.response.MemberInfoResponse;
 import com.ssafy.kkoma.api.member.dto.request.UpdateMemberRequest;
 import com.ssafy.kkoma.api.member.service.MemberService;
+import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
 import com.ssafy.kkoma.api.product.dto.ProductSummary;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
@@ -82,7 +83,7 @@ class MemberServiceTest {
                 .role(Role.USER)
                 .build();
         Member savedMember = memberRepository.save(member);
-        List<ProductSummary> myProductsBefore = memberService.getMyProducts(savedMember.getId());
+        List<ProductInfoResponse> myProductsBefore = memberService.getMyProducts(savedMember.getId());
 
 
         for (int i = 0; i < 10; i++) {
@@ -103,7 +104,7 @@ class MemberServiceTest {
         }
 
         // when
-        List<ProductSummary> myProducts = memberService.getMyProducts(savedMember.getId());
+        List<ProductInfoResponse> myProducts = memberService.getMyProducts(savedMember.getId());
 
         // then
         assertEquals(myProductsBefore.size() + 10, myProducts.size());
