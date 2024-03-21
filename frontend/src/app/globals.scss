@@ -16,6 +16,12 @@ html {
   }
 }
 
+// 다이얼로그 동작 시 우측 패딩 제거
+// body {
+//   // overflow: hidden !important;
+//   padding-right: 0px !important; /* 패딩 제거 */
+// }
+
 .box {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */

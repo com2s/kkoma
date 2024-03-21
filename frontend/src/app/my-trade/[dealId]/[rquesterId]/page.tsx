@@ -209,6 +209,7 @@ export default function MyTradeCalender() {
           <Calendar
             sendDateToParent={handleDate0}
             sendTimeToParent={handleTime0}
+            isAccept
           ></Calendar>
         )}
 
@@ -216,6 +217,7 @@ export default function MyTradeCalender() {
           <Calendar
             sendDateToParent={handleDate1}
             sendTimeToParent={handleTime1}
+            isAccept
           ></Calendar>
         )}
 
@@ -223,6 +225,7 @@ export default function MyTradeCalender() {
           <Calendar
             sendDateToParent={handleDate2}
             sendTimeToParent={handleTime2}
+            isAccept
           ></Calendar>
         )}
       </div>
