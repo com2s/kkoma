@@ -34,8 +34,6 @@ import lombok.RequiredArgsConstructor;
 public class DealService {
 
 	private final DealRepository dealRepository;
-	private final ProductService productService;
-	private final MemberService memberService;
 
 	public Deal findDealByDealId(Long dealId){
 		return dealRepository.findById(dealId)
@@ -51,9 +49,7 @@ public class DealService {
 
 	// 상품 상태가 '거래중'이고 구매자가 맞는지 확인
 	public String getCode(Long dealId, Long memberId){
-		System.out.println("dealId: " + dealId + " memberId: " + memberId);
 		Deal deal = findDealByDealId(dealId);
-		System.out.println(deal.toString());
 
 		Product product = deal.getProduct();
 		if (!product.getStatus().equals(ProductType.MID)) { // 거래 중이 아닌 상품
