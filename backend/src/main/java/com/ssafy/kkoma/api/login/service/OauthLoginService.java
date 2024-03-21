@@ -35,7 +35,7 @@ public class OauthLoginService {
         Optional<Member> optionalMember = memberService.findMemberByEmail(userInfo.getEmail());
         Member oauthMember;
         if (optionalMember.isEmpty()) { // 신규 회원 가입
-            oauthMember = userInfo.toMemberEntity(memberType, Role.ADMIN);
+            oauthMember = userInfo.toMemberEntity(memberType, Role.USER);
             oauthMember = memberService.registerMember(oauthMember);
 
             jwtTokenDto = tokenManager.createJwtTokenDto(oauthMember.getId(), oauthMember.getRole());
