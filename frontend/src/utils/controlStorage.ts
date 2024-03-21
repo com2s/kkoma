@@ -6,18 +6,18 @@ export const setItemWithExpireTime = (key: string, value: string, expire: string
 
   const objString = JSON.stringify(obj);
 
-  localStorage.setItem(key, objString);
+  window.localStorage.setItem(key, objString);
 };
 
 export const getItemWithExpireTime = (key: string) => {
-  const objString = localStorage.getItem(key);
+  const objString = window.localStorage.getItem(key);
 
   if (!objString) return null;
 
   const obj = JSON.parse(objString);
 
   if (Date.now() > obj.expire) {
-    localStorage.removeItem(key);
+    window.localStorage.removeItem(key);
     return null;
   }
 

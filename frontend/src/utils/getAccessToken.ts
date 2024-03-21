@@ -10,14 +10,14 @@ export const getAccessToken = async () => {
 
   const accessToken = getItemWithExpireTime("accessToken");
   if (accessToken) {
-    const grantType = localStorage.getItem("grantType");
+    const grantType = window.localStorage.getItem("grantType");
     return `${grantType} ${accessToken}`;
   }
 
   const refreshToken = getItemWithExpireTime("refreshToken");
   if (refreshToken) {
     //TODO: refreshToken을 header로 보내줌
-    const grantType = localStorage.getItem("grantType");
+    const grantType = window.localStorage.getItem("grantType");
     const res = await fetch(`${baseURL}/access-token/issue`, {
       headers: {
         Authorization: `${grantType} ${refreshToken}`,
