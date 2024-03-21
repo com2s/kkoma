@@ -35,7 +35,7 @@ public class PointService {
     public void comparePointsToPrice(Long memberId, Long productId){
         int balance = memberService.getPointBalance(memberId);
 
-        int price = productService.findProductById(productId).getPrice();
+        int price = productService.findProductByProductId(productId).getPrice();
 
         if(balance < price)
             throw new BusinessException(ErrorCode.POINT_NOT_ENOUGH);

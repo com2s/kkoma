@@ -6,13 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
-import com.ssafy.kkoma.api.product.dto.ProductCreateResponse;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.member.repository.MemberRepository;
 import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
-import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.domain.product.entity.Category;
 import com.ssafy.kkoma.domain.product.repository.CategoryRepository;
 import org.junit.jupiter.api.Test;
@@ -79,6 +77,7 @@ class ProductServiceTest {
 	}
 
     @Test
+	@Transactional
     void 거래_글_생성() {
 		// given
 		Category category = categoryRepository.save(Category.builder().name("유모차").build());
@@ -92,10 +91,10 @@ class ProductServiceTest {
 				.build();
 
 		// when
-		ProductCreateResponse productCreateResponse = productService.createProduct(member.getId(), productCreateRequest);
+		ProductDetailResponse productDetailResponse = productService.createProduct(member.getId(), productCreateRequest);
 
 		// then
-		assertEquals("TITLE", productCreateResponse.getTitle());
+		assertEquals("TITLE", productDetailResponse.getTitle());
     }
 
 }
