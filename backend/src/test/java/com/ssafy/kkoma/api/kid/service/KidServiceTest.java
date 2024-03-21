@@ -148,6 +148,7 @@ class KidServiceTest {
     }
 
     @Test
+    @Transactional
     void 아이_요약_정보_얻기() {
         // given
         Member member = Member.builder()
@@ -168,6 +169,7 @@ class KidServiceTest {
     }
 
     @Test
+    @Transactional
     void 내_아이가_아닌_아이의_아이디로_아이_요약_정보_얻기() {
         // given
         Member member = Member.builder()

@@ -1,8 +1,12 @@
 package com.ssafy.kkoma.domain.product.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.ssafy.kkoma.api.kid.dto.request.UpdateKidRequest;
 import com.ssafy.kkoma.domain.common.entity.BaseTimeEntity;
+import com.ssafy.kkoma.domain.deal.entity.Deal;
 import com.ssafy.kkoma.domain.location.entity.Location;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.product.constant.ProductType;
@@ -48,8 +52,9 @@ public class Product extends BaseTimeEntity {
 	private String description;
 	private int price;
 
+	@Builder.Default
 	@Enumerated(EnumType.STRING)
-	private ProductType status;
+	private ProductType status = ProductType.SALE;
 
 	private Long viewCount;
 	private Long wishCount;
@@ -59,5 +64,9 @@ public class Product extends BaseTimeEntity {
 	public void setMember(Member member) {
 		this.member = member;
 		member.getProducts().add(this);
+	}
+
+	public void updateStatus(ProductType productType) {
+		this.status = productType;
 	}
 }

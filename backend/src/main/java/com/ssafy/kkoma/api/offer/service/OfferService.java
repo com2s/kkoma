@@ -3,6 +3,7 @@ package com.ssafy.kkoma.api.offer.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssafy.kkoma.api.deal.service.DealService;
 import com.ssafy.kkoma.api.member.dto.response.MemberProfileResponse;
 import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
 import com.ssafy.kkoma.api.offer.dto.response.OfferTimeResponse;
@@ -74,11 +75,12 @@ public class OfferService {
         return offerResponseList;
     }
 
-    public Offer updateOfferStatusFromSentToAccepted(Long offerId){
-        Offer offer = offerRepository.findById(offerId)
-            .orElseThrow(() -> new EntityNotFoundException(ErrorCode.OFFER_NOT_EXISTS));
+    public Offer acceptOffer(Long offerId, DealTimeRequest dealTimeRequest){
+        Offer offer = findOfferByOfferId(offerId);
 
-        offer.setStatus(OfferType.ACCEPTED);
+        offer.updateStatus(OfferType.ACCEPTED);
+        offer.getProduct().updateStatus(ProductType.MID);
+        dealService.createDeal(offer, dealTimeRequest); // TODO: deal entity 말고 변환해줘야 되는 것 같은데
 
         return offer;
     }

@@ -31,7 +31,7 @@ public class KakaoTokenService {
                 .client_secret(clientSecret)
                 .grant_type("authorization_code")
                 .code(code)
-                .redirect_uri("http://" + serverDomain + ":" + serverPort + "/oauth/kakao/callback")
+                .redirect_uri("https://" + serverDomain + ":" + serverPort + "/oauth/kakao/callback")
                 .build();
         KakaoTokenDto.Response kakaoToken = kakaoTokenClient.requestKakaoToken(contentType, kakaoTokenRequestDto);
         return kakaoToken;
