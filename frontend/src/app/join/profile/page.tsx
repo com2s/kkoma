@@ -7,7 +7,9 @@ export default function AddProfile() {
       <h2>{`프로필 사진을 등록해주세요`}</h2>
       <UploadBtn />
       <ButtonContainer>
-        <NormalBtn next={"/join/nickname"}>다음</NormalBtn>
+        <NormalBtn next={"/join/nickname"} disabled={true}>
+          다음
+        </NormalBtn>
       </ButtonContainer>
     </>
   );
