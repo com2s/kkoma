@@ -3,6 +3,8 @@
 import { styled } from "@mui/material/styles";
 import styles from "./uploadBtn.module.scss";
 import { useState, useEffect } from "react";
+import { useRecoilState } from "recoil";
+import { userProfileState } from "@/store/join";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -16,9 +18,12 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
+export async function getServerSideProps() {}
+
 export default function UploadBtn() {
   const [imgFile, setImgFile] = useState<File | null>();
   const [preview, setPreview] = useState<string | null>("");
+  const [profile, setProfile] = useRecoilState(userProfileState);
 
   const onChangeImg = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files !== null) {
@@ -33,15 +38,20 @@ export default function UploadBtn() {
 
   useEffect(() => {
     if (imgFile) {
+      const formData = new FormData();
+      formData.set("images", imgFile);
+      setProfile(formData);
+
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreview(reader.result as string);
+        console.log("reader result = ", reader.result);
       };
       reader.readAsDataURL(imgFile);
     } else {
       setPreview(null);
     }
-  }, [imgFile]);
+  }, [imgFile, setProfile]);
 
   return (
     <div className={styles.container}>
