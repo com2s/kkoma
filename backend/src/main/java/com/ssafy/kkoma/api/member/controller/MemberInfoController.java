@@ -50,7 +50,7 @@ public class MemberInfoController {
 
     @Tag(name = "Member")
     @Operation(summary = "to update a member", security = { @SecurityRequirement(name = "bearer-key") })
-    @PutMapping("/")
+    @PutMapping
     public ResponseEntity<?> updateMember(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody UpdateMemberRequest updateMemberRequest) {
 
         Long memberId = memberInfoDto.getMemberId();
