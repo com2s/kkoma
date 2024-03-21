@@ -6,7 +6,7 @@ import styles from "./buttons.module.scss";
 interface btnProps {
   children: String;
   next: String;
-  disabled: boolean;
+  disabled?: boolean;
 }
 
 export function ButtonContainer({
