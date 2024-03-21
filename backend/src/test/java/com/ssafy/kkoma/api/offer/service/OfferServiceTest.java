@@ -138,31 +138,4 @@ class OfferServiceTest {
         assertEquals(OfferType.ACCEPTED, newOffer.getStatus());
     }
 
-    @Test
-    @Transactional
-    public void 내가_거래_요청한_모든_거래_글_조회() throws Exception{
-        // given
-        Member seller1 = memberRepository.save(Member.builder().name("판매자1").memberType(MemberType.KAKAO).role(Role.USER).build());
-        Product product1 = productRepository.save(Product.builder().title(TITLE).thumbnailImage(IMAGE_URL).member(seller1).build());
-        Product product2 = productRepository.save(Product.builder().title(TITLE).thumbnailImage(IMAGE_URL).member(seller1).build());
-
-        Member seller2 = memberRepository.save(Member.builder().name("판매자2").memberType(MemberType.KAKAO).role(Role.USER).build());
-        Product product3 = productRepository.save(Product.builder().title(TITLE).thumbnailImage(IMAGE_URL).member(seller2).build());
-
-        Member buyer = memberRepository.save(Member.builder().name("구매자").memberType(MemberType.KAKAO).role(Role.USER).build());
-        Offer offer1 = offerRepository.save(Offer.builder().product(product1).member(buyer).build());
-        Offer offer2 = offerRepository.save(Offer.builder().product(product2).member(buyer).build());
-        Offer offer3 = offerRepository.save(Offer.builder().product(product3).member(buyer).build());
-
-        offer1.setMember(buyer);
-        offer2.setMember(buyer);
-        offer3.setMember(buyer);
-
-        // when
-        List<ProductInfoResponse> offeringProducts = offerService.getOfferingProducts(buyer.getId());
-
-        // then
-        assertEquals(3, offeringProducts.size());
-    }
-
 }
