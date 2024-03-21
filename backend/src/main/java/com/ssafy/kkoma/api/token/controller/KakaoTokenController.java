@@ -27,8 +27,8 @@ public class KakaoTokenController {
     @Tag(name = "Token")
     @Operation(summary = "to get a kakao token")
     @GetMapping("/oauth/kakao")
-    public @ResponseBody OauthLoginDto.Response loginCallback(String code) {
-        KakaoTokenDto.Response kakaoToken = kakaoLoginApiService.getKakaoToken(code);
+    public @ResponseBody OauthLoginDto.Response loginCallback(String code, String clientHost) {
+        KakaoTokenDto.Response kakaoToken = kakaoLoginApiService.getKakaoToken(code, clientHost);
         log.info("kakaoToken={}", kakaoToken.toString());
         return oauthLoginService.oauthLogin(kakaoToken.getAccess_token(), MemberType.KAKAO);
     }

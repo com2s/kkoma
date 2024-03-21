@@ -38,14 +38,14 @@ public class KakaoLoginApiServiceImpl implements SocialLoginApiService {
     private String clientPort;
 
     @Override
-    public KakaoTokenDto.Response getKakaoToken(String code) {
+    public KakaoTokenDto.Response getKakaoToken(String code, String clientHost) {
         String contentType = "application/x-www-form-urlencoded;charset=utf-8";
         KakaoTokenDto.Request kakaoTokenRequestDto = KakaoTokenDto.Request.builder()
                 .client_id(clientId)
                 .client_secret(clientSecret)
                 .grant_type("authorization_code")
                 .code(code)
-                .redirect_uri("https://" + clientDomain + "/api/oauth/kakao")
+                .redirect_uri(clientHost + "/api/oauth/kakao")
                 .build();
         KakaoTokenDto.Response kakaoToken = kakaoTokenClient.requestKakaoToken(contentType, kakaoTokenRequestDto);
         return kakaoToken;
