@@ -26,7 +26,6 @@ import com.ssafy.kkoma.domain.product.repository.ProductRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
-@EnableJpaAuditing
 class ProductServiceTest {
 
 	@Autowired
