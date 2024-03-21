@@ -1,5 +1,6 @@
 // import { cookies } from "next/headers";
 import { setItemWithExpireTime, getItemWithExpireTime } from "./controlStorage";
+import LocalStorage from "./localStorage";
 
 const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -10,14 +11,14 @@ export const getAccessToken = async () => {
 
   const accessToken = getItemWithExpireTime("accessToken");
   if (accessToken) {
-    const grantType = window.localStorage.getItem("grantType");
+    const grantType = LocalStorage.getItem("grantType");
     return `${grantType} ${accessToken}`;
   }
 
   const refreshToken = getItemWithExpireTime("refreshToken");
   if (refreshToken) {
     //TODO: refreshToken을 header로 보내줌
-    const grantType = window.localStorage.getItem("grantType");
+    const grantType = LocalStorage.getItem("grantType");
     const res = await fetch(`${baseURL}/access-token/issue`, {
       headers: {
         Authorization: `${grantType} ${refreshToken}`,
