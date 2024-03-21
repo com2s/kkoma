@@ -13,6 +13,10 @@
   background-color: $color-yellow;
   border-radius: rem(10);
   width: 100%;
+  &:disabled {
+    background-color: $color-text4;
+    color: $color-text3;
+  }
 }
 
 .wide {

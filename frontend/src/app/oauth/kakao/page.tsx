@@ -1,25 +1,28 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import { setItemWithExpireTime } from "@/utils/controlStorage";
 import Loading from "@/components/common/loading";
-import axios from "axios";
+import { kakaoLogin } from "@/services/kakaoLogin";
+import { Token } from "@/types/token";
 
 export default function KakaoOauth() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const SERVER_URL = process.env.NEXT_PUBLIC_API_URL;
   const code = searchParams.get("code") ?? "";
 
-  axios
-    .get(`${SERVER_URL}/oauth/kakao?code=${code}`)
+  kakaoLogin(code)
     .then((res) => {
-      console.log(res.data);
+      //TODO: accessToken이랑 refreshToken 저장 필요
+      const obj: any = res.json();
+      setItemWithExpireTime("accessToken", obj.accessToken, obj.accessTokenExpireTime);
+      console.log(res.json());
       router.push("/join/profile");
     })
     .catch((e) => {
-      //TODO: error 페이지로 이동 필요
-      router.push("/");
+      // router.push("/error");
+      console.log(e);
     });
 
   return <Loading />;
