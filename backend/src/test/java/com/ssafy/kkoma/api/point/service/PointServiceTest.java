@@ -38,6 +38,7 @@ class PointServiceTest {
     private ProductRepository productRepository;
 
     @Test
+    @Transactional
     void 존재하는_포인트_아이디로_포인트_찾기() {
         // given
         Point point = new Point();
@@ -51,6 +52,7 @@ class PointServiceTest {
     }
 
     @Test
+    @Transactional
     void 존재하지_않는_포인트_아이디로_포인트_찾기() {
         // given
         Long NONEXISTENT_POINT_ID = 100000000L;
