@@ -49,7 +49,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "/api/test/token/**",
                         "/api/oauth/kakao",
                         "/login",
-
+                        "/h2-console/**",
                         "/favicon.ico",
                         "/error",
                         "/swagger-ui/**",
