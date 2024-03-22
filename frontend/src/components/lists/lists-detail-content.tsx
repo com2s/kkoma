@@ -1,35 +1,20 @@
-import { Typography } from "@mui/material";
 import { getProductDetail } from "./lists-ftn";
-
 import styles from "@/components/lists/lists-detail-content.module.scss";
 
-interface DetailParams {
+// 인터페이스
+import { DetailParams } from "@/types/product";
+
+import { Typography } from "@mui/material";
+
+interface DetailTypes {
   propsId: string;
-  product: {
-    id: number;
-    productImages: string[];
-    title: string;
-    description: string;
-    categoryName: string;
-    price: number;
-    status: "SALE";
-    dealPlace: string;
-    elapsedMinutes: number;
-    memberSummary: {
-      profileImage: string;
-      nickname: string;
-      preferredPlace: string;
-    };
-    wishCount: number;
-    offerCount: number;
-    viewCount: number;
-  };
+  product: DetailParams;
 }
 
 export default async function DetailContent({
   propsId,
   product,
-}: DetailParams) {
+}: DetailTypes) {
   return (
     <div className={styles.container}>
       <div className={styles.title}>

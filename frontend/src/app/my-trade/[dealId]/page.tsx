@@ -2,6 +2,8 @@
 
 import TopBar2 from "@/components/my-trade/my-request-bar";
 import styles from "@/components/my-trade/my-request.module.scss";
+// 인터페이스
+// import { Requester }
 import { getRequesters } from "@/components/my-trade/my-trade-ftn";
 import {
   Card,
@@ -27,9 +29,29 @@ const Transition = React.forwardRef(function Transition(
 });
 
 interface Requester {
-  userId: string;
-  url: string;
-  times: { start: string; end: string }[];
+  id: number;
+  memberProfile: {
+    id: number;
+    nickname: string;
+    profileImage: string;
+  }
+  offerTime: [
+    {
+      offerDate: string;
+      startTime: {
+        hour: number;
+        minute: number;
+        second: number;
+        nano: number;
+      },
+      endTime: {
+        hour: number;
+        minute: number;
+        second: number;
+        nano: number;
+      }
+    }
+  ]
 }
 
 interface IParams {
@@ -41,25 +63,14 @@ export default function MyRequest({ params: { dealId } }: IParams) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getRequesters();
+      const data = await getRequesters(dealId);
+      console.log(data);
       setRequesters(data);
     };
     fetchData();
   }, []);
 
-  function formatTimeRange(start: string, end: string) {
-    // 'start'와 'end'에서 날짜 부분이 같은지 확인합니다.
-    if (start.slice(0, 10) === end.slice(0, 10)) {
-      // YYYY-MM-DD 부분만 비교
-      // 같은 날짜일 경우 시작 시간과 종료 시간만 표시합니다.
-      return `${start} - ${end.slice(11)}`;
-    } else {
-      // 다른 날짜일 경우 전체 시간을 표시합니다.
-      return `${start} - ${end}`;
-    }
-  }
-
-  const handleDelete = (userId: string) => {
+  const handleDelete = (userId: number) => {
     if (window.confirm("거래 요청을 취소하시겠습니까?")) {
       alert("거래 요청이 취소되었습니다.");
       console.log(userId);
@@ -74,24 +85,24 @@ export default function MyRequest({ params: { dealId } }: IParams) {
         <Card key={key} variant="outlined" className={styles.card}>
           <Avatar
             alt="Product Image"
-            src={requester.url}
+            src={requester.memberProfile.profileImage}
             sx={{ width: 80, height: 80 }}
             className={styles.avatar}
             variant="square"
           />
           <CardContent sx={{ padding: 1 }} className={styles.cardMiddle}>
             <Typography variant="h6" component="div">
-              판매자 {requester.userId}
+              판매자 {requester.memberProfile.nickname}
             </Typography>
             {/* <Typography color="text.secondary">{requester.productName}</Typography> */}
-            {requester.times?.map((time, key) => (
+            {requester.offerTime?.map((time, key) => (
               <Typography key={key} variant="body2">
-                {formatTimeRange(time.start, time.end)}
+                {time.offerDate} | {time.startTime.hour}시 {time.startTime.minute}분 ~ {time.endTime.hour}시 {time.endTime.minute}분
               </Typography>
             ))}
           </CardContent>
           <CardContent className={styles.btns} sx={{ padding: 0 }}>
-            <Link href={`/my-trade/${dealId}/${requester.userId}`}>
+            <Link href={`/my-trade/${dealId}/${requester.memberProfile.id}`}>
               <IconButton
                 size="small"
                 sx={{
@@ -105,7 +116,7 @@ export default function MyRequest({ params: { dealId } }: IParams) {
               </IconButton>
             </Link>
             <IconButton
-              onClick={() => handleDelete(requester.userId)}
+              onClick={() => handleDelete(requester.memberProfile.id)}
               size="small"
               sx={{
                 "&.MuiIconButton-root": {
@@ -119,6 +130,9 @@ export default function MyRequest({ params: { dealId } }: IParams) {
           </CardContent>
         </Card>
       ))}
+      {(!requesters || requesters.length === 0 ) && (
+        <h2 className="p-4">아직 요청이 없습니다.</h2>
+      )}
     </React.Fragment>
   );
 }
