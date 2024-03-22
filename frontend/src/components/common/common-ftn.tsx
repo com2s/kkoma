@@ -8,3 +8,12 @@ import APIModule from "@/utils/apiModule";
 //   return obj;
 // };
 
+export async function getMyPoints() {
+  const response = await APIModule({
+    action: "/points/summary",
+    method: "GET",
+    data: null,
+  });
+
+  return response.json();
+}

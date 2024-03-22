@@ -116,7 +116,7 @@ export default function ListPage() {
           ? true
           : product.status === "SALE"
           ? chips.status === "판매 중"
-          : product.status === "MID"
+          : product.status === "PROGRESS"
           ? chips.status === "거래 중"
           : product.status === "SOLD"
           ? chips.status === "거래 완료"
@@ -297,7 +297,7 @@ export default function ListPage() {
                         ? "crimson"
                         : product.status === "SOLD"
                         ? "dimgray"
-                        : product.status === "MID"
+                        : product.status === "PROGRESS"
                         ? "orange"
                         : "black", // 기본값
                   }}

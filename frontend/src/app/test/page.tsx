@@ -1,6 +1,7 @@
 // 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 
 // fetch 함수를 사용할 때 method, headers, body 등을 명시적으로 지정하지 않으면 기본값이 적용됩니다:
 
@@ -123,6 +124,9 @@ export default function Test() {
     <div>
       <h1>Test</h1>
       <p>다른 페이지에 적용하기 전에 테스트를 하기 위해 만든 페이지입니다.</p>
+      <Image src="/asdasdas" alt="test" width={100} height={100}>
+
+      </Image>
     </div>
   );
 }
