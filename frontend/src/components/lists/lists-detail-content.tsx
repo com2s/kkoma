@@ -54,7 +54,7 @@ export default async function DetailContent({
             color:
               product.status === "SALE"
                 ? "orange"
-                : product.status === "MID"
+                : product.status === "PROGRESS"
                 ? "crimson"
                 : product.status === "SOLD"
                 ? "dimgray"
@@ -64,7 +64,7 @@ export default async function DetailContent({
           <span>
             {product.status === "SALE"
               ? "판매 중"
-              : product.status === "MID"
+              : product.status === "PROGRESS"
               ? "거래 중"
               : "거래 완료"}
           </span>

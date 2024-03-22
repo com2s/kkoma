@@ -66,7 +66,7 @@ interface DetailParams {
 export default async function ProductDetail({ params: { id } }: IParams) {
   if (!id) return <div>상품 정보가 없습니다.</div>;
   const product: DetailParams = await getProductDetail(id);
-  if (product.productImages.length === 0) {
+  if (product.productImages === null) {
     product.productImages = await getImages();
   }
 
@@ -118,7 +118,7 @@ export default async function ProductDetail({ params: { id } }: IParams) {
           <span>거래 장소</span>
         </AccordionSummary>
         <AccordionDetails>
-          <span>여기서 주소 받아오기</span>
+          <span>*여기서 주소 받아오기*</span>
           <Map />
         </AccordionDetails>
       </Accordion>
