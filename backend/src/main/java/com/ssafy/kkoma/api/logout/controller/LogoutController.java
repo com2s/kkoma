@@ -1,6 +1,7 @@
 package com.ssafy.kkoma.api.logout.controller;
 
 import com.ssafy.kkoma.api.logout.service.LogoutService;
+import com.ssafy.kkoma.global.util.ApiUtils;
 import com.ssafy.kkoma.global.util.AuthorizationHeaderUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -23,14 +24,14 @@ public class LogoutController {
     @Tag(name = "Authentication")
     @Operation(summary = "to sign out", security = { @SecurityRequirement(name = "bearer-key") })
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<ApiUtils.ApiResult<String>> logout(HttpServletRequest httpServletRequest) {
         String authorizationHeader = httpServletRequest.getHeader("Authorization");
         AuthorizationHeaderUtils.validateAuthorization(authorizationHeader);
 
         String accessToken = authorizationHeader.split(" ")[1];
         logoutService.logout(accessToken);
 
-        return ResponseEntity.ok("logout success");
+        return ResponseEntity.ok(ApiUtils.success("logout success"));
     }
 
 }

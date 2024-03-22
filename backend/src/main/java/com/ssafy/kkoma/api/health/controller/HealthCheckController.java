@@ -1,6 +1,7 @@
 package com.ssafy.kkoma.api.health.controller;
 
 import com.ssafy.kkoma.api.health.dto.HealthCheckResponseDto;
+import com.ssafy.kkoma.global.util.ApiUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +19,13 @@ public class HealthCheckController {
     private final Environment environment;
 
     @GetMapping("/health")
-    public ResponseEntity<HealthCheckResponseDto> healthCheck() {
+    public ResponseEntity<ApiUtils.ApiResult<HealthCheckResponseDto>> healthCheck() {
         HealthCheckResponseDto healthCheckResponseDto = HealthCheckResponseDto.builder()
                 .health("ok")
                 .activeProfile(Arrays.asList(environment.getActiveProfiles()))
                 .build();
-        return ResponseEntity.ok(healthCheckResponseDto);
+        return ResponseEntity
+                .ok()
+                .body(ApiUtils.success(healthCheckResponseDto));
     }
 }

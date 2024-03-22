@@ -9,6 +9,7 @@ import com.ssafy.kkoma.api.offer.service.OfferService;
 import com.ssafy.kkoma.domain.offer.entity.Offer;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfoDto;
+import com.ssafy.kkoma.global.util.ApiUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -42,10 +43,10 @@ public class OfferController {
     @Tag(name = "Offer")
     @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     @GetMapping("/products/{productId}")
-    public ResponseEntity<List<OfferResponse>> getOffers(@PathVariable Long productId){
+    public ResponseEntity<ApiUtils.ApiResult<List<OfferResponse>>> getOffers(@PathVariable Long productId){
         List<OfferResponse> offerResponseList = offerService.getOffers(productId);
 
-        return ResponseEntity.ok(offerResponseList);
+        return ResponseEntity.ok(ApiUtils.success(offerResponseList));
     }
 
     @Tag(name = "Offer")

@@ -2,6 +2,7 @@ package com.ssafy.kkoma.api.image.controller;
 
 import java.util.List;
 
+import com.ssafy.kkoma.global.util.ApiUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,10 +29,10 @@ public class ImageController {
 
 	@PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	@Operation(summary = "to upload images", security = { @SecurityRequirement(name = "bearer-key") })
-	ResponseEntity<List<String>> uploadImages(
+	ResponseEntity<ApiUtils.ApiResult<List<String>>> uploadImages(
 			@Parameter(description = "multipart/form-data 형식의 이미지 리스트를 input으로 받습니다. 업로드 할 수 있는 최대 용량은 100MB 입니다.")
 			@RequestPart("images") List<MultipartFile> files) {
 		List<String> urls = imageService.uploadImages(files);
-		return ResponseEntity.ok().body(urls);
+		return ResponseEntity.ok().body(ApiUtils.success(urls));
 	}
 }
