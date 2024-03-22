@@ -1,9 +1,9 @@
 import APIModule from "@/utils/apiModule";
 
 interface KidInfo {
-  name: string;
-  birthDate: string;
-  gender: string;
+  name: string | null;
+  birthDate: string | null;
+  gender: string | null;
 }
 
 export const updateKidAPI = async (kidInfo: KidInfo) => {

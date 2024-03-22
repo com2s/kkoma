@@ -14,8 +14,13 @@
   border-radius: rem(15);
   overflow: hidden;
   transition: all 0.2s linear;
+  outline: none;
 
   &:hover {
+    transform: scale(0.9);
+  }
+
+  &.selected {
     transform: scale(0.9);
   }
 }

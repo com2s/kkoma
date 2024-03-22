@@ -28,6 +28,7 @@ export default function AddPhone() {
 
       router.replace("/join/complete");
     }
+    //TODO: 에러 페이지로 이동
   };
 
   return (
