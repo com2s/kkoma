@@ -6,6 +6,9 @@ import styles from "@/components/lists/lists.module.scss";
 import { getProducts } from "@/components/lists/lists-ftn";
 import Navigation from "@/components/common/navigation";
 
+// 인터페이스
+import { Product } from "@/types/product";
+
 import Link from "next/link";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
@@ -30,17 +33,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import SearchIcon from "@mui/icons-material/Search";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import UnfoldLessIcon from "@mui/icons-material/UnfoldLess";
-
-// 인터페이스
-interface Product {
-  id: number;
-  thumbnailImage: string;
-  title: string;
-  dealPlace: string;
-  price: number;
-  status: string;
-  elapsedMinutes: number;
-}
 
 // 옵션 데이터
 const chipData = {

@@ -22,7 +22,7 @@ export async function getProductDetail(id: string) {
 
 interface PostData {
   productImages: string[];
-  categoryId: string;
+  categoryId: number | null;
   title: string;
   description: string;
   price: number;

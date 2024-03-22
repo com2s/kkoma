@@ -3,7 +3,7 @@ export interface Deal {
     elapsedMinutes: number;
     id: number;
     offerCount: number;
-    status: 'SALE' | 'PROGRESS' | 'SOLD' | 'CANCELED' | 'SENT' ;
+    status: 'SALE' | 'PROGRESS' | 'SOLD' | 'CANCELLED' | 'SENT' ;
     thumbnailImage: string;
     title: string;
     type: 'BUY' | 'PROGRESS' | 'SELL';

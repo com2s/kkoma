@@ -4,6 +4,9 @@ import React, { Suspense } from "react";
 import styles from "@/components/lists/lists-id.module.scss";
 import { getImages, getProductDetail } from "@/components/lists/lists-ftn";
 
+// 인터페이스
+import { DetailParams } from "@/types/product";
+
 import TopBar2 from "@/components/lists/lists-detail-bar";
 import Profile from "@/components/lists/lists-detail-profile";
 import Content from "@/components/lists/lists-detail-content";
@@ -41,27 +44,6 @@ interface IParams {
 //     description: "Product detail page",
 //   };
 // }
-
-interface DetailParams {
-    "id": number,
-    "productImages": string[],
-    "title": string,
-    "description": string,
-    "categoryName": string,
-    "price": number,
-    "status": "SALE",
-    "dealPlace": string,
-    "elapsedMinutes": number,
-    "memberSummary": {
-      "profileImage": string,
-      "nickname": string,
-      "preferredPlace": string
-    },
-    "wishCount": number,
-    "offerCount": number,
-    "viewCount": number,
-  }
-
 
 export default async function ProductDetail({ params: { id } }: IParams) {
   if (!id) return <div>상품 정보가 없습니다.</div>;
