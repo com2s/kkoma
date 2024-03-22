@@ -7,6 +7,7 @@ import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfoDto;
 
+import com.ssafy.kkoma.global.util.ApiUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class MemberController {
     @Operation(summary = "to retrieve my products",
         description = "https://www.notion.so/todays-jiwoo/f-99cdb734385b49eba9972217e5c7b495?pvs=4 여기에 업데이트 해두고 스웨거 고칠게용 (수현)")
     @GetMapping("/products")
-    ResponseEntity<List<ProductInfoResponse>> getMyProducts(
+    ResponseEntity<ApiUtils.ApiResult<List<ProductInfoResponse>>> getMyProducts(
         @MemberInfo MemberInfoDto memberInfoDto,
         @RequestParam String type
     ) {
@@ -50,7 +51,7 @@ public class MemberController {
             productInfoResponses.addAll(sellingProductResponses);
         }
 
-        return ResponseEntity.ok().body(productInfoResponses);
+        return ResponseEntity.ok().body(ApiUtils.success(productInfoResponses));
     }
 
 }

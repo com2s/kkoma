@@ -2,6 +2,7 @@ package com.ssafy.kkoma.api.deal.controller;
 
 import java.util.List;
 
+import com.ssafy.kkoma.global.util.ApiUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,8 +38,8 @@ public class DealController {
 	@Tag(name = "Deal")
 	@Operation(summary = "to get a code for the deal", security = { @SecurityRequirement(name = "bearer-key") })
 	@GetMapping("{dealId}/code")
-	public ResponseEntity<?> getDealCode(@PathVariable Long dealId, @MemberInfo MemberInfoDto memberInfoDto){
-		return ResponseEntity.ok(dealService.getCode(dealId, memberInfoDto.getMemberId()));
+	public ResponseEntity<ApiUtils.ApiResult<String>> getDealCode(@PathVariable Long dealId, @MemberInfo MemberInfoDto memberInfoDto){
+		return ResponseEntity.ok(ApiUtils.success(dealService.getCode(dealId, memberInfoDto.getMemberId())));
 	}
 
 	@Tag(name = "Deal")

@@ -4,6 +4,7 @@ import com.ssafy.kkoma.api.login.dto.OauthLoginDto;
 import com.ssafy.kkoma.api.login.service.OauthLoginService;
 import com.ssafy.kkoma.api.login.validator.OauthValidator;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
+import com.ssafy.kkoma.global.util.ApiUtils;
 import com.ssafy.kkoma.global.util.AuthorizationHeaderUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,7 +28,7 @@ public class OauthLoginController {
     @Tag(name = "Authentication")
     @Operation(summary = "to sign in")
     @PostMapping("/login")
-    public ResponseEntity<OauthLoginDto.Response> oauthLogin(@RequestBody OauthLoginDto.Request oauthLoginRequestDto,
+    public ResponseEntity<ApiUtils.ApiResult<OauthLoginDto.Response>> oauthLogin(@RequestBody OauthLoginDto.Request oauthLoginRequestDto,
                                                              HttpServletRequest httpServletRequest) {
 
         String authorizationHeader = httpServletRequest.getHeader("Authorization");
@@ -37,7 +38,8 @@ public class OauthLoginController {
         String accessToken = authorizationHeader.split(" ")[1];
         OauthLoginDto.Response jwtTokenResponseDto = oauthLoginService
                 .oauthLogin(accessToken, MemberType.from(oauthLoginRequestDto.getMemberType()));
-        return ResponseEntity.ok(jwtTokenResponseDto);
+        return ResponseEntity
+                .ok(ApiUtils.success(jwtTokenResponseDto));
     }
 
 }

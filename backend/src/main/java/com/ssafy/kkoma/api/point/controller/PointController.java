@@ -5,6 +5,7 @@ import com.ssafy.kkoma.api.point.service.PointService;
 import com.ssafy.kkoma.api.product.service.ProductService;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfoDto;
+import com.ssafy.kkoma.global.util.ApiUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,9 +27,9 @@ public class PointController {
     @Tag(name = "Point")
     @Operation(summary = "to get a point summary", security = {@SecurityRequirement(name = "bearer-key")})
     @GetMapping("/summary")
-    public ResponseEntity<PointSummaryResponse> getPointSummary(@MemberInfo MemberInfoDto memberInfoDto) {
+    public ResponseEntity<ApiUtils.ApiResult<PointSummaryResponse>> getPointSummary(@MemberInfo MemberInfoDto memberInfoDto) {
         PointSummaryResponse pointSummary = pointService.getPointSummary(memberInfoDto.getMemberId());
-        return ResponseEntity.ok().body(pointSummary);
+        return ResponseEntity.ok(ApiUtils.success(pointSummary));
     }
 
 
