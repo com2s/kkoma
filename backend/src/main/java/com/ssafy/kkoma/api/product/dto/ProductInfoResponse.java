@@ -19,6 +19,7 @@ public class ProductInfoResponse {
 	private String title;
 	private String dealPlace;
 	private ProductType status;
+	private int price;
 	private Long elapsedMinutes;
 	private Long wishCount;
 	private Long viewCount;
@@ -35,6 +36,7 @@ public class ProductInfoResponse {
 			.title(product.getTitle())
 			.dealPlace(product.getPlaceDetail())
 			.status(product.getStatus())
+			.price(product.getPrice())
 			.elapsedMinutes((elapsedDuration != null) ? elapsedDuration.toMinutes() : null)
 			.wishCount(product.getWishCount())
 			.viewCount(product.getViewCount())

@@ -29,13 +29,13 @@ public class MemberController {
 
     @Tag(name = "member")
     @Operation(summary = "to retrieve my products",
-        description = "type=sell : 내가 판매자로 참여한 모든 거래 글\n"
-            + "type=buy :내가 구매요청한 모든 거래 글 중에서 현재 거래 진행중인 거래 글만 제외하고 조회\n"
-            + "type=progress : 내가 구매자 혹은 판매자로 참여한 거래 글 중에서 현재 진행중인 글만 조회\n")
+        description = "https://www.notion.so/todays-jiwoo/f-99cdb734385b49eba9972217e5c7b495?pvs=4 여기에 업데이트 해두고 스웨거 고칠게용 (수현)")
     @GetMapping("/products")
-    ResponseEntity<List<ProductInfoResponse>> getMySellingProducts(@MemberInfo MemberInfoDto memberInfoDto, @RequestParam String type) {
+    ResponseEntity<List<ProductInfoResponse>> getMyProducts(
+        @MemberInfo MemberInfoDto memberInfoDto,
+        @RequestParam String type
+    ) {
         Long memberId = memberInfoDto.getMemberId();
-
         List<ProductInfoResponse> productInfoResponses = new ArrayList<>();
 
         if ("sell".equals(type)) {
