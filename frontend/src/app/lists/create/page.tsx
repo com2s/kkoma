@@ -3,6 +3,8 @@
 import styles from "@/components/lists/lists-create.module.scss";
 import TopBar2 from "@/components/lists/lists-create-bar";
 import Map from "@/components/common/map";
+import { postProduct } from "@/components/lists/lists-ftn";
+import { uploadImagesAPI } from "@/services/upload";
 
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import {
@@ -30,8 +32,9 @@ import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined
 export default function CreatePost() {
   const formButtonRef = useRef<HTMLButtonElement>(null); // form 참조 생성
   const scrollRef = useRef(null);
-  const [category, setCategory] = useState(""); // TODO: 카테고리
+  const [category, setCategory] = useState<number>(0); // TODO: 카테고리
   const [title, setTitle] = useState("");
+  const [price, setPrice] = useState<number|null>();
   const [content, setContent] = useState("");
   const [images, setImages] = useState<{ url: string; file: File }[]>([]);
   const [location, setLocation] = useState(""); // TODO: 위치 정보 입력 받기
@@ -39,7 +42,20 @@ export default function CreatePost() {
 
   // 카테고리 변경 처리
   const handleCategoryChange = (event: SelectChangeEvent) => {
-    setCategory(event.target.value);
+    setCategory(parseInt(event.target.value));
+  };
+
+  // 가격 변경 처리
+  const handleChangePrice = (value: string) => {
+    const numberValue = parseInt(value);
+    if (isNaN(numberValue)) {
+      setPrice(null);
+      return;
+    } else if (numberValue >= 0) {
+      setPrice(numberValue);
+    } else {
+      setPrice(null);
+    }
   };
 
   // 이미지 파일 변경 처리
@@ -69,8 +85,8 @@ export default function CreatePost() {
 
   // 폼 제출 처리
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    if (!title.trim() || !content.trim()) {
-      alert("제목과 내용은 필수 입력 사항입니다.");
+    if (!title.trim() || !content.trim() || !price) {
+      alert("제목, 내용, 가격은 필수 입력 사항입니다.");
       return;
     }
     // 확인 대화 상자 표시
@@ -79,15 +95,26 @@ export default function CreatePost() {
     }
 
     event.preventDefault();
+
+    // 이미지 업로드
     const formData = new FormData();
-    formData.append("title", title);
-    formData.append("content", content);
-    images.forEach(({ file }) => formData.append("images", file));
+    images.forEach((image) => {
+      formData.append("images", image.file);
+    });
+    const productImages = await uploadImagesAPI(formData);
+    
+    const categoryId = category === 0 ? null : category;
+    const description = content;
+    const data = {
+      productImages,
+      categoryId,
+      title,
+      description,
+      price,
+    }
 
-    // 백엔드로 데이터 전송 로직 여기에 추가...
-    console.log({ title, content }); // 실제 로직에서는 제거해야 합니다.
+    const response = await postProduct(data);
 
-    // 성공적으로 데이터 전송 후 페이지 이동
     router.push("/lists");
   };
 
@@ -141,16 +168,16 @@ export default function CreatePost() {
             <Select
               labelId="카테고리-선택-라벨"
               id="카테고리-선택"
-              value={category}
+              value={category.toString()}
               label="카테고리"
               onChange={handleCategoryChange}
             >
               <MenuItem value="">
                 <em>없음</em>
               </MenuItem>
-              <MenuItem value={1}>카테고리 : {category}</MenuItem>
-              <MenuItem value={2}>카테고리 : {category}</MenuItem>
-              <MenuItem value={3}>카테고리 : {category}</MenuItem>
+              <MenuItem value={0}>카테고리 없음 {category}</MenuItem>
+              <MenuItem value={1}>카테고리 1 : {category}</MenuItem>
+              <MenuItem value={2}>카테고리 2 : {category}</MenuItem>
             </Select>
           </FormControl>
           {/* 버튼으로 인풋 작동하기 */}
@@ -172,6 +199,22 @@ export default function CreatePost() {
             onChange={(e) => setTitle(e.target.value)}
             required
             fullWidth
+          />
+          <TextField
+            label="가격 입력"
+            variant="outlined"
+            value={price}
+            onChange={(e) => handleChangePrice(e.target.value)}
+            type="number"
+            helperText="숫자만 입력해주세요."
+            required
+            sx={{ my: 1, width: "50%" , minWidth: "200px" }}
+            InputProps={{
+              inputProps: { 
+                min: 0, // 최소값 설정
+                step: 100 // 여기에서 step 값을 정의합니다.
+              }
+            }}
           />
           <TextField
             label="판매 제품 소개"
@@ -199,22 +242,7 @@ export default function CreatePost() {
               <Map />
             </AccordionDetails>
           </Accordion>
-          {/* 거래 일시 선택 */}
-          {/* <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel2-content"
-              id="panel2-header"
-            >
-              <CalendarMonthOutlinedIcon className="mr-4" />
-              <span>거래 날짜 설정</span>
-            </AccordionSummary>
-            <AccordionDetails>
-              <span>임시로 만든 컴포넌트</span>
-            </AccordionDetails>
-          </Accordion> */}
-
-          {/* TopBar2 내의 작성 버튼과 연결하고 보이지 않게 함 */}
+          
           <Button ref={formButtonRef} type="submit" color="primary" hidden>
             게시글 올리기
           </Button>

@@ -1,36 +1,3 @@
-export async function getRequesters() {
-  const requesters = [
-    { 
-      userId : "1",
-      url : "/temp-img.svg",
-      times : [
-        { start : "2024-03-22 11:00", end : "2024-03-22 18:00" },
-        { start : "2024-03-28 11:00", end : "2024-03-28 18:00" },
-        { start : "2024-04-04 11:00", end : "2024-04-04 18:00" },
-      ],
-    },
-    { 
-      userId : "2",
-      url : "/temp-img.svg",
-      times : [
-        { start : "2024-03-22 11:00", end : "2024-03-22 18:00" },
-        { start : "2024-03-28 11:00", end : "2024-03-28 18:00" },
-        { start : "2024-04-04 11:00", end : "2024-04-04 18:00" },
-      ],
-    },
-    { 
-      userId : "3",
-      url : "/temp-img.svg",
-      times : [
-        { start : "2024-03-22 11:00", end : "2024-03-22 18:00" },
-        { start : "2024-03-28 11:00", end : "2024-03-28 18:00" },
-        { start : "2024-04-04 11:00", end : "2024-04-04 18:00" },
-      ],
-    },
-  ];
-  return requesters;
-}
-
 import APIModule from "@/utils/apiModule";
 // import exp from "constants";
 
@@ -53,6 +20,16 @@ export async function getMyProducts(type: TypeData['type']) {
 
   const response = await APIModule({
     action: `/members/products?${query}`,
+    method: "GET",
+    data: null,
+  });
+
+  return response.json();
+}
+
+export async function getRequesters(productId: string) {
+  const response = await APIModule({
+    action: `/offers/products/${productId}`,
     method: "GET",
     data: null,
   });

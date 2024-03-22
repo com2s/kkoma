@@ -59,12 +59,12 @@ export default function MyBuy() {
   };
 
   const filteredDeals = deals
-    // .filter((deal) =>
-    //   selectedChip === "모두" ? true : 
-    //   selectedChip === "요청 중" ? deal.status === "요청 중" :
-    //   selectedChip === "요청 취소" ? deal.status === "요청 취소" :
-    //   selectedChip === "거래 완료" ? deal.status === "거래 완료" : false
-    // )
+    .filter((deal) =>
+      selectedChip === "모두" ? true : 
+      selectedChip === "요청 중" ? deal.status === "SENT" :
+      selectedChip === "요청 취소" ? deal.status === "CANCELLED" :
+      selectedChip === "거래 완료" ? deal.status === "SOLD" : false
+    )
     .sort((a, b) => a.elapsedMinutes - b.elapsedMinutes
     );
     
@@ -138,15 +138,15 @@ export default function MyBuy() {
                   mt: 2,
                   fontWeight: "bold",
                   width: "55px",
-                  // color:
-                  //   // deal.status2 의 값에 따라 색상을 다르게 표시
-                  //   deal.status === "요청 취소"
-                  //     ? "crimson"
-                  //     : deal.status === "거래 완료"
-                  //     ? "dimgray"
-                  //     : deal.status === "요청 중"
-                  //     ? "orange"
-                  //     : "black", // 기본값
+                  color:
+                    // deal.status2 의 값에 따라 색상을 다르게 표시
+                    deal.status === "CANCELLED"
+                      ? "crimson"
+                      : deal.status === "SOLD"
+                      ? "dimgray"
+                      : deal.status === "SENT"
+                      ? "orange"
+                      : "black", // 기본값
                 }}
               >
                 {deal.status}
