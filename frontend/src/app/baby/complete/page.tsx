@@ -1,7 +1,6 @@
 import Title from "@/components/common/title";
-import TextField from "@mui/material/TextField";
 import Logo from "/public/images/logo-icon.svg";
-import { ButtonContainer, SubBtn, NormalBtn } from "@/components/common/buttons";
+import { ButtonContainer, NormalBtn } from "@/components/common/buttons";
 
 export default function BabyComplate() {
   return (
