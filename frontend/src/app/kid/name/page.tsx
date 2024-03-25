@@ -11,11 +11,6 @@ export default function BabyName() {
   const [name, setName] = useRecoilState(kidNameState);
   const router = useRouter();
 
-  const onClick = (isSave: boolean) => {
-    if (!isSave) setName(null);
-    router.push("/baby/birth");
-  };
-
   return (
     <>
       <Title title={`아이의\n이름을 알려주세요`} subtitle="별명이나 태명도 좋아요" />
@@ -27,8 +22,16 @@ export default function BabyName() {
         onChange={(e) => setName(e.target.value)}
       />
       <ButtonContainer>
-        <SubBtn next={() => onClick(false)}>건너뛰기</SubBtn>
-        <NormalBtn next={() => onClick(true)}>완료</NormalBtn>
+        <SubBtn
+          next={() => {
+            setName(null);
+            router.push("/kid/birth");
+          }}
+          display={name === (null || undefined || "")}
+        >
+          건너뛰기
+        </SubBtn>
+        <NormalBtn next={() => router.push("/kid/birth")}>다음</NormalBtn>
       </ButtonContainer>
     </>
   );

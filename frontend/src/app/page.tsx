@@ -1,5 +1,5 @@
 import TopBar from "@/components/common/top-bar";
-import BabyCard from "@/components/home/babyCard";
+import BabyCard from "@/components/home/kidCard";
 import RecommandProductList from "@/components/home/recommandProductList";
 import Navigation from "@/components/common/navigation";
 import styles from "./home.module.scss";

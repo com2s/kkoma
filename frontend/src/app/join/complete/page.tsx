@@ -14,7 +14,7 @@ export default function JoinComplate() {
       </div>
       <ButtonContainer>
         <SubBtn next={"/"}>홈 화면</SubBtn>
-        <NormalBtn next={"/baby/name"}>아이 정보 입력</NormalBtn>
+        <NormalBtn next={"/kid/name"}>아이 정보 입력</NormalBtn>
       </ButtonContainer>
     </>
   );

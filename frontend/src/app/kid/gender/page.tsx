@@ -2,7 +2,7 @@
 
 import Title from "@/components/common/title";
 import { ButtonContainer, SubBtn, NormalBtn } from "@/components/common/buttons";
-import GenderBtn from "@/components/baby/gender-btn";
+import GenderBtn from "@/components/kid/gender-btn";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   kidNameState,
@@ -30,7 +30,7 @@ export default function BabyGender() {
       gender: gender ?? null,
     });
 
-    router.replace("/baby/complete");
+    router.replace("/kid/complete");
   };
 
   return (

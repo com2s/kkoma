@@ -1,7 +1,7 @@
 "use client";
 
 import TopBar3 from "@/components/common/top-bar3";
-import styles from "./baby.module.scss";
+import styles from "./kid.module.scss";
 import { RecoilRoot } from "recoil";
 
 export default function BabyLayout({
@@ -11,7 +11,7 @@ export default function BabyLayout({
 }>) {
   return (
     <RecoilRoot>
-      <div className={styles.baby}>
+      <div className={styles.kid}>
         <TopBar3 />
         {children}
       </div>
