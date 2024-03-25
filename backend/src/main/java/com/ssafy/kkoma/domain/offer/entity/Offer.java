@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssafy.kkoma.api.kid.dto.request.UpdateKidRequest;
 import com.ssafy.kkoma.domain.common.entity.BaseTimeEntity;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.offer.constant.OfferType;
@@ -23,7 +24,6 @@ import lombok.*;
 
 @Entity
 @Getter
-@Setter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -51,5 +51,14 @@ public class Offer extends BaseTimeEntity {
 	private LocalDateTime repliedAt;
 
 	private LocalDateTime cancelledAt;
+
+	public void setMember(Member member) {
+		this.member = member;
+		member.getOffers().add(this);
+	}
+
+	public void updateStatus(OfferType status) {
+		this.status = status;
+	}
 
 }

@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
+import { getMyProducts } from "@/components/my-trade/my-trade-ftn";
+import { Deal } from "@/types/status";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import Card from "@mui/material/Card";
@@ -10,35 +12,21 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import styles from "@/components/my-trade/sell-buy.module.scss";
-import { getDeal } from "@/components/my-trade/my-trade-ftn";
 import Link from "next/link";
-
-interface Deal {
-  id: string;
-  url: string;
-  title: string;
-  productName: string;
-  town: string;
-  time: string;
-  views: number;
-  likes: number;
-  status: string;
-  status2: string;
-}
 
 export default function MySell() {
   const [deals, setDeals] = useState<Deal[]>([]);
   const [selectedChip, setSelectedChip] = useState<string>("모두");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   // 현재 열린 메뉴의 ID를 저장하기 위한 상태 추가
-  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+  const [openMenuId, setOpenMenuId] = useState<number | null>(null);
   const open = Boolean(anchorEl);
 
   useEffect(() => {
     const fetchSelling = async () => {
-      const myDeal: Deal[] = await getDeal();
-      const sellingDeals = myDeal.filter((deal) => deal.status === "판매");
-      setDeals(sellingDeals);
+      const myProducts = await getMyProducts("sell");
+      console.log("MySell: ", myProducts);
+      setDeals(myProducts);
     };
     fetchSelling();
     // console.log("fetchSelling");
@@ -50,7 +38,7 @@ export default function MySell() {
 
   const handleMenuClick = (
     event: React.MouseEvent<HTMLElement>,
-    dealId: string
+    dealId: number
   ) => {
     setAnchorEl(event.currentTarget);
     setOpenMenuId(dealId); // 메뉴가 열린 카드의 ID 저장
@@ -79,9 +67,15 @@ export default function MySell() {
 
   const filteredDeals = deals
     .filter((deal) =>
-      selectedChip === "모두" ? true : deal.status2 === selectedChip
+      selectedChip === "모두"
+        ? true
+        : selectedChip === "판매 중"
+        ? deal.status === "SALE"
+        : selectedChip === "거래 완료"
+        ? deal.status === "SOLD"
+        : false
     )
-    .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
+    .sort((a, b) => a.elapsedMinutes - b.elapsedMinutes);
 
   return (
     <React.Fragment>
@@ -101,7 +95,7 @@ export default function MySell() {
           <Card key={deal.id} variant="outlined" className={styles.card}>
             <Avatar
               alt="Product Image"
-              src={deal.url}
+              src={deal.thumbnailImage}
               sx={{ width: 80, height: 80 }}
               className={styles.avatar}
               variant="square"
@@ -110,12 +104,13 @@ export default function MySell() {
               <Typography variant="h6" component="div">
                 {deal.title}
               </Typography>
-              <Typography color="text.secondary">{deal.productName}</Typography>
+              <Typography color="text.secondary">{deal.title}</Typography>
               <Typography variant="body2">
-                {deal.town} | {deal.time}
+                {deal.dealPlace} | {deal.elapsedMinutes}분 전
               </Typography>
-              <Typography variant="body2">
-                Views: {deal.views} | Likes: {deal.likes}
+              <Typography variant="caption" className="text-gray-400">
+                조회 {deal.viewCount} • 거래 요청 {deal.offerCount} • 찜{" "}
+                {deal.wishCount}
               </Typography>
             </CardContent>
             <CardContent
@@ -151,28 +146,31 @@ export default function MySell() {
                 </MenuItem>
               </Menu>
               <Typography
-                variant="body2"
+                variant="body1"
                 textAlign={"center"}
                 sx={{
                   mt: 2,
                   fontWeight: "bold",
-                  width: "55px",
+                  width: "70px",
                   color:
                     // deal.status2 의 값에 따라 색상을 다르게 표시
-                    deal.status2 === "거래 중"
+                    deal.status === "PROGRESS"
                       ? "crimson"
-                      : deal.status2 === "거래 완료"
+                      : deal.status === "SOLD"
                       ? "dimgray"
-                      : deal.status2 === "판매 중"
+                      : deal.status === "SALE"
                       ? "orange"
                       : "black", // 기본값
                 }}
               >
-                {deal.status2}
+                {deal.status === "SALE" ? "판매 중" : "거래 완료"}
               </Typography>
             </CardContent>
           </Card>
         ))}
+        {filteredDeals.length === 0 && (
+          <h2 className="p-4">해당 거래가 아직 없습니다.</h2>
+        )}
       </div>
     </React.Fragment>
   );

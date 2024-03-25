@@ -8,6 +8,7 @@ import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.global.jwt.service.TokenManager;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfoDto;
+import com.ssafy.kkoma.global.util.ApiUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -29,34 +30,34 @@ public class MemberInfoController {
     @Tag(name = "Member")
     @Operation(summary = "to get a member info", security = { @SecurityRequirement(name = "bearer-key") })
     @GetMapping("/info")
-    public ResponseEntity<MemberInfoResponse> getMemberInfo(@MemberInfo MemberInfoDto memberInfoDto) {
+    public ResponseEntity<ApiUtils.ApiResult<MemberInfoResponse>> getMemberInfo(@MemberInfo MemberInfoDto memberInfoDto) {
 
         Long memberId = memberInfoDto.getMemberId();
         MemberInfoResponse memberInfoResponse = memberInfoService.getMemberInfo(memberId);
 
-        return ResponseEntity.ok(memberInfoResponse);
+        return ResponseEntity.ok(ApiUtils.success(memberInfoResponse));
     }
 
     @Tag(name = "Member")
     @Operation(summary = "to get a member summary", security = { @SecurityRequirement(name = "bearer-key") })
     @GetMapping("/summary")
-    public ResponseEntity<MemberSummaryResponse> getMemberSummary(@MemberInfo MemberInfoDto memberInfoDto) {
+    public ResponseEntity<ApiUtils.ApiResult<MemberSummaryResponse>> getMemberSummary(@MemberInfo MemberInfoDto memberInfoDto) {
 
         Long memberId = memberInfoDto.getMemberId();
         MemberSummaryResponse memberSummaryResponse = memberInfoService.getMemberSummary(memberId);
 
-        return ResponseEntity.ok(memberSummaryResponse);
+        return ResponseEntity.ok(ApiUtils.success(memberSummaryResponse));
     }
 
     @Tag(name = "Member")
     @Operation(summary = "to update a member", security = { @SecurityRequirement(name = "bearer-key") })
-    @PutMapping("/")
-    public ResponseEntity<?> updateMember(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody UpdateMemberRequest updateMemberRequest) {
+    @PutMapping
+    public ResponseEntity<ApiUtils.ApiResult<MemberInfoResponse>> updateMember(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody UpdateMemberRequest updateMemberRequest) {
 
         Long memberId = memberInfoDto.getMemberId();
         MemberInfoResponse memberInfoResponse = memberService.updateMemberInfo(memberId, updateMemberRequest);
 
-        return ResponseEntity.ok(memberInfoResponse);
+        return ResponseEntity.ok(ApiUtils.success(memberInfoResponse));
     }
 
 }

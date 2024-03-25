@@ -5,7 +5,7 @@ import com.ssafy.kkoma.external.oauth.model.OAuthAttributes;
 
 public interface SocialLoginApiService {
 
-    KakaoTokenDto.Response getKakaoToken(String code);
+    KakaoTokenDto.Response getKakaoToken(String code, String clientHost);
 
     OAuthAttributes getUserInfo(String accessToken);
 

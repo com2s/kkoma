@@ -1,14 +1,15 @@
 package com.ssafy.kkoma.api.offer.controller;
 
+import com.ssafy.kkoma.api.deal.dto.request.DealTimeRequest;
 import com.ssafy.kkoma.api.deal.service.DealService;
 import com.ssafy.kkoma.api.offer.dto.request.OfferTimeRequest;
 import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
 import com.ssafy.kkoma.api.offer.service.OfferDetailService;
 import com.ssafy.kkoma.api.offer.service.OfferService;
-import com.ssafy.kkoma.domain.deal.request.DealTimeRequest;
 import com.ssafy.kkoma.domain.offer.entity.Offer;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfoDto;
+import com.ssafy.kkoma.global.util.ApiUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -42,20 +43,20 @@ public class OfferController {
     @Tag(name = "Offer")
     @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     @GetMapping("/products/{productId}")
-    public ResponseEntity<List<OfferResponse>> getOffers(@PathVariable Long productId){
+    public ResponseEntity<ApiUtils.ApiResult<List<OfferResponse>>> getOffers(@PathVariable Long productId){
         List<OfferResponse> offerResponseList = offerService.getOffers(productId);
 
-        return ResponseEntity.ok(offerResponseList);
+        return ResponseEntity.ok(ApiUtils.success(offerResponseList));
     }
 
     @Tag(name = "Offer")
     @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     @PatchMapping("/{offerId}")
-    public ResponseEntity<?> changeOfferStatus(@PathVariable Long offerId, @RequestParam String type, @RequestBody DealTimeRequest dealTimeRequest){
+    public ResponseEntity<?> changeOfferStatus(
+        @PathVariable Long offerId, @RequestParam String type, @RequestBody DealTimeRequest dealTimeRequest
+    ){
         if(type.equals("accept")){
-            Offer offer = offerService.updateOfferStatusFromSentToAccepted(offerId);
-
-            dealService.createDeal(offer, dealTimeRequest);
+            Offer offer = offerService.acceptOffer(offerId, dealTimeRequest);
         }
 
         return ResponseEntity.ok().build();

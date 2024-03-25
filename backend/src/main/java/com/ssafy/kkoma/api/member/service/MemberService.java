@@ -2,13 +2,15 @@ package com.ssafy.kkoma.api.member.service;
 
 import com.ssafy.kkoma.api.member.dto.response.MemberInfoResponse;
 import com.ssafy.kkoma.api.member.dto.request.UpdateMemberRequest;
-import com.ssafy.kkoma.api.point.repository.PointRepository;
-import com.ssafy.kkoma.api.product.dto.ProductSummary;
+import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
+import com.ssafy.kkoma.domain.point.repository.PointRepository;
 import com.ssafy.kkoma.domain.kid.entity.Kid;
 import com.ssafy.kkoma.domain.kid.repository.KidRepository;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.member.repository.MemberRepository;
+import com.ssafy.kkoma.domain.offer.entity.Offer;
 import com.ssafy.kkoma.domain.point.entity.Point;
+import com.ssafy.kkoma.domain.product.constant.MyProductType;
 import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.global.error.ErrorCode;
@@ -102,17 +104,32 @@ public class MemberService {
         return member.getPoint().getBalance();
     }
 
-    public List<ProductSummary> getMyProducts(Long memberId) {
+    public List<ProductInfoResponse> getMySellingProducts(Long memberId, ProductType... productTypes) {
         Member member = findMemberByMemberId(memberId);
         List<Product> products = member.getProducts();
-        List<ProductSummary> productSummaries = new ArrayList<>();
+        List<ProductInfoResponse> productInfos = new ArrayList<>();
+
+        // todo 고도화 (동적 쿼리 사용해서 DB에서 가져오는 단계에서 타입에 조건을 걸어서 조회)
         for (Product product : products) {
-            ProductType productType = product.getStatus();
-            if (productType == ProductType.SALE || productType == ProductType.SOLD) {
-                productSummaries.add(ProductSummary.fromEntity(product));
+            for (ProductType productType : productTypes) {
+                if (product.getStatus() == productType) {
+                    productInfos.add(ProductInfoResponse.fromEntity(product, MyProductType.SELL));
+                    break;
+                }
+            }
+
+            if (productTypes.length == 0) {
+                productInfos.add(ProductInfoResponse.fromEntity(product, MyProductType.SELL));
             }
         }
-        return productSummaries;
+
+        return productInfos;
+    }
+
+    public List<Offer> getMyOffers(Long memberId) {
+        Member member = findMemberByMemberId(memberId);
+
+        return member.getOffers();
     }
 
 }

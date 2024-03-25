@@ -7,6 +7,7 @@ import com.ssafy.kkoma.domain.location.entity.Location;
 
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
+import com.ssafy.kkoma.domain.offer.entity.Offer;
 import com.ssafy.kkoma.domain.point.entity.Point;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.global.jwt.dto.JwtTokenDto;
@@ -45,7 +46,7 @@ public class Member extends BaseTimeEntity {
 	@Column(length = 50)
 	private String nickname;
 
-	@Column(length = 11)
+	@Column(length = 20)
 	private String phone;
 
 	@Column
@@ -74,8 +75,14 @@ public class Member extends BaseTimeEntity {
 	@OneToMany(mappedBy = "member")
 	private List<Product> products = new ArrayList<>();
 
+	@OneToMany(mappedBy = "member")
+	private List<Offer> offers = new ArrayList<>();
+
 	@OneToOne(fetch = FetchType.LAZY)
 	private Point point;
+
+	private boolean memberInfoCompleted;
+	private boolean kidInfoCompleted;
 
 	@Builder
 	public Member(MemberType memberType, String email, String name, String profileImage, Role role) {
@@ -86,7 +93,8 @@ public class Member extends BaseTimeEntity {
 		this.role = role;
 		this.products = new ArrayList<>();
 		this.kids = new ArrayList<>();
-	}
+        memberInfoCompleted = false;
+    }
 
 	public void updateRefreshToken(JwtTokenDto jwtTokenDto) {
 		this.refreshToken = jwtTokenDto.getRefreshToken();
@@ -102,10 +110,19 @@ public class Member extends BaseTimeEntity {
 		this.nickname = updateMemberRequest.getNickname();
 		this.name = updateMemberRequest.getName();
 		this.phone = updateMemberRequest.getPhone();
+		this.memberInfoCompleted = true;
 	}
 
 	public void setPoint(Point point) {
 		this.point = point;
+	}
+
+	public void setMemberInfoCompleted(boolean additionalInfoCompleted) {
+		this.memberInfoCompleted = additionalInfoCompleted;
+	}
+
+	public void setKidInfoCompleted(boolean kidInfoCompleted) {
+		this.kidInfoCompleted = kidInfoCompleted;
 	}
 
 }

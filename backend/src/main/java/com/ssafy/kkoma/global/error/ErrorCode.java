@@ -41,12 +41,21 @@ public enum ErrorCode {
 
     // Point
     POINT_NOT_EXISTS(HttpStatus.BAD_REQUEST, "POINT-001", "해당 포인트는 존재하지 않습니다."),
+    POINT_NOT_ENOUGH(HttpStatus.BAD_REQUEST, "POINT-002", "포인트가 부족하여 거래 요청을 할 수 없습니다."),
+
+    // DEAL
+    DEAL_NOT_EXISTS(HttpStatus.BAD_REQUEST, "DEAL-001", "해당 거래는 존재하지 않습니다."),
+    DEAL_INVALID_STATUS(HttpStatus.BAD_REQUEST, "DEAL-002", "거래 중인 거래 건이 아닙니다."),
+    INVALID_BUYER(HttpStatus.BAD_REQUEST, "DEAL-003", "해당 거래에 대한 구매자가 아닙니다."),
+    INVALID_SELLER(HttpStatus.BAD_REQUEST, "DEAL-004", "해당 거래에 대한 판매자가 아닙니다."),
+    INVALID_CODE(HttpStatus.BAD_REQUEST, "DEAL-005", "QR 코드가 유효하지 않습니다."),
 
     // Temparary,
     UPDATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "T-004", "회원 정보를 수정에 실패하였습니다."),
 
     // Util
-    S3UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "U-001", "이미지 업로드에 실패하였습니다.");
+    IMAGE_NOT_EXISTS(HttpStatus.BAD_REQUEST, "U-001", "업로드 한 이미지가 비어있습니다."),
+    S3UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "U-002", "이미지 업로드에 실패하였습니다.");
 
     ErrorCode(HttpStatus httpStatus, String errorCode, String message) {
         this.httpStatus = httpStatus;

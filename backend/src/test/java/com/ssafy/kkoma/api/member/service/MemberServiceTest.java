@@ -3,12 +3,14 @@ package com.ssafy.kkoma.api.member.service;
 import com.ssafy.kkoma.api.member.dto.response.MemberInfoResponse;
 import com.ssafy.kkoma.api.member.dto.request.UpdateMemberRequest;
 import com.ssafy.kkoma.api.member.service.MemberService;
+import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
 import com.ssafy.kkoma.api.product.dto.ProductSummary;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.member.repository.MemberRepository;
 import com.ssafy.kkoma.domain.point.entity.Point;
+import com.ssafy.kkoma.domain.product.constant.MyProductType;
 import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.domain.product.repository.ProductRepository;
@@ -22,7 +24,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Transactional
 class MemberServiceTest {
 
     @Autowired
@@ -35,6 +36,7 @@ class MemberServiceTest {
     ProductRepository productRepository;
 
     @Test
+    @Transactional
     void 회원_정보_수정() {
 
         Member member = Member.builder()
@@ -55,6 +57,7 @@ class MemberServiceTest {
     }
 
     @Test
+    @Transactional
     void 포인트_생성() {
         // given
         Member member = Member.builder()
@@ -74,6 +77,7 @@ class MemberServiceTest {
     }
 
     @Test
+    @Transactional
     void 나의_판매글_조회() {
         // given
         Member member = Member.builder()
@@ -82,7 +86,7 @@ class MemberServiceTest {
                 .role(Role.USER)
                 .build();
         Member savedMember = memberRepository.save(member);
-        List<ProductSummary> myProductsBefore = memberService.getMyProducts(savedMember.getId());
+        List<ProductInfoResponse> myProductsBefore = memberService.getMySellingProducts(savedMember.getId(), ProductType.SALE, ProductType.SOLD);
 
 
         for (int i = 0; i < 10; i++) {
@@ -96,14 +100,14 @@ class MemberServiceTest {
         for (int i = 0; i < 10; i++) {
             Product product = Product.builder()
                     .title("...")
-                    .status(ProductType.MID)
+                    .status(ProductType.PROGRESS)
                     .build();
             product.setMember(savedMember);
             productRepository.save(product);
         }
 
         // when
-        List<ProductSummary> myProducts = memberService.getMyProducts(savedMember.getId());
+        List<ProductInfoResponse> myProducts = memberService.getMySellingProducts(savedMember.getId(), ProductType.SALE, ProductType.SOLD);
 
         // then
         assertEquals(myProductsBefore.size() + 10, myProducts.size());

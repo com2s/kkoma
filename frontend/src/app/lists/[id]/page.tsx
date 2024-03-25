@@ -2,7 +2,10 @@
 
 import React, { Suspense } from "react";
 import styles from "@/components/lists/lists-id.module.scss";
-import { getImages } from "@/components/lists/lists-ftn";
+import { getImages, getProductDetail } from "@/components/lists/lists-ftn";
+
+// 인터페이스
+import { DetailParams } from "@/types/product";
 
 import TopBar2 from "@/components/lists/lists-detail-bar";
 import Profile from "@/components/lists/lists-detail-profile";
@@ -43,7 +46,13 @@ interface IParams {
 // }
 
 export default async function ProductDetail({ params: { id } }: IParams) {
-  const images = await getImages(id);
+  if (!id) return <div>상품 정보가 없습니다.</div>;
+  const product: DetailParams = await getProductDetail(id);
+  if (product.productImages === null) {
+    product.productImages = await getImages();
+  }
+
+  // console.log(product)
 
   const settings = {
     centerMode: true,
@@ -64,11 +73,11 @@ export default async function ProductDetail({ params: { id } }: IParams) {
       <TopBar2 />
       <div className={styles.carousel}>
         <Slider {...settings}>
-          {images.map((img, index) => (
+          {product.productImages.map((img, index) => (
             <div key={index} className={styles.image}>
               <Image
-                src={img.img}
-                alt={`Slide ${index + 1}: ${img.title}`}
+                src={img[0]==='/' ? img : `/${img}`} // Route of the image file
+                alt={`Slide ${index + 1}`}
                 priority
                 width={300} // Adjust as needed
                 height={300} // Adjust as needed
@@ -78,8 +87,8 @@ export default async function ProductDetail({ params: { id } }: IParams) {
           ))}
         </Slider>
       </div>
-      <Profile id={id} />
-      <Content id={id} />
+      <Profile propsId={id} memberSummary={product.memberSummary} />
+      <Content propsId={id} product={product}/>
       <Accordion className="mt-4">
         {/* 거래 장소 선택(필수항목) */}
         <AccordionSummary
@@ -91,7 +100,7 @@ export default async function ProductDetail({ params: { id } }: IParams) {
           <span>거래 장소</span>
         </AccordionSummary>
         <AccordionDetails>
-          <span>여기서 주소 받아오기</span>
+          <span>*여기서 주소 받아오기*</span>
           <Map />
         </AccordionDetails>
       </Accordion>

@@ -12,7 +12,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -26,10 +29,20 @@ public class S3Util {
     @Value("${cloud.aws.region.static}")
     private String region;
 
+    public List<String> uploadFiles(List<MultipartFile> files) {
+        return files.stream()
+            .map(this::uploadFile)
+            .collect(Collectors.toList());
+    }
+
     public String uploadFile(MultipartFile file) {
 
-        String fileName = createStoreFileName(file.getOriginalFilename());
-        String fileUrl = "https://" + bucket + "/images/" + fileName;
+        if(file.isEmpty()) {
+            throw new BusinessException(ErrorCode.IMAGE_NOT_EXISTS);
+        }
+
+        String fileName = createStoreFileName("images", file.getOriginalFilename());
+        String fileUrl = "https://" + bucket + ".s3." + region + ".amazonaws.com/" + fileName;
 
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(file.getContentType());
@@ -46,10 +59,10 @@ public class S3Util {
         return fileUrl;
     }
 
-    private String createStoreFileName(String originalName) {
+    private String createStoreFileName(String directory, String originalName) {
         String ext = extractExt(originalName);
         String uuid = UUID.randomUUID().toString();
-        return uuid + "." + ext;
+        return directory + "/" + uuid + "." + ext;
     }
 
     private static String extractExt(String originalName) {

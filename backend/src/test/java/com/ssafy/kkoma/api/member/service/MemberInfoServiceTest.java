@@ -10,6 +10,7 @@ import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,6 +24,7 @@ class MemberInfoServiceTest {
     MemberRepository memberRepository;
 
     @Test
+    @Transactional
     void 회원_정보_얻기() {
         // given
         Member member = Member.builder()
@@ -43,6 +45,7 @@ class MemberInfoServiceTest {
     }
 
     @Test
+    @Transactional
     void 존재하지않는_회원_정보_얻기() {
         // given
         Long NON_EXISTENT_MEMBER_ID = 100000000L;
@@ -52,6 +55,7 @@ class MemberInfoServiceTest {
     }
 
     @Test
+    @Transactional
     void 회원_요약_정보_얻기() {
         // given
         Member member = Member.builder()
@@ -71,6 +75,7 @@ class MemberInfoServiceTest {
     }
 
     @Test
+    @Transactional
     void 존재하지않는_회원_요약_정보_얻기() {
         // given
         Long NON_EXISTENT_MEMBER_ID = 100000000L;

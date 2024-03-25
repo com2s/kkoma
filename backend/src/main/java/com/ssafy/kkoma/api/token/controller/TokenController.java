@@ -2,6 +2,7 @@ package com.ssafy.kkoma.api.token.controller;
 
 import com.ssafy.kkoma.api.token.dto.AccessTokenResponse;
 import com.ssafy.kkoma.api.token.service.TokenService;
+import com.ssafy.kkoma.global.util.ApiUtils;
 import com.ssafy.kkoma.global.util.AuthorizationHeaderUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,13 +24,14 @@ public class TokenController {
     @Tag(name = "Token")
     @Operation(summary = "to issue an access token")
     @PostMapping("/access-token/issue")
-    public ResponseEntity<AccessTokenResponse> createAccessToken(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<ApiUtils.ApiResult<AccessTokenResponse>> createAccessToken(HttpServletRequest httpServletRequest) {
         String authorizationHeader = httpServletRequest.getHeader("Authorization");
         AuthorizationHeaderUtils.validateAuthorization(authorizationHeader);
 
         String refreshToken = authorizationHeader.split(" ")[1];
         AccessTokenResponse accessTokenResponse = tokenService.createAccessTokenByRefreshToken(refreshToken);
-        return ResponseEntity.ok(accessTokenResponse);
+        return ResponseEntity
+                .ok(ApiUtils.success(accessTokenResponse));
     }
 
 }
