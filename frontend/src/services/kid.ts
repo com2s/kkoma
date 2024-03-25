@@ -7,8 +7,15 @@ interface KidInfo {
 }
 
 export const updateKidAPI = async (kidInfo: KidInfo) => {
-  const res = await APIModule({ action: "/kids", method: "PUT", data: kidInfo });
-  const obj = await res.json();
-
-  return obj;
+  try {
+    const res = await APIModule({ action: "/kids", method: "PUT", data: kidInfo });
+    if (res.success) {
+      return res.data;
+    } else {
+      //TODO: error 페이지로 이동
+      throw new Error(res.error.errorMessage);
+    }
+  } catch (e: any) {
+    //TODO: error 페이지로 이동
+  }
 };
