@@ -4,6 +4,7 @@ import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
 import com.ssafy.kkoma.api.product.dto.ProductCreateResponse;
 import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
 import com.ssafy.kkoma.api.product.dto.ProductSummary;
+import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
 import com.ssafy.kkoma.api.product.service.ProductService;
 import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
@@ -32,6 +33,12 @@ public class ProductController {
     @GetMapping("")
     public ResponseEntity<ApiUtils.ApiResult<List<ProductSummary>>> getProducts(){
         List<ProductSummary> products = productService.getProducts();
+        return ResponseEntity.ok(ApiUtils.success(products));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<ApiUtils.ApiResult<List<ProductSummary>>> searchProducts(@RequestBody SearchProductRequest searchProductRequest) {
+        List<ProductSummary> products = productService.searchProduct(searchProductRequest);
         return ResponseEntity.ok(ApiUtils.success(products));
     }
 

@@ -17,6 +17,7 @@ repositories {
 
 ext {
     set('springCloudVersion', "2023.0.0")
+    set('querydslVersion', "5.0.0")
 }
 
 dependencies {
@@ -37,7 +38,11 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.4.0'
     // mysql jdbc driver
     implementation 'com.mysql:mysql-connector-j:8.0.33'
-
+    // QueryDSL
+    implementation "com.querydsl:querydsl-jpa:${querydslVersion}:jakarta"
+    annotationProcessor "com.querydsl:querydsl-apt:${querydslVersion}:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
     // aws s3
     implementation 'com.amazonaws:aws-java-sdk-s3:1.12.681'
 }
@@ -50,4 +55,8 @@ dependencyManagement {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+clean {
+    delete file('src/main/generated')
 }

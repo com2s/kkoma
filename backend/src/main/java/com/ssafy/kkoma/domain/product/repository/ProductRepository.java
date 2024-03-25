@@ -9,7 +9,7 @@ import com.ssafy.kkoma.domain.product.entity.Product;
 import java.util.List;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long>, ProductRepositoryCustom {
 
     List<Product> findByStatusOrderByCreatedAtDesc(ProductType productType);
 

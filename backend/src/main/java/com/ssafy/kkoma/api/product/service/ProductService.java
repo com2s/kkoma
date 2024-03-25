@@ -11,6 +11,7 @@ import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
 import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
 import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
+import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
 import com.ssafy.kkoma.domain.member.entity.Member;
 
 import com.ssafy.kkoma.domain.offer.entity.Offer;
@@ -49,6 +50,14 @@ public class ProductService {
 
 	public List<ProductSummary> getProducts(){
 		List<Product> products = productRepository.findAll();
+
+		return products.stream()
+			.map(ProductSummary::fromEntity)
+			.collect(Collectors.toList());
+	}
+
+	public List<ProductSummary> searchProduct(SearchProductRequest searchProductRequest) {
+		List<Product> products = productRepository.searchProduct(searchProductRequest);
 
 		return products.stream()
 			.map(ProductSummary::fromEntity)
