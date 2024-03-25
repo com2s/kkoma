@@ -7,7 +7,7 @@ html {
   max-width: 600px;
   margin: 0 auto;
   // border: 1px solid black;
-  
+
   // 스크롤바 숨기기
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
@@ -16,11 +16,9 @@ html {
   }
 }
 
-// 다이얼로그 동작 시 우측 패딩 제거
-// body {
-//   // overflow: hidden !important;
-//   padding-right: 0px !important; /* 패딩 제거 */
-// }
+body {
+  padding: rem(16) rem(26);
+}
 
 .box {
   -ms-overflow-style: none; /* IE and Edge */

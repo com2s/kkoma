@@ -11,7 +11,7 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { Dispatch, SetStateAction, useState, useEffect } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { useRecoilState } from "recoil";
 import { kidYearState, kidMonthState, kidDateState } from "@/store/kid";
 
@@ -27,31 +27,10 @@ export function BirthdaySelecter({ title, open, setOpen }: selecterProps) {
   const [date, setDate] = useRecoilState(kidDateState);
 
   const now = new Date();
-  let yearList: Array<string> = ["2024"];
-  let monthList: Array<string> = ["01"];
-  let dateList: Array<string> = ["01"];
 
-  useEffect(() => {
-    for (let y = now.getFullYear(); y >= 1980; y -= 1) {
-      yearList.push(y.toString());
-    }
-
-    for (let m = 1; m <= 12; m += 1) {
-      if (m < 10) {
-        monthList.push("0" + m.toString());
-      } else {
-        monthList.push(m.toString());
-      }
-    }
-    let day = new Date(Number(year), Number(month), 0).getDate();
-    for (let d = 1; d <= day; d += 1) {
-      if (d < 10) {
-        dateList.push("0" + d.toString());
-      } else {
-        dateList.push(d.toString());
-      }
-    }
-  }, [yearList, monthList, dateList, year, month, now]);
+  let yearList: Array<string> = Array.from({ length: 35 }, (_, i) => `${i + 1990}`);
+  let monthList: Array<string> = Array.from({ length: 12 }, (_, i) => `0${i + 1}`.slice(-2));
+  let dateList: Array<string> = Array.from({ length: 31 }, (_, i) => `0${i + 1}`.slice(-2));
 
   const handleChangeYear = (event: SelectChangeEvent<typeof year>) => {
     setYear(event.target.value);
@@ -125,7 +104,7 @@ export function BirthdaySelecter({ title, open, setOpen }: selecterProps) {
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>완료</Button>
+        <Button onClick={handleClose}>다음</Button>
       </DialogActions>
     </Dialog>
   );
