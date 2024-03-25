@@ -7,13 +7,17 @@ html {
   max-width: 600px;
   margin: 0 auto;
   // border: 1px solid black;
-  
+
   // 스크롤바 숨기기
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
   ::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
+}
+
+body {
+  padding: rem(16) rem(26);
 }
 
 .box {
