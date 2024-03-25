@@ -125,4 +125,8 @@ public class Member extends BaseTimeEntity {
 		this.kidInfoCompleted = kidInfoCompleted;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
 }
