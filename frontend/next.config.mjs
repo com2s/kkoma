@@ -20,6 +20,7 @@ const nextConfig = {
         pathname: "/**",
       },
     ],
+    domains: ['sitem.ssgcdn.com'],
   },
   webpack(config) {
     config.module.rules.push({

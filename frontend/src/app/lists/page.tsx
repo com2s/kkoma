@@ -76,11 +76,11 @@ export default function ListPage() {
     setSearchText("");
   };
 
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product>();
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const product: Product[] = await getProducts();
+      const product: Product = await getProducts();
       setProducts(product);
     };
     fetchProducts();
@@ -100,8 +100,8 @@ export default function ListPage() {
 
   // 필터링된 제품 목록. 검색어에 따라 필터링
   // const filteredProducts = products
-
-  const filteredProducts = products
+  console.log(products);
+  const filteredProducts = products?.success === true ? products?.data
     .filter(
       (product) =>
         chips.status === "거래 상태"
@@ -118,9 +118,8 @@ export default function ListPage() {
     .filter((product) =>
       product.title.toLowerCase().includes(searchText.toLowerCase())
     )
-    .sort((a, b) => a.elapsedMinutes - b.elapsedMinutes);
-
-  console.log(products);
+    .sort((a, b) => a.elapsedMinutes - b.elapsedMinutes)
+    : [];
 
   return (
     <div className={styles.container}>
@@ -238,7 +237,7 @@ export default function ListPage() {
       </Link>
       {/* 본문 리스트 시작 */}
       <div>
-        {filteredProducts.map((product) => (
+        {filteredProducts?.map((product) => (
           <Link href={`/lists/${product.id}`} key={product.id} prefetch={false}>
             <Card key={product.id} variant="outlined" className={styles.card}>
               <Avatar
@@ -264,7 +263,11 @@ export default function ListPage() {
                 </Typography>
                 <Typography variant="body2">
                   {product.dealPlace ?? "거래 장소 null"} |{" "}
-                  {product.elapsedMinutes ?? 0}분 전
+                  {product.elapsedMinutes >= 1440 // 1440분 = 24시간
+                    ? `${Math.floor(product.elapsedMinutes / 1440)}일 전`
+                    : product.elapsedMinutes >= 60
+                    ? `${Math.floor(product.elapsedMinutes / 60)}시간 전`
+                    : `${product.elapsedMinutes}분 전`}
                 </Typography>
                 {/* <Typography variant="body2">
                   Views: {product.views} | Likes: {product.likes}
@@ -305,6 +308,12 @@ export default function ListPage() {
           </Link>
         ))}
       </div>
+      {products?.success === false && (
+        <Typography variant="h5" className={styles.error}>
+          {products.error.errorMessage}
+        </Typography>
+      )}
+      {/* 본문 리스트 끝 */}
       <Navigation />
     </div>
   );

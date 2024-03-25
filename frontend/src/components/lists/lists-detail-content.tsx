@@ -8,19 +8,21 @@ import { Typography } from "@mui/material";
 
 interface DetailTypes {
   propsId: string;
-  product: DetailParams;
+  product: DetailParams["data"];
 }
 
-export default async function DetailContent({
-  propsId,
-  product,
-}: DetailTypes) {
+export default async function DetailContent({ propsId, product }: DetailTypes) {
   return (
     <div className={styles.container}>
       <div className={styles.title}>
         <div>
-          <p className="text-gray-400">
-            {product.categoryName} • {product.elapsedMinutes}
+          <p className="text-gray-400 text-pretty">
+            {product.dealPlace ?? "거래 장소 null"} •{" "}
+            {product.elapsedMinutes >= 1440 // 1440분 = 24시간
+              ? `${Math.floor(product.elapsedMinutes / 1440)}일 전`
+              : product.elapsedMinutes >= 60
+              ? `${Math.floor(product.elapsedMinutes / 60)}시간 전`
+              : `${product.elapsedMinutes}분 전`}
           </p>
           <h1>{product.title}</h1>
           <div className="views">
@@ -36,6 +38,7 @@ export default async function DetailContent({
             mt: 2,
             fontWeight: "bold",
             margin: "auto 0",
+            minWidth: "fit-content",
             color:
               product.status === "SALE"
                 ? "orange"

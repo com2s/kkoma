@@ -10,14 +10,14 @@ import APIModule from "@/utils/apiModule";
 
 export async function getProducts() {
   const response = await APIModule({ action: "/products", method: "GET", data: null });
-
-  return response.data;
+  
+  return response;
 }
 
 export async function getProductDetail(id: string) {
   const response = await APIModule({ action: `/products/${id}`, method: "GET", data: null });
 
-  return response.data;
+  return response;
 }
 
 interface PostData {
