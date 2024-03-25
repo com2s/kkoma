@@ -43,8 +43,11 @@ export default function UploadBtn() {
       setProfile(formData);
 
       const reader = new FileReader();
-      reader.onloadend = () => {};
+      reader.onloadend = () => {
+        setPreview(reader.result as string);
+      };
       reader.readAsDataURL(imgFile);
+      setPreview(null);
     } else {
       setPreview(null);
     }
