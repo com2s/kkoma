@@ -16,7 +16,7 @@ export async function getMySummary() {
     data: null,
   });
 
-  return response.json();
+  return response.data;
 }
 
 export async function getMyInfo() {
@@ -26,7 +26,7 @@ export async function getMyInfo() {
     data: null,
   });
 
-  return response.json();
+  return response.data;
 }
 
 interface MemberInfo {
@@ -43,5 +43,5 @@ export async function putMyInfo(data: MemberInfo) {
     data: data,
   });
 
-  return response.json();
+  return response.data;
 }
