@@ -8,10 +8,10 @@ import APIModule from "@/utils/apiModule";
 //   return obj;
 // };
 interface TypeData {
-    type: 'sell' | 'buy' | 'progress';
+  type: "sell" | "buy" | "progress";
 }
 
-export async function getMyProducts(type: TypeData['type']) {
+export async function getMyProducts(type: TypeData["type"]) {
   const queryObject = {
     type: type,
   };
@@ -24,7 +24,7 @@ export async function getMyProducts(type: TypeData['type']) {
     data: null,
   });
 
-  return response.json();
+  return response.data;
 }
 
 export async function getRequesters(productId: string) {
@@ -34,5 +34,5 @@ export async function getRequesters(productId: string) {
     data: null,
   });
 
-  return response.json();
+  return response.data;
 }
