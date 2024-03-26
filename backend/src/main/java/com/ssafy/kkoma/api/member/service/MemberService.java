@@ -3,6 +3,8 @@ package com.ssafy.kkoma.api.member.service;
 import com.ssafy.kkoma.api.member.dto.response.MemberInfoResponse;
 import com.ssafy.kkoma.api.member.dto.request.UpdateMemberRequest;
 import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
+import com.ssafy.kkoma.domain.deal.entity.Deal;
+import com.ssafy.kkoma.domain.deal.repository.DealRepository;
 import com.ssafy.kkoma.domain.point.repository.PointRepository;
 import com.ssafy.kkoma.domain.kid.entity.Kid;
 import com.ssafy.kkoma.domain.kid.repository.KidRepository;
@@ -34,6 +36,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PointRepository pointRepository;
     private final KidRepository kidRepository;
+    private final DealRepository dealRepository;
 
     public Member registerMember(Member member) {
         validateDuplicateMember(member);
@@ -111,15 +114,27 @@ public class MemberService {
 
         // todo 고도화 (동적 쿼리 사용해서 DB에서 가져오는 단계에서 타입에 조건을 걸어서 조회)
         for (Product product : products) {
+            Deal deal = dealRepository.findByProduct(product);
+
             for (ProductType productType : productTypes) {
                 if (product.getStatus() == productType) {
-                    productInfos.add(ProductInfoResponse.fromEntity(product, MyProductType.SELL));
+                    productInfos.add(ProductInfoResponse.fromEntity(
+                        product,
+                        MyProductType.SELL,
+                        deal != null ? deal.getId() : null,
+                        deal != null ? deal.getSelectedTime() : null
+                    ));
                     break;
                 }
             }
 
             if (productTypes.length == 0) {
-                productInfos.add(ProductInfoResponse.fromEntity(product, MyProductType.SELL));
+                productInfos.add(ProductInfoResponse.fromEntity(
+                    product,
+                    MyProductType.SELL,
+                    deal != null ? deal.getId() : null,
+                    deal != null ? deal.getSelectedTime() : null
+                ));
             }
         }
 

@@ -55,7 +55,7 @@ public class OfferController {
     public ResponseEntity<?> changeOfferStatus(
         @PathVariable Long offerId, @RequestParam String type, @RequestBody DealTimeRequest dealTimeRequest
     ){
-        if(type.equals("accept")){
+        if (type.equals("accept")) {
             Offer offer = offerService.acceptOffer(offerId, dealTimeRequest);
         }
 
