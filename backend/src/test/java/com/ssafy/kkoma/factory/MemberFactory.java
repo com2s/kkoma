@@ -4,6 +4,8 @@ import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.member.repository.MemberRepository;
+import com.ssafy.kkoma.domain.point.entity.Point;
+import com.ssafy.kkoma.domain.point.repository.PointRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +16,9 @@ public class MemberFactory {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private PointRepository pointRepository;
 
     public MemberFactory(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
@@ -27,6 +32,10 @@ public class MemberFactory {
                 .role(Role.USER)
                 .email(randomUUID(10) + "@kakao.com")
                 .build();
+
+        Point point = new Point();
+        Point savedPoint = pointRepository.save(point);
+        member.setPoint(savedPoint);
 
         return memberRepository.save(member);
     }

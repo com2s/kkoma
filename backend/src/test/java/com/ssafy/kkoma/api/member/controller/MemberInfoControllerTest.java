@@ -34,17 +34,21 @@ class MemberInfoControllerTest {
     @Test
     void getMemberInfo() throws Exception {
 
+        // 필요한 인스턴스 생성
         Member savedMember = memberFactory.createMember();
+
+        // 예상 응답 인스턴스 생성
         MemberInfoResponse expectedMemberInfoResponse = MemberInfoResponse.fromEntity(savedMember);
 
         mockMvc.perform(
-                        // 해당 요청을 수행할 (로그인 된) 멤버를 인자로 전달 (로그인 안한 상황이면 비워두기)
+                        // 요청
+                        // 해당 요청을 수행할 (로그인 된) 멤버를 매개변수로 전달 (로그인 안한 상황이면 비워두기)
                         requestUtil.getRequest("/api/members/info", savedMember)
                 )
-                .andExpectAll(
+                .andExpectAll( // 예상 응답
                         // HTTP Status
                         MockMvcResultMatchers.status().isOk(),
-                        // 응답 시 반환 할 (data 속성 내에 들어갈) DTO 클래스와, 그 구현체를 인자로 전달
+                        // 반환 할 (data 속성 내에 들어갈) DTO 클래스와, 그 구현체를 인자로 전달
                         requestUtil.jsonContent(MemberInfoResponse.class, expectedMemberInfoResponse)
                 );
 
@@ -58,13 +62,10 @@ class MemberInfoControllerTest {
         MemberSummaryResponse expectedResponse = MemberSummaryResponse.fromEntity(savedMember);
 
         mockMvc.perform(
-                        // 해당 요청을 수행할 (로그인 된) 멤버를 인자로 전달 (로그인 안한 상황이면 비워두기)
                         requestUtil.getRequest("/api/members/summary", savedMember)
                 )
                 .andExpectAll(
-                        // HTTP Status
                         MockMvcResultMatchers.status().isOk(),
-                        // 응답 시 반환 할 (data 속성 내에 들어갈) DTO 클래스와, 그 구현체를 인자로 전달
                         requestUtil.jsonContent(MemberSummaryResponse.class, expectedResponse)
                 );
 
@@ -74,17 +75,22 @@ class MemberInfoControllerTest {
     @Test
     void updateMember() throws Exception {
 
+        // 인스턴스 생성
         Member savedMember = memberFactory.createMember();
 
+        // 예상 응답
         savedMember.setName("NEW_NAME");
         MemberInfoResponse expectedResponse = MemberInfoResponse.fromEntity(savedMember);
 
+        // 요청
         UpdateMemberRequest request = UpdateMemberRequest.builder()
-                        .name("NEW_NAME")
-                        .build();
+                .name("NEW_NAME")
+                .build();
 
         mockMvc.perform(
-                        // 매개변수#3 요청 DTO 클래스, 매개변수#4로 요청 인스턴스를 전달
+                        // JSON과 함께 요청할 때
+                        // 매개변수#3 : 요청 DTO 클래스
+                        // 매개변수#4 : 요청 인스턴스
                         requestUtil.putRequestWithJson("/api/members", savedMember, UpdateMemberRequest.class, request)
                 )
                 .andExpectAll(

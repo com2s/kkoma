@@ -17,10 +17,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Entity
 @Getter
+@AllArgsConstructor
+@Builder
 public class Kid extends BaseTimeEntity {
 
 	@Id
@@ -42,6 +46,10 @@ public class Kid extends BaseTimeEntity {
 	private Integer clothSize;
 
 	private Integer shoeSize;
+
+	public Kid() {
+
+	}
 
 	public void setMember(Member member) {
 		this.member = member;
