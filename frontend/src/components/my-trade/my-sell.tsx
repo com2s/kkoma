@@ -16,6 +16,7 @@ import Link from "next/link";
 
 export default function MySell() {
   const [deals, setDeals] = useState<Deal[]>([]);
+  const [success, setSuccess] = useState(true);
   const [selectedChip, setSelectedChip] = useState<string>("모두");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   // 현재 열린 메뉴의 ID를 저장하기 위한 상태 추가
@@ -26,7 +27,8 @@ export default function MySell() {
     const fetchSelling = async () => {
       const myProducts = await getMyProducts("sell");
       console.log("MySell: ", myProducts);
-      setDeals(myProducts);
+      setDeals(myProducts.data);
+      setSuccess(myProducts.success);
     };
     fetchSelling();
     // console.log("fetchSelling");
@@ -77,6 +79,14 @@ export default function MySell() {
     )
     .sort((a, b) => a.elapsedMinutes - b.elapsedMinutes);
 
+  if (success === false) {
+    return (
+      <div>
+        <h2>판매글을 불러오는 데 실패했습니다.</h2>
+      </div>
+    );
+  }
+
   return (
     <React.Fragment>
       <Stack direction="row" spacing={1.5} className={styles.chips}>
@@ -102,11 +112,16 @@ export default function MySell() {
             />
             <CardContent sx={{ padding: 1 }} className={styles.cardMiddle}>
               <Typography variant="h6" component="div">
-                {deal.title}
+                {deal.price.toLocaleString()}원{" "}
               </Typography>
               <Typography color="text.secondary">{deal.title}</Typography>
               <Typography variant="body2">
-                {deal.dealPlace} | {deal.elapsedMinutes}분 전
+                {deal.dealPlace ?? "거래 장소 null"} •{" "}
+                {deal.elapsedMinutes >= 1440 // 1440분 = 24시간
+                  ? `${Math.floor(deal.elapsedMinutes / 1440)}일 전`
+                  : deal.elapsedMinutes >= 60
+                  ? `${Math.floor(deal.elapsedMinutes / 60)}시간 전`
+                  : `${deal.elapsedMinutes}분 전`}
               </Typography>
               <Typography variant="caption" className="text-gray-400">
                 조회 {deal.viewCount} • 거래 요청 {deal.offerCount} • 찜{" "}

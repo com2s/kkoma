@@ -5,6 +5,7 @@ export interface Deal {
     offerCount: number;
     status: 'SALE' | 'PROGRESS' | 'SOLD' | 'CANCELLED' | 'SENT' ;
     thumbnailImage: string;
+    price: number;
     title: string;
     type: 'BUY' | 'PROGRESS' | 'SELL';
     viewCount: number;
