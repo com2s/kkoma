@@ -13,9 +13,7 @@ import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
 import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
 import com.ssafy.kkoma.domain.member.entity.Member;
 
-import com.ssafy.kkoma.domain.offer.entity.Offer;
 import com.ssafy.kkoma.domain.product.constant.MyProductType;
-import com.ssafy.kkoma.domain.product.constant.ProductType;
 
 import com.ssafy.kkoma.domain.product.entity.Category;
 
@@ -30,6 +28,7 @@ import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.domain.product.repository.ProductRepository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -56,11 +55,17 @@ public class ProductService {
 	}
 
 	public ProductDetailResponse getProduct(Long productId) {
+		Product product = findProductById(productId);
 		List<String> productImageUrls = productImageService.getProductImageUrls(productId);
-		Product product = findProductByProductId(productId);
 		String categoryName = categoryService.getCategoryName(product.getCategory().getId());
+		ProductDetailResponse productDetailResponse = buildProductDetailResponse(product, productImageUrls, categoryName, product.getMember());
+		return productDetailResponse;
+	}
 
-		return buildProductDetailResponse(product, productImageUrls, categoryName, product.getMember());
+	public void addViewCount(Long productId) {
+		Product product = productRepository.findByIdWithPessimisticLock(productId);
+		product.addViewCount();
+		productRepository.save(product);
 	}
 
 	public ProductInfoResponse getProductInfoResponse(Long productId) {

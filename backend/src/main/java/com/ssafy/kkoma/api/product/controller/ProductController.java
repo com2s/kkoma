@@ -40,6 +40,7 @@ public class ProductController {
     @GetMapping("/{productId}")
     public ResponseEntity<ApiUtils.ApiResult<ProductDetailResponse>> getProduct(@PathVariable Long productId){
         ProductDetailResponse productDetailResponse = productService.getProduct(productId);
+        productService.addViewCount(productId);
         return ResponseEntity.ok(ApiUtils.success(productDetailResponse));
     }
 

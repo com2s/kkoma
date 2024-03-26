@@ -10,6 +10,7 @@ import com.ssafy.kkoma.domain.product.repository.ProductRepository;
 import com.ssafy.kkoma.global.util.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
@@ -38,7 +39,9 @@ public class ProductFactory {
     public Product createProduct(Member member, Category category, int price) {
         Product product = Product.builder()
                 .title(TITLE)
+                .category(category)
                 .thumbnailImage(IMAGE_URL)
+                .price(price)
                 .build();
         product.setMember(member);
         return productRepository.save(product);

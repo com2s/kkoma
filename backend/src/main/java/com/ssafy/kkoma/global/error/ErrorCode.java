@@ -29,6 +29,7 @@ public enum ErrorCode {
 
     // Product
     PRODUCT_NOT_EXISTS(HttpStatus.BAD_REQUEST, "P-001", "해당 거래 글은 존재하지 않습니다."),
+    VIEW_OVERFLOW(HttpStatus.INTERNAL_SERVER_ERROR, "P-002", "해당 게시 글의 조회수가 최대값에 도달하였습니다."),
 
     // Category
     CATEGORY_NOT_EXISTS(HttpStatus.BAD_REQUEST, "C-001", "해당 카테고리는 존재하지 않습니다."),
@@ -55,7 +56,8 @@ public enum ErrorCode {
 
     // Util
     IMAGE_NOT_EXISTS(HttpStatus.BAD_REQUEST, "U-001", "업로드 한 이미지가 비어있습니다."),
-    S3UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "U-002", "이미지 업로드에 실패하였습니다.");
+    S3UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "U-002", "이미지 업로드에 실패하였습니다."),
+    ;
 
     ErrorCode(HttpStatus httpStatus, String errorCode, String message) {
         this.httpStatus = httpStatus;

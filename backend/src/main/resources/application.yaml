@@ -14,7 +14,7 @@ spring:
 logging:
   level:
     org.hibernate.type: debug
-    com.konoha: debug
+    com.ssafy.kkoma: debug
 
 feign:
   client:

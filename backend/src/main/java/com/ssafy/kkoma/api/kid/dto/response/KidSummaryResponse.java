@@ -11,12 +11,14 @@ import java.time.LocalDate;
 @Builder
 public class KidSummaryResponse {
 
+    private Long kidId;
     private String name;
     private LocalDate birthDate;
     private GenderType gender;
 
     public static KidSummaryResponse fromEntity(Kid savedKid) {
             return KidSummaryResponse.builder()
+                    .kidId(savedKid.getId())
                     .name(savedKid.getName())
                     .birthDate(savedKid.getBirthDate())
                     .gender(savedKid.getGender())
