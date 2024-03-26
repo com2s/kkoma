@@ -36,3 +36,15 @@ export async function getRequesters(productId: string) {
 
   return response;
 }
+
+export async function patchOffer(offerId: number, date: string, time: string) {
+  const koreaTime = date + 'T' + time + ':00' + 'Z';
+  const isoString = new Date(koreaTime).toISOString();
+  const response = await APIModule({
+    action: `/offers/${offerId}`,
+    method: "PATCH",
+    data: null,
+  });
+
+  return response;
+}

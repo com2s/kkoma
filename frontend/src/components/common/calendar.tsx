@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
+import { offerTimeState } from "@/store/offer";
+import { useRecoilState } from "recoil";
 import {
   StyledCalendarWrapper,
   StyledCalendar,
@@ -55,6 +57,7 @@ export default function ChildComponent({
   sendTimeToParent,
   isAccept = false,
 }: ChildProps) {
+  const [offerTime, setOfferTime] = useRecoilState(offerTimeState); // 거래 시간
   const [value, setValue] = useState<Value>(new Date());
   const [date, setDate] = useState(""); // 날짜
   const [time, setTime] = useState(""); // 시간
@@ -75,12 +78,13 @@ export default function ChildComponent({
     if (value) {
       // console.log("value : ", value);
       setDate(value.toString());
-      sendDateToParent(value.toString());
+      // sendDateToParent(value.toString());
     }
   };
-
+  
+  // console.log(offerTime)
   const requestDays = isAccept
-    ? ["2024-03-22", "2024-03-28", "2024-04-04"]
+    ? offerTime
     : []; // 거래 요청 받은 날짜 예시
 
   function formatDate(date: Date) {
@@ -94,8 +98,8 @@ export default function ChildComponent({
   const handleDateChange = (value: Value) => {
     if (value) {
       // console.log("value : ", value);
-      setDate(value.toString());
-      sendDateToParent(value.toString());
+      setDate(formatDate(value as Date));
+      // console.log(formatDate(value as Date));
     }
   };
 
@@ -121,10 +125,11 @@ export default function ChildComponent({
   // };
 
   const handleMinuteChange = (event: Event, newValue: number | number[], activeThumb: number,) => {
+    sendDateToParent(date);
     if (isAccept) {
       setMinute(newValue as number);
       // console.log("minute: ", newValue);
-      const selectedTime = `${Math.floor((newValue as number) / 60)} : ${(
+      const selectedTime = `${Math.floor((newValue as number) / 60)}:${(
         (newValue as number) % 60
       )
         .toString()
@@ -141,11 +146,11 @@ export default function ChildComponent({
       setMinute(newValue as number[]);
       const selectedTimeStart = `${Math.floor(
         (newValue as number[])[0] / 60
-      )} : ${((newValue as number[])[0] % 60).toString().padStart(2, "0")}`;
+      )}:${((newValue as number[])[0] % 60).toString().padStart(2, "0")}`;
 
       const selectedTimeEnd = `${Math.floor(
         (newValue as number[])[1] / 60
-      )} : ${((newValue as number[])[1] % 60).toString().padStart(2, "0")}`;
+      )}:${((newValue as number[])[1] % 60).toString().padStart(2, "0")}`;
 
       const selectedTime = `${selectedTimeStart} ~ ${selectedTimeEnd}`;
       setTime(selectedTime);
@@ -176,7 +181,7 @@ export default function ChildComponent({
     // view가 'month'인 경우에만 스타일을 적용
     if (view === "month") {
       // 특정 날짜들과 같은지 확인
-      if (requestDays.find((x) => x === formatDate(date))) {
+      if (requestDays.find((x) => x.offerDate === formatDate(date))) {
         // 'red' 클래스를 적용
         return "red";
       }
@@ -193,6 +198,12 @@ export default function ChildComponent({
     60 * parseInt(endTime.split(":")[0]) + parseInt(endTime.split(":")[1]);
   const MIN =
     60 * parseInt(startTime.split(":")[0]) + parseInt(startTime.split(":")[1]);
+
+  const formatTime = (time: string) => {
+    const hour = parseInt(time.split(":")[0]);
+    const minute = parseInt(time.split(":")[1]);
+    return hour * 60 + minute;
+  };
 
   const minDistance = 10;
 
@@ -211,6 +222,10 @@ export default function ChildComponent({
           next2Label={null}
           prev2Label={null}
           className={`mx-auto`} // 가운데 정렬
+          tileDisabled={({ date }) => {
+            // 오늘 이전 날짜는 비활성화
+            return date < new Date();
+          }}
           // 오늘 날짜로 돌아오는 기능을 위해 필요한 옵션 설정
           activeStartDate={
             activeStartDate === null ? undefined : activeStartDate
@@ -230,7 +245,7 @@ export default function ChildComponent({
               html.push(<StyledToday key={"today"}>오늘</StyledToday>);
             }
             // 특정 날짜와 일치하는 날에 밑 점 표시
-            if (requestDays.find((x) => x === formatDate(date))) {
+            if (requestDays.find((x) => x.offerDate === formatDate(date))) {
               html.push(<StyledDot key={formatDate(date)} />);
             }
             return <>{html}</>;
@@ -238,7 +253,7 @@ export default function ChildComponent({
         />
         {/* // 초기화 버튼 추가 */}
         <StyledDelete onClick={resetValues}>
-          <DeleteForeverIcon fontSize="small" />
+          <DeleteForeverIcon fontSize="small"/>
         </StyledDelete>
         {/* // 오늘 버튼 추가 */}
         <StyledDate onClick={handleTodayClick}>오늘</StyledDate>
@@ -250,9 +265,12 @@ export default function ChildComponent({
             maxWidth: "500px",
           }}
         >
+          {/* value가 requestDays에 속해있다면... */}
+          {requestDays.map((offer, index) => value && offer.offerDate === formatDate(value as Date) ? 
           <div
             className="w-full px-8"
             style={{ position: "absolute", top: "80%", left: 0 }}
+            key={index}
           >
             <Slider
               aria-labelledby="minute-slider"
@@ -260,8 +278,8 @@ export default function ChildComponent({
               value={minute}
               onChange={handleMinuteChange}
               step={10}
-              min={MIN}
-              max={MAX}
+              min={formatTime(offer.startTime)}
+              max={formatTime(offer.endTime)}
               // disableSwap
               valueLabelDisplay="on"
               valueLabelFormat={(value) =>
@@ -278,26 +296,19 @@ export default function ChildComponent({
                 onClick={() => setMinute(MIN)}
                 sx={{ cursor: "pointer" }}
               >
-                {startTime}
+                {offer.startTime}
               </Typography>
               <Typography
                 variant="body2"
                 onClick={() => setMinute(MAX)}
                 sx={{ cursor: "pointer" }}
               >
-                {endTime}
+                {offer.endTime}
               </Typography>
             </Box>
           </div>
-          {/* 
-          <Button variant="outlined" onClick={handleSetTime}>
-            {`${Math.floor(minute / 60)}시 ${(minute % 60)
-              .toString()
-              .padStart(2, "0")}분`}{" "}
-            선택
-            // {`${(Math.floor(minute / 60)).toString().padStart(2, "0")}시 ${(minute % 60).toString().padStart(2, "0")}분`} 선택
-          </Button>
-          */}
+           : null
+          )}
         </Box>
       </StyledCalendarWrapper>
     </div>

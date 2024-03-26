@@ -27,63 +27,57 @@ export default function MyTradeCalender() {
   const [value, setValue] = useState(0);
   const [open, setOpen] = useState(false);
   const [parentDate0, setParentDate0] = useState("");
-  const [parentDate1, setParentDate1] = useState("");
-  const [parentDate2, setParentDate2] = useState("");
   const [parentTime0, setParentTime0] = useState("");
-  const [parentTime1, setParentTime1] = useState("");
-  const [parentTime2, setParentTime2] = useState("");
+  // const [parentDate1, setParentDate1] = useState("");
+  // const [parentTime1, setParentTime1] = useState("");
+  // const [parentDate2, setParentDate2] = useState("");
+  // const [parentTime2, setParentTime2] = useState("");
 
   const handleDate0 = (data: string) => {
     if (data) {
-      const date = new Date(data);
-      const formattedDate = new Intl.DateTimeFormat("ko-KR", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      }).format(date);
-      setParentDate0(formattedDate);
+      setParentDate0(data);
     } else {
       setParentDate0("");
     }
   };
 
-  const handleDate1 = (data: string) => {
-    if (data) {
-      const date = new Date(data);
-      const formattedDate = new Intl.DateTimeFormat("ko-KR", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      }).format(date);
-      setParentDate1(formattedDate);
-    } else {
-      setParentDate1("");
-    }
-  };
+  // const handleDate1 = (data: string) => {
+  //   if (data) {
+  //     const date = new Date(data);
+  //     const formattedDate = new Intl.DateTimeFormat("ko-KR", {
+  //       year: "numeric",
+  //       month: "2-digit",
+  //       day: "2-digit",
+  //     }).format(date);
+  //     setParentDate1(formattedDate);
+  //   } else {
+  //     setParentDate1("");
+  //   }
+  // };
 
-  const handleDate2 = (data: string) => {
-    if (data) {
-      const date = new Date(data);
-      const formattedDate = new Intl.DateTimeFormat("ko-KR", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      }).format(date);
-      setParentDate2(formattedDate);
-    } else {
-      setParentDate2("");
-    }
-  };
+  // const handleDate2 = (data: string) => {
+  //   if (data) {
+  //     const date = new Date(data);
+  //     const formattedDate = new Intl.DateTimeFormat("ko-KR", {
+  //       year: "numeric",
+  //       month: "2-digit",
+  //       day: "2-digit",
+  //     }).format(date);
+  //     setParentDate2(formattedDate);
+  //   } else {
+  //     setParentDate2("");
+  //   }
+  // };
 
   const handleTime0 = (data: string) => {
     setParentTime0(data);
   };
-  const handleTime1 = (data: string) => {
-    setParentTime1(data);
-  };
-  const handleTime2 = (data: string) => {
-    setParentTime2(data);
-  };
+  // const handleTime1 = (data: string) => {
+  //   setParentTime1(data);
+  // };
+  // const handleTime2 = (data: string) => {
+  //   setParentTime2(data);
+  // };
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -91,8 +85,11 @@ export default function MyTradeCalender() {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-
-  const handleClickOpen = () => {
+  
+  const handleClickOpen = async () => {
+    const asd = parentDate0 + "T" + parentTime0 + ':00Z'
+    const isoString = new Date(asd).toISOString();
+    alert(isoString);
     setOpen(true);
   };
 
@@ -112,9 +109,9 @@ export default function MyTradeCalender() {
       <TopBar2 />
       <div className="px-4 my-12 mx-2">
         <h1>거래하고 싶은 시간을 선택해주세요.</h1>
-        <p className="my-6 text-gray-400">
+        {/* <p className="my-6 text-gray-400">
           거래 가능 시간은 최대 3개까지 선택할 수 있어요.
-        </p>
+        </p> */}
         <Image
           src="/images/calendar1.svg"
           alt="달력"
@@ -137,11 +134,11 @@ export default function MyTradeCalender() {
               <div style={{ textAlign: "center" }}>
                 {parentDate0 ? (
                   <div>
-                    <p className="text-[16px]">{parentDate0}</p>
-                    <p className="mt-1 text-[16px]">{parentTime0}</p>
+                    <p className="text-[18px] text-pretty">{parentDate0}</p>
+                    <p className="mt-1 text-[20px] text-pretty">{parentTime0}</p>
                   </div>
                 ) : (
-                  <p>시간 선택</p>
+                  <h4>시간 선택</h4>
                 )}
               </div>
             }
@@ -156,13 +153,13 @@ export default function MyTradeCalender() {
               },
             }}
           />
-          <Tab
+          {/* <Tab
             label={
               <div style={{ textAlign: "center" }}>
                 {parentDate1 ? (
                   <div>
-                    <p className="text-[16px]">{parentDate1}</p>
-                    <p className="mt-1 text-[16px]">{parentTime1}</p>
+                    <p className="text-[15px] text-pretty">{parentDate1}</p>
+                    <p className="mt-1 text-[15px] text-pretty">{parentTime1}</p>
                   </div>
                 ) : (
                   <p>추가 시간 선택</p>
@@ -172,8 +169,8 @@ export default function MyTradeCalender() {
             {...a11yProps(1)}
             sx={{
               margin: "8px",
-              borderRadius: "12px",
-              minWidth: "3rem",
+              borderRadius: "8px",
+              minWidth: "4rem",
               "&.MuiTab-root": {
                 bgcolor: "#f5f5f5",
               },
@@ -184,8 +181,8 @@ export default function MyTradeCalender() {
               <div style={{ textAlign: "center" }}>
                 {parentDate2 ? (
                   <div>
-                    <p className="text-[16px]">{parentDate2}</p>
-                    <p className="mt-1 text-[16px]">{parentTime2}</p>
+                    <p className="text-[15px] text-pretty">{parentDate2}</p>
+                    <p className="mt-1 text-[15px] text-pretty">{parentTime2}</p>
                   </div>
                 ) : (
                   <p>추가 시간 선택</p>
@@ -201,7 +198,7 @@ export default function MyTradeCalender() {
                 bgcolor: "#f5f5f5",
               },
             }}
-          />
+          /> */}
         </Tabs>
       </Box>
       <div>
@@ -213,7 +210,7 @@ export default function MyTradeCalender() {
           ></Calendar>
         )}
 
-        {value === 1 && (
+        {/* {value === 1 && (
           <Calendar
             sendDateToParent={handleDate1}
             sendTimeToParent={handleTime1}
@@ -227,7 +224,7 @@ export default function MyTradeCalender() {
             sendTimeToParent={handleTime2}
             isAccept
           ></Calendar>
-        )}
+        )} */}
       </div>
       <div className="flex justify-center">
         <button
