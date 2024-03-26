@@ -1,5 +1,5 @@
 import APIModule from "@/utils/apiModule";
-import exp from "constants";
+
 // import exp from "constants";
 
 // export const updateMemberAPI = async (memberInfo: MemberInfo) => {
@@ -8,6 +8,18 @@ import exp from "constants";
 
 //   return obj;
 // };
+export interface mySummary {
+  success: boolean;
+  data: {
+    profileImage: string;
+    nickname: string;
+    preferredPlace: string;
+  };
+  error: {
+    errorCode: string;
+    errorMessage: string;
+  };
+}
 
 export async function getMySummary() {
   const response = await APIModule({
@@ -16,7 +28,7 @@ export async function getMySummary() {
     data: null,
   });
 
-  return response.data;
+  return response;
 }
 
 export async function getMyInfo() {
@@ -26,7 +38,7 @@ export async function getMyInfo() {
     data: null,
   });
 
-  return response.data;
+  return response;
 }
 
 interface MemberInfo {
@@ -43,5 +55,5 @@ export async function putMyInfo(data: MemberInfo) {
     data: data,
   });
 
-  return response.data;
+  return response;
 }

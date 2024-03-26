@@ -35,21 +35,11 @@ interface Requester {
     nickname: string;
     profileImage: string;
   }
-  offerTime: [
+  offerTimes: [
     {
       offerDate: string;
-      startTime: {
-        hour: number;
-        minute: number;
-        second: number;
-        nano: number;
-      },
-      endTime: {
-        hour: number;
-        minute: number;
-        second: number;
-        nano: number;
-      }
+      startTime: string;
+      endTime: string;
     }
   ]
 }
@@ -60,12 +50,13 @@ interface IParams {
 
 export default function MyRequest({ params: { dealId } }: IParams) {
   const [requesters, setRequesters] = useState<Requester[]>([]); // requesters 상태와 상태 설정 함수 추가
-
+  const [success, setSuccess] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getRequesters(dealId);
-      console.log(data);
-      setRequesters(data);
+      const res = await getRequesters(dealId);
+      console.log(res);
+      setRequesters(res.data);
+      setSuccess(res.success);
     };
     fetchData();
   }, []);
@@ -76,6 +67,15 @@ export default function MyRequest({ params: { dealId } }: IParams) {
       console.log(userId);
     }
   };
+
+  if (success === false) {
+    return (
+      <React.Fragment>
+        <TopBar2 />
+        <h1>요청자 정보를 불러오는데 실패했습니다.</h1>
+      </React.Fragment>
+    )
+  }
 
   return (
     <React.Fragment>
@@ -92,12 +92,12 @@ export default function MyRequest({ params: { dealId } }: IParams) {
           />
           <CardContent sx={{ padding: 1 }} className={styles.cardMiddle}>
             <Typography variant="h6" component="div">
-              판매자 {requester.memberProfile.nickname}
+              {requester.memberProfile.nickname}
             </Typography>
             {/* <Typography color="text.secondary">{requester.productName}</Typography> */}
-            {requester.offerTime?.map((time, key) => (
+            {requester.offerTimes?.map((time, key) => (
               <Typography key={key} variant="body2">
-                {time.offerDate} | {time.startTime.hour}시 {time.startTime.minute}분 ~ {time.endTime.hour}시 {time.endTime.minute}분
+                {time.offerDate} | {time.startTime} ~ {time.endTime}
               </Typography>
             ))}
           </CardContent>

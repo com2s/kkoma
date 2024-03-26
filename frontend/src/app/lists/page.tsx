@@ -244,11 +244,6 @@ export default function ListPage() {
                 alt="Product Image"
                 src={
                   product.thumbnailImage ?? "/temp-img.svg"
-                  // product.thumbnailImage
-                  //   ? product.thumbnailImage[0] === "/"
-                  //   ? product.thumbnailImage
-                  //   : `/${product.thumbnailImage}`
-                  //   : "/temp-img.svg"
                 }
                 sx={{ width: 80, height: 80 }}
                 className={styles.avatar}
@@ -262,16 +257,13 @@ export default function ListPage() {
                   {product.title ?? "제목 없음"}
                 </Typography>
                 <Typography variant="body2">
-                  {product.dealPlace ?? "거래 장소 null"} |{" "}
+                  {product.dealPlace ?? "거래 장소 null"} •{" "}
                   {product.elapsedMinutes >= 1440 // 1440분 = 24시간
                     ? `${Math.floor(product.elapsedMinutes / 1440)}일 전`
                     : product.elapsedMinutes >= 60
                     ? `${Math.floor(product.elapsedMinutes / 60)}시간 전`
                     : `${product.elapsedMinutes}분 전`}
                 </Typography>
-                {/* <Typography variant="body2">
-                  Views: {product.views} | Likes: {product.likes}
-                </Typography> */}
               </CardContent>
               <CardContent
                 sx={{
@@ -287,6 +279,7 @@ export default function ListPage() {
                   sx={{
                     mt: 2,
                     fontWeight: "bold",
+                    minWidth: "fit-content",
                     color:
                       product.status === "SALE"
                         ? "crimson"

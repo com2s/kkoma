@@ -31,7 +31,7 @@ interface PostData {
 export async function postProduct(data: PostData) {
   const response = await APIModule({ action: "/products", method: "POST", data: data });
 
-  return response.data;
+  return response;
 }
 
 export async function getImages() {

@@ -24,7 +24,7 @@ export async function getMyProducts(type: TypeData["type"]) {
     data: null,
   });
 
-  return response.data;
+  return response;
 }
 
 export async function getRequesters(productId: string) {
@@ -34,5 +34,5 @@ export async function getRequesters(productId: string) {
     data: null,
   });
 
-  return response.data;
+  return response;
 }

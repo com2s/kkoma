@@ -24,7 +24,7 @@ export default async function DetailContent({ propsId, product }: DetailTypes) {
               ? `${Math.floor(product.elapsedMinutes / 60)}시간 전`
               : `${product.elapsedMinutes}분 전`}
           </p>
-          <h1>{product.title}</h1>
+          <h2 className="my-2">{product.title}</h2>
           <div className="views">
             <p className="text-gray-400 text-sm">
               조회 {product.viewCount} • 거래 요청 {product.offerCount} • 찜{" "}
