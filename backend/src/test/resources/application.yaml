@@ -8,21 +8,11 @@ logging:
     org.hibernate.type: debug
     com.konoha: debug
 
-feign:
-  client:
-    config:
-      default:
-        connectTimeout: 5000
-        readTimeout: 5000
-
 spring:
   servlet:
     multipart:
       max-file-size: 10MB
       max-request-size: 100MB
-  config:
-    activate:
-      on-profile: test
   datasource:
     url: jdbc:h2:mem:test
     username: sa
@@ -37,6 +27,13 @@ spring:
         format_sql: true
         default_batch_fetch_size: 500
     open-in-view: false
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
 
 kakao:
   client:
