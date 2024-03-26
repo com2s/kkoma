@@ -2,6 +2,7 @@ package com.ssafy.kkoma.api.offer.service;
 
 import com.ssafy.kkoma.api.deal.dto.request.DealTimeRequest;
 import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
+import com.ssafy.kkoma.api.offer.dto.response.SelectOfferResponse;
 import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
@@ -122,7 +123,7 @@ class OfferServiceTest {
 
     @Test
     @Transactional
-    public void 거래_요청_수락() throws Exception{
+    public void 거래_요청_수락() throws Exception {
         // given
         Category category = categoryRepository.save(Category.builder().name("유모차").build());
         Member member = memberRepository.save(Member.builder().name(NAME).memberType(MemberType.KAKAO).role(Role.USER).build());
@@ -132,10 +133,10 @@ class OfferServiceTest {
         DealTimeRequest dealTimeRequest = DealTimeRequest.builder().selectedTime(LocalDateTime.now()).build();
 
         // when
-        Offer newOffer = offerService.acceptOffer(offer.getId(), dealTimeRequest);
+        SelectOfferResponse newOffer = offerService.acceptOffer(offer.getId(), dealTimeRequest);
 
         // then
-        assertEquals(OfferType.ACCEPTED, newOffer.getStatus());
+        assertNotNull(newOffer.getDealTime());
     }
 
 }
