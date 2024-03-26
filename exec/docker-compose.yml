@@ -54,6 +54,8 @@ services:
     networks:
       - backend
       - frontend
+    depends_on:
+      - h2
 
   app:
     image: loverduck97/kkoma-frontend:latest
@@ -65,6 +67,20 @@ services:
       - 3000:3000
     networks:
       - frontend
+
+  h2:
+    container_name: h2
+    image: oscarfonts/h2:latest
+    ports:
+      - 1521:1521
+      - 8081:81
+    environment:
+      H2_OPTIONS: -ifNotExists
+    volumes:
+      - /home/ubuntu/h2:/opt/h2-data
+    restart: always
+    networks:
+      - backend
 
 networks:
   backend:
