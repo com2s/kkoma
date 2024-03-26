@@ -30,7 +30,7 @@ public class MemberController {
 
     @Tag(name = "member")
     @Operation(summary = "to retrieve my products",
-        description = "https://www.notion.so/todays-jiwoo/f-99cdb734385b49eba9972217e5c7b495?pvs=4 여기에 업데이트 해두고 스웨거 고칠게용 (수현)")
+        description = "https://www.notion.so/todays-jiwoo/f-99cdb734385b49eba9972217e5c7b495?pvs=4")
     @GetMapping("/products")
     ResponseEntity<ApiUtils.ApiResult<List<ProductInfoResponse>>> getMyProducts(
         @MemberInfo MemberInfoDto memberInfoDto,

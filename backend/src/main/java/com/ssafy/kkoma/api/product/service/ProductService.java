@@ -11,6 +11,8 @@ import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
 import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
 import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
+import com.ssafy.kkoma.domain.deal.entity.Deal;
+import com.ssafy.kkoma.domain.deal.repository.DealRepository;
 import com.ssafy.kkoma.domain.member.entity.Member;
 
 import com.ssafy.kkoma.domain.offer.entity.Offer;
@@ -41,6 +43,7 @@ public class ProductService {
 	private final ProductImageService productImageService;
 	private final CategoryService categoryService;
 	private final MemberService memberService;
+	private final DealRepository dealRepository;
 
 	public Product findProductByProductId(Long productId) {
 		return productRepository.findById(productId)
@@ -64,16 +67,14 @@ public class ProductService {
 	}
 
 	public ProductInfoResponse getProductInfoResponse(Long productId) {
-
-		Product product = productRepository.findById(productId)
-			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.PRODUCT_NOT_EXISTS));
-
-		return ProductInfoResponse.fromEntity(product, MyProductType.BUY);
-	}
-
-	public Product findProductById(Long productId){
-		return productRepository.findById(productId)
-				.orElseThrow(() -> new BusinessException(ErrorCode.PRODUCT_NOT_EXISTS));
+		Product product = findProductByProductId(productId);
+		Deal deal = dealRepository.findByProduct(product);
+		return ProductInfoResponse.fromEntity(
+			product,
+			MyProductType.BUY,
+			deal != null ? deal.getId() : null,
+			deal != null ? deal.getSelectedTime() : null
+		);
 	}
 
     public ProductDetailResponse createProduct(Long memberId, ProductCreateRequest productCreateRequest) {
