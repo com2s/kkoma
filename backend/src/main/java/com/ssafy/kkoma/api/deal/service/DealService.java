@@ -34,6 +34,7 @@ public class DealService {
 		return dealRepository.save(Deal.builder()
 			.member(offer.getMember())
 			.product(offer.getProduct())
+			.selectedTime(dealTimeRequest.getSelectedTime())
 			.build());
 	}
 
