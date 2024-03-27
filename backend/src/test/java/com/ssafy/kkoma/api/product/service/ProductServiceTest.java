@@ -4,6 +4,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
@@ -15,6 +19,11 @@ import com.ssafy.kkoma.domain.member.repository.MemberRepository;
 import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
 import com.ssafy.kkoma.domain.product.entity.Category;
 import com.ssafy.kkoma.domain.product.repository.CategoryRepository;
+import com.ssafy.kkoma.factory.CategoryFactory;
+import com.ssafy.kkoma.factory.MemberFactory;
+import com.ssafy.kkoma.factory.ProductFactory;
+import com.ssafy.kkoma.global.error.exception.BusinessException;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,6 +49,15 @@ class ProductServiceTest {
 
 	@Autowired
 	private ProductService productService;
+
+	@Autowired
+	private MemberFactory memberFactory;
+
+	@Autowired
+	private ProductFactory productFactory;
+
+	@Autowired
+	private CategoryFactory categoryFactory;
 
 	private static final String TITLE = "TITLE";
 	private static final String IMAGE_URL = "IMAGE_URL";
@@ -86,15 +104,48 @@ class ProductServiceTest {
 	public void 글_상세_조회하기_성공() throws Exception{
 
 	    // given
-		Category category = categoryRepository.save(Category.builder().name("유모차").build());
-		Member member = memberRepository.save(Member.builder().name(NAME).memberType(MemberType.KAKAO).role(Role.USER).build());
-		Product product = productRepository.save(Product.builder().title(TITLE).thumbnailImage(IMAGE_URL).category(category).member(member).build());
+		Category category = categoryFactory.createCategory("유모차");
+		Member member = memberFactory.createMember();
+		Product product = productFactory.createProduct(member, category, 10000);
 
 		// when
 		ProductDetailResponse productDetailResponse = productService.getProduct(product.getId());
 
 	    // then
-		assertEquals(TITLE, productDetailResponse.getTitle());
+		assertEquals("TITLE", productDetailResponse.getTitle());
+	}
+
+	@Test
+	@Disabled
+	@Transactional
+	public void 글_상세_조회하기_시_조회수_증가() throws Exception{
+
+		// given
+		Category category = categoryFactory.createCategory("유모차");
+		Member member = memberFactory.createMember();
+		Product product = productFactory.createProduct(member, category, 10000);
+
+		// when
+		int threadCount = 100;
+		ExecutorService executorService = Executors.newFixedThreadPool(32);
+		CountDownLatch latch = new CountDownLatch(threadCount);
+
+		for (int i = 0; i < threadCount; i++) {
+			executorService.submit(() -> {
+				try {
+					productService.addViewCount(product.getId());
+				} finally {
+					latch.countDown();
+				}
+			});
+		}
+
+		latch.await();
+
+		Product updatedProduct = productRepository.findById(product.getId()).orElseThrow();
+
+		// then
+		assertEquals(100, updatedProduct.getViewCount());
 	}
 
     @Test
@@ -117,5 +168,36 @@ class ProductServiceTest {
 		// then
 		assertEquals("TITLE", productDetailResponse.getTitle());
     }
+
+	@Test
+	@Transactional
+	void 이미_찜_상태인_글을_찜하면_예외를_던진다() {
+		Member member = memberFactory.createMember();
+		Product product = productFactory.createProduct(member);
+
+		productService.wishProduct(product.getId(), member.getId());
+
+		assertThrows(
+				BusinessException.class,
+				() -> productService.wishProduct(product.getId(), member.getId())
+		);
+
+	}
+
+	@Test
+	@Disabled
+	@Transactional
+	void 이미_찜_비활성_상태인_글을_찜_비활성화하면_예외를_던진다() {
+		Member member = memberFactory.createMember();
+		Product product = productFactory.createProduct(member);
+
+		productService.unwishProduct(product.getId(), member.getId());
+
+		assertThrows(
+				BusinessException.class,
+				() -> productService.unwishProduct(product.getId(), member.getId())
+		);
+
+	}
 
 }

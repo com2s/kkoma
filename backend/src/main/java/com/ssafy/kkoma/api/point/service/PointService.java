@@ -32,12 +32,12 @@ public class PointService {
                 .build();
     }
 
-    public void comparePointsToPrice(Long memberId, Long productId){
+    public void comparePointsToPrice(Long memberId, Long productId) {
         int balance = memberService.getPointBalance(memberId);
-
         int price = productService.findProductByProductId(productId).getPrice();
 
-        if(balance < price)
+        if (balance < price) {
             throw new BusinessException(ErrorCode.POINT_NOT_ENOUGH);
+        }
     }
 }

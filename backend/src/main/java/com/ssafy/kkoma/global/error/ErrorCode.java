@@ -29,12 +29,14 @@ public enum ErrorCode {
 
     // Product
     PRODUCT_NOT_EXISTS(HttpStatus.BAD_REQUEST, "P-001", "해당 거래 글은 존재하지 않습니다."),
+    VIEW_OVERFLOW(HttpStatus.INTERNAL_SERVER_ERROR, "P-002", "해당 게시 글의 조회수가 최대값에 도달하였습니다."),
 
     // Category
     CATEGORY_NOT_EXISTS(HttpStatus.BAD_REQUEST, "C-001", "해당 카테고리는 존재하지 않습니다."),
 
     // Offer
     OFFER_NOT_EXISTS(HttpStatus.BAD_REQUEST, "O-001", "해당 거래 요청은 존재하지 않습니다."),
+    INVALID_ACCEPT(HttpStatus.BAD_REQUEST, "O-002", "판매 중인 상품에만 거래를 수락할 수 있습니다."),
 
     // OfferDetail
     OFFER_DETAIL_NOT_EXISTS(HttpStatus.BAD_REQUEST, "OD-001", "해당 거래에 대한 거래 요청 시간이 존재하지 않습니다."),
@@ -55,7 +57,12 @@ public enum ErrorCode {
 
     // Util
     IMAGE_NOT_EXISTS(HttpStatus.BAD_REQUEST, "U-001", "업로드 한 이미지가 비어있습니다."),
-    S3UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "U-002", "이미지 업로드에 실패하였습니다.");
+    S3UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "U-002", "이미지 업로드에 실패하였습니다."),
+
+    // WishList
+    WISH_LIST_ALREADY_VALID(HttpStatus.BAD_REQUEST, "W-001", "이미 찜한 거래 글입니다"),
+    WISH_LIST_ALREADY_NOT_VALID(HttpStatus.BAD_REQUEST, "W-001", "이미 찜 취소한 거래 글입니다"),
+    WISH_COUNT_ZERO(HttpStatus.BAD_REQUEST, "W-002", "찜 수가 0이라 더 이상 감소될 수 없음");
 
     ErrorCode(HttpStatus httpStatus, String errorCode, String message) {
         this.httpStatus = httpStatus;

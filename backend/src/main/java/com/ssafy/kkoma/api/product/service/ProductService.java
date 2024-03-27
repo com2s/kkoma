@@ -11,8 +11,14 @@ import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
 import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
 import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
+<<<<<<< HEAD
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
 import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
+=======
+import com.ssafy.kkoma.api.product.dto.ProductWishResponse;
+import com.ssafy.kkoma.domain.deal.entity.Deal;
+import com.ssafy.kkoma.domain.deal.repository.DealRepository;
+>>>>>>> e4b17eca8d4d073ba1d10ec700095560f5d77df3
 import com.ssafy.kkoma.domain.member.entity.Member;
 
 import com.ssafy.kkoma.domain.product.constant.MyProductType;
@@ -20,6 +26,8 @@ import com.ssafy.kkoma.domain.product.constant.MyProductType;
 import com.ssafy.kkoma.domain.product.entity.Category;
 
 import com.ssafy.kkoma.domain.product.entity.ProductImage;
+import com.ssafy.kkoma.domain.product.entity.WishList;
+import com.ssafy.kkoma.domain.product.repository.WishListRepository;
 import com.ssafy.kkoma.global.error.ErrorCode;
 import com.ssafy.kkoma.global.error.exception.BusinessException;
 import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
@@ -33,6 +41,7 @@ import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.domain.product.repository.ProductRepository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -44,6 +53,8 @@ public class ProductService {
 	private final ProductImageService productImageService;
 	private final CategoryService categoryService;
 	private final MemberService memberService;
+	private final WishListRepository wishListRepository;
+	private final DealRepository dealRepository;
 
 	public Product findProductByProductId(Long productId) {
 		return productRepository.findById(productId)
@@ -64,24 +75,28 @@ public class ProductService {
 	}
 
 	public ProductDetailResponse getProduct(Long productId) {
-		List<String> productImageUrls = productImageService.getProductImageUrls(productId);
 		Product product = findProductByProductId(productId);
+		List<String> productImageUrls = productImageService.getProductImageUrls(productId);
 		String categoryName = categoryService.getCategoryName(product.getCategory().getId());
+		ProductDetailResponse productDetailResponse = buildProductDetailResponse(product, productImageUrls, categoryName, product.getMember());
+		return productDetailResponse;
+	}
 
-		return buildProductDetailResponse(product, productImageUrls, categoryName, product.getMember());
+	public void addViewCount(Long productId) {
+		Product product = productRepository.findByIdWithPessimisticLock(productId);
+		product.addViewCount();
+		productRepository.save(product);
 	}
 
 	public ProductInfoResponse getProductInfoResponse(Long productId) {
-
-		Product product = productRepository.findById(productId)
-			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.PRODUCT_NOT_EXISTS));
-
-		return ProductInfoResponse.fromEntity(product, MyProductType.BUY);
-	}
-
-	public Product findProductById(Long productId){
-		return productRepository.findById(productId)
-				.orElseThrow(() -> new BusinessException(ErrorCode.PRODUCT_NOT_EXISTS));
+		Product product = findProductByProductId(productId);
+		Deal deal = dealRepository.findByProduct(product);
+		return ProductInfoResponse.fromEntity(
+			product,
+			MyProductType.BUY,
+			deal != null ? deal.getId() : null,
+			deal != null ? deal.getSelectedTime() : null
+		);
 	}
 
     public ProductDetailResponse createProduct(Long memberId, ProductCreateRequest productCreateRequest) {
@@ -153,4 +168,45 @@ public class ProductService {
 			.empty(page.isEmpty())
 			.build();
 	}
+
+	public ProductWishResponse wishProduct(Long productId, Long memberId) {
+		// 글 조회
+		Product product = findProductByProductId(productId); // todo Pessimistic Locking
+		product.addWishCount();
+		Member member = memberService.findMemberByMemberId(memberId);
+
+		WishList wishList = wishListRepository.findByProductIdAndMemberId(productId, memberId);
+		if (wishList == null) {
+			wishList = WishList.builder()
+					.build();
+			wishList.setMemberAndProduct(member, product);
+ 		} else if (wishList.getIsValid()) {
+			throw new BusinessException(ErrorCode.WISH_LIST_ALREADY_VALID);
+		}
+
+		wishList.setValid(true);
+		WishList savedWishList = wishListRepository.save(wishList);
+		return ProductWishResponse.fromEntity(savedWishList, product);
+	}
+
+	public ProductWishResponse unwishProduct(Long productId, Long memberId) {
+		Product product = findProductByProductId(productId); // todo Pessimistic Locking
+		product.subWishCount();
+		Member member = memberService.findMemberByMemberId(memberId);
+
+		WishList wishList = wishListRepository.findByProductIdAndMemberId(productId, memberId);
+		if (wishList == null) {
+			wishList = WishList.builder()
+					.isValid(false)
+					.build();
+			wishList.setMemberAndProduct(member, product);
+		} else if (!wishList.getIsValid()) {
+			throw new BusinessException(ErrorCode.WISH_LIST_ALREADY_NOT_VALID);
+		}
+
+		wishList.setValid(false);
+		WishList savedWishList = wishListRepository.save(wishList);
+		return ProductWishResponse.fromEntity(savedWishList, product);
+	}
+
 }
