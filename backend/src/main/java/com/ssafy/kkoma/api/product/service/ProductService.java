@@ -21,7 +21,6 @@ import com.ssafy.kkoma.domain.product.entity.Category;
 
 import com.ssafy.kkoma.domain.product.entity.ProductImage;
 import com.ssafy.kkoma.global.error.ErrorCode;
-import com.ssafy.kkoma.global.error.exception.BusinessException;
 import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +42,7 @@ public class ProductService {
 	private final MemberService memberService;
 	private final ChatRoomService chatRoomService;
 
-	public Product findProductById(Long productId){
+	public Product findProductByProductId(Long productId){
 		return productRepository.findById(productId)
 			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.PRODUCT_NOT_EXISTS));
 	}
@@ -58,7 +57,7 @@ public class ProductService {
 
 	public ProductDetailResponse getProduct(Long productId) {
 		List<String> productImageUrls = productImageService.getProductImageUrls(productId);
-		Product product = findProductById(productId);
+		Product product = findProductByProductId(productId);
 		String categoryName = categoryService.getCategoryName(product.getCategory().getId());
 
 		return buildProductDetailResponse(product, productImageUrls, categoryName, product.getMember());
