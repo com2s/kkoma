@@ -9,6 +9,7 @@ import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.member.repository.MemberRepository;
+import com.ssafy.kkoma.factory.MemberFactory;
 import com.ssafy.kkoma.global.error.exception.BusinessException;
 import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,9 @@ class KidServiceTest {
 
     @Autowired
     MemberRepository memberRepository;
+
+    @Autowired
+    MemberFactory memberFactory;
 
     @Test
     @Transactional
@@ -122,11 +126,7 @@ class KidServiceTest {
     @Transactional
     void getKids() {
         // given
-        Member member = Member.builder()
-                .name("kim")
-                .memberType(MemberType.KAKAO)
-                .role(Role.USER)
-                .build();
+        Member member = memberFactory.createMember();
         Member savedMember = memberRepository.save(member);
         List<Kid> kids = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
