@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.ssafy.kkoma.api.chat.service.ChatRoomService;
 import com.ssafy.kkoma.api.member.dto.response.MemberSummaryResponse;
 import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
@@ -13,6 +14,7 @@ import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
 import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
 import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
+import com.ssafy.kkoma.domain.chat.entity.ChatRoom;
 import com.ssafy.kkoma.api.product.dto.ProductWishResponse;
 
 import com.ssafy.kkoma.domain.deal.entity.Deal;
@@ -51,10 +53,11 @@ public class ProductService {
 	private final ProductImageService productImageService;
 	private final CategoryService categoryService;
 	private final MemberService memberService;
+	private final ChatRoomService chatRoomService;
 	private final WishListRepository wishListRepository;
 	private final DealRepository dealRepository;
 
-	public Product findProductByProductId(Long productId) {
+	public Product findProductByProductId(Long productId){
 		return productRepository.findById(productId)
 			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.PRODUCT_NOT_EXISTS));
 	}
@@ -87,6 +90,7 @@ public class ProductService {
 	}
 
 	public ProductInfoResponse getProductInfoResponse(Long productId) {
+
 		Product product = findProductByProductId(productId);
 		Deal deal = dealRepository.findByProduct(product);
 		return ProductInfoResponse.fromEntity(
@@ -101,6 +105,7 @@ public class ProductService {
 		List<String> productImageUrls = productCreateRequest.getProductImages();
 		Member seller = memberService.findMemberByMemberId(memberId);
 		Category category = categoryService.findCategoryById(productCreateRequest.getCategoryId());
+		ChatRoom chatRoom = chatRoomService.createChatRoom();
 
 		Product product = Product.builder()
 				.member(seller)
@@ -110,6 +115,7 @@ public class ProductService {
 				.title(productCreateRequest.getTitle())
 				.description(productCreateRequest.getDescription())
 				.price(productCreateRequest.getPrice())
+				.chatRoom(chatRoom)
 				.build();
 
 		Product savedProduct = productRepository.save(product);
@@ -143,6 +149,7 @@ public class ProductService {
 			.dealPlace(product.getPlaceDetail())
 			.elapsedMinutes(Duration.between(product.getCreatedAt(), LocalDateTime.now()).toMinutes())
 			.memberSummary(sellerSummaryResponse)
+			.chatRoomId(product.getChatRoom().getId())
 			.wishCount(product.getWishCount())
 			.offerCount(product.getOfferCount())
 			.viewCount(product.getViewCount())
