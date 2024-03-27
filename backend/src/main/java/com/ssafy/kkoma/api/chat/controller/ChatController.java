@@ -1,18 +1,24 @@
 package com.ssafy.kkoma.api.chat.controller;
 
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.kkoma.api.chat.dto.request.ChatMessageRequest;
 import com.ssafy.kkoma.api.chat.dto.response.ChatMessageResponse;
 import com.ssafy.kkoma.api.chat.service.ChatMessageService;
+import com.ssafy.kkoma.api.chat.service.ChatRoomService;
+import com.ssafy.kkoma.global.util.ApiUtils;
 
-import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
-import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfoDto;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -20,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class ChatController {
 
 	private final SimpMessagingTemplate simpMessagingTemplate;
+	private final ChatRoomService chatRoomService;
 	private final ChatMessageService chatMessageService;
 
 	@MessageMapping("/chatRooms/{chatRoomId}")
@@ -27,6 +34,18 @@ public class ChatController {
 		ChatMessageResponse chatMessage = chatMessageService.createChatMessage(chatRoomId, chatMessageRequest);
 
 		simpMessagingTemplate.convertAndSend("/topic/chatRooms/" + chatRoomId, chatMessage);
+	}
+
+	@Tag(name = "Chat")
+	@Operation(
+		summary = "채팅방 별 모든 채팅메시지 조회",
+		security = { @SecurityRequirement(name = "bearer-key")}
+	)
+	@GetMapping("/api/chatRooms/{chatRoomId}")
+	public ResponseEntity<ApiUtils.ApiResult<List<ChatMessageResponse>>> getChatMessages(@PathVariable Long chatRoomId) {
+		List<ChatMessageResponse> chatMessageResponses = chatRoomService.getChatMessages(chatRoomId);
+
+		return ResponseEntity.ok(ApiUtils.success(chatMessageResponses));
 	}
 
 }
