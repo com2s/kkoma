@@ -4,5 +4,6 @@ export interface PlanCard {
   price: number;
   title: string;
   dealPlace: string;
-  created_at: Date;
+  dealId: number;
+  selectedTime: string;
 }
