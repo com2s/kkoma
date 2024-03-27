@@ -14,18 +14,36 @@ export default function KakaoOauth() {
 
   const doLogin = async () => {
     const res = await kakaoLoginAPI(code);
-    const obj = await res.json();
+    const obj = await res.data;
 
-    setItemWithExpireTime("accessToken", obj.accessToken, obj.accessTokenExpireTime);
-    setItemWithExpireTime("refreshToken", obj.refreshToken, obj.refreshTokenExpireTime);
-    LocalStorage.setItem("grantType", obj.grantType);
+    if (obj) {
+      setItemWithExpireTime("accessToken", obj.accessToken, obj.accessTokenExpireTime);
+      setItemWithExpireTime("refreshToken", obj.refreshToken, obj.refreshTokenExpireTime);
+      LocalStorage.setItem("grantType", obj.grantType);
+      LocalStorage.setItem("memberId", obj.memberId);
+
+      if (obj.memberInfoCompleted && obj.kidInfoCompleted) {
+        router.replace("/");
+      } else if (!obj.memberInfoCompleted) {
+        router.replace("/join/profile");
+      } else if (!obj.kidInfoCompleted) {
+        const isKid = confirm(
+          "로그인 완료! \n 아직 입력된 아이 정보가 없습니다. \n 아이 정보를 입력하시겠습니까?"
+        );
+        if (isKid) {
+          router.replace("/kid/name");
+        } else {
+          router.replace("/");
+        }
+      }
+    }
   };
 
   try {
     doLogin();
     router.replace("/join/profile");
   } catch (e) {
-    console.error(e);
+    console.log("error", e);
     router.replace("/error");
   }
 
