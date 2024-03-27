@@ -1,6 +1,7 @@
 package com.ssafy.kkoma.api.chat.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.kkoma.api.chat.dto.request.ChatMessageRequest;
 import com.ssafy.kkoma.api.chat.dto.response.ChatMessageResponse;
@@ -20,17 +21,19 @@ public class ChatMessageService {
 	private final MemberService memberService;
 	private final ChatRoomService chatRoomService;
 
+	@Transactional
 	public ChatMessageResponse createChatMessage(Long chatRoomId, ChatMessageRequest chatMessageRequest) {
 		Member member = memberService.findMemberByMemberId(chatMessageRequest.getMemberId());
 		ChatRoom chatRoom = chatRoomService.getChatRoom(chatRoomId);
 
-		ChatMessage chatMessage = chatMessageRepository.save(ChatMessage.builder()
+		ChatMessage chatMessage = ChatMessage.builder()
 			.content(chatMessageRequest.getContent())
 			.member(member)
-			.chatRoom(chatRoom)
-			.build());
+			.build();
 
-		return ChatMessageResponse.fromEntity(chatMessage);
+		chatMessage.setChatRoom(chatRoom);
+
+		return ChatMessageResponse.fromEntity(chatMessageRepository.save(chatMessage));
 	}
 
 }
