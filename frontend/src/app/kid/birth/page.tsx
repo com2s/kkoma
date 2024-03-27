@@ -6,7 +6,7 @@ import { ButtonContainer, SubBtn, NormalBtn } from "@/components/common/buttons"
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { ChangeEvent, useState } from "react";
-import { BirthdaySelecter } from "@/components/baby/birthday-selecter";
+import { BirthdaySelecter } from "@/components/kid/birthday-selecter";
 import { useRecoilState } from "recoil";
 import { kidYearState, kidMonthState, kidDateState } from "@/store/kid";
 
@@ -43,8 +43,8 @@ export default function BabyBirth() {
         setOpen={setOpen}
       />
       <ButtonContainer>
-        <SubBtn next={"/baby/gender"}>건너뛰기</SubBtn>
-        <NormalBtn next={"/baby/gender"}>완료</NormalBtn>
+        <SubBtn next={"/kid/gender"}>건너뛰기</SubBtn>
+        <NormalBtn next={"/kid/gender"}>완료</NormalBtn>
       </ButtonContainer>
     </>
   );

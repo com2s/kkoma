@@ -9,15 +9,15 @@ import APIModule from "@/utils/apiModule";
 // };
 
 export async function getProducts() {
-  const response = await APIModule({ action: "/products", method: "GET", data: null});
-
-  return response.json();
+  const response = await APIModule({ action: "/products", method: "GET", data: null });
+  
+  return response;
 }
 
 export async function getProductDetail(id: string) {
-  const response = await APIModule({ action: `/products/${id}`, method: "GET", data: null});
+  const response = await APIModule({ action: `/products/${id}`, method: "GET", data: null });
 
-  return response.json();
+  return response;
 }
 
 interface PostData {
@@ -31,19 +31,19 @@ interface PostData {
 export async function postProduct(data: PostData) {
   const response = await APIModule({ action: "/products", method: "POST", data: data });
 
-  return response.json();
+  return response;
 }
 
 export async function getImages() {
   // 이미지 기본값을 넣기 위한 임시 함수
   const images = [
-     "/chicken-home.svg",
-     "/next.svg",
-     "/temp-img.svg",
-     "/vercel.svg",
-     "/images/baby-img.png",
-     "/images/logo-icon.svg",
-     "/images/sample1.webp",
+    "/chicken-home.svg",
+    "/next.svg",
+    "/temp-img.svg",
+    "/vercel.svg",
+    "/images/baby-img.png",
+    "/images/logo-icon.svg",
+    "/images/sample1.webp",
   ];
   return images;
 }

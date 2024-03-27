@@ -2,11 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import styles from "./buttons.module.scss";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 interface btnProps {
-  children: String;
-  next: String | Function;
+  children: string;
+  next: string | Function;
   disabled?: boolean;
+  display?: boolean;
 }
 
 export function ButtonContainer({
@@ -17,11 +19,19 @@ export function ButtonContainer({
   return <div className={styles.container}>{children}</div>;
 }
 
+const onclickBtn = (router: AppRouterInstance, next: string | Function) => {
+  if (typeof next === "string") {
+    router.push(next);
+  } else if (typeof next === "function") {
+    next();
+  }
+};
+
 export function WideBtn({ children, next }: btnProps) {
   const router = useRouter();
 
   return (
-    <button className={`${styles.btn} ${styles.wide}`} onClick={() => router.push(`${next}`)}>
+    <button className={`${styles.btn} ${styles.wide}`} onClick={() => onclickBtn(router, next)}>
       <div>{children}</div>
     </button>
   );
@@ -30,28 +40,25 @@ export function WideBtn({ children, next }: btnProps) {
 export function NormalBtn({ children, next, disabled }: btnProps) {
   const router = useRouter();
 
-  const onclickBtn = () => {
-    if (typeof next === "string") {
-      router.push(`${next}`);
-    } else if (typeof next === "function") {
-      next();
-    }
-  };
-
   return (
-    <button className={`${styles.btn} ${styles.normal}`} onClick={onclickBtn} disabled={disabled}>
+    <button
+      className={`${styles.btn} ${styles.normal}`}
+      onClick={() => onclickBtn(router, next)}
+      disabled={disabled}
+    >
       <div>{children}</div>
     </button>
   );
 }
 
-export function SubBtn({ children, next }: btnProps) {
+export function SubBtn({ children, next, display }: btnProps) {
   const router = useRouter();
 
   return (
     <button
       className={`${styles.btn} ${styles.normal} ${styles.gray}`}
-      onClick={() => router.push(`${next}`)}
+      style={display ? {} : { display: "none" }}
+      onClick={() => onclickBtn(router, next)}
     >
       <div>{children}</div>
     </button>

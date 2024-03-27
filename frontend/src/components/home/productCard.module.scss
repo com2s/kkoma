@@ -1,11 +1,8 @@
 .card {
   // @include flex(flex-start, flex-start, column);
-  width: fit-content;
+  width: 45%;
   img {
-    width: 43vw;
-    min-width: rem(156);
-    min-height: rem(156);
-    max-width: rem(275);
+    width: 100%;
     border-radius: rem(15);
   }
   span {

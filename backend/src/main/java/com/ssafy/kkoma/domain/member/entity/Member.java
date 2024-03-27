@@ -125,4 +125,16 @@ public class Member extends BaseTimeEntity {
 		this.kidInfoCompleted = kidInfoCompleted;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void addPoint(int value) {
+		point.addBalance(value);
+	}
+
+	public void subPoint(int value) {
+		point.subBalance(value);
+	}
+
 }

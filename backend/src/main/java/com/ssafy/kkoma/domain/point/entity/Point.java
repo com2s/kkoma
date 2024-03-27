@@ -9,9 +9,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Point {
 
 	@Id
@@ -19,6 +21,10 @@ public class Point {
 	private Long id;
 
 	private int balance = 0;
+
+	public Point(int balance) {
+		this.balance = balance;
+	}
 
 	public void addBalance(int value) {
 		this.balance += value;

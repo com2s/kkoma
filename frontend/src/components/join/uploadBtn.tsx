@@ -45,9 +45,9 @@ export default function UploadBtn() {
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreview(reader.result as string);
-        console.log("reader result = ", reader.result);
       };
       reader.readAsDataURL(imgFile);
+      setPreview(null);
     } else {
       setPreview(null);
     }

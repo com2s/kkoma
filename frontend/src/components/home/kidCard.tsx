@@ -1,6 +1,5 @@
-import { colors } from "@mui/material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import styles from "./babyCard.module.scss";
+import styles from "./kidCard.module.scss";
 
 export default function BabyCard() {
   return (

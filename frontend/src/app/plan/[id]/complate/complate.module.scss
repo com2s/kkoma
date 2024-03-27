@@ -1,6 +1,5 @@
 .complate {
   @include flex(center, center, column);
-  padding: rem(16) rem(10);
   gap: rem(42);
   box-sizing: border-box;
 }
