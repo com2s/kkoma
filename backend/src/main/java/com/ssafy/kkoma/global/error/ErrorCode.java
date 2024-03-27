@@ -29,6 +29,7 @@ public enum ErrorCode {
 
     // Product
     PRODUCT_NOT_EXISTS(HttpStatus.BAD_REQUEST, "P-001", "해당 거래 글은 존재하지 않습니다."),
+    VIEW_OVERFLOW(HttpStatus.INTERNAL_SERVER_ERROR, "P-002", "해당 게시 글의 조회수가 최대값에 도달하였습니다."),
 
     // Category
     CATEGORY_NOT_EXISTS(HttpStatus.BAD_REQUEST, "C-001", "해당 카테고리는 존재하지 않습니다."),

@@ -6,9 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.ssafy.kkoma.api.kid.dto.request.UpdateKidRequest;
 import com.ssafy.kkoma.domain.common.entity.BaseTimeEntity;
-import com.ssafy.kkoma.domain.deal.entity.Deal;
 import com.ssafy.kkoma.domain.location.entity.Location;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.product.constant.ProductType;
@@ -83,6 +81,12 @@ public class Product extends BaseTimeEntity {
 	public void updateStatus(ProductType productType) {
 		this.status = productType;
 	}
+
+	public void addViewCount() {
+		if (viewCount == Long.MAX_VALUE) {
+			throw new BusinessException(ErrorCode.VIEW_OVERFLOW);
+		}
+		this.viewCount++;
 
 	public void addWishCount() {
 		this.wishCount++;
