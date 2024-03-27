@@ -10,11 +10,7 @@ import { DetailParams } from "@/types/product";
 import TopBar2 from "@/components/lists/lists-detail-bar";
 import Profile from "@/components/lists/lists-detail-profile";
 import Content from "@/components/lists/lists-detail-content";
-import {
-  ButtonContainer,
-  SubBtn,
-  NormalBtn,
-} from "@/components/common/buttons";
+
 import Map from "@/components/common/map";
 import Slider from "react-slick";
 import Image from "next/image";
@@ -48,20 +44,17 @@ interface IParams {
 export default async function ProductDetail({ params: { id } }: IParams) {
   if (!id) return <div>상품 정보가 없습니다.</div>;
   const product: DetailParams = await getProductDetail(id);
-  if (product.productImages === null) {
-    product.productImages = await getImages();
-  }
 
-  // console.log(product)
+  console.log(product)
 
   const settings = {
     centerMode: true,
-    autoplay: true,
+    autoplay: product.data.productImages.length > 1 ? true : false,
     // 이동부터 다음 이동까지의 시간
     autoplaySpeed: 2000,
     dots: true,
     arrows: false,
-    infinite: true,
+    infinite: product.data.productImages.length > 1 ? true : false,
     // 이동하는데 걸리는 시간
     speed: 500,
     slidesToShow: 1,
@@ -73,22 +66,22 @@ export default async function ProductDetail({ params: { id } }: IParams) {
       <TopBar2 />
       <div className={styles.carousel}>
         <Slider {...settings}>
-          {product.productImages.map((img, index) => (
+          {product.data.productImages.map((img, index) => (
             <div key={index} className={styles.image}>
               <Image
-                src={img[0]==='/' ? img : `/${img}`} // Route of the image file
+                src={img ?? "/temp-img.svg"} // Route of the image file
                 alt={`Slide ${index + 1}`}
                 priority
                 width={300} // Adjust as needed
                 height={300} // Adjust as needed
-                style={{ height: "280px" }}
+                style={{ width: "100%", height: "100%"}}
               />
             </div>
           ))}
         </Slider>
       </div>
-      <Profile propsId={id} memberSummary={product.memberSummary} />
-      <Content propsId={id} product={product}/>
+      <Profile propsId={id} memberSummary={product.data.memberSummary} />
+      <Content propsId={id} product={product.data}/>
       <Accordion className="mt-4">
         {/* 거래 장소 선택(필수항목) */}
         <AccordionSummary

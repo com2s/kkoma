@@ -13,6 +13,8 @@ import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfoDto;
 import com.ssafy.kkoma.global.util.ApiUtils;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,7 @@ public class OfferController {
 
     private final OfferService offerService;
     private final OfferDetailService offerDetailService;
+    private final DealService dealService;
 
     @Tag(name = "Offer")
     @Operation(summary = "거래 요청",
@@ -58,8 +61,10 @@ public class OfferController {
     )
     @PatchMapping("/{offerId}")
     public ResponseEntity<?> selectOffer(
-        @PathVariable Long offerId, @RequestParam String type, @RequestBody DealTimeRequest dealTimeRequest
+        // @PathVariable Long offerId, @RequestParam String type, @RequestBody DealTimeRequest dealTimeRequest
+		@PathVariable Long offerId, @Parameter(name = "type", description = "거래 수락 시 accept, 거래 거절 시 reject", in = ParameterIn.QUERY) @RequestParam String type, @RequestBody DealTimeRequest dealTimeRequest
     ){
+
         SelectOfferResponse selectOfferResponse = null;
 
         if (type.equals("accept")) {

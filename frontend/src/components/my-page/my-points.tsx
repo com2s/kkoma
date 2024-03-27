@@ -12,10 +12,16 @@ export default function MyPoints() {
     /* '내 포인트'에 천의 자리를 표시하는 ',' 표시와 끝에 P 를 붙인다. */
   }
   const [point, setPoint] = useState(0);
+  const [success, setSuccess] = useState(true);
 
   const getPoint = async () => {
     const res = await getMyPoints();
-    setPoint(res.balance);
+    setSuccess(res.success);
+    if (res.success) {
+      setPoint(res.data.balance);
+    } else {
+      setPoint(0);
+    }
   };
 
   useEffect(() => {
@@ -30,7 +36,9 @@ export default function MyPoints() {
     <div className={styles.container}>
       <div className="flex justify-between items-center p-4">
         <span className="text-lg px-4 font-semibold">내 포인트</span>
-        <span className="text-xl px-4 font-bold text-red-500">{formattedPoints(point)}P</span>
+        <span className="text-xl px-4 font-bold text-red-500">
+          {success? `${formattedPoints(point)}P` : `포인트 조회 실패`}
+          </span>
       </div>
       <div className="flex justify-between items-center p-4 btn-line">
         <Button

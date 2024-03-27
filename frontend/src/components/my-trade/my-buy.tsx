@@ -13,10 +13,9 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import styles from "@/components/my-trade/sell-buy.module.scss";
 
-
-
 export default function MyBuy() {
   const [deals, setDeals] = useState<Deal[]>([]);
+  const [success, setSuccess] = useState(true);
   const [selectedChip, setSelectedChip] = useState<string>("모두");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   // 현재 열린 메뉴의 ID를 저장하기 위한 상태 추가
@@ -27,7 +26,8 @@ export default function MyBuy() {
     const fetchBuying = async () => {
       const myProducts = await getMyProducts("buy");
       console.log("MyBuy: ", myProducts);
-      setDeals(myProducts);
+      setDeals(myProducts.data);
+      setSuccess(myProducts.success);
     };
     fetchBuying();
   }, []);
@@ -60,14 +60,25 @@ export default function MyBuy() {
 
   const filteredDeals = deals
     .filter((deal) =>
-      selectedChip === "모두" ? true : 
-      selectedChip === "요청 중" ? deal.status === "SENT" :
-      selectedChip === "요청 취소" ? deal.status === "CANCELLED" :
-      selectedChip === "거래 완료" ? deal.status === "SOLD" : false
+      selectedChip === "모두"
+        ? true
+        : selectedChip === "요청 중"
+        ? deal.status === "SENT"
+        : selectedChip === "요청 취소"
+        ? deal.status === "CANCELLED"
+        : selectedChip === "거래 완료"
+        ? deal.status === "SOLD"
+        : false
     )
-    .sort((a, b) => a.elapsedMinutes - b.elapsedMinutes
+    .sort((a, b) => a.elapsedMinutes - b.elapsedMinutes);
+
+  if (success === false) {
+    return (
+      <div>
+        <h2>구매요청한 글을 불러오는 데 실패했습니다.</h2>
+      </div>
     );
-    
+  }
 
   return (
     <React.Fragment>
@@ -94,11 +105,16 @@ export default function MyBuy() {
             />
             <CardContent sx={{ padding: 1 }} className={styles.cardMiddle}>
               <Typography variant="h6" component="div">
-                {deal.title}
+                {deal.price.toLocaleString()}원{" "}
               </Typography>
               <Typography color="text.secondary">{deal.title}</Typography>
               <Typography variant="body2">
-                {deal.dealPlace} | {deal.elapsedMinutes}
+                {deal.dealPlace ?? "거래 장소 null"} •{" "}
+                {deal.elapsedMinutes >= 1440 // 1440분 = 24시간
+                  ? `${Math.floor(deal.elapsedMinutes / 1440)}일 전`
+                  : deal.elapsedMinutes >= 60
+                  ? `${Math.floor(deal.elapsedMinutes / 60)}시간 전`
+                  : `${deal.elapsedMinutes}분 전`}
               </Typography>
               <Typography variant="caption" className="text-gray-400">
                 조회 {deal.viewCount} • 거래 요청 {deal.offerCount} • 찜{" "}

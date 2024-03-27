@@ -15,5 +15,5 @@ export async function getMyPoints() {
     data: null,
   });
 
-  return response.data;
+  return response;
 }
