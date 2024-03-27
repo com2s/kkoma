@@ -32,6 +32,9 @@ public class ChatMessage extends BaseTimeEntity {
 	@Column(columnDefinition = "text")
 	private String content;
 
-	private boolean isPrivate;
+	public void setChatRoom(ChatRoom chatRoom) {
+		this.chatRoom = chatRoom;
+		chatRoom.getChatMessageList().add(this);
+	}
 
 }

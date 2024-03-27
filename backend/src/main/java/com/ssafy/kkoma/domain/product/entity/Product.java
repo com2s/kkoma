@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ssafy.kkoma.api.kid.dto.request.UpdateKidRequest;
+import com.ssafy.kkoma.domain.chat.entity.ChatRoom;
 import com.ssafy.kkoma.domain.common.entity.BaseTimeEntity;
 import com.ssafy.kkoma.domain.deal.entity.Deal;
 import com.ssafy.kkoma.domain.location.entity.Location;
@@ -41,6 +42,10 @@ public class Product extends BaseTimeEntity {
 	@JoinColumn(name = "location_id")
 	private Location location;
 	private String thumbnailImage;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "chat_room_id")
+	private ChatRoom chatRoom;
 
 	@Column(length = 50)
 	private String placeDetail;
