@@ -1,10 +1,10 @@
 package com.ssafy.kkoma.api.offer.controller;
 
-import com.ssafy.kkoma.api.deal.dto.request.DealTimeRequest;
+import com.ssafy.kkoma.api.deal.dto.request.DecideOfferRequest;
 import com.ssafy.kkoma.api.offer.dto.request.OfferTimeRequest;
 import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
 import com.ssafy.kkoma.api.offer.dto.response.SendOfferResponse;
-import com.ssafy.kkoma.api.offer.dto.response.SelectOfferResponse;
+import com.ssafy.kkoma.api.offer.dto.response.DecideOfferResponse;
 import com.ssafy.kkoma.api.offer.service.OfferDetailService;
 import com.ssafy.kkoma.api.offer.service.OfferService;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
@@ -64,17 +64,17 @@ public class OfferController {
         security = { @SecurityRequirement(name = "bearer-key") }
     )
     @PatchMapping("/{offerId}")
-    public ResponseEntity<?> selectOffer(
+    public ResponseEntity<?> decideOffer(
 		@PathVariable Long offerId,
         @Parameter(name = "type", description = "거래 수락 시 accept, 거래 거절 시 reject", in = ParameterIn.QUERY) @RequestParam String type,
-        @RequestBody DealTimeRequest dealTimeRequest
+        @RequestBody DecideOfferRequest decideOfferRequest
     ) {
-        SelectOfferResponse selectOfferResponse = null;
+        DecideOfferResponse decideOfferResponse = null;
 
         if (type.equals("accept")) {
-            selectOfferResponse = offerService.acceptOffer(offerId, dealTimeRequest);
+            decideOfferResponse = offerService.decideOffer(offerId, decideOfferRequest);
         }
 
-        return ResponseEntity.ok(ApiUtils.success(selectOfferResponse));
+        return ResponseEntity.ok(ApiUtils.success(decideOfferResponse));
     }
 }

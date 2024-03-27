@@ -2,7 +2,7 @@ package com.ssafy.kkoma.api.deal.service;
 
 import org.springframework.stereotype.Service;
 
-import com.ssafy.kkoma.api.deal.dto.request.DealTimeRequest;
+import com.ssafy.kkoma.api.deal.dto.request.DecideOfferRequest;
 import com.ssafy.kkoma.domain.deal.entity.Deal;
 import com.ssafy.kkoma.domain.deal.repository.DealRepository;
 import com.ssafy.kkoma.domain.member.entity.Member;
@@ -30,11 +30,11 @@ public class DealService {
 			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.DEAL_NOT_EXISTS));
 	}
 
-	public Deal createDeal(Offer offer, DealTimeRequest dealTimeRequest){
+	public Deal createDeal(Offer offer, DecideOfferRequest decideOfferRequest){
 		return dealRepository.save(Deal.builder()
 			.member(offer.getMember())
 			.product(offer.getProduct())
-			.selectedTime(dealTimeRequest.getSelectedTime())
+			.selectedTime(decideOfferRequest.getSelectedTime())
 			.build());
 	}
 

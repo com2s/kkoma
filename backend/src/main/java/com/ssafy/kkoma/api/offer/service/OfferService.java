@@ -3,12 +3,10 @@ package com.ssafy.kkoma.api.offer.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ssafy.kkoma.api.deal.dto.request.DealTimeRequest;
+import com.ssafy.kkoma.api.deal.dto.request.DecideOfferRequest;
 import com.ssafy.kkoma.api.deal.service.DealService;
-import com.ssafy.kkoma.api.member.dto.response.MemberProfileResponse;
 import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
-import com.ssafy.kkoma.api.offer.dto.response.OfferTimeResponse;
-import com.ssafy.kkoma.api.offer.dto.response.SelectOfferResponse;
+import com.ssafy.kkoma.api.offer.dto.response.DecideOfferResponse;
 import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
 import com.ssafy.kkoma.api.point.service.PointHistoryService;
 import com.ssafy.kkoma.domain.deal.entity.Deal;
@@ -28,7 +26,6 @@ import com.ssafy.kkoma.global.error.ErrorCode;
 import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
-import org.h2.command.query.Select;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,6 +43,11 @@ public class OfferService {
     public Offer findOfferByOfferId(Long offerId) {
         return offerRepository.findById(offerId)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.OFFER_NOT_EXISTS));
+    }
+
+    public List<Offer> findAllOfferByProductId(Long productId) {
+        return offerRepository.findAllOffersByProductId(productId)
+            .orElseThrow(() -> new EntityNotFoundException(ErrorCode.OFFER_NOT_EXISTS));
     }
 
     public Long createOffer(Long memberId, Long productId) {
@@ -73,9 +75,7 @@ public class OfferService {
 
     public List<OfferResponse> getOffers(Long productId) {
         List<OfferResponse> offerResponseList = new ArrayList<>();
-
-        List<Offer> offerList = offerRepository.findAllOffersByProductId(productId)
-            .orElseThrow(() -> new EntityNotFoundException(ErrorCode.OFFER_NOT_EXISTS));
+        List<Offer> offerList = findAllOfferByProductId(productId);
 
         for (Offer offer : offerList) {
             offerResponseList.add(OfferResponse.fromEntity(offer));
@@ -84,14 +84,29 @@ public class OfferService {
         return offerResponseList;
     }
 
-    public SelectOfferResponse acceptOffer(Long offerId, DealTimeRequest dealTimeRequest){
-        Offer offer = findOfferByOfferId(offerId);
+    public DecideOfferResponse decideOffer(Long offerId, DecideOfferRequest decideOfferRequest) {
+        Offer acceptedOffer = findOfferByOfferId(offerId); // 수락한 offer
+        Product product = acceptedOffer.getProduct();
+        if (!product.getStatus().equals(ProductType.SALE)) { // 수락한 offer가 이미 있다
+            throw new EntityNotFoundException(ErrorCode.INVALID_OFFER);
+        }
 
-        offer.updateStatus(OfferType.ACCEPTED);
-        offer.getProduct().updateStatus(ProductType.PROGRESS);
-        Deal deal = dealService.createDeal(offer, dealTimeRequest); // TODO: deal entity 말고 변환해줘야 되는 것 같은데
+        Deal acceptedDeal = null; // offer을 수락해서 만들어진 deal
+        List<Offer> offerList = findAllOfferByProductId(product.getId());
+        for (Offer offer : offerList) {
+            // 수락한 offer에 대해서 accept 처리
+            if (offer.getId() == offerId) {
+                offer.updateStatus(OfferType.ACCEPTED);
+                offer.getProduct().updateStatus(ProductType.PROGRESS);
+                acceptedDeal = dealService.createDeal(offer, decideOfferRequest);
+            }
+            // 나머지 offer에 대해서 deny 처리
+            else {
+                offer.updateStatus(OfferType.DENIED);
+            }
+        }
 
-        return SelectOfferResponse.fromEntity(offer, deal);
+        return DecideOfferResponse.fromEntity(acceptedOffer, acceptedDeal);
     }
 
     public List<ProductInfoResponse> getNotProgressOfferingProducts(Long memberId) {

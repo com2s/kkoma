@@ -1,9 +1,8 @@
 package com.ssafy.kkoma.api.offer.service;
 
-import com.ssafy.kkoma.api.deal.dto.request.DealTimeRequest;
+import com.ssafy.kkoma.api.deal.dto.request.DecideOfferRequest;
 import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
-import com.ssafy.kkoma.api.offer.dto.response.SelectOfferResponse;
-import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
+import com.ssafy.kkoma.api.offer.dto.response.DecideOfferResponse;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.domain.member.entity.Member;
@@ -130,10 +129,10 @@ class OfferServiceTest {
         Product product = productRepository.save(Product.builder().title(TITLE).thumbnailImage(IMAGE_URL).category(category).member(member).build());
 
         Offer offer = offerRepository.save(Offer.builder().product(product).member(member).build());
-        DealTimeRequest dealTimeRequest = DealTimeRequest.builder().selectedTime(LocalDateTime.now()).build();
+        DecideOfferRequest decideOfferRequest = DecideOfferRequest.builder().selectedTime(LocalDateTime.now()).build();
 
         // when
-        SelectOfferResponse newOffer = offerService.acceptOffer(offer.getId(), dealTimeRequest);
+        DecideOfferResponse newOffer = offerService.decideOffer(offer.getId(), decideOfferRequest);
 
         // then
         assertNotNull(newOffer.getDealTime());
