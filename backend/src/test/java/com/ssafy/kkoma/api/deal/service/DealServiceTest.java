@@ -91,7 +91,7 @@ class DealServiceTest {
 		DecideOfferRequest decideOfferRequest = DecideOfferRequest.builder().selectedTime(LocalDateTime.now()).build();
 
 		// when
-		offerService.decideOffer(offer.getId(), decideOfferRequest);
+		offerService.acceptOffer(offer.getId(), decideOfferRequest);
 		Deal deal = dealRepository.findByProduct(product);
 		String buyerReqCode = dealService.getCode(deal.getId(), buyer.getId());
 
@@ -112,7 +112,7 @@ class DealServiceTest {
 		DecideOfferRequest decideOfferRequest = DecideOfferRequest.builder().selectedTime(LocalDateTime.now()).build();
 
 		// when
-		offerService.decideOffer(offer.getId(), decideOfferRequest);
+		offerService.acceptOffer(offer.getId(), decideOfferRequest);
 		Deal deal = dealRepository.findByProduct(product);
 
 		// then
@@ -141,7 +141,7 @@ class DealServiceTest {
 		DecideOfferRequest decideOfferRequest = DecideOfferRequest.builder().selectedTime(LocalDateTime.now()).build();
 
 		// when
-		offerService.decideOffer(offer.getId(), decideOfferRequest);
+		offerService.acceptOffer(offer.getId(), decideOfferRequest);
 		Deal deal = dealRepository.findByProduct(product);
 		String codeSellerGotFromBuyer = dealService.getCode(deal.getId(), buyer.getId()); // 판매자가 구매자의 QR코드를 읽어 코드를 얻었다
 
