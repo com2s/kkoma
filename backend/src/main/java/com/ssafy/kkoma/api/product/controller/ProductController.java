@@ -1,11 +1,11 @@
 package com.ssafy.kkoma.api.product.controller;
 
 import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
-import com.ssafy.kkoma.api.product.dto.ProductCreateResponse;
 import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
 import com.ssafy.kkoma.api.product.dto.ProductSummary;
+import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
+import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
 import com.ssafy.kkoma.api.product.service.ProductService;
-import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfoDto;
 
@@ -14,6 +14,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +39,12 @@ public class ProductController {
     public ResponseEntity<ApiUtils.ApiResult<List<ProductSummary>>> getProducts(){
         List<ProductSummary> products = productService.getProducts();
         return ResponseEntity.ok(ApiUtils.success(products));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<ApiUtils.ApiResult<SearchProductResponse>> searchProducts(SearchProductRequest searchProductRequest, Pageable pageable) {
+        SearchProductResponse searchProductResponse = productService.searchProduct(searchProductRequest, pageable);
+        return ResponseEntity.ok(ApiUtils.success(searchProductResponse));
     }
 
     @Tag(name = "Product")

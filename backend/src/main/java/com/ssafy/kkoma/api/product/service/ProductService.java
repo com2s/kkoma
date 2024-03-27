@@ -12,8 +12,11 @@ import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
 import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
 import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
+import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
+import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
 import com.ssafy.kkoma.domain.chat.entity.ChatRoom;
 import com.ssafy.kkoma.api.product.dto.ProductWishResponse;
+
 import com.ssafy.kkoma.domain.deal.entity.Deal;
 import com.ssafy.kkoma.domain.deal.repository.DealRepository;
 import com.ssafy.kkoma.domain.member.entity.Member;
@@ -26,7 +29,11 @@ import com.ssafy.kkoma.domain.product.entity.ProductImage;
 import com.ssafy.kkoma.domain.product.entity.WishList;
 import com.ssafy.kkoma.domain.product.repository.WishListRepository;
 import com.ssafy.kkoma.global.error.ErrorCode;
+import com.ssafy.kkoma.global.error.exception.BusinessException;
 import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.kkoma.api.product.dto.ProductSummary;
@@ -61,6 +68,11 @@ public class ProductService {
 		return products.stream()
 			.map(ProductSummary::fromEntity)
 			.collect(Collectors.toList());
+	}
+
+	public SearchProductResponse searchProduct(SearchProductRequest searchProductRequest, Pageable pageable) {
+		Page<Product> pageList = productRepository.searchProduct(searchProductRequest, pageable);
+		return buildSearchProductResponse(pageList);
 	}
 
 	public ProductDetailResponse getProduct(Long productId) {
@@ -141,6 +153,24 @@ public class ProductService {
 			.wishCount(product.getWishCount())
 			.offerCount(product.getOfferCount())
 			.viewCount(product.getViewCount())
+			.build();
+	}
+
+	private SearchProductResponse buildSearchProductResponse(Page<Product> page) {
+		List<ProductSummary> content = page.getContent().stream()
+			.map(ProductSummary::fromEntity)
+			.collect(Collectors.toList());
+
+		return SearchProductResponse.builder()
+			.content(content)
+			.size(page.getSize())
+			.page(page.getNumber())
+			.numberOfElements(page.getNumberOfElements())
+			.totalElements(page.getTotalElements())
+			.totalPages(page.getTotalPages())
+			.first(page.isFirst())
+			.last(page.isLast())
+			.empty(page.isEmpty())
 			.build();
 	}
 
