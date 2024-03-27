@@ -27,7 +27,7 @@ export default function KakaoOauth() {
         router.replace("/join/profile");
       } else if (!obj.kidInfoCompleted) {
         const isKid = confirm(
-          "로그인 완료! \n 아직 입력된 아이 정보가 없습니다. \n 아이 정보를 입력하시겠습니까?"
+          "로그인 완료!\n아이 정보 입력이 완료되지않았습니다.\n입력하시겠습니까?"
         );
         if (isKid) {
           router.replace("/kid/name");
