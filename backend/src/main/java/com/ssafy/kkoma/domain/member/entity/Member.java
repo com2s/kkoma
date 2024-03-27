@@ -10,6 +10,7 @@ import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.domain.offer.entity.Offer;
 import com.ssafy.kkoma.domain.point.entity.Point;
 import com.ssafy.kkoma.domain.product.entity.Product;
+import com.ssafy.kkoma.domain.product.entity.WishList;
 import com.ssafy.kkoma.global.jwt.dto.JwtTokenDto;
 import com.ssafy.kkoma.global.util.DateTimeUtils;
 import jakarta.persistence.*;
@@ -20,7 +21,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -80,6 +83,9 @@ public class Member extends BaseTimeEntity {
 
 	@OneToOne(fetch = FetchType.LAZY)
 	private Point point;
+
+	@OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+	private Set<WishList> wishes = new HashSet<>();
 
 	private boolean memberInfoCompleted;
 	private boolean kidInfoCompleted;

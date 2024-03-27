@@ -11,15 +11,16 @@ import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
 import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
 import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
+import com.ssafy.kkoma.api.product.dto.ProductWishResponse;
 import com.ssafy.kkoma.domain.member.entity.Member;
 
-import com.ssafy.kkoma.domain.offer.entity.Offer;
 import com.ssafy.kkoma.domain.product.constant.MyProductType;
-import com.ssafy.kkoma.domain.product.constant.ProductType;
 
 import com.ssafy.kkoma.domain.product.entity.Category;
 
 import com.ssafy.kkoma.domain.product.entity.ProductImage;
+import com.ssafy.kkoma.domain.product.entity.WishList;
+import com.ssafy.kkoma.domain.product.repository.WishListRepository;
 import com.ssafy.kkoma.global.error.ErrorCode;
 import com.ssafy.kkoma.global.error.exception.BusinessException;
 import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
@@ -41,6 +42,7 @@ public class ProductService {
 	private final ProductImageService productImageService;
 	private final CategoryService categoryService;
 	private final MemberService memberService;
+	private final WishListRepository wishListRepository;
 
 	public Product findProductByProductId(Long productId) {
 		return productRepository.findById(productId)
@@ -126,6 +128,46 @@ public class ProductService {
 			.offerCount(product.getOfferCount())
 			.viewCount(product.getViewCount())
 			.build();
+	}
+
+	public ProductWishResponse wishProduct(Long productId, Long memberId) {
+		// 글 조회
+		Product product = findProductById(productId); // todo Pessimistic Locking
+		product.addWishCount();
+		Member member = memberService.findMemberByMemberId(memberId);
+
+		WishList wishList = wishListRepository.findByProductIdAndMemberId(productId, memberId);
+		if (wishList == null) {
+			wishList = WishList.builder()
+					.build();
+			wishList.setMemberAndProduct(member, product);
+ 		} else if (wishList.getIsValid()) {
+			throw new BusinessException(ErrorCode.WISH_LIST_ALREADY_VALID);
+		}
+
+		wishList.setValid(true);
+		WishList savedWishList = wishListRepository.save(wishList);
+		return ProductWishResponse.fromEntity(savedWishList, product);
+	}
+
+	public ProductWishResponse unwishProduct(Long productId, Long memberId) {
+		Product product = findProductById(productId); // todo Pessimistic Locking
+		product.subWishCount();
+		Member member = memberService.findMemberByMemberId(memberId);
+
+		WishList wishList = wishListRepository.findByProductIdAndMemberId(productId, memberId);
+		if (wishList == null) {
+			wishList = WishList.builder()
+					.isValid(false)
+					.build();
+			wishList.setMemberAndProduct(member, product);
+		} else if (!wishList.getIsValid()) {
+			throw new BusinessException(ErrorCode.WISH_LIST_ALREADY_NOT_VALID);
+		}
+
+		wishList.setValid(false);
+		WishList savedWishList = wishListRepository.save(wishList);
+		return ProductWishResponse.fromEntity(savedWishList, product);
 	}
 
 }

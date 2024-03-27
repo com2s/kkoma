@@ -1,27 +1,15 @@
 package com.ssafy.kkoma.api.offer.controller;
 
-import com.ssafy.kkoma.domain.member.constant.MemberType;
-import com.ssafy.kkoma.domain.member.constant.Role;
-import com.ssafy.kkoma.domain.member.entity.Member;
-import com.ssafy.kkoma.domain.offer.entity.OfferDetail;
-import com.ssafy.kkoma.domain.point.entity.Point;
-import com.ssafy.kkoma.domain.product.entity.Category;
-import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.factory.CategoryFactory;
 import com.ssafy.kkoma.factory.MemberFactory;
 import com.ssafy.kkoma.factory.ProductFactory;
-import com.ssafy.kkoma.global.util.CustomSpringBootTest;
+import com.ssafy.kkoma.global.util.CustomMockMvcSpringBootTest;
 import com.ssafy.kkoma.global.util.RequestUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-@CustomSpringBootTest
+@CustomMockMvcSpringBootTest
 class OfferControllerTest {
 
     @Autowired

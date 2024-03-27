@@ -3,6 +3,8 @@ package com.ssafy.kkoma.global.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.kkoma.domain.member.entity.Member;
+import com.ssafy.kkoma.global.error.ErrorResponse;
+import com.ssafy.kkoma.global.error.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -10,7 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.ResultMatcher;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
@@ -65,11 +66,11 @@ public class RequestUtil {
     }
 
     public MockHttpServletRequestBuilder putRequest(String urlTemplate, Object... uriVariables) {
-        return put(urlTemplate, (Object) uriVariables);
+        return put(urlTemplate, uriVariables);
     }
 
     public MockHttpServletRequestBuilder deleteRequest(String urlTemplate, Object... uriVariables) {
-        return delete(urlTemplate, (Object) uriVariables);
+        return delete(urlTemplate, uriVariables);
     }
 
     public MockHttpServletRequestBuilder getRequest(String urlTemplate, Member authenticatedMember, Object... uriVariables) {
@@ -120,6 +121,13 @@ public class RequestUtil {
                 .content(objectMapper.writeValueAsString(request));
     }
 
+    public ResultMatcher businessExceptionErrorContent(BusinessException e) throws JsonProcessingException {
+        ErrorResponse errorResponse = ErrorResponse.of(e.getErrorCode().getErrorCode(), e.getMessage());
+        ApiUtils.ApiResult<?> expectedResponse = ApiUtils.error(errorResponse);
+        String expectedJsonResponse = objectMapper.writeValueAsString(expectedResponse);
+        log.info(expectedJsonResponse);
+        return content().json(expectedJsonResponse);
+    }
 
     public <T> ResultMatcher jsonContent(Class<T> clazz, T object) throws JsonProcessingException {
         checkClass(clazz, object);
