@@ -62,7 +62,7 @@ public class ProductService {
 	}
 
 	public ProductDetailResponse getProduct(Long productId) {
-		Product product = findProductById(productId);
+		Product product = findProductByProductId(productId);
 		List<String> productImageUrls = productImageService.getProductImageUrls(productId);
 		String categoryName = categoryService.getCategoryName(product.getCategory().getId());
 		ProductDetailResponse productDetailResponse = buildProductDetailResponse(product, productImageUrls, categoryName, product.getMember());
