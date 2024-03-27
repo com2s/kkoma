@@ -7,6 +7,7 @@ import com.ssafy.kkoma.api.deal.dto.request.DecideOfferRequest;
 import com.ssafy.kkoma.api.deal.service.DealService;
 import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
 import com.ssafy.kkoma.api.offer.dto.response.DecideOfferResponse;
+import com.ssafy.kkoma.api.point.service.PointService;
 import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
 import com.ssafy.kkoma.api.point.service.PointHistoryService;
 import com.ssafy.kkoma.domain.deal.entity.Deal;
@@ -23,6 +24,7 @@ import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.api.product.service.ProductService;
 import com.ssafy.kkoma.global.error.ErrorCode;
+import com.ssafy.kkoma.global.error.exception.BusinessException;
 import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
@@ -37,6 +39,7 @@ public class OfferService {
     private final OfferRepository offerRepository;
     private final MemberService memberService;
     private final ProductService productService;
+    private final PointService pointService;
     private final PointHistoryService pointHistoryService;
     private final DealService dealService;
 
@@ -54,6 +57,9 @@ public class OfferService {
         Member member = memberService.findMemberByMemberId(memberId);
         Product product = productService.findProductByProductId(productId);
 
+        if (member.getPoint().getBalance() < product.getPrice()) {
+            throw new BusinessException(ErrorCode.POINT_NOT_ENOUGH);
+        }
         member.getPoint().subBalance(product.getPrice());
 
         pointHistoryService.createPointHistory(PointHistory.builder()
@@ -84,11 +90,11 @@ public class OfferService {
         return offerResponseList;
     }
 
-    public DecideOfferResponse decideOffer(Long offerId, DecideOfferRequest decideOfferRequest) {
+    public DecideOfferResponse acceptOffer(Long offerId, DecideOfferRequest decideOfferRequest) {
         Offer acceptedOffer = findOfferByOfferId(offerId); // 수락한 offer
         Product product = acceptedOffer.getProduct();
         if (!product.getStatus().equals(ProductType.SALE)) { // 수락한 offer가 이미 있다
-            throw new EntityNotFoundException(ErrorCode.INVALID_OFFER);
+            throw new EntityNotFoundException(ErrorCode.INVALID_ACCEPT);
         }
 
         Deal acceptedDeal = null; // offer을 수락해서 만들어진 deal
@@ -100,9 +106,18 @@ public class OfferService {
                 offer.getProduct().updateStatus(ProductType.PROGRESS);
                 acceptedDeal = dealService.createDeal(offer, decideOfferRequest);
             }
-            // 나머지 offer에 대해서 deny 처리
+            // 나머지 offer에 대해서 deny 처리, 선입금한 포인트 반환
             else {
                 offer.updateStatus(OfferType.REJECTED);
+                Member rejectedBuyer = offer.getMember(); // 거절당한 구매희망자
+                rejectedBuyer.getPoint().addBalance(product.getPrice());
+
+                pointHistoryService.createPointHistory(PointHistory.builder()
+                    .point(rejectedBuyer.getPoint())
+                    .amount(product.getPrice())
+                    .pointChangeType(PointChangeType.USE)
+                    .balanceAfterChange(rejectedBuyer.getPoint().getBalance())
+                    .build());
             }
         }
 

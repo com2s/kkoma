@@ -72,7 +72,7 @@ public class OfferController {
         DecideOfferResponse decideOfferResponse = null;
 
         if (type.equals("accept")) {
-            decideOfferResponse = offerService.decideOffer(offerId, decideOfferRequest);
+            decideOfferResponse = offerService.acceptOffer(offerId, decideOfferRequest);
         }
 
         return ResponseEntity.ok(ApiUtils.success(decideOfferResponse));
