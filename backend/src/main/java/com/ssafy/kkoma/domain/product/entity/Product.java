@@ -6,6 +6,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.ssafy.kkoma.api.kid.dto.request.UpdateKidRequest;
+import com.ssafy.kkoma.domain.chat.entity.ChatRoom;
+
 import com.ssafy.kkoma.domain.common.entity.BaseTimeEntity;
 import com.ssafy.kkoma.domain.location.entity.Location;
 import com.ssafy.kkoma.domain.member.entity.Member;
@@ -19,6 +22,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -43,6 +47,11 @@ public class Product extends BaseTimeEntity {
 	@JoinColumn(name = "location_id")
 	private Location location;
 	private String thumbnailImage;
+
+	@Setter
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "chat_room_id")
+	private ChatRoom chatRoom;
 
 	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
 	@Builder.Default

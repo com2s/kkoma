@@ -39,7 +39,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .order(1)
                 .addPathPatterns("/api/**")
                 .excludePathPatterns(
-
+                        "/api/chat",
                         "/api/health",
                         "/api/oauth/login",
                         "/api/logout",
