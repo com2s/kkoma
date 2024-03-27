@@ -7,7 +7,7 @@ import { useRecoilState } from "recoil";
 import { kidNameState } from "@/store/kid";
 import { useRouter } from "next/navigation";
 
-export default function BabyName() {
+export default function KidName() {
   const [name, setName] = useRecoilState(kidNameState);
   const router = useRouter();
 
