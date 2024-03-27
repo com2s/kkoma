@@ -5,6 +5,7 @@ import { setItemWithExpireTime } from "@/utils/controlStorage";
 import Loading from "@/components/common/loading";
 import { kakaoLoginAPI } from "@/services/kakaoLogin";
 import LocalStorage from "@/utils/localStorage";
+import { useEffect } from "react";
 
 export default function KakaoOauth() {
   const router = useRouter();
@@ -13,7 +14,18 @@ export default function KakaoOauth() {
   const code = searchParams.get("code") ?? "";
 
   const doLogin = async () => {
-    const obj = await kakaoLoginAPI(code);
+    const isLocal = process.env.NODE_ENV === "development";
+
+    const obj = isLocal
+      ? {
+          accessToken: process.env.NEXT_PUBLIC_ACCESSTOKEN,
+          accessTokenExpireTime: "2024-03-27T01:47:02.000Z",
+          refreshToken: process.env.NEXT_PUBLIC_REFRESHTOKEN,
+          refreshTokenExpireTime: "2024-04-10T01:32:02.000Z",
+          grantType: "Bearer",
+          memberId: 2,
+        }
+      : await kakaoLoginAPI(code);
 
     if (obj) {
       setItemWithExpireTime("accessToken", obj.accessToken, obj.accessTokenExpireTime);
@@ -38,13 +50,15 @@ export default function KakaoOauth() {
     }
   };
 
-  try {
-    doLogin();
-    router.replace("/join/profile");
-  } catch (e) {
-    console.log("error", e);
-    router.replace("/error");
-  }
+  useEffect(() => {
+    try {
+      doLogin();
+      router.replace("/join/profile");
+    } catch (e) {
+      console.log("error", e);
+      router.replace("/error");
+    }
+  }, []);
 
   return <Loading />;
 }
