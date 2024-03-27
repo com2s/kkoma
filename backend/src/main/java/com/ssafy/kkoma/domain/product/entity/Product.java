@@ -2,16 +2,20 @@ package com.ssafy.kkoma.domain.product.entity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.ssafy.kkoma.api.kid.dto.request.UpdateKidRequest;
 import com.ssafy.kkoma.domain.chat.entity.ChatRoom;
+
 import com.ssafy.kkoma.domain.common.entity.BaseTimeEntity;
-import com.ssafy.kkoma.domain.deal.entity.Deal;
 import com.ssafy.kkoma.domain.location.entity.Location;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.product.constant.ProductType;
 
+import com.ssafy.kkoma.global.error.ErrorCode;
+import com.ssafy.kkoma.global.error.exception.BusinessException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -49,6 +53,10 @@ public class Product extends BaseTimeEntity {
 	@JoinColumn(name = "chat_room_id")
 	private ChatRoom chatRoom;
 
+	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+	@Builder.Default
+	private Set<WishList> wishes = new HashSet<>();
+
 	@Column(length = 50)
 	private String placeDetail;
 
@@ -82,4 +90,23 @@ public class Product extends BaseTimeEntity {
 	public void updateStatus(ProductType productType) {
 		this.status = productType;
 	}
+
+	public void addViewCount() {
+		if (viewCount == Long.MAX_VALUE) {
+			throw new BusinessException(ErrorCode.VIEW_OVERFLOW);
+		}
+		this.viewCount++;
+	}
+
+	public void addWishCount() {
+		this.wishCount++;
+	}
+
+	public void subWishCount() {
+		if (wishCount == 0) {
+			throw new BusinessException(ErrorCode.WISH_COUNT_ZERO);
+		}
+		this.wishCount--;
+	}
+
 }

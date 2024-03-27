@@ -33,7 +33,14 @@ const APIModule = async ({ action, method, data }: APIProps) => {
     },
     body: data,
   });
-  return await res.json();
+  
+  // json 파싱 분기 처리
+  try {
+    const json = await res.json();
+    return json;
+  } catch (error) {
+    return res;
+  }
 };
 
 export default APIModule;

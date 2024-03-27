@@ -9,6 +9,7 @@ import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfoDto;
 
 import com.ssafy.kkoma.global.util.ApiUtils;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,9 +29,12 @@ public class MemberController {
     private final MemberService memberService;
     private final OfferService offerService;
 
-    @Tag(name = "member")
-    @Operation(summary = "to retrieve my products",
-        description = "https://www.notion.so/todays-jiwoo/f-99cdb734385b49eba9972217e5c7b495?pvs=4 여기에 업데이트 해두고 스웨거 고칠게용 (수현)")
+    @Tag(name = "Member Activity")
+    @Operation(
+        summary = "유저 관련 상품글 전체 조회",
+        description = "[[노션](https://www.notion.so/todays-jiwoo/5aa3a0c8457942fc87def3e075a8e7a1?pvs=4)]",
+        security = { @SecurityRequirement(name = "bearer-key") }
+    )
     @GetMapping("/products")
     ResponseEntity<ApiUtils.ApiResult<List<ProductInfoResponse>>> getMyProducts(
         @MemberInfo MemberInfoDto memberInfoDto,

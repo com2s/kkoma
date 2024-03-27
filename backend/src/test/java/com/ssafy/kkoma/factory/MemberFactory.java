@@ -33,6 +33,7 @@ public class MemberFactory {
                 .email(randomUUID(10) + "@kakao.com")
                 .build();
 
+        member.setKidInfoCompleted(true);
         Point point = new Point();
         Point savedPoint = pointRepository.save(point);
         member.setPoint(savedPoint);

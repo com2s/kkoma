@@ -3,8 +3,9 @@
 import TopBar2 from "@/components/my-trade/my-request-bar";
 import styles from "@/components/my-trade/my-request.module.scss";
 // 인터페이스
-// import { Requester }
+import { Requester } from "@/types/offer";
 import { getRequesters } from "@/components/my-trade/my-trade-ftn";
+import { offerTimeState } from "@/store/offer";
 import {
   Card,
   CardContent,
@@ -13,11 +14,13 @@ import {
   IconButton,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
+import { useRecoilState } from "recoil";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import CheckIcon from "@mui/icons-material/Check";
 import RemoveIcon from "@mui/icons-material/Remove";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -28,22 +31,6 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-interface Requester {
-  id: number;
-  memberProfile: {
-    id: number;
-    nickname: string;
-    profileImage: string;
-  }
-  offerTimes: [
-    {
-      offerDate: string;
-      startTime: string;
-      endTime: string;
-    }
-  ]
-}
-
 interface IParams {
   params: { dealId: string };
 }
@@ -51,6 +38,8 @@ interface IParams {
 export default function MyRequest({ params: { dealId } }: IParams) {
   const [requesters, setRequesters] = useState<Requester[]>([]); // requesters 상태와 상태 설정 함수 추가
   const [success, setSuccess] = useState(true);
+  const [offerTime, setOfferTime] = useRecoilState(offerTimeState);
+  const router = useRouter();
   useEffect(() => {
     const fetchData = async () => {
       const res = await getRequesters(dealId);
@@ -61,10 +50,10 @@ export default function MyRequest({ params: { dealId } }: IParams) {
     fetchData();
   }, []);
 
-  const handleDelete = (userId: number) => {
+  const handleDelete = (requestId: number) => {
     if (window.confirm("거래 요청을 취소하시겠습니까?")) {
       alert("거래 요청이 취소되었습니다.");
-      console.log(userId);
+      console.log(requestId);
     }
   };
 
@@ -76,6 +65,12 @@ export default function MyRequest({ params: { dealId } }: IParams) {
       </React.Fragment>
     )
   }
+
+  const clickRequest = async (times:Requester['offerTimes'], id:number) => {
+    await setOfferTime(times)
+    router.push(`/my-trade/${dealId}/${id}`)
+  }
+
 
   return (
     <React.Fragment>
@@ -102,7 +97,7 @@ export default function MyRequest({ params: { dealId } }: IParams) {
             ))}
           </CardContent>
           <CardContent className={styles.btns} sx={{ padding: 0 }}>
-            <Link href={`/my-trade/${dealId}/${requester.memberProfile.id}`}>
+            {/* <Link href={`/my-trade/${dealId}/${requester.memberProfile.id}`}> */}
               <IconButton
                 size="small"
                 sx={{
@@ -111,12 +106,13 @@ export default function MyRequest({ params: { dealId } }: IParams) {
                   },
                   margin: 1,
                 }}
+                onClick={() => clickRequest(requester.offerTimes, requester.id)}
               >
                 <CheckIcon sx={{ color: "white" }} />
               </IconButton>
-            </Link>
+            {/* </Link> */}
             <IconButton
-              onClick={() => handleDelete(requester.memberProfile.id)}
+              onClick={() => handleDelete(requester.id)}
               size="small"
               sx={{
                 "&.MuiIconButton-root": {

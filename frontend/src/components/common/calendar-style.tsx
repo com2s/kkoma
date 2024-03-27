@@ -142,11 +142,11 @@ export const StyledCalendar = styled(Calendar)``;
 export const StyledDelete = styled.div`
   cursor: pointer;
   position: absolute;
-  left: 8%;
-  top: 9%;
+  left: 6%;
+  top: 8%;
   background-color: #dcdcdc;
   color: #00008b;
-  width: 14%;
+  width: 13%;
   min-width: fit-content;
   height: 1.8rem;
   text-align: center;
@@ -164,11 +164,11 @@ export const StyledDelete = styled.div`
 export const StyledDate = styled.div`
   cursor: pointer;
   position: absolute;
-  right: 8%;
+  right: 6%;
   top: 9%;
   background-color: #ffcf00;
   color: #764c32;
-  width: 15%;
+  width: 14%;
   min-width: fit-content;
   height: 1.5rem;
   text-align: center;

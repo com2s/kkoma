@@ -25,7 +25,11 @@ public class KidController {
     private final KidService kidService;
 
     @Tag(name = "Kid")
-    @Operation(summary = "to get kid summary list", security = { @SecurityRequirement(name = "bearer-key") })
+    @Operation(
+        summary = "전체 아이 요약 정보 조회",
+        description = "[[노션](https://www.notion.so/todays-jiwoo/b41eb96ac85e4efab4fba53ee5033255?pvs=4)]",
+        security = { @SecurityRequirement(name = "bearer-key") }
+    )
     @GetMapping("/summary")
     public ResponseEntity<ApiUtils.ApiResult<List<KidSummaryResponse>>> getKidSummaryDtos(@MemberInfo MemberInfoDto memberInfoDto) {
 
@@ -37,7 +41,11 @@ public class KidController {
     }
 
     @Tag(name = "Kid")
-    @Operation(summary = "to get a kid summary", security = { @SecurityRequirement(name = "bearer-key") })
+    @Operation(
+        summary = "특정 아이 요약 정보 조회",
+        description = "[[노션](https://www.notion.so/todays-jiwoo/df0a1ed09fbb4db09246e718a7940051?pvs=4)]",
+        security = { @SecurityRequirement(name = "bearer-key") }
+    )
     @GetMapping("/summary/{kidId}")
     public ResponseEntity<ApiUtils.ApiResult<KidSummaryResponse>> getKidSummaryDtos(@PathVariable Long kidId, @MemberInfo MemberInfoDto memberInfoDto) {
 
@@ -49,10 +57,16 @@ public class KidController {
     }
 
     @Tag(name = "Kid")
-    @Operation(summary = "to update a kid", security = { @SecurityRequirement(name = "bearer-key") })
+    @Operation(
+        summary = "아이 정보 등록",
+        description = "[[노션](https://www.notion.so/todays-jiwoo/28b415bd233e4e23a2227f3a94ebac72?pvs=4)]",
+        security = { @SecurityRequirement(name = "bearer-key") }
+    )
     @PutMapping
-    public ResponseEntity<ApiUtils.ApiResult<KidSummaryResponse>> updateKid(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody UpdateKidRequest updateKidRequest) {
-
+    public ResponseEntity<ApiUtils.ApiResult<KidSummaryResponse>> updateKid(
+        @MemberInfo MemberInfoDto memberInfoDto,
+        @RequestBody UpdateKidRequest updateKidRequest
+    ) {
         Long memberId = memberInfoDto.getMemberId();
 
         KidSummaryResponse kidSummaryResponseDto = kidService.updateKidInfo(memberId, updateKidRequest);
@@ -62,7 +76,11 @@ public class KidController {
     }
 
     @Tag(name = "Kid")
-    @Operation(summary = "to update a kid", security = { @SecurityRequirement(name = "bearer-key") })
+    @Operation(
+        summary = "아이 정보 수정",
+        description = "[[노션](https://www.notion.so/todays-jiwoo/c5a20f69c1924ee6baff1dd0db6be4a8?pvs=4)]",
+        security = { @SecurityRequirement(name = "bearer-key") }
+    )
     @PutMapping("/{kidId}")
     public ResponseEntity<ApiUtils.ApiResult<KidSummaryResponse>> updateKid(@PathVariable Long kidId, @MemberInfo MemberInfoDto memberInfoDto, @RequestBody UpdateKidRequest updateKidRequest) {
 

@@ -3,27 +3,10 @@
 import { PlanCard } from "@/types/plan";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { getDealListAPI } from "@/services/deals";
 
 let date: Date = new Date();
-
-const list: Array<PlanCard> = [
-  {
-    id: 1,
-    thumbnail_image: "https://picsum.photos/250/250",
-    price: 0,
-    title: "1번 글입니다.",
-    place_detail: "강남구 역삼동 12",
-    created_at: new Date("2024-03-11"),
-  },
-  {
-    id: 2,
-    thumbnail_image: "https://picsum.photos/250/250",
-    price: 0,
-    title: "2번 글입니다.",
-    place_detail: "서초도서관 앞",
-    created_at: new Date("2024-03-15"),
-  },
-];
 
 function DealCard(deal: PlanCard, key: number) {
   const router = useRouter();
@@ -32,15 +15,16 @@ function DealCard(deal: PlanCard, key: number) {
     return (
       <div key={key} className="w-full">
         <div className="text-body2">
-          {deal.created_at.getFullYear() +
+          {/* TODO: 거래 일정 날짜 표시
+            {deal.created_at.getFullYear() +
             "-" +
             ("0" + deal.created_at.getMonth()).slice(-2) +
             "-" +
-            deal.created_at.getDate()}
+            deal.created_at.getDate()} */}
         </div>
         <div className="flex gap-3 w-full my-2">
           <Image
-            src={deal?.thumbnail_image}
+            src={deal?.thumbnailImage}
             alt="thumb"
             width="90"
             height="90"
@@ -48,11 +32,11 @@ function DealCard(deal: PlanCard, key: number) {
           />
           <div className="w-full">
             <div className="flex justify-between">
-              <h4>{deal.price + "원"}</h4>
+              <h4>{deal.price.toLocaleString("kr-KR") + "원"}</h4>
               <span className="text-body2">거래중</span>
             </div>
             <div className="text-body">{deal.title}</div>
-            <div className="text-caption c-text3">{deal.place_detail} &#183; 11:00</div>
+            <div className="text-caption c-text3">{deal.dealPlace} &#183; 11:00</div>
           </div>
         </div>
         <button
@@ -71,5 +55,22 @@ function DealCard(deal: PlanCard, key: number) {
 }
 
 export function DealList() {
-  return <>{list.map((i, k) => DealCard(i, k))}</>;
+  const [list, setList] = useState<Array<PlanCard>>([]);
+  const getList = async () => {
+    const res = await getDealListAPI();
+    setList(res);
+  };
+  useEffect(() => {
+    getList();
+  }, []);
+
+  return (
+    <>
+      {list && list.length !== 0 ? (
+        list.map((i, k) => DealCard(i, k))
+      ) : (
+        <div>진행 중인 거래가 없습니다.</div>
+      )}
+    </>
+  );
 }
