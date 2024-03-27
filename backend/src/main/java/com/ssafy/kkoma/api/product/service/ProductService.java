@@ -11,14 +11,12 @@ import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
 import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
 import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
-<<<<<<< HEAD
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
 import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
-=======
 import com.ssafy.kkoma.api.product.dto.ProductWishResponse;
+
 import com.ssafy.kkoma.domain.deal.entity.Deal;
 import com.ssafy.kkoma.domain.deal.repository.DealRepository;
->>>>>>> e4b17eca8d4d073ba1d10ec700095560f5d77df3
 import com.ssafy.kkoma.domain.member.entity.Member;
 
 import com.ssafy.kkoma.domain.product.constant.MyProductType;
