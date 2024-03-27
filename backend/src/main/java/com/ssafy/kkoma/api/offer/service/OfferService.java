@@ -102,7 +102,7 @@ public class OfferService {
             }
             // 나머지 offer에 대해서 deny 처리
             else {
-                offer.updateStatus(OfferType.DENIED);
+                offer.updateStatus(OfferType.REJECTED);
             }
         }
 
