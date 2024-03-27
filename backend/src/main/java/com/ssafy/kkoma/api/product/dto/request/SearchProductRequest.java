@@ -15,6 +15,6 @@ public class SearchProductRequest {
 	private Integer categoryId;
 	private Long memberId;
 	private String keyword;
-	private ProductType status;
+	private ProductType status = ProductType.SALE;
 
 }

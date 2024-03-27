@@ -41,6 +41,12 @@ public class ProductController {
         return ResponseEntity.ok(ApiUtils.success(products));
     }
 
+    @Tag(name = "Product")
+    @Operation(
+        summary = "상품글 요약 정보 검색",
+        description = "[[노션](https://www.notion.so/todays-jiwoo/09aca23d446748afb8fddff63f771ee7?pvs=4)] ",
+        security = { @SecurityRequirement(name = "bearer-key") }
+    )
     @GetMapping("/search")
     public ResponseEntity<ApiUtils.ApiResult<SearchProductResponse>> searchProducts(SearchProductRequest searchProductRequest, Pageable pageable) {
         SearchProductResponse searchProductResponse = productService.searchProduct(searchProductRequest, pageable);
