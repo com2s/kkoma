@@ -1,6 +1,6 @@
 import APIModule from "@/utils/apiModule";
 
-interface KidInfo {
+export interface KidInfo {
   id : number | null;
   name: string | null;
   birthDate: string | null;
@@ -54,11 +54,17 @@ export async function getKidDetail(kidId: number) {
   return response;
 }
 
-export async function editKidDetail(kidId: number, kidInfo: KidInfo) {
+export async function editKidDetail(kidInfo: KidInfo) {
+  const kidId = kidInfo.id;
+  const data = {
+    name: kidInfo.name,
+    birthDate: kidInfo.birthDate,
+    gender: kidInfo.gender,
+  }
   const response = await APIModule({
     action: `/kids/${kidId}`,
     method: "PUT",
-    data: kidInfo,
+    data: data,
   });
 
   return response;
