@@ -57,12 +57,16 @@ export default function ChildrenList() {
           </CardContent>
           <CardContent className="bg-blue-200 rounded-xl max-h-24 max-w-24 aspect-square my-auto flex justify-center min-w-fit">
             <Typography variant="h6" className="flex my-auto">
-              {child.gender ?? "미정"}
+              {child.gender === "FEMALE" ? "여아"
+              : child.gender === "MALE" ? "남아"
+              : '미정'}
             </Typography>
           </CardContent>
+          <Link href={`/my-page/children/${child.id}`} className="my-auto">
           <IconButton className="w-16 my-auto aspect-square">
             <ArrowForwardIosIcon />
           </IconButton>
+          </Link>
         </Card>
       ))}
       <Card
