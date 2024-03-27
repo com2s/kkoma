@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
+import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
+import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.domain.member.entity.Member;
@@ -16,7 +18,8 @@ import com.ssafy.kkoma.domain.product.repository.CategoryRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import com.ssafy.kkoma.api.product.dto.ProductSummary;
 import com.ssafy.kkoma.domain.product.entity.Product;
@@ -58,6 +61,24 @@ class ProductServiceTest {
 
 		// then
 		assertEquals(sizeBefore + 10, productSummaries.size());
+	}
+
+	@Test
+	@Transactional
+	public void 글_키워드_검색() throws Exception {
+		// given
+		productRepository.save(Product.builder().title("keyword").thumbnailImage(IMAGE_URL).build());
+		productRepository.save(Product.builder().title(TITLE).thumbnailImage(IMAGE_URL).description("keyword").build());
+		SearchProductRequest searchProductRequest = SearchProductRequest.builder()
+			.keyword("key")
+			.build();
+		Pageable pageable = PageRequest.of(0,10);
+
+		// when
+		SearchProductResponse searchProductResponse = productService.searchProduct(searchProductRequest, pageable);
+
+		// then
+		assertEquals(2, searchProductResponse.getContent().size());
 	}
 
 	@Test

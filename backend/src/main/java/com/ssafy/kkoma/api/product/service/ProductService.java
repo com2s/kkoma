@@ -12,11 +12,10 @@ import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
 import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
 import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
+import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
 import com.ssafy.kkoma.domain.member.entity.Member;
 
-import com.ssafy.kkoma.domain.offer.entity.Offer;
 import com.ssafy.kkoma.domain.product.constant.MyProductType;
-import com.ssafy.kkoma.domain.product.constant.ProductType;
 
 import com.ssafy.kkoma.domain.product.entity.Category;
 
@@ -24,6 +23,9 @@ import com.ssafy.kkoma.domain.product.entity.ProductImage;
 import com.ssafy.kkoma.global.error.ErrorCode;
 import com.ssafy.kkoma.global.error.exception.BusinessException;
 import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.kkoma.api.product.dto.ProductSummary;
@@ -56,12 +58,9 @@ public class ProductService {
 			.collect(Collectors.toList());
 	}
 
-	public List<ProductSummary> searchProduct(SearchProductRequest searchProductRequest) {
-		List<Product> products = productRepository.searchProduct(searchProductRequest);
-
-		return products.stream()
-			.map(ProductSummary::fromEntity)
-			.collect(Collectors.toList());
+	public SearchProductResponse searchProduct(SearchProductRequest searchProductRequest, Pageable pageable) {
+		Page<Product> pageList = productRepository.searchProduct(searchProductRequest, pageable);
+		return buildSearchProductResponse(pageList);
 	}
 
 	public ProductDetailResponse getProduct(Long productId) {
@@ -137,4 +136,21 @@ public class ProductService {
 			.build();
 	}
 
+	private SearchProductResponse buildSearchProductResponse(Page<Product> page) {
+		List<ProductSummary> content = page.getContent().stream()
+			.map(ProductSummary::fromEntity)
+			.collect(Collectors.toList());
+
+		return SearchProductResponse.builder()
+			.content(content)
+			.size(page.getSize())
+			.page(page.getNumber())
+			.numberOfElements(page.getNumberOfElements())
+			.totalElements(page.getTotalElements())
+			.totalPages(page.getTotalPages())
+			.first(page.isFirst())
+			.last(page.isLast())
+			.empty(page.isEmpty())
+			.build();
+	}
 }
