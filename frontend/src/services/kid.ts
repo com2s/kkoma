@@ -1,6 +1,6 @@
 import APIModule from "@/utils/apiModule";
 
-interface KidInfo {
+export interface KidInfo {
   id? : number | null;
   name: string | null;
   birthDate: string | null;
