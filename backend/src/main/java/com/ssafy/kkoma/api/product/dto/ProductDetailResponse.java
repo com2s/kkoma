@@ -24,6 +24,7 @@ public class ProductDetailResponse {
     private String dealPlace;
     private Long elapsedMinutes;
     private MemberSummaryResponse memberSummary;
+    private Long chatRoomId;
     private Long wishCount;
     private Long offerCount;
     private Long viewCount;

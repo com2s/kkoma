@@ -50,7 +50,10 @@ public enum ErrorCode {
     INVALID_SELLER(HttpStatus.BAD_REQUEST, "DEAL-004", "해당 거래에 대한 판매자가 아닙니다."),
     INVALID_CODE(HttpStatus.BAD_REQUEST, "DEAL-005", "QR 코드가 유효하지 않습니다."),
 
-    // Temparary,
+    // CHAT
+    CHAT_ROOM_NOT_EXISTS(HttpStatus.BAD_REQUEST, "CHAT-001", "해당 채팅방은 존재하지 않습니다."),
+
+    // Temporary,
     UPDATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "T-004", "회원 정보를 수정에 실패하였습니다."),
 
     // Util
