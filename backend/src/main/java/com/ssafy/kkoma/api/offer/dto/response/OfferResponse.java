@@ -15,14 +15,14 @@ import lombok.Getter;
 @Builder
 public class OfferResponse {
 
-	private Long id;
+	private Long offerId;
 	private MemberProfileResponse memberProfile;
 	private OfferType status;
 	private List<OfferTimeResponse> offerTimes;
 
 	public static OfferResponse fromEntity(Offer offer) {
 		return OfferResponse.builder()
-			.id(offer.getId())
+			.offerId(offer.getId())
 			.memberProfile(MemberProfileResponse.fromEntity(offer.getMember()))
 			.status(offer.getStatus())
 			.offerTimes(offer.getOfferDetails().stream().map(OfferTimeResponse::fromEntity).toList())

@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class OfferSendResponse {
+public class SendOfferResponse {
 	private Long offerId;
 }
