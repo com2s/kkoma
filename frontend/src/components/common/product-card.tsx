@@ -11,8 +11,7 @@ export function ProductCard(props: { product: ProductSm }) {
   const router = useRouter();
 
   return (
-    //TODO: router.push 이용하여 상세 페이지로 이동해야함.
-    <div className={styles.card} onClick={() => router.push("")}>
+    <div className={styles.card} onClick={() => router.push(`/lists/${id}`)}>
       <Image src={thumbnail_image} alt="product" width={40} height={40} className="rounded" />
       <div className="flex flex-col">
         <span className="text-caption c-text2">{title}</span>

@@ -7,34 +7,34 @@ import { ProductCard } from "@/components/common/product-card";
 import QRCode from "@/components/plan/qr-img";
 import { ProductSm } from "@/types/product";
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { getDealCodeAPI } from "@/services/deals";
-
-const product: ProductSm = {
-  id: 1,
-  thumbnail_image: "https://picsum.photos/40/40",
-  title: "제품 샘플입니다.",
-  price: 13000,
-};
+import { getProductDetail } from "@/components/lists/lists-ftn";
 
 export default function DealPay() {
   const params = useParams<{ id: string }>();
-  const [code, setCode] = useState<string>();
+  const query = useSearchParams();
+  const productId = query.get("product") ?? "";
 
-  const getCode = async () => {
-    const res = await getDealCodeAPI({ dealId: params.id });
-    setCode(res);
+  const [code, setCode] = useState<string>();
+  const [product, setProduct] = useState<ProductSm>();
+
+  const getCodeAndProduct = async () => {
+    const res1 = await getProductDetail(productId);
+    setProduct(res1.data);
+    const res2 = await getDealCodeAPI({ dealId: params.id });
+    setCode(res2);
   };
 
   useEffect(() => {
-    getCode();
+    getCodeAndProduct();
   }, []);
 
   return (
     <div className={styles.qr}>
       <TopBar3 />
       <Title title="거래를 확정해주세요" subtitle="QR코드를 스캔해주세요" />
-      <ProductCard product={product} />
+      {product ? <ProductCard product={product} /> : <></>}
       <div className="flex justify-center w-full">{code ? <QRCode code={code} /> : <></>}</div>
     </div>
   );
