@@ -10,7 +10,7 @@ import { BirthdaySelecter } from "@/components/kid/birthday-selecter";
 import { useRecoilState } from "recoil";
 import { kidYearState, kidMonthState, kidDateState } from "@/store/kid";
 
-export default function BabyBirth() {
+export default function KidBirth() {
   const [year, setYear] = useRecoilState(kidYearState);
   const [month, setMonth] = useRecoilState(kidMonthState);
   const [date, setDate] = useRecoilState(kidDateState);

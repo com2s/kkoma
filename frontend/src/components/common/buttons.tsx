@@ -51,7 +51,7 @@ export function NormalBtn({ children, next, disabled }: btnProps) {
   );
 }
 
-export function SubBtn({ children, next, display }: btnProps) {
+export function SubBtn({ children, next, display = true }: btnProps) {
   const router = useRouter();
 
   return (

@@ -58,8 +58,7 @@ export default function MyBuy() {
     }
   };
 
-  const filteredDeals = deals
-    .filter((deal) =>
+  const filteredDeals = deals?.filter((deal) =>
       selectedChip === "모두"
         ? true
         : selectedChip === "요청 중"

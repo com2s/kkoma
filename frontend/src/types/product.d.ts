@@ -37,6 +37,7 @@ interface DetailParams {
     dealPlace: string;
     elapsedMinutes: number;
     memberSummary: {
+      memberId: number;
       profileImage: string;
       nickname: string;
       preferredPlace: string;

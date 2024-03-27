@@ -96,11 +96,6 @@ export default function MyTradeCalender({ params:{offerId} }: IParams) {
   };
 
   const handleClickOpen = async () => {
-    const asd = parentDate0 + "T" + parentTime0 + ':00'
-
-    console.log(offerId, asd);
-    const isoString = new Date(asd).toISOString();
-    console.log(isoString);
     const res = await patchOfferAccept(offerId, parentDate0, parentTime0);
     console.log(res);
     setOpen(true);

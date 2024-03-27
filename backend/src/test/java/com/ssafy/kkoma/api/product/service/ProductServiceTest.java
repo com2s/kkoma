@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
 import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
+import com.ssafy.kkoma.domain.chat.entity.ChatRoom;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.domain.member.entity.Member;
@@ -20,6 +21,7 @@ import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
 import com.ssafy.kkoma.domain.product.entity.Category;
 import com.ssafy.kkoma.domain.product.repository.CategoryRepository;
 import com.ssafy.kkoma.factory.CategoryFactory;
+import com.ssafy.kkoma.factory.ChatRoomFactory;
 import com.ssafy.kkoma.factory.MemberFactory;
 import com.ssafy.kkoma.factory.ProductFactory;
 import com.ssafy.kkoma.global.error.exception.BusinessException;
@@ -58,6 +60,9 @@ class ProductServiceTest {
 
 	@Autowired
 	private CategoryFactory categoryFactory;
+
+	@Autowired
+	private ChatRoomFactory chatRoomFactory;
 
 	private static final String TITLE = "TITLE";
 	private static final String IMAGE_URL = "IMAGE_URL";
@@ -105,8 +110,9 @@ class ProductServiceTest {
 
 	    // given
 		Category category = categoryFactory.createCategory("유모차");
+		ChatRoom chatRoom = chatRoomFactory.createChatRoom();
 		Member member = memberFactory.createMember();
-		Product product = productFactory.createProduct(member, category, 10000);
+		Product product = productFactory.createProduct(member, category, chatRoom, 10000);
 
 		// when
 		ProductDetailResponse productDetailResponse = productService.getProduct(product.getId());

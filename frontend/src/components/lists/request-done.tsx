@@ -4,6 +4,10 @@ import ScheduleIcon from "@mui/icons-material/Schedule";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { Avatar, IconButton } from "@mui/material";
+import { usePathname } from "next/navigation";
+import { getProductDetail } from "./lists-ftn";
+import { useState } from "react";
+import { MemberSummary } from "@/types/member";
 
 interface TimeEntry {
   date: string;
@@ -17,11 +21,21 @@ interface ChildProps {
   location?: string;
 }
 
-export default function RequestDone({
+
+export default async function RequestDone({
   sellerId,
   selectedTimes,
   location,
-}: ChildProps) {
+}: ChildProps,
+  ) {
+    const [member, setMember] = useState<MemberSummary>();
+  const path = usePathname();
+  const id = path.split("/")[2];
+  const detail = await getProductDetail(id)
+  if (detail.success === true) {
+    setMember(detail.data.memberSummary);
+  }
+
   return (
     <div className="px-4">
       <h2 className="text-pretty">거래 요청이 완료 되었어요!</h2>
@@ -35,12 +49,12 @@ export default function RequestDone({
       />
       <div className="flex my-8 w-full justify-between content-center">
         <Avatar
-          src="/images/avatar1.jpg"
+          src={member?.profileImage}
           alt="판매자 프로필"
           className="mr-2 my-auto"
         />
         <div className="w-full">
-          <h4>판매자 아이디</h4>
+          <h4>{member?.nickname}</h4>
           <p className="text-caption">평균 거래 확정시간 : 3시간</p>
         </div>
         <IconButton onClick={()=>alert("판매자 프로필 페이지")}>

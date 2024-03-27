@@ -1,5 +1,6 @@
 package com.ssafy.kkoma.factory;
 
+import com.ssafy.kkoma.domain.chat.entity.ChatRoom;
 import com.ssafy.kkoma.domain.kid.constant.GenderType;
 import com.ssafy.kkoma.domain.kid.entity.Kid;
 import com.ssafy.kkoma.domain.kid.repository.KidRepository;
@@ -40,6 +41,18 @@ public class ProductFactory {
         Product product = Product.builder()
                 .title(TITLE)
                 .category(category)
+                .thumbnailImage(IMAGE_URL)
+                .price(price)
+                .build();
+        product.setMember(member);
+        return productRepository.save(product);
+    }
+
+    public Product createProduct(Member member, Category category, ChatRoom chatRoom, int price) {
+        Product product = Product.builder()
+                .title(TITLE)
+                .category(category)
+                .chatRoom(chatRoom)
                 .thumbnailImage(IMAGE_URL)
                 .price(price)
                 .build();

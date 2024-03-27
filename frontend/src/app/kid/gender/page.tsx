@@ -14,7 +14,7 @@ import {
 import { updateKidAPI } from "@/services/kid";
 import { useRouter } from "next/navigation";
 
-export default function BabyGender() {
+export default function KidGender() {
   const name = useRecoilValue(kidNameState);
   const year = useRecoilValue(kidYearState);
   const month = useRecoilValue(kidMonthState);

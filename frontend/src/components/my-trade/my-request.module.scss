@@ -7,8 +7,9 @@
     padding: rem(15);
 
     .cardMiddle {
-        width: 55%;
-        min-width: rem(180);
+        width: 25%;
+        min-width: rem(120);
+        margin-left: rem(4);
         padding: auto;
     }
 
@@ -19,7 +20,7 @@
         align-items: center;
         padding-bottom: 0;
 
-        @media screen and (min-width: 360px) {
+        @media screen and (min-width: 370px) {
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
