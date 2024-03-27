@@ -20,6 +20,7 @@ import com.ssafy.kkoma.domain.product.repository.CategoryRepository;
 import com.ssafy.kkoma.factory.CategoryFactory;
 import com.ssafy.kkoma.factory.MemberFactory;
 import com.ssafy.kkoma.factory.ProductFactory;
+import com.ssafy.kkoma.global.error.exception.BusinessException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -146,5 +147,36 @@ class ProductServiceTest {
 		// then
 		assertEquals("TITLE", productDetailResponse.getTitle());
     }
+
+	@Test
+	@Transactional
+	void 이미_찜_상태인_글을_찜하면_예외를_던진다() {
+		Member member = memberFactory.createMember();
+		Product product = productFactory.createProduct(member);
+
+		productService.wishProduct(product.getId(), member.getId());
+
+		assertThrows(
+				BusinessException.class,
+				() -> productService.wishProduct(product.getId(), member.getId())
+		);
+
+	}
+
+	@Test
+	@Disabled
+	@Transactional
+	void 이미_찜_비활성_상태인_글을_찜_비활성화하면_예외를_던진다() {
+		Member member = memberFactory.createMember();
+		Product product = productFactory.createProduct(member);
+
+		productService.unwishProduct(product.getId(), member.getId());
+
+		assertThrows(
+				BusinessException.class,
+				() -> productService.unwishProduct(product.getId(), member.getId())
+		);
+
+	}
 
 }

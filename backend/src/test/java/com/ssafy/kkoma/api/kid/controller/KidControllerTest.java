@@ -6,7 +6,7 @@ import com.ssafy.kkoma.domain.kid.entity.Kid;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.factory.KidFactory;
 import com.ssafy.kkoma.factory.MemberFactory;
-import com.ssafy.kkoma.global.util.CustomSpringBootTest;
+import com.ssafy.kkoma.global.util.CustomMockMvcSpringBootTest;
 import com.ssafy.kkoma.global.util.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.util.List;
 
 @Slf4j
-@CustomSpringBootTest
+@CustomMockMvcSpringBootTest
 class KidControllerTest {
 
     @Autowired

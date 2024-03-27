@@ -24,7 +24,7 @@ export async function getMyProducts(type: TypeData["type"]) {
     data: null,
   });
 
-  return response.data;
+  return response;
 }
 
 export async function getRequesters(productId: string) {
@@ -34,5 +34,27 @@ export async function getRequesters(productId: string) {
     data: null,
   });
 
-  return response.data;
+  return response;
+}
+
+export async function patchOfferAccept(
+  offerId: string | string[] | undefined,
+  date: string,
+  time: string
+) {
+  const koreaTime = date + "T" + time + ":00";
+  const isoString = new Date(koreaTime).toISOString();
+  const queryObject = {
+    type: "ACCEPT",
+  };
+  const query = new URLSearchParams(queryObject).toString();
+  const response = await APIModule({
+    action: `/offers/${offerId}?${query}`,
+    method: "PATCH",
+    data: {
+      selectedTime: isoString,
+    },
+  });
+
+  return response;
 }

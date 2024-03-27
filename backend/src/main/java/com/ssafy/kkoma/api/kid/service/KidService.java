@@ -60,6 +60,11 @@ public class KidService {
         Member member = memberService.findMemberByMemberId(memberId);
 
         List<KidSummaryResponse> kidSummaryResponseDtos = new ArrayList<>();
+
+        if (!member.isKidInfoCompleted()) {
+            return kidSummaryResponseDtos;
+        }
+
         List<Kid> kids = member.getKids();
         for (Kid kid : kids) {
             kidSummaryResponseDtos.add(KidSummaryResponse.fromEntity(kid));

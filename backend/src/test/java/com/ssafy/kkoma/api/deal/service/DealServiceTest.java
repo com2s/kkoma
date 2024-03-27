@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ssafy.kkoma.api.deal.dto.request.DealTimeRequest;
+import com.ssafy.kkoma.api.deal.dto.request.DecideOfferRequest;
 import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.api.offer.service.OfferService;
 import com.ssafy.kkoma.domain.deal.entity.Deal;
@@ -69,10 +69,10 @@ class DealServiceTest {
 		Product product = productRepository.save(Product.builder().title(TITLE).thumbnailImage(IMAGE_URL).category(category).member(member).build());
 
 		Offer offer = offerRepository.save(Offer.builder().product(product).member(member).build());
-		DealTimeRequest dealTimeRequest = DealTimeRequest.builder().selectedTime(LocalDateTime.now()).build();
+		DecideOfferRequest decideOfferRequest = DecideOfferRequest.builder().selectedTime(LocalDateTime.now()).build();
 
 		// when
-		Deal deal = dealService.createDeal(offer, dealTimeRequest);
+		Deal deal = dealService.createDeal(offer, decideOfferRequest);
 
 	    // then
 		assertEquals(deal.getProduct().getId(), product.getId());
@@ -88,10 +88,10 @@ class DealServiceTest {
 		Product product = productRepository.save(Product.builder().title(TITLE).thumbnailImage(IMAGE_URL).category(category).member(seller).build());
 
 		Offer offer = offerRepository.save(Offer.builder().product(product).member(buyer).build());
-		DealTimeRequest dealTimeRequest = DealTimeRequest.builder().selectedTime(LocalDateTime.now()).build();
+		DecideOfferRequest decideOfferRequest = DecideOfferRequest.builder().selectedTime(LocalDateTime.now()).build();
 
 		// when
-		offerService.acceptOffer(offer.getId(), dealTimeRequest);
+		offerService.acceptOffer(offer.getId(), decideOfferRequest);
 		Deal deal = dealRepository.findByProduct(product);
 		String buyerReqCode = dealService.getCode(deal.getId(), buyer.getId());
 
@@ -109,10 +109,10 @@ class DealServiceTest {
 		Product product = productRepository.save(Product.builder().title(TITLE).thumbnailImage(IMAGE_URL).category(category).member(seller).build());
 
 		Offer offer = offerRepository.save(Offer.builder().product(product).member(buyer).build());
-		DealTimeRequest dealTimeRequest = DealTimeRequest.builder().selectedTime(LocalDateTime.now()).build();
+		DecideOfferRequest decideOfferRequest = DecideOfferRequest.builder().selectedTime(LocalDateTime.now()).build();
 
 		// when
-		offerService.acceptOffer(offer.getId(), dealTimeRequest);
+		offerService.acceptOffer(offer.getId(), decideOfferRequest);
 		Deal deal = dealRepository.findByProduct(product);
 
 		// then
@@ -138,10 +138,10 @@ class DealServiceTest {
 		Product product = productRepository.save(Product.builder().title(TITLE).thumbnailImage(IMAGE_URL).category(category).member(seller).build());
 
 		Offer offer = offerRepository.save(Offer.builder().product(product).member(buyer).build());
-		DealTimeRequest dealTimeRequest = DealTimeRequest.builder().selectedTime(LocalDateTime.now()).build();
+		DecideOfferRequest decideOfferRequest = DecideOfferRequest.builder().selectedTime(LocalDateTime.now()).build();
 
 		// when
-		offerService.acceptOffer(offer.getId(), dealTimeRequest);
+		offerService.acceptOffer(offer.getId(), decideOfferRequest);
 		Deal deal = dealRepository.findByProduct(product);
 		String codeSellerGotFromBuyer = dealService.getCode(deal.getId(), buyer.getId()); // 판매자가 구매자의 QR코드를 읽어 코드를 얻었다
 

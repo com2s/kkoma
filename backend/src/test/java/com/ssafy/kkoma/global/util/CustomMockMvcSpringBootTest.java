@@ -1,6 +1,5 @@
 package com.ssafy.kkoma.global.util;
 
-import com.ssafy.kkoma.global.util.JwtAuthenticationExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,5 +15,5 @@ import java.lang.annotation.Target;
 @ExtendWith({SpringExtension.class, JwtAuthenticationExtension.class})
 @AutoConfigureMockMvc
 @SpringBootTest
-public @interface CustomSpringBootTest {
+public @interface CustomMockMvcSpringBootTest {
 }
