@@ -3,11 +3,12 @@
 import TopBar2 from "@/components/my-trade/my-request-calender-bar";
 import Calendar from "@/components/common/calendar";
 import Accept from "@/components/my-trade/accept";
+import { patchOfferAccept } from "@/components/my-trade/my-trade-ftn";
 import Image from "next/image";
 import React, { useState } from "react";
+
 import Dialog from "@mui/material/Dialog";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
@@ -23,7 +24,14 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function MyTradeCalender() {
+interface IParams {
+  params: { 
+    dealId: string,
+    offerId: string
+  };
+}
+
+export default function MyTradeCalender({ params:{offerId} }: IParams) {
   const [value, setValue] = useState(0);
   const [open, setOpen] = useState(false);
   const [parentDate0, setParentDate0] = useState("");
@@ -32,6 +40,7 @@ export default function MyTradeCalender() {
   // const [parentTime1, setParentTime1] = useState("");
   // const [parentDate2, setParentDate2] = useState("");
   // const [parentTime2, setParentTime2] = useState("");
+
 
   const handleDate0 = (data: string) => {
     if (data) {
@@ -85,11 +94,15 @@ export default function MyTradeCalender() {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-  
+
   const handleClickOpen = async () => {
-    const asd = parentDate0 + "T" + parentTime0 + ':00Z'
+    const asd = parentDate0 + "T" + parentTime0 + ':00'
+
+    console.log(offerId, asd);
     const isoString = new Date(asd).toISOString();
-    alert(isoString);
+    console.log(isoString);
+    const res = await patchOfferAccept(offerId, parentDate0, parentTime0);
+    console.log(res);
     setOpen(true);
   };
 

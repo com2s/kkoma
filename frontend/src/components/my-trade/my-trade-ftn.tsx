@@ -37,13 +37,23 @@ export async function getRequesters(productId: string) {
   return response;
 }
 
-export async function patchOffer(offerId: number, date: string, time: string) {
-  const koreaTime = date + 'T' + time + ':00' + 'Z';
+export async function patchOfferAccept(
+  offerId: string | string[] | undefined,
+  date: string,
+  time: string
+) {
+  const koreaTime = date + "T" + time + ":00";
   const isoString = new Date(koreaTime).toISOString();
+  const queryObject = {
+    type: "ACCEPT",
+  };
+  const query = new URLSearchParams(queryObject).toString();
   const response = await APIModule({
-    action: `/offers/${offerId}`,
+    action: `/offers/${offerId}?${query}`,
     method: "PATCH",
-    data: null,
+    data: {
+      selectedTime: isoString,
+    },
   });
 
   return response;

@@ -50,10 +50,10 @@ export default function MyRequest({ params: { dealId } }: IParams) {
     fetchData();
   }, []);
 
-  const handleDelete = (userId: number) => {
+  const handleDelete = (requestId: number) => {
     if (window.confirm("거래 요청을 취소하시겠습니까?")) {
       alert("거래 요청이 취소되었습니다.");
-      console.log(userId);
+      console.log(requestId);
     }
   };
 
@@ -106,13 +106,13 @@ export default function MyRequest({ params: { dealId } }: IParams) {
                   },
                   margin: 1,
                 }}
-                onClick={() => clickRequest(requester.offerTimes, requester.memberProfile.id)}
+                onClick={() => clickRequest(requester.offerTimes, requester.id)}
               >
                 <CheckIcon sx={{ color: "white" }} />
               </IconButton>
             {/* </Link> */}
             <IconButton
-              onClick={() => handleDelete(requester.memberProfile.id)}
+              onClick={() => handleDelete(requester.id)}
               size="small"
               sx={{
                 "&.MuiIconButton-root": {

@@ -81,11 +81,9 @@ export default function ChildComponent({
       // sendDateToParent(value.toString());
     }
   };
-  
+
   // console.log(offerTime)
-  const requestDays = isAccept
-    ? offerTime
-    : []; // 거래 요청 받은 날짜 예시
+  const requestDays = isAccept ? offerTime : []; // 거래 요청 받은 날짜 예시
 
   function formatDate(date: Date) {
     const year = date.getFullYear(); // 연도를 가져옵니다.
@@ -124,14 +122,18 @@ export default function ChildComponent({
   //   }
   // };
 
-  const handleMinuteChange = (event: Event, newValue: number | number[], activeThumb: number,) => {
+  const handleMinuteChange = (
+    event: Event,
+    newValue: number | number[],
+    activeThumb: number
+  ) => {
     sendDateToParent(date);
     if (isAccept) {
       setMinute(newValue as number);
       // console.log("minute: ", newValue);
-      const selectedTime = `${Math.floor((newValue as number) / 60)}:${(
-        (newValue as number) % 60
-      )
+      const selectedTime = `${Math.floor((newValue as number) / 60)
+        .toString()
+        .padStart(2, "0")}:${((newValue as number) % 60)
         .toString()
         .padStart(2, "0")}`;
       setTime(selectedTime);
@@ -148,9 +150,11 @@ export default function ChildComponent({
         (newValue as number[])[0] / 60
       )}:${((newValue as number[])[0] % 60).toString().padStart(2, "0")}`;
 
-      const selectedTimeEnd = `${Math.floor(
-        (newValue as number[])[1] / 60
-      )}:${((newValue as number[])[1] % 60).toString().padStart(2, "0")}`;
+      const selectedTimeEnd = `${Math.floor((newValue as number[])[1] / 60)}:${(
+        (newValue as number[])[1] % 60
+      )
+        .toString()
+        .padStart(2, "0")}`;
 
       const selectedTime = `${selectedTimeStart} ~ ${selectedTimeEnd}`;
       setTime(selectedTime);
@@ -253,7 +257,7 @@ export default function ChildComponent({
         />
         {/* // 초기화 버튼 추가 */}
         <StyledDelete onClick={resetValues}>
-          <DeleteForeverIcon fontSize="small"/>
+          <DeleteForeverIcon fontSize="small" />
         </StyledDelete>
         {/* // 오늘 버튼 추가 */}
         <StyledDate onClick={handleTodayClick}>오늘</StyledDate>
@@ -266,48 +270,52 @@ export default function ChildComponent({
           }}
         >
           {/* value가 requestDays에 속해있다면... */}
-          {requestDays.map((offer, index) => value && offer.offerDate === formatDate(value as Date) ? 
-          <div
-            className="w-full px-8"
-            style={{ position: "absolute", top: "80%", left: 0 }}
-            key={index}
-          >
-            <Slider
-              aria-labelledby="minute-slider"
-              defaultValue={0}
-              value={minute}
-              onChange={handleMinuteChange}
-              step={10}
-              min={formatTime(offer.startTime)}
-              max={formatTime(offer.endTime)}
-              // disableSwap
-              valueLabelDisplay="on"
-              valueLabelFormat={(value) =>
-                // `${value.toString().padStart(2, "0")}분`
-                `${Math.floor(value / 60)}시 ${(value % 60)
-                  .toString()
-                  .padStart(2, "0")}분`
-              }
-              className="text-yellow-400"
-            />
-            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <Typography
-                variant="body2"
-                onClick={() => setMinute(MIN)}
-                sx={{ cursor: "pointer" }}
+          {requestDays.map((offer, index) =>
+            value && offer.offerDate === formatDate(value as Date) ? (
+              <div
+                className="w-full px-8"
+                style={{ position: "absolute", top: "80%", left: 0 }}
+                key={index}
               >
-                {offer.startTime}
-              </Typography>
-              <Typography
-                variant="body2"
-                onClick={() => setMinute(MAX)}
-                sx={{ cursor: "pointer" }}
-              >
-                {offer.endTime}
-              </Typography>
-            </Box>
-          </div>
-           : null
+                <Slider
+                  aria-labelledby="minute-slider"
+                  defaultValue={0}
+                  value={minute}
+                  onChange={handleMinuteChange}
+                  step={10}
+                  min={formatTime(offer.startTime)}
+                  max={formatTime(offer.endTime)}
+                  // disableSwap
+                  valueLabelDisplay="on"
+                  valueLabelFormat={(value) =>
+                    // `${value.toString().padStart(2, "0")}분`
+                    `${Math.floor(value / 60)}시 ${(value % 60)
+                      .toString()
+                      .padStart(2, "0")}분`
+                  }
+                  className="text-yellow-400"
+                />
+                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <Typography
+                    variant="body2"
+                    onClick={() => setMinute(MIN)}
+                    sx={{ cursor: "pointer" }}
+                  >
+                    {offer.startTime.substring(
+                      0,
+                      offer.startTime.lastIndexOf(":")
+                    )}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    onClick={() => setMinute(MAX)}
+                    sx={{ cursor: "pointer" }}
+                  >
+                    {offer.endTime.substring(0, offer.endTime.lastIndexOf(":"))}
+                  </Typography>
+                </Box>
+              </div>
+            ) : null
           )}
         </Box>
       </StyledCalendarWrapper>
