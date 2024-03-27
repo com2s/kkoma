@@ -45,7 +45,7 @@ export async function patchOfferAccept(
   const koreaTime = date + "T" + time + ":00";
   const isoString = new Date(koreaTime).toISOString();
   const queryObject = {
-    type: "ACCEPT",
+    type: "accept",
   };
   const query = new URLSearchParams(queryObject).toString();
   const response = await APIModule({

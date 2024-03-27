@@ -2,7 +2,7 @@
 
 import React, { Suspense } from "react";
 import styles from "@/components/lists/lists-id.module.scss";
-import { getImages, getProductDetail } from "@/components/lists/lists-ftn";
+import { getProductDetail } from "@/components/lists/lists-ftn";
 
 // 인터페이스
 import { DetailParams } from "@/types/product";
@@ -10,6 +10,7 @@ import { DetailParams } from "@/types/product";
 import TopBar2 from "@/components/lists/lists-detail-bar";
 import Profile from "@/components/lists/lists-detail-profile";
 import Content from "@/components/lists/lists-detail-content";
+import LocalStorage from "@/utils/localStorage";
 
 import Map from "@/components/common/map";
 import Slider from "react-slick";
@@ -44,8 +45,10 @@ interface IParams {
 export default async function ProductDetail({ params: { id } }: IParams) {
   if (!id) return <div>상품 정보가 없습니다.</div>;
   const product: DetailParams = await getProductDetail(id);
+  const myId = await LocalStorage.getItem("memberId");
+  console.log("myId: ", myId);
 
-  console.log(product)
+  console.log(product);
 
   const settings = {
     centerMode: true,
@@ -74,14 +77,14 @@ export default async function ProductDetail({ params: { id } }: IParams) {
                 priority
                 width={300} // Adjust as needed
                 height={300} // Adjust as needed
-                style={{ width: "100%", height: "100%"}}
+                style={{ width: "100%", height: "100%" }}
               />
             </div>
           ))}
         </Slider>
       </div>
       <Profile propsId={id} memberSummary={product.data.memberSummary} />
-      <Content propsId={id} product={product.data}/>
+      <Content propsId={id} product={product.data} />
       <Accordion className="mt-4">
         {/* 거래 장소 선택(필수항목) */}
         <AccordionSummary
@@ -97,20 +100,35 @@ export default async function ProductDetail({ params: { id } }: IParams) {
           <Map />
         </AccordionDetails>
       </Accordion>
-      <div className="flex gap-8 py-4 px-6">
-        {/* <SubBtn next={"/"}>홈 화면</SubBtn>
+      {myId && myId === product.data.memberSummary.memberId.toString() ? (
+        <div className="flex gap-8 py-4 px-6">
+          {/* <SubBtn next={"/"}>홈 화면</SubBtn>
         <NormalBtn next={"/"}>아이 정보 입력</NormalBtn> */}
-        <Link href={`/lists/${id}/request`} className="w-full">
-          <button className={`${styles.btn} ${styles.normal}`}>
-            거래 요청
-          </button>
-        </Link>
-        <Link href={`/lists/${id}/chat`} className="w-full">
-          <button className={`${styles.btn} ${styles.normal} ${styles.gray}`}>
-            채팅 문의
-          </button>
-        </Link>
-      </div>
+          <Link href={`/my-trade/${id}`} className="w-full">
+            <button className={`${styles.btn} ${styles.normal}`}>
+              요청 보기
+            </button>
+          </Link>
+          <Link href={`/lists/${id}/edit`} className="w-full">
+            <button className={`${styles.btn} ${styles.normal} ${styles.gray}`}>
+              상품 수정
+            </button>
+          </Link>
+        </div>
+      ) : (
+        <div className="flex gap-8 py-4 px-6">
+          <Link href={`/lists/${id}/request`} className="w-full">
+            <button className={`${styles.btn} ${styles.normal}`}>
+              거래 요청
+            </button>
+          </Link>
+          <Link href={`/lists/${id}/chat`} className="w-full">
+            <button className={`${styles.btn} ${styles.normal} ${styles.gray}`}>
+              채팅 문의
+            </button>
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

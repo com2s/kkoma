@@ -1,15 +1,14 @@
 "use client";
 
 import TopBar2 from "@/components/lists/lists-detail-bar";
-import Calendar from "@/components/common/calendar";
+import Calendar from "@/components/common/calendar-offer";
 import RequestDone from "@/components/lists/request-done";
+import { postOffer } from "@/components/lists/lists-ftn";
 import Image from "next/image";
 import React, { useState } from "react";
 import Dialog from "@mui/material/Dialog";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -26,11 +25,15 @@ const Transition = React.forwardRef(function Transition(
 });
 
 interface TimeEntry {
-    date: string;
-    time: string;
-  }
+  date: string;
+  time: string;
+}
 
-export default function RequestDeal() {
+interface IParams {
+  params: { id: string };
+}
+
+export default function RequestDeal({params: { id }} : IParams) {
   const [value, setValue] = useState(0);
   const [open, setOpen] = useState(false);
   const [parentDate0, setParentDate0] = useState("");
@@ -42,16 +45,10 @@ export default function RequestDeal() {
   const [selectedTimes, setSelectedTimes] = useState<TimeEntry[]>([]);
 
   const router = useRouter();
-  
+
   const handleDate0 = (data: string) => {
     if (data) {
-      const date = new Date(data);
-      const formattedDate = new Intl.DateTimeFormat("ko-KR", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      }).format(date);
-      setParentDate0(formattedDate);
+      setParentDate0(data);
     } else {
       setParentDate0("");
     }
@@ -59,13 +56,7 @@ export default function RequestDeal() {
 
   const handleDate1 = (data: string) => {
     if (data) {
-      const date = new Date(data);
-      const formattedDate = new Intl.DateTimeFormat("ko-KR", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      }).format(date);
-      setParentDate1(formattedDate);
+      setParentDate1(data);
     } else {
       setParentDate1("");
     }
@@ -73,13 +64,7 @@ export default function RequestDeal() {
 
   const handleDate2 = (data: string) => {
     if (data) {
-      const date = new Date(data);
-      const formattedDate = new Intl.DateTimeFormat("ko-KR", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      }).format(date);
-      setParentDate2(formattedDate);
+      setParentDate2(data);
     } else {
       setParentDate2("");
     }
@@ -102,19 +87,31 @@ export default function RequestDeal() {
     setValue(newValue);
   };
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleClickOpen = async () => {
+    const selectedTimes = [
+      [parentDate0, parentTime0],
+      [parentDate1, parentTime1],
+      [parentDate2, parentTime2],
+    ];
+
+    const res = await postOffer(id, selectedTimes);
+    if (res.success) {
+      setOpen(true);
+    } else {
+      alert("거래 요청을 실패했습니다.");
+      console.log(res.error.errorMessage)
+    }
   };
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const handleSelectedTimes= () => {
+  const handleSelectedTimes = () => {
     // 임시 배열을 생성하여 선택된 시간들을 추가합니다.
     // const newSelectedTimes = [...selectedTimes]; // 기존 상태 복사
     const newSelectedTimes = []; // 빈 배열 생성
-  
+
     if (parentDate0 && parentTime0) {
       newSelectedTimes.push({ date: parentDate0, time: parentTime0 });
     }
@@ -124,9 +121,9 @@ export default function RequestDeal() {
     if (parentDate2 && parentTime2) {
       newSelectedTimes.push({ date: parentDate2, time: parentTime2 });
     }
-  
+
     setSelectedTimes(newSelectedTimes); // 새로운 상태 설정
-  
+
     // 여기서 특정 함수를 실행시키고 싶다면, 아래와 같이 호출할 수 있습니다.
     // someFunction();
   };
@@ -172,7 +169,7 @@ export default function RequestDeal() {
                     <p className="mt-1 text-[16px]">{parentTime0}</p>
                   </div>
                 ) : (
-                  <p>시간 선택</p>
+                  <p>날짜 선택</p>
                 )}
               </div>
             }
@@ -240,6 +237,12 @@ export default function RequestDeal() {
           <Calendar
             sendDateToParent={handleDate0}
             sendTimeToParent={handleTime0}
+            selectedTimes={[
+              [parentDate0, parentTime0],
+              [parentDate1, parentTime1],
+              [parentDate2, parentTime2],
+            ]}
+            index={0}
           ></Calendar>
         )}
 
@@ -247,6 +250,12 @@ export default function RequestDeal() {
           <Calendar
             sendDateToParent={handleDate1}
             sendTimeToParent={handleTime1}
+            selectedTimes={[
+              [parentDate0, parentTime0],
+              [parentDate1, parentTime1],
+              [parentDate2, parentTime2],
+            ]}
+            index={1}
           ></Calendar>
         )}
 
@@ -254,6 +263,12 @@ export default function RequestDeal() {
           <Calendar
             sendDateToParent={handleDate2}
             sendTimeToParent={handleTime2}
+            selectedTimes={[
+              [parentDate0, parentTime0],
+              [parentDate1, parentTime1],
+              [parentDate2, parentTime2],
+            ]}
+            index={2}
           ></Calendar>
         )}
       </div>
@@ -261,7 +276,7 @@ export default function RequestDeal() {
         <button
           className="mt-8 mb-8 w-5/6 h-16 bg-primary rounded-xl
          bg-yellow-400 text-black"
-          onClick={()=>[handleClickOpen(), handleSelectedTimes()]}
+          onClick={() => [handleClickOpen(), handleSelectedTimes()]}
         >
           <h3>선택</h3>
         </button>
@@ -278,7 +293,6 @@ export default function RequestDeal() {
             width: "100%", // 너비는 화면 크기에 따라 조정되도록 설정
             maxHeight: "100%", // 최대 높이를 화면 높이와 동일하게 설정
             height: "103vh",
-            
           },
         }}
       >
@@ -297,7 +311,7 @@ export default function RequestDeal() {
             <CloseIcon fontSize="large" />
           </IconButton>
         </div>
-        <RequestDone selectedTimes={selectedTimes} />
+        <RequestDone selectedTimes={selectedTimes}/>
         {/* 우선 임시로 닫는 버튼 */}
         <div className="flex justify-center">
           <button

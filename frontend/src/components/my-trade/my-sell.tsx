@@ -67,8 +67,7 @@ export default function MySell() {
     }
   };
 
-  const filteredDeals = deals
-    .filter((deal) =>
+  const filteredDeals = deals?.filter((deal) =>
       selectedChip === "모두"
         ? true
         : selectedChip === "판매 중"

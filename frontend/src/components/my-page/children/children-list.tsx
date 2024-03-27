@@ -13,6 +13,7 @@ export default function ChildrenList() {
   useEffect(() => {
     const fetchChildren = async () => {
       const data = await getKidsSummary();
+      console.log(data);
       setChildren(data);
     };
     fetchChildren();
@@ -46,7 +47,7 @@ export default function ChildrenList() {
         <Card
           key={index}
           className="my-6 flex justify-between border-yellow-300 rounded-xl
-          border-2 p-4"
+          border-2 p-2"
         >
           <CardContent className="w-48">
             <Typography variant="h5">{child.name ?? '이름'}</Typography>
@@ -54,12 +55,12 @@ export default function ChildrenList() {
               {child.birthDate} {isBirth(child.birthDate)}
             </Typography>
           </CardContent>
-          <CardContent className="bg-blue-200 rounded-xl h-24 w-24 aspect-square flex justify-center">
+          <CardContent className="bg-blue-200 rounded-xl max-h-24 max-w-24 aspect-square my-auto flex justify-center min-w-fit">
             <Typography variant="h6" className="flex my-auto">
               {child.gender ?? "미정"}
             </Typography>
           </CardContent>
-          <IconButton className="w-16">
+          <IconButton className="w-16 my-auto aspect-square">
             <ArrowForwardIosIcon />
           </IconButton>
         </Card>
