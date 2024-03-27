@@ -63,14 +63,13 @@ export default function MyRequest({ params: { dealId } }: IParams) {
         <TopBar2 />
         <h1>요청자 정보를 불러오는데 실패했습니다.</h1>
       </React.Fragment>
-    )
+    );
   }
 
-  const clickRequest = async (times:Requester['offerTimes'], id:number) => {
-    await setOfferTime(times)
-    router.push(`/my-trade/${dealId}/${id}`)
-  }
-
+  const clickRequest = async (times: Requester["offerTimes"], id: number) => {
+    await setOfferTime(times);
+    router.push(`/my-trade/${dealId}/${id}`);
+  };
 
   return (
     <React.Fragment>
@@ -92,24 +91,26 @@ export default function MyRequest({ params: { dealId } }: IParams) {
             {/* <Typography color="text.secondary">{requester.productName}</Typography> */}
             {requester.offerTimes?.map((time, key) => (
               <Typography key={key} variant="body2">
-                {time.offerDate} | {time.startTime} ~ {time.endTime}
+                {time.offerDate}
+                <br />• {time.startTime.split(":").slice(0, 2).join(":")} ~{" "}
+                {time.endTime.split(":").slice(0, 2).join(":")}
               </Typography>
             ))}
           </CardContent>
           <CardContent className={styles.btns} sx={{ padding: 0 }}>
             {/* <Link href={`/my-trade/${dealId}/${requester.memberProfile.id}`}> */}
-              <IconButton
-                size="small"
-                sx={{
-                  "&.MuiIconButton-root": {
-                    bgcolor: "#ffcf00",
-                  },
-                  margin: 1,
-                }}
-                onClick={() => clickRequest(requester.offerTimes, requester.id)}
-              >
-                <CheckIcon sx={{ color: "white" }} />
-              </IconButton>
+            <IconButton
+              size="small"
+              sx={{
+                "&.MuiIconButton-root": {
+                  bgcolor: "#ffcf00",
+                },
+                margin: 1,
+              }}
+              onClick={() => clickRequest(requester.offerTimes, requester.id)}
+            >
+              <CheckIcon sx={{ color: "white" }} />
+            </IconButton>
             {/* </Link> */}
             <IconButton
               onClick={() => handleDelete(requester.id)}
@@ -126,7 +127,7 @@ export default function MyRequest({ params: { dealId } }: IParams) {
           </CardContent>
         </Card>
       ))}
-      {(!requesters || requesters.length === 0 ) && (
+      {(!requesters || requesters.length === 0) && (
         <h2 className="p-4">아직 요청이 없습니다.</h2>
       )}
     </React.Fragment>

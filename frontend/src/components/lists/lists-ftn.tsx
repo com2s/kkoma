@@ -9,13 +9,21 @@ import APIModule from "@/utils/apiModule";
 // };
 
 export async function getProducts() {
-  const response = await APIModule({ action: "/products", method: "GET", data: null });
-  
+  const response = await APIModule({
+    action: "/products",
+    method: "GET",
+    data: null,
+  });
+
   return response;
 }
 
 export async function getProductDetail(id: string) {
-  const response = await APIModule({ action: `/products/${id}`, method: "GET", data: null });
+  const response = await APIModule({
+    action: `/products/${id}`,
+    method: "GET",
+    data: null,
+  });
 
   return response;
 }
@@ -29,21 +37,41 @@ interface PostData {
 }
 
 export async function postProduct(data: PostData) {
-  const response = await APIModule({ action: "/products", method: "POST", data: data });
+  const response = await APIModule({
+    action: "/products",
+    method: "POST",
+    data: data,
+  });
 
   return response;
 }
 
-export async function getImages() {
-  // 이미지 기본값을 넣기 위한 임시 함수
-  const images = [
-    "/chicken-home.svg",
-    "/next.svg",
-    "/temp-img.svg",
-    "/vercel.svg",
-    "/images/baby-img.png",
-    "/images/logo-icon.svg",
-    "/images/sample1.webp",
-  ];
-  return images;
+interface PostOffer {
+  offerDate: string;
+  startTime: string;
+  endTime: string;
+}
+
+export async function postOffer(productId: string, selectedTimes: string[][]) {
+  const data: PostOffer[] = [];
+  selectedTimes.map((time) => {
+    if (time[0] === "") return;
+
+    const [offerDate, times] = time;
+    const [start, end] = times.split(" ~ ");
+
+    data.push({
+      offerDate,
+      startTime: start === "24:00" ? "23:59" : start,
+      endTime: end === "24:00" ? "23:59" : end,
+    });
+  });
+
+  const response = await APIModule({
+    action: `/offers/products/${productId}`,
+    method: "POST",
+    data: data,
+  });
+
+  return response;
 }

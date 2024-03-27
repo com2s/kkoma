@@ -46,7 +46,7 @@ export default function TopBar2() {
           startIcon={<ArrowBackIosNewIcon />}
           sx={{ color: "black", height: "32px" }}
         ></Button>
-        <span className={styles.logo}>페이지 타이틀</span>
+        <span className={styles.logo}>{" "}</span>
         <div className={styles.notifications}>
           <IconButton
             aria-label="delete"

@@ -45,7 +45,7 @@ export default function TopBar2({ onFormSubmit }: TopBar2Props) {
             sx={{ color: "black" }}
           ></Button>
         </Link>
-        <span className={styles.logo}>페이지 타이틀</span>
+        <span className={styles.logo}>판매글 작성</span>
         <div className={styles.notifications}>
           <button
             type="submit"
