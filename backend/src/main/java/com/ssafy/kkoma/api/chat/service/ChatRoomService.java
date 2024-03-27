@@ -5,6 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.kkoma.domain.chat.entity.ChatRoom;
 import com.ssafy.kkoma.domain.chat.repository.ChatRoomRepository;
+import com.ssafy.kkoma.global.error.ErrorCode;
+import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,6 +19,11 @@ public class ChatRoomService {
 	@Transactional
 	public ChatRoom createChatRoom() {
 		return chatRoomRepository.save(new ChatRoom());
+	}
+
+	public ChatRoom getChatRoom(Long id) {
+		return chatRoomRepository.findById(id)
+			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.CHAT_ROOM_NOT_EXISTS));
 	}
 
 }
