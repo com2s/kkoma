@@ -133,7 +133,7 @@ public class ProductService {
 
 	public ProductWishResponse wishProduct(Long productId, Long memberId) {
 		// 글 조회
-		Product product = findProductById(productId); // todo Pessimistic Locking
+		Product product = findProductByProductId(productId); // todo Pessimistic Locking
 		product.addWishCount();
 		Member member = memberService.findMemberByMemberId(memberId);
 
@@ -152,7 +152,7 @@ public class ProductService {
 	}
 
 	public ProductWishResponse unwishProduct(Long productId, Long memberId) {
-		Product product = findProductById(productId); // todo Pessimistic Locking
+		Product product = findProductByProductId(productId); // todo Pessimistic Locking
 		product.subWishCount();
 		Member member = memberService.findMemberByMemberId(memberId);
 
