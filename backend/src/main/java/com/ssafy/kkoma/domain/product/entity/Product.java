@@ -87,6 +87,7 @@ public class Product extends BaseTimeEntity {
 			throw new BusinessException(ErrorCode.VIEW_OVERFLOW);
 		}
 		this.viewCount++;
+	}
 
 	public void addWishCount() {
 		this.wishCount++;
