@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 
-
 export const metadata: Metadata = {
     title: "My Page",
     description: "User's personal page",

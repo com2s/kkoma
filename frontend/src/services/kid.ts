@@ -1,6 +1,7 @@
 import APIModule from "@/utils/apiModule";
 
 interface KidInfo {
+  id : number | null;
   name: string | null;
   birthDate: string | null;
   gender: string | null;
