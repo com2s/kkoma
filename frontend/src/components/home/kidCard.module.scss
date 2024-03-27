@@ -1,15 +1,23 @@
-.card {
-  @include flex(center, flex-start, column);
-  @include pad-v(rem(10), rem(25));
-  gap: rem(10);
+.list {
   width: 100%;
-  border-radius: rem(15);
-  background-color: $color-light-yellow;
-  .btn-container {
-    @include flex(center, flex-end, row);
-    width: 90%;
-    .btn {
-      color: $color-text2;
+  @include flex(flex-start, flex-start, row);
+  gap: rem(10);
+  overflow-x: scroll;
+  scroll-behavior: smooth;
+  .card {
+    @include flex(center, flex-start, column);
+    @include pad-v(rem(10), rem(25));
+    gap: rem(10);
+    width: 100%;
+    min-width: 90%;
+    border-radius: rem(15);
+    background-color: $color-light-yellow;
+    .btn-container {
+      @include flex(center, flex-end, row);
+      width: 90%;
+      .btn {
+        color: $color-text2;
+      }
     }
   }
 }
