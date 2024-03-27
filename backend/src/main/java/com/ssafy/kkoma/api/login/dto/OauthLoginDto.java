@@ -31,6 +31,7 @@ public class OauthLoginDto {
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
         private Date refreshTokenExpireTime;
 
+        private Long memberId;
         private boolean memberInfoCompleted;
         private boolean kidInfoCompleted;
 
@@ -42,6 +43,7 @@ public class OauthLoginDto {
                     .accessTokenExpireTime(jwtTokenDto.getAccessTokenExpireTime())
                     .refreshToken(jwtTokenDto.getRefreshToken())
                     .refreshTokenExpireTime(jwtTokenDto.getRefreshTokenExpireTime())
+                    .memberId(member.getId())
                     .memberInfoCompleted(member.isMemberInfoCompleted())
                     .kidInfoCompleted(member.isKidInfoCompleted())
                     .build();

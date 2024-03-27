@@ -8,8 +8,10 @@ import com.ssafy.kkoma.api.deal.service.DealService;
 import com.ssafy.kkoma.api.member.dto.response.MemberProfileResponse;
 import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
 import com.ssafy.kkoma.api.offer.dto.response.OfferTimeResponse;
+import com.ssafy.kkoma.api.offer.dto.response.SelectOfferResponse;
 import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
 import com.ssafy.kkoma.api.point.service.PointHistoryService;
+import com.ssafy.kkoma.domain.deal.entity.Deal;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.domain.offer.constant.OfferType;
@@ -25,6 +27,8 @@ import com.ssafy.kkoma.api.product.service.ProductService;
 import com.ssafy.kkoma.global.error.ErrorCode;
 import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+
+import org.h2.command.query.Select;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,25 +77,21 @@ public class OfferService {
         List<Offer> offerList = offerRepository.findAllOffersByProductId(productId)
             .orElseThrow(() -> new EntityNotFoundException(ErrorCode.OFFER_NOT_EXISTS));
 
-        for (Offer offer : offerList){
-            offerResponseList.add(OfferResponse.builder()
-                .id(offer.getId())
-                .memberProfile(MemberProfileResponse.fromEntity(offer.getMember()))
-                .offerTimes(offer.getOfferDetails().stream().map(OfferTimeResponse::fromEntity).toList())
-                .build());
+        for (Offer offer : offerList) {
+            offerResponseList.add(OfferResponse.fromEntity(offer));
         }
 
         return offerResponseList;
     }
 
-    public Offer acceptOffer(Long offerId, DealTimeRequest dealTimeRequest){
+    public SelectOfferResponse acceptOffer(Long offerId, DealTimeRequest dealTimeRequest){
         Offer offer = findOfferByOfferId(offerId);
 
         offer.updateStatus(OfferType.ACCEPTED);
         offer.getProduct().updateStatus(ProductType.PROGRESS);
-        dealService.createDeal(offer, dealTimeRequest); // TODO: deal entity 말고 변환해줘야 되는 것 같은데
+        Deal deal = dealService.createDeal(offer, dealTimeRequest); // TODO: deal entity 말고 변환해줘야 되는 것 같은데
 
-        return offer;
+        return SelectOfferResponse.fromEntity(offer, deal);
     }
 
     public List<ProductInfoResponse> getNotProgressOfferingProducts(Long memberId) {

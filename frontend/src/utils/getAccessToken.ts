@@ -4,6 +4,14 @@ import LocalStorage from "./localStorage";
 
 const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
+export const isLogin = () => {
+  const accessToken = getItemWithExpireTime("accessToken");
+  if (accessToken) return true;
+  const refreshToken = getItemWithExpireTime("refreshToken");
+  if (refreshToken) return true;
+  return false;
+};
+
 export const getAccessToken = async () => {
   // TODO: 추후 cookie로 받아와서 http secure 옵션 추가해야됨.
   // const cookieStore = cookies();

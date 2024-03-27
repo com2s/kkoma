@@ -13,19 +13,36 @@ export default function KakaoOauth() {
   const code = searchParams.get("code") ?? "";
 
   const doLogin = async () => {
-    const res = await kakaoLoginAPI(code);
-    const obj = await res.json();
+    const obj = await kakaoLoginAPI(code);
 
-    setItemWithExpireTime("accessToken", obj.accessToken, obj.accessTokenExpireTime);
-    setItemWithExpireTime("refreshToken", obj.refreshToken, obj.refreshTokenExpireTime);
-    LocalStorage.setItem("grantType", obj.grantType);
+    if (obj) {
+      setItemWithExpireTime("accessToken", obj.accessToken, obj.accessTokenExpireTime);
+      setItemWithExpireTime("refreshToken", obj.refreshToken, obj.refreshTokenExpireTime);
+      LocalStorage.setItem("grantType", obj.grantType);
+      LocalStorage.setItem("memberId", obj.memberId);
+
+      if (obj.memberInfoCompleted && obj.kidInfoCompleted) {
+        router.replace("/");
+      } else if (!obj.memberInfoCompleted) {
+        router.replace("/join/profile");
+      } else if (!obj.kidInfoCompleted) {
+        const isKid = confirm(
+          "로그인 완료!\n아이 정보 입력이 완료되지않았습니다.\n입력하시겠습니까?"
+        );
+        if (isKid) {
+          router.replace("/kid/name");
+        } else {
+          router.replace("/");
+        }
+      }
+    }
   };
 
   try {
     doLogin();
     router.replace("/join/profile");
   } catch (e) {
-    console.error(e);
+    console.log("error", e);
     router.replace("/error");
   }
 
