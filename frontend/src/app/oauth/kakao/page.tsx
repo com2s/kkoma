@@ -13,8 +13,7 @@ export default function KakaoOauth() {
   const code = searchParams.get("code") ?? "";
 
   const doLogin = async () => {
-    const res = await kakaoLoginAPI(code);
-    const obj = await res.data;
+    const obj = await kakaoLoginAPI(code);
 
     if (obj) {
       setItemWithExpireTime("accessToken", obj.accessToken, obj.accessTokenExpireTime);
