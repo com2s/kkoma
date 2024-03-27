@@ -35,6 +35,7 @@ public enum ErrorCode {
 
     // Offer
     OFFER_NOT_EXISTS(HttpStatus.BAD_REQUEST, "O-001", "해당 거래 요청은 존재하지 않습니다."),
+    INVALID_ACCEPT(HttpStatus.BAD_REQUEST, "O-002", "판매 중인 상품에만 거래를 수락할 수 있습니다."),
 
     // OfferDetail
     OFFER_DETAIL_NOT_EXISTS(HttpStatus.BAD_REQUEST, "OD-001", "해당 거래에 대한 거래 요청 시간이 존재하지 않습니다."),
