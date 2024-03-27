@@ -5,7 +5,7 @@ import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.factory.MemberFactory;
 import com.ssafy.kkoma.factory.ProductFactory;
-import com.ssafy.kkoma.global.util.CustomSpringBootTest;
+import com.ssafy.kkoma.global.util.CustomMockMvcSpringBootTest;
 import com.ssafy.kkoma.global.util.RequestUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-@CustomSpringBootTest
+@CustomMockMvcSpringBootTest
 class ProductControllerTest {
 
     @Autowired
@@ -53,5 +51,7 @@ class ProductControllerTest {
     @Test
     void createProduct() {
     }
+
+
 
 }
