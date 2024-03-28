@@ -1,35 +1,30 @@
 package com.ssafy.kkoma.api.offer.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.ssafy.kkoma.api.deal.dto.request.DecideOfferRequest;
 import com.ssafy.kkoma.api.deal.service.DealService;
-import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
+import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.api.offer.dto.response.DecideOfferResponse;
+import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
 import com.ssafy.kkoma.api.point.service.PointService;
 import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
-import com.ssafy.kkoma.api.point.service.PointHistoryService;
+import com.ssafy.kkoma.api.product.service.ProductService;
 import com.ssafy.kkoma.domain.deal.entity.Deal;
 import com.ssafy.kkoma.domain.member.entity.Member;
-import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.domain.offer.constant.OfferType;
 import com.ssafy.kkoma.domain.offer.entity.Offer;
 import com.ssafy.kkoma.domain.offer.repository.OfferRepository;
-
 import com.ssafy.kkoma.domain.point.constant.PointChangeType;
-import com.ssafy.kkoma.domain.point.entity.PointHistory;
-
 import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.domain.product.entity.Product;
-import com.ssafy.kkoma.api.product.service.ProductService;
 import com.ssafy.kkoma.global.error.ErrorCode;
 import com.ssafy.kkoma.global.error.exception.BusinessException;
 import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -40,7 +35,6 @@ public class OfferService {
     private final MemberService memberService;
     private final ProductService productService;
     private final PointService pointService;
-    private final PointHistoryService pointHistoryService;
     private final DealService dealService;
 
     public Offer findOfferByOfferId(Long offerId) {
@@ -60,14 +54,8 @@ public class OfferService {
         if (member.getPoint().getBalance() < product.getPrice()) {
             throw new BusinessException(ErrorCode.POINT_NOT_ENOUGH);
         }
-        member.getPoint().subBalance(product.getPrice());
 
-        pointHistoryService.createPointHistory(PointHistory.builder()
-            .point(member.getPoint())
-            .amount(product.getPrice())
-            .pointChangeType(PointChangeType.USE)
-            .balanceAfterChange(member.getPoint().getBalance())
-            .build());
+        pointService.changePoint(member, PointChangeType.USE, product.getPrice());
 
         Offer offer = Offer.builder()
             .product(product)
@@ -110,14 +98,7 @@ public class OfferService {
             else {
                 offer.updateStatus(OfferType.REJECTED);
                 Member rejectedBuyer = offer.getMember(); // 거절당한 구매희망자
-                rejectedBuyer.getPoint().addBalance(product.getPrice());
-
-                pointHistoryService.createPointHistory(PointHistory.builder()
-                    .point(rejectedBuyer.getPoint())
-                    .amount(product.getPrice())
-                    .pointChangeType(PointChangeType.USE)
-                    .balanceAfterChange(rejectedBuyer.getPoint().getBalance())
-                    .build());
+                pointService.changePoint(rejectedBuyer, PointChangeType.GET, product.getPrice());
             }
         }
 
