@@ -18,7 +18,7 @@ import com.ssafy.kkoma.global.error.exception.BusinessException;
 public class AutoCompleteUtils {
 
 	private static AutoCompleteUtils instance;
-	private static Trie<String, String> trie;
+	private static Trie<String, List<String>> trie;
 
 	private AutoCompleteUtils() {
 		getCategory();
@@ -43,7 +43,16 @@ public class AutoCompleteUtils {
 
 			while((tmp = br.readLine()) != null) {
 				for (int i = 0; i < tmp.length(); i++) {
-					trie.put(tmp.substring(i), tmp);
+					if(trie.containsKey(tmp.substring(i))) {
+						List<String> value = trie.get(tmp.substring(i));
+						if(!value.contains(tmp)) {
+							value.add(tmp);
+						}
+					} else {
+						List<String> value = new ArrayList<>();
+						value.add(tmp);
+						trie.put(tmp.substring(i), value);
+					}
 				}
 			}
 
@@ -55,8 +64,9 @@ public class AutoCompleteUtils {
 	public List<String> getPrefixMap(String keyword) {
 		if(keyword.isEmpty()) return new ArrayList<>();
 
-		SortedMap<String, String> map = trie.prefixMap(keyword);
-		return map.values().stream().toList();
+		SortedMap<String, List<String>> map = trie.prefixMap(keyword);
+		return map.values().stream()
+			.collect(ArrayList::new, List::addAll, List::addAll);
 	}
 
 }
