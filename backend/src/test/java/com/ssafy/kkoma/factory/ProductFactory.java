@@ -1,19 +1,12 @@
 package com.ssafy.kkoma.factory;
 
 import com.ssafy.kkoma.domain.chat.entity.ChatRoom;
-import com.ssafy.kkoma.domain.kid.constant.GenderType;
-import com.ssafy.kkoma.domain.kid.entity.Kid;
-import com.ssafy.kkoma.domain.kid.repository.KidRepository;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.product.entity.Category;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.domain.product.repository.ProductRepository;
-import com.ssafy.kkoma.global.util.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
 
 @Component
 public class ProductFactory {
@@ -28,23 +21,23 @@ public class ProductFactory {
         this.productRepository = productRepository;
     }
 
-    public Product createProduct(Member member) {
+    public Product createProduct(Member seller) {
         Product product = Product.builder()
                 .title(TITLE)
                 .thumbnailImage(IMAGE_URL)
                 .build();
-        product.setMember(member);
+        product.setMember(seller);
         return productRepository.save(product);
     }
 
-    public Product createProduct(Member member, Category category, int price) {
+    public Product createProduct(Member seller, Category category, int price) {
         Product product = Product.builder()
                 .title(TITLE)
                 .category(category)
                 .thumbnailImage(IMAGE_URL)
                 .price(price)
                 .build();
-        product.setMember(member);
+        product.setMember(seller);
         return productRepository.save(product);
     }
 

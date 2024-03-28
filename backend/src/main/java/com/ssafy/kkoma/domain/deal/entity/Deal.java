@@ -25,6 +25,7 @@ import lombok.ToString;
 @Entity
 @Getter
 @Builder
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Deal extends BaseTimeEntity {
@@ -54,4 +55,6 @@ public class Deal extends BaseTimeEntity {
 	public void updateIsCompleted(Boolean status) {
 		this.isCompleted = status;
 	}
+
+
 }
