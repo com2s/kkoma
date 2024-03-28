@@ -36,9 +36,7 @@ public class AutoCompleteUtils {
 
 	private static void getCategory() {
 		try {
-			ClassPathResource resource = new ClassPathResource("/data/category.txt");
-			FileInputStream input = new FileInputStream(resource.getFile());
-			InputStreamReader reader = new InputStreamReader(input,"UTF-8");
+			InputStreamReader reader = new InputStreamReader(new ClassPathResource("/data/category.txt").getInputStream(),"UTF-8");
 			BufferedReader br = new BufferedReader(reader);
 
 			trie = new PatriciaTrie<>();
