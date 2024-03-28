@@ -36,7 +36,6 @@ export default function TopBar2() {
         <span className={styles.logo}>아이 정보 수정</span>
         <div className={styles.notifications}>
           <Button disabled>
-            <FavoriteBorderIcon />
           </Button>
         </div>
       </div>

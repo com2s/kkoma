@@ -27,12 +27,15 @@ export const getAccessToken = async () => {
   if (refreshToken) {
     const grantType = LocalStorage.getItem("grantType");
     const res = await fetch(`${baseURL}/access-token/issue`, {
+      method: "POST",
       headers: {
         Authorization: `${grantType} ${refreshToken}`,
       },
     });
     const obj = await res.json();
-    setItemWithExpireTime("accessToken", obj.accessToken, obj.accessTokenExpireTime);
+    setItemWithExpireTime("accessToken", obj.data.accessToken, obj.data.accessTokenExpireTime);
+    const newAccessToken = getItemWithExpireTime("accessToken");
+    return `${grantType} ${newAccessToken}`;
   }
 
   if (typeof window !== "undefined") {

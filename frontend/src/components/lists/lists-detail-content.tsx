@@ -8,61 +8,65 @@ import { Typography } from "@mui/material";
 
 interface DetailTypes {
   propsId: string;
-  product: DetailParams["data"];
+  product: DetailParams["data"] | undefined;
 }
 
 export default async function DetailContent({ propsId, product }: DetailTypes) {
   return (
     <div className={styles.container}>
-      <div className={styles.title}>
+      {product === undefined ? (
+        <div>상품 정보가 없습니다.</div>
+      ) : (
         <div>
-          <p className="text-gray-400 text-pretty">
-            {product.dealPlace ?? "거래 장소 null"} •{" "}
-            {product.elapsedMinutes >= 1440 // 1440분 = 24시간
-              ? `${Math.floor(product.elapsedMinutes / 1440)}일 전`
-              : product.elapsedMinutes >= 60
-              ? `${Math.floor(product.elapsedMinutes / 60)}시간 전`
-              : `${product.elapsedMinutes}분 전`}
-          </p>
-          <h2 className="my-2">{product.title}</h2>
-          <div className="views">
-            <p className="text-gray-400 text-sm">
-              조회 {product.viewCount} • 거래 요청 {product.offerCount} • 찜{" "}
-              {product.wishCount}
-            </p>
+          <div className={styles.title}>
+            <div>
+              <p className="text-gray-400 text-pretty">
+                {product.dealPlace ?? "거래 장소 null"} •{" "}
+                {product.elapsedMinutes >= 1440 // 1440분 = 24시간
+                  ? `${Math.floor(product.elapsedMinutes / 1440)}일 전`
+                  : product.elapsedMinutes >= 60
+                  ? `${Math.floor(product.elapsedMinutes / 60)}시간 전`
+                  : `${product.elapsedMinutes}분 전`}
+              </p>
+              <h2 className="my-2">{product.title}</h2>
+              <div className="views">
+                <p className="text-gray-400 text-sm">
+                  조회 {product.viewCount} • 거래 요청 {product.offerCount} • 찜{" "}
+                  {product.wishCount}
+                </p>
+              </div>
+            </div>
+            <Typography
+              variant="h5"
+              sx={{
+                mt: 2,
+                fontWeight: "bold",
+                margin: "auto 0",
+                minWidth: "fit-content",
+                color:
+                  product.status === "SALE"
+                    ? "orange"
+                    : product.status === "PROGRESS"
+                    ? "crimson"
+                    : product.status === "SOLD"
+                    ? "dimgray"
+                    : "black", // 기본값
+              }}
+            >
+              <span>
+                {product.status === "SALE"
+                  ? "판매 중"
+                  : product.status === "PROGRESS"
+                  ? "거래 중"
+                  : "거래 완료"}
+              </span>
+            </Typography>
           </div>
-        </div>
-        <Typography
-          variant="h5"
-          sx={{
-            mt: 2,
-            fontWeight: "bold",
-            margin: "auto 0",
-            minWidth: "fit-content",
-            color:
-              product.status === "SALE"
-                ? "orange"
-                : product.status === "PROGRESS"
-                ? "crimson"
-                : product.status === "SOLD"
-                ? "dimgray"
-                : "black", // 기본값
-          }}
-        >
-          <span>
-            {product.status === "SALE"
-              ? "판매 중"
-              : product.status === "PROGRESS"
-              ? "거래 중"
-              : "거래 완료"}
-          </span>
-        </Typography>
-      </div>
 
-      <h2 className={styles.price}>{product.price.toLocaleString()}원</h2>
-      <p className={styles.content}>
-        {product.description}
-        {/* 노인은 늘 바다를 ‘라 마르’라고 생각했는데, 그것은 사람들이 바다에 애정을
+          <h2 className={styles.price}>{product.price.toLocaleString()}원</h2>
+          <p className={styles.content}>
+            {product.description}
+            {/* 노인은 늘 바다를 ‘라 마르’라고 생각했는데, 그것은 사람들이 바다에 애정을
         느낄 때 부르는 스페인어다. 때로는 바다를 사랑하는 사람들도 바다에 관해
         나쁘게 말할 때가 있는데, 그럴 때조차도 바다는 늘 여성인 것처럼 불린다.
         몇몇 젊은 어부, 낚싯줄에 찌 대신 부표를 연결해 사용하고 상어 간으로
@@ -71,7 +75,9 @@ export default async function DetailContent({ propsId, product }: DetailTypes) {
         불렀다. 하지만 노인은 늘 바다를 여성으로 생각했고, 큰 호의를
         베풀어주거나 베풀어주지 않는 무언가로 생각했는데, 만일 바다가 사납거나
         사악한 짓을 한다면 그것은 바다로서도 어쩔 수 없어서 그러는 것이었다. */}
-      </p>
+          </p>
+        </div>
+      )}
     </div>
   );
 }
