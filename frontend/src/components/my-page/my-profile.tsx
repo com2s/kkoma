@@ -5,6 +5,7 @@ import { getMySummary, mySummary } from "./my-page-ftn";
 import Avatar from "@mui/material/Avatar";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 export default function MyProfile() {
   const [summary, setSummary] = useState<mySummary>();
@@ -39,9 +40,7 @@ export default function MyProfile() {
         </span>
       </div>
       <Link href="/my-page/my-profile" passHref>
-        <span className="text-center font-medium min-w-24 bg-gray-100 flex justify-center items-center py-1 rounded-lg cursor-pointer">
-          프로필 보기
-        </span>
+        <ArrowForwardIosIcon className="text-center w-12 h-12 bg-gray-200 flex justify-center items-center py-3 rounded-lg cursor-pointer"/>
       </Link>
     </div>
   );
