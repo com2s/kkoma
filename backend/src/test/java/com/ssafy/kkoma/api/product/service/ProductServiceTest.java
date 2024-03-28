@@ -214,10 +214,11 @@ class ProductServiceTest {
 		Member member = memberFactory.createMember();
 		Category category = categoryFactory.createCategory();
 		ChatRoom chatRoom = chatRoomFactory.createChatRoom();
-		Product product = productFactory.createProduct(member, category, chatRoom, 1000);
+		Product product = productFactory.createProduct(member, category,1000);
+		product.setChatRoom(chatRoom);
 
 	    // when
-		ChatProductResponse chatProduct = productService.getChatProduct(product.getId());
+		ChatProductResponse chatProduct = productService.getChatProduct(chatRoom.getId());
 
 		// then
 		assertEquals(1000, chatProduct.getPrice());
