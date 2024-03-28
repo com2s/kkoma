@@ -14,10 +14,7 @@ import com.ssafy.kkoma.domain.product.entity.WishList;
 import com.ssafy.kkoma.global.jwt.dto.JwtTokenDto;
 import com.ssafy.kkoma.global.util.DateTimeUtils;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,6 +24,7 @@ import java.util.Set;
 
 @Entity
 @Getter
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseTimeEntity {
 
