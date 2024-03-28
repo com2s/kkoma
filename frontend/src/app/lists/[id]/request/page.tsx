@@ -1,6 +1,6 @@
 "use client";
 
-import TopBar2 from "@/components/lists/lists-detail-bar";
+import TopBar2 from "@/components/lists/lists-calendar-bar";
 import Calendar from "@/components/common/calendar-offer";
 import RequestDone from "@/components/lists/request-done";
 import { postOffer } from "@/components/lists/lists-ftn";

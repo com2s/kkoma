@@ -5,11 +5,20 @@ export interface MemberSummary {
     preferredPlace: string;
 }
 
+export interface MyInfo {
+    id: number | null;
+    profileImage: string | null;
+    email: string | null;
+    nickname: string | null;
+    name: string | null;
+    phone: string | null;
+    role: string | null;
+}
+
 export interface MemberInfo {
-    // 수정 필요
-    memberId: number;
-    profileImage: string;
-    nickname: string;
-    name: string;
-    phone: string;
+    id: number | null;
+    profileImage: string | null;
+    email: string | null;
+    nickname: string | null;
+    role: string | null;
 }

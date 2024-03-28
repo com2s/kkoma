@@ -44,7 +44,7 @@ export default function MyProfile() {
           {summary?.preferredPlace ?? "주소 미등록"}
         </span>
       </div>
-      <Link href={`/my-page/my-profile/${summary?.memberId}`} passHref>
+      <Link href={`/my-page/my-profile`} passHref>
         <ArrowForwardIosIcon className="text-center w-12 h-12 bg-gray-200 flex justify-center items-center py-3 rounded-lg cursor-pointer"/>
       </Link>
     </div>
