@@ -14,7 +14,7 @@ public class ProductFactory {
     @Autowired
     ProductRepository productRepository;
 
-    private static String TITLE = "TEST_상품";
+    private static String TITLE = "TITLE";
     private static String IMAGE_URL = "https://lh3.googleusercontent.com/wAPeTvxh_EwOisF8kMR2L2eOrIOzjfA5AjE28W5asyfGeH85glwrO6zyqL71dCC26R63chADTO7DLOjnqRoXXOAB8t2f4C3QnU6o0BA";
 
     public ProductFactory(ProductRepository productRepository) {
