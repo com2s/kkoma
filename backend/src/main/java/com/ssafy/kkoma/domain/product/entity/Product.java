@@ -48,7 +48,6 @@ public class Product extends BaseTimeEntity {
 	private Location location;
 	private String thumbnailImage;
 
-	@Setter
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "chat_room_id")
 	private ChatRoom chatRoom;
@@ -107,6 +106,11 @@ public class Product extends BaseTimeEntity {
 			throw new BusinessException(ErrorCode.WISH_COUNT_ZERO);
 		}
 		this.wishCount--;
+	}
+
+	public void setChatRoom(ChatRoom chatRoom) {
+		this.chatRoom = chatRoom;
+		chatRoom.setProduct(this);
 	}
 
 }

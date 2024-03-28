@@ -15,6 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -25,6 +26,9 @@ public class ChatRoom extends BaseTimeEntity {
 	private Long id;
 
 	@OneToMany(mappedBy = "chatRoom")
-	List<ChatMessage> chatMessageList = new ArrayList<>();
+	private List<ChatMessage> chatMessageList = new ArrayList<>();
 
+	@Setter
+	@OneToOne(mappedBy = "chatRoom")
+	private Product product;
 }
