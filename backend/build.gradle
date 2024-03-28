@@ -48,6 +48,10 @@ dependencies {
 
     // websocket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+    // Trie
+    implementation 'org.apache.commons:commons-collections4:4.4'
+
 }
 
 dependencyManagement {
