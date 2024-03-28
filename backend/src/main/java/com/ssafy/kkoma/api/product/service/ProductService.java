@@ -13,6 +13,7 @@ import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
 import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
 import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
+import com.ssafy.kkoma.api.product.dto.response.ChatProductResponse;
 import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
 import com.ssafy.kkoma.domain.chat.entity.ChatRoom;
 import com.ssafy.kkoma.api.product.dto.ProductWishResponse;
@@ -212,6 +213,12 @@ public class ProductService {
 		wishList.setValid(false);
 		WishList savedWishList = wishListRepository.save(wishList);
 		return ProductWishResponse.fromEntity(savedWishList, product);
+	}
+
+	public ChatProductResponse getChatProduct(Long productId) {
+		Product product = findProductByProductId(productId);
+
+		return ChatProductResponse.fromEntity(product);
 	}
 
 }
