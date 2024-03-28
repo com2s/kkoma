@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
@@ -214,10 +213,11 @@ class ProductServiceTest {
 		Member member = memberFactory.createMember();
 		Category category = categoryFactory.createCategory();
 		ChatRoom chatRoom = chatRoomFactory.createChatRoom();
-		Product product = productFactory.createProduct(member, category, chatRoom, 1000);
+		Product product = productFactory.createProduct(member, category,1000);
+		product.setChatRoom(chatRoom);
 
 	    // when
-		ChatProductResponse chatProduct = productService.getChatProduct(product.getId());
+		ChatProductResponse chatProduct = productService.getChatProduct(chatRoom.getId());
 
 		// then
 		assertEquals(1000, chatProduct.getPrice());
