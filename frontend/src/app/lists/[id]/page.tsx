@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import styles from "@/components/lists/lists-id.module.scss";
 import { getProductDetail } from "@/components/lists/lists-ftn";
 
@@ -42,22 +42,32 @@ interface IParams {
 //   };
 // }
 
-export default async function ProductDetail({ params: { id } }: IParams) {
+export default function ProductDetail({ params: { id } }: IParams) {
   if (!id) return <div>상품 정보가 없습니다.</div>;
-  const product: DetailParams = await getProductDetail(id);
-  const myId = await LocalStorage.getItem("memberId");
+  const [product, setProduct] = useState<DetailParams|null>(null);
+  const [myId, setMyId] = useState<string | null>(null);
+  const [success, setSuccess] = useState(true);
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getProductDetail(id);
+      setMyId(LocalStorage.getItem("memberId"));
+      setProduct(res);
+      setSuccess(res.success);
+    };
+    fetchData();
+  }, []);
   console.log("myId: ", myId);
 
   console.log(product);
 
   const settings = {
     centerMode: true,
-    autoplay: product.data.productImages.length > 1 ? true : false,
+    autoplay: (product && (product.data.productImages.length > 1)) ? true : false,
     // 이동부터 다음 이동까지의 시간
     autoplaySpeed: 2000,
     dots: true,
     arrows: false,
-    infinite: product.data.productImages.length > 1 ? true : false,
+    infinite: (product && (product.data.productImages.length > 1)) ? true : false,
     // 이동하는데 걸리는 시간
     speed: 500,
     slidesToShow: 1,
@@ -69,7 +79,7 @@ export default async function ProductDetail({ params: { id } }: IParams) {
       <TopBar2 />
       <div className={styles.carousel}>
         <Slider {...settings}>
-          {product.data.productImages.map((img, index) => (
+          {product?.data.productImages.map((img, index) => (
             <div key={index} className={styles.image}>
               <Image
                 src={img ?? "/temp-img.svg"} // Route of the image file
@@ -83,8 +93,8 @@ export default async function ProductDetail({ params: { id } }: IParams) {
           ))}
         </Slider>
       </div>
-      <Profile propsId={id} memberSummary={product.data.memberSummary} />
-      <Content propsId={id} product={product.data} />
+      <Profile propsId={id} memberSummary={product?.data.memberSummary} />
+      <Content propsId={id} product={product?.data} />
       <Accordion className="mt-4">
         {/* 거래 장소 선택(필수항목) */}
         <AccordionSummary
@@ -100,7 +110,7 @@ export default async function ProductDetail({ params: { id } }: IParams) {
           <Map />
         </AccordionDetails>
       </Accordion>
-      {myId && myId === product.data.memberSummary.memberId.toString() ? (
+      {myId && myId === product?.data.memberSummary.memberId.toString() ? (
         <div className="flex gap-8 py-4 px-6">
           {/* <SubBtn next={"/"}>홈 화면</SubBtn>
         <NormalBtn next={"/"}>아이 정보 입력</NormalBtn> */}
