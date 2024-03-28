@@ -1,0 +1,5 @@
+.chat {
+  @include flex(flex-start, center, column);
+  gap: rem(28);
+  box-sizing: border-box;
+}

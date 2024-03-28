@@ -42,6 +42,7 @@ interface DetailParams {
       nickname: string;
       preferredPlace: string;
     };
+    chatRoomId: number;
     wishCount: number;
     offerCount: number;
     viewCount: number;
