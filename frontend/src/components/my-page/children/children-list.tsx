@@ -43,9 +43,8 @@ export default function ChildrenList() {
   return (
     <div>
       {children?.data?.map((child, index) => (
-        <Link href={`/my-page/children/${child.id}`} className="my-auto flex justify-center">
+        <Link href={`/my-page/children/${child.id}`} className="my-auto flex justify-center" key={index}>
         <Card
-          key={index}
           className="my-6 flex justify-between border-yellow-300 rounded-xl
           border-2 p-2 min-w-72 w-2/3" 
         >
