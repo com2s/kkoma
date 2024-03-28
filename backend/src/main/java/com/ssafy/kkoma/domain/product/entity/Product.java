@@ -1,12 +1,9 @@
 package com.ssafy.kkoma.domain.product.entity;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import com.ssafy.kkoma.api.kid.dto.request.UpdateKidRequest;
 import com.ssafy.kkoma.domain.chat.entity.ChatRoom;
 
 import com.ssafy.kkoma.domain.common.entity.BaseTimeEntity;
@@ -22,7 +19,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
@@ -48,7 +44,6 @@ public class Product extends BaseTimeEntity {
 	private Location location;
 	private String thumbnailImage;
 
-	@Setter
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "chat_room_id")
 	private ChatRoom chatRoom;
@@ -107,6 +102,11 @@ public class Product extends BaseTimeEntity {
 			throw new BusinessException(ErrorCode.WISH_COUNT_ZERO);
 		}
 		this.wishCount--;
+	}
+
+	public void setChatRoom(ChatRoom chatRoom) {
+		this.chatRoom = chatRoom;
+		chatRoom.setProduct(this);
 	}
 
 }

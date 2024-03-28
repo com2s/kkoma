@@ -56,9 +56,9 @@ public class ChatController {
 		summary = "채팅방에서 거래 글 정보 조회",
 		security = { @SecurityRequirement(name = "bearer-key")}
 	)
-	@GetMapping("/api/chatRooms/products/{productId}")
-	public ResponseEntity<ApiUtils.ApiResult<ChatProductResponse>> getChatProduct(@PathVariable Long productId) {
-		return ResponseEntity.ok(ApiUtils.success(productService.getChatProduct(productId)));
+	@GetMapping("/api/chatRooms/{chatRoomId}/product")
+	public ResponseEntity<ApiUtils.ApiResult<ChatProductResponse>> getChatProduct(@PathVariable Long chatRoomId) {
+		return ResponseEntity.ok(ApiUtils.success(productService.getChatProduct(chatRoomId)));
 	}
 
 }

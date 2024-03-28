@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.ssafy.kkoma.api.chat.service.ChatRoomService;
+import com.ssafy.kkoma.api.deal.service.DealService;
 import com.ssafy.kkoma.api.member.dto.response.MemberSummaryResponse;
 import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
@@ -24,6 +25,7 @@ import com.ssafy.kkoma.domain.member.entity.Member;
 
 import com.ssafy.kkoma.domain.product.constant.MyProductType;
 
+import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.domain.product.entity.Category;
 
 import com.ssafy.kkoma.domain.product.entity.ProductImage;
@@ -57,6 +59,7 @@ public class ProductService {
 	private final ChatRoomService chatRoomService;
 	private final WishListRepository wishListRepository;
 	private final DealRepository dealRepository;
+	private final DealService dealService;
 
 	public Product findProductByProductId(Long productId){
 		return productRepository.findById(productId)
@@ -116,8 +119,9 @@ public class ProductService {
 				.title(productCreateRequest.getTitle())
 				.description(productCreateRequest.getDescription())
 				.price(productCreateRequest.getPrice())
-				.chatRoom(chatRoom)
 				.build();
+
+		product.setChatRoom(chatRoom);
 
 		Product savedProduct = productRepository.save(product);
 
@@ -220,10 +224,18 @@ public class ProductService {
 		return utils.getPrefixMap(keyword);
 	}
 
-	public ChatProductResponse getChatProduct(Long productId) {
-		Product product = findProductByProductId(productId);
+	public ChatProductResponse getChatProduct(Long chatRoomId) {
+		ChatRoom chatRoom = chatRoomService.getChatRoom(chatRoomId);
+		Product product = findProductByProductId(chatRoom.getProduct().getId());
 
-		return ChatProductResponse.fromEntity(product);
+		ChatProductResponse chatProductResponse = ChatProductResponse.fromEntity(product);
+
+		if (product.getStatus().equals(ProductType.PROGRESS)) {
+			Deal deal = dealService.findDealByProductId(product.getId());
+			chatProductResponse.setBuyerId(deal.getMember().getId());
+		}
+
+		return chatProductResponse;
 	}
 
 }

@@ -35,6 +35,11 @@ public class DealService {
 			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.DEAL_NOT_EXISTS));
 	}
 
+	public Deal findDealByProductId(Long productId) {
+		return dealRepository.findDealByProductId(productId)
+			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.DEAL_NOT_EXISTS));
+	}
+
 	public Deal createDeal(Offer offer, DecideOfferRequest decideOfferRequest){
 		return dealRepository.save(Deal.builder()
 			.member(offer.getMember())

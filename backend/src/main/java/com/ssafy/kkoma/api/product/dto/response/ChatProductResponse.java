@@ -5,6 +5,7 @@ import com.ssafy.kkoma.domain.product.entity.Product;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Builder
@@ -15,6 +16,10 @@ public class ChatProductResponse {
 	private String title;
 	private int price;
 	private ProductType status;
+	private Long sellerId;
+
+	@Setter
+	private Long buyerId;
 
 	public static ChatProductResponse fromEntity(Product product) {
 		return ChatProductResponse.builder()
@@ -23,6 +28,7 @@ public class ChatProductResponse {
 			.title(product.getTitle())
 			.price(product.getPrice())
 			.status(product.getStatus())
+			.sellerId(product.getMember().getId())
 			.build();
 	}
 
