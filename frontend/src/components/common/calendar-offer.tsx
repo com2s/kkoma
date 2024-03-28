@@ -158,13 +158,15 @@ export default function ChildComponent({
       //   setMinute([minute[0], Math.max(newValue[1], minute[0] + minDistance)]);
       // }
       setMinute(newValue as number[]);
-      const selectedTimeStart = `${Math.floor(
-        (newValue as number[])[0] / 60
-      )}:${((newValue as number[])[0] % 60).toString().padStart(2, "0")}`;
+      const selectedTimeStart = `${Math.floor((newValue as number[])[0] / 60)
+        .toString()
+        .padStart(2, "0")}:${((newValue as number[])[0] % 60)
+        .toString()
+        .padStart(2, "0")}`;
 
-      const selectedTimeEnd = `${Math.floor((newValue as number[])[1] / 60)}:${(
-        (newValue as number[])[1] % 60
-      )
+      const selectedTimeEnd = `${Math.floor((newValue as number[])[1] / 60)
+        .toString()
+        .padStart(2, "0")}:${((newValue as number[])[1] % 60)
         .toString()
         .padStart(2, "0")}`;
 
