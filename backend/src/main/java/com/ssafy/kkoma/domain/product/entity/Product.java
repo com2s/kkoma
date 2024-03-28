@@ -87,6 +87,11 @@ public class Product extends BaseTimeEntity {
 		member.getProducts().add(this);
 	}
 
+	public void setCategory(Category category) {
+		this.category = category;
+		category.getProducts().add(this);
+	}
+
 	public void updateStatus(ProductType productType) {
 		this.status = productType;
 	}

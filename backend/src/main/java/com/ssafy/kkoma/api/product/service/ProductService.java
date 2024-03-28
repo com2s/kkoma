@@ -109,7 +109,6 @@ public class ProductService {
 
 		Product product = Product.builder()
 				.member(seller)
-				.category(category)
 				.thumbnailImage(productImageUrls.isEmpty() ? null : productImageUrls.get(0))
 				.placeDetail("TODO: MVP 개발 이후 location과 placeDetail 저장하는 로직 짜야돼")
 				.title(productCreateRequest.getTitle())
@@ -117,6 +116,8 @@ public class ProductService {
 				.price(productCreateRequest.getPrice())
 				.chatRoom(chatRoom)
 				.build();
+
+		product.setCategory(category);
 
 		Product savedProduct = productRepository.save(product);
 
