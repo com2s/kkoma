@@ -15,6 +15,9 @@ import org.springframework.core.io.ClassPathResource;
 import com.ssafy.kkoma.global.error.ErrorCode;
 import com.ssafy.kkoma.global.error.exception.BusinessException;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class AutoCompleteUtils {
 
 	private static AutoCompleteUtils instance;
@@ -33,7 +36,7 @@ public class AutoCompleteUtils {
 
 	private static void getCategory() {
 		try {
-			ClassPathResource resource = new ClassPathResource("data/category.txt");
+			ClassPathResource resource = new ClassPathResource("/data/category.txt");
 			FileInputStream input = new FileInputStream(resource.getFile());
 			InputStreamReader reader = new InputStreamReader(input,"UTF-8");
 			BufferedReader br = new BufferedReader(reader);
@@ -57,6 +60,7 @@ public class AutoCompleteUtils {
 			}
 
 		} catch (IOException e) {
+			log.debug(e.getMessage());
 			throw new BusinessException(ErrorCode.AUTO_COMPLETE_FAIL);
 		}
 	}
