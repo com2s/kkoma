@@ -23,7 +23,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (kidList.length > 0) setSelectedName(kidList[0].name);
+    if (kidList && kidList.length > 0) setSelectedName(kidList[0].name);
   }, [kidList]);
 
   return (
@@ -31,7 +31,7 @@ export default function Home() {
       <Navigation />
       <div className={styles.home}>
         <TopBar />
-        {kidList.length > 0 ? (
+        {kidList && kidList.length > 0 ? (
           <KidCardList kidList={kidList} setSelectedName={setSelectedName} />
         ) : (
           <></>

@@ -19,11 +19,11 @@ const APIModule = async ({ action, method, data }: APIProps) => {
 
   let accessToken;
 
-  if (isLocal) {
-    accessToken = "Bearer " + process.env.NEXT_PUBLIC_SELLER_TOKEN;
-  } else {
-    accessToken = await getAccessToken();
-  }
+  // if (isLocal) {
+  //   accessToken = "Bearer " + process.env.NEXT_PUBLIC_SELLER_TOKEN;
+  // } else {
+  accessToken = await getAccessToken();
+  // }
 
   const res = await fetch(`${baseURL}${action}`, {
     method: method,
@@ -33,7 +33,7 @@ const APIModule = async ({ action, method, data }: APIProps) => {
     },
     body: data,
   });
-  
+
   // json 파싱 분기 처리
   try {
     const json = await res.json();
