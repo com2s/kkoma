@@ -40,9 +40,9 @@ import org.springframework.stereotype.Service;
 import com.ssafy.kkoma.api.product.dto.ProductSummary;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.domain.product.repository.ProductRepository;
+import com.ssafy.kkoma.global.util.complete.AutoCompleteUtils;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -213,6 +213,11 @@ public class ProductService {
 		wishList.setValid(false);
 		WishList savedWishList = wishListRepository.save(wishList);
 		return ProductWishResponse.fromEntity(savedWishList, product);
+	}
+
+	public List<String> getAutoCompleteKeyword(String keyword) {
+		AutoCompleteUtils utils = AutoCompleteUtils.getInstance();
+		return utils.getPrefixMap(keyword);
 	}
 
 	public ChatProductResponse getChatProduct(Long productId) {
