@@ -15,8 +15,8 @@ export function KidBirthFormat(birthDate: string) {
   } else if (dday < 781) {
     //25개월 이하일 때는 개월수로 표시
 
-    const month = dday / 30;
-    return `${month}개월 (D+${dday})`;
+    const month = Math.floor(dday / 30);
+    return `${month}개월 (D+${dday.toLocaleString()})`;
   } else {
     //만나이, 디데이 표시
     let age = today.getFullYear() - birth.getFullYear();
@@ -24,6 +24,6 @@ export function KidBirthFormat(birthDate: string) {
     if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
       age--;
     }
-    return `만 ${age}살 (D+${dday})`;
+    return `만 ${age}살 (D+${dday.toLocaleString()})`;
   }
 }
