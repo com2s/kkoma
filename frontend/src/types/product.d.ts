@@ -1,9 +1,21 @@
+import { ProductStatus } from "./status";
+
 export interface ProductSm {
   id: number;
   thumbnail_image: string;
   title: string;
   price: number;
 }
+
+export type ChatProduct = {
+  id: number;
+  thumbnailImage: string;
+  title: string;
+  price: number;
+  status: ProductStatus;
+  sellerId: number;
+  buyerId: number;
+};
 
 export interface Product {
   success: boolean;

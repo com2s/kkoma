@@ -7,18 +7,21 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import TopBar3 from "@/components/common/top-bar3";
 import styles from "./chat.module.scss";
-import { getChatListAPI } from "@/services/chat";
+import { getChatListAPI, getProductAPI } from "@/services/chat";
 import { Chat } from "@/types/chat";
 import LocalStorage from "@/utils/localStorage";
 
 import SendIcon from "@mui/icons-material/Send";
 import { ProductCard } from "@/components/common/product-card";
+import { ChatProduct } from "@/types/product";
 
 let ws: CompatClient;
 
 export default function Chatting() {
   const params = useParams<{ id: string }>();
   const [chatList, setChatList] = useState<Array<Chat>>([]);
+  const [product, setProduct] = useState<ChatProduct>();
+  const [canChat, setCanChat] = useState<boolean>(true);
   const [msg, setMsg] = useState<string>("");
 
   const connectChat = () => {
@@ -44,6 +47,11 @@ export default function Chatting() {
     setChatList(res);
   };
 
+  const getProduct = async () => {
+    const res = await getProductAPI(params.id);
+    setProduct(res);
+  };
+
   const handleChatInput = (e: ChangeEvent<HTMLInputElement>) => {
     setMsg(e.target.value);
   };
@@ -61,29 +69,48 @@ export default function Chatting() {
   };
 
   useEffect(() => {
+    getProduct();
     connectChat();
     getChatList();
   }, []);
 
+  useEffect(() => {
+    if (
+      product &&
+      (product.status === "SOLD" || product.status === "PROGRESS")
+    ) {
+      const myId = Number(LocalStorage.getItem("memberId"));
+      if (product.buyerId !== myId && product.sellerId !== myId) {
+        setCanChat(false);
+      }
+    }
+  }, [product]);
+
   return (
     <div className={styles.chat}>
       <TopBar3 />
-      <div className={styles.product}>
-        <ProductCard
-          product={{
-            id: 0,
-            thumbnail_image: "https://picsum.photos/250/250",
-            title: "제품이름",
-            price: 1200,
-          }}
-        />
-      </div>
+      {product ? (
+        <div className={styles.product}>
+          <ProductCard
+            product={{
+              id: product.id,
+              thumbnail_image: product.thumbnailImage,
+              title: product.title,
+              price: product.price,
+            }}
+          />
+        </div>
+      ) : (
+        <></>
+      )}
       <section className={styles.chatBody}>
         {chatList && chatList.length > 0 ? (
           chatList.map((item, k) => (
             <div
               key={k}
-              className={item.memberProfile.id === 2 ? styles.chatRight : styles.chatLeft}
+              className={
+                item.memberProfile.id === 2 ? styles.chatRight : styles.chatLeft
+              }
             >
               <Image
                 className={styles.profile}
@@ -93,7 +120,9 @@ export default function Chatting() {
                 height={30}
               />
               <div className={styles.chatBox}>
-                <span className={styles.nickname}>{item.memberProfile.nickname}</span>
+                <span className={styles.nickname}>
+                  {item.memberProfile.nickname}
+                </span>
                 <span className={styles.content}>{item.content}</span>
                 <span className={styles.time}>{item.sentTime}</span>
               </div>
@@ -104,10 +133,20 @@ export default function Chatting() {
         )}
       </section>
       <div className={styles.inputLine}>
-        <input type="text" onChange={handleChatInput} value={msg} placeholder="채팅 입력" />
-        <button onClick={sendChat}>
-          <SendIcon className="c-text1" />
-        </button>
+        <input
+          type="text"
+          onChange={handleChatInput}
+          value={msg}
+          placeholder={canChat ? "채팅 입력" : "이미 진행 중인 거래입니다."}
+          disabled={!canChat}
+        />
+        {canChat ? (
+          <button onClick={sendChat}>
+            <SendIcon className="c-text1" />
+          </button>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

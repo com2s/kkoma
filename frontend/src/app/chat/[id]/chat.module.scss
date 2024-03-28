@@ -6,12 +6,15 @@
   .product {
     position: fixed;
     width: calc(100% - rem(52));
+    min-width: calc($min-width - rem(52));
+    max-width: calc($max-width - rem(52));
     top: rem(58);
     background-color: white;
+    box-shadow: 0 15px 15px 0 white;
   }
   .chatBody {
     overflow-y: auto;
-    padding: rem(58) 0 rem(48);
+    padding: rem(58) 0 rem(58);
     .profile {
       border-radius: 50%;
     }
@@ -63,10 +66,13 @@
     @include flex(center, space-between, row);
     gap: 4%;
     width: 100%;
+    min-width: $min-width;
+    max-width: $max-width;
     background-color: white;
     position: fixed;
     bottom: 0;
     padding: rem(10) rem(52) rem(10) 0;
+    box-shadow: 0 -15px 15px 0 white;
 
     input {
       width: 100%;
