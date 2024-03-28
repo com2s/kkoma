@@ -13,6 +13,7 @@ import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
 import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
 import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
+import com.ssafy.kkoma.api.product.dto.response.ChatProductResponse;
 import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
 import com.ssafy.kkoma.domain.chat.entity.ChatRoom;
 import com.ssafy.kkoma.api.product.dto.ProductWishResponse;
@@ -42,7 +43,6 @@ import com.ssafy.kkoma.domain.product.repository.ProductRepository;
 import com.ssafy.kkoma.global.util.complete.AutoCompleteUtils;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -218,6 +218,12 @@ public class ProductService {
 	public List<String> getAutoCompleteKeyword(String keyword) {
 		AutoCompleteUtils utils = AutoCompleteUtils.getInstance();
 		return utils.getPrefixMap(keyword);
+	}
+
+	public ChatProductResponse getChatProduct(Long productId) {
+		Product product = findProductByProductId(productId);
+
+		return ChatProductResponse.fromEntity(product);
 	}
 
 }

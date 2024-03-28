@@ -11,6 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
+import com.ssafy.kkoma.api.product.dto.response.ChatProductResponse;
 import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
 import com.ssafy.kkoma.domain.chat.entity.ChatRoom;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
@@ -205,5 +206,22 @@ class ProductServiceTest {
 		);
 
 	}
+
+	@Test
+	@Transactional
+	public void 채팅방에서_거래_글_정보를_조회한다() throws Exception{
+	    // given
+		Member member = memberFactory.createMember();
+		Category category = categoryFactory.createCategory();
+		ChatRoom chatRoom = chatRoomFactory.createChatRoom();
+		Product product = productFactory.createProduct(member, category, chatRoom, 1000);
+
+	    // when
+		ChatProductResponse chatProduct = productService.getChatProduct(product.getId());
+
+		// then
+		assertEquals(1000, chatProduct.getPrice());
+	}
+
 
 }
