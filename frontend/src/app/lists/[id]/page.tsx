@@ -43,7 +43,6 @@ interface IParams {
 // }
 
 export default function ProductDetail({ params: { id } }: IParams) {
-  if (!id) return <div>상품 정보가 없습니다.</div>;
   const [product, setProduct] = useState<DetailParams|null>(null);
   const [myId, setMyId] = useState<string | null>(null);
   const [success, setSuccess] = useState(true);
@@ -57,9 +56,11 @@ export default function ProductDetail({ params: { id } }: IParams) {
     fetchData();
   }, []);
   console.log("myId: ", myId);
-
+  
   console.log(product);
-
+  
+  if (success === false) return <div>상품 정보를 불러오는데 실패했습니다.</div>;
+  
   const settings = {
     centerMode: true,
     autoplay: (product && (product.data.productImages.length > 1)) ? true : false,
