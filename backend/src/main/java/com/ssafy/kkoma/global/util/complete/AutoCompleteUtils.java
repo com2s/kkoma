@@ -42,7 +42,9 @@ public class AutoCompleteUtils {
 			String tmp = "";
 
 			while((tmp = br.readLine()) != null) {
-				trie.put(tmp, tmp);
+				for (int i = 0; i < tmp.length(); i++) {
+					trie.put(tmp.substring(i), tmp);
+				}
 			}
 
 		} catch (IOException e) {
