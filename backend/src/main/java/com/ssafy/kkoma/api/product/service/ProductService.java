@@ -23,6 +23,7 @@ import com.ssafy.kkoma.domain.member.entity.Member;
 
 import com.ssafy.kkoma.domain.product.constant.MyProductType;
 
+import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.domain.product.entity.Category;
 
 import com.ssafy.kkoma.domain.product.entity.ProductImage;
@@ -41,7 +42,6 @@ import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.domain.product.repository.ProductRepository;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -213,6 +213,10 @@ public class ProductService {
 		wishList.setValid(false);
 		WishList savedWishList = wishListRepository.save(wishList);
 		return ProductWishResponse.fromEntity(savedWishList, product);
+	}
+
+	public List<Product> findProductForSaleByCategoryId(Integer categoryId) {
+		return productRepository.findByCategoryIdAndStatus(categoryId, ProductType.SALE);
 	}
 
 }
