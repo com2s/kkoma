@@ -1,6 +1,5 @@
 package com.ssafy.kkoma.api.common.dto;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.data.domain.Page;
