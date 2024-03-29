@@ -1,8 +1,11 @@
 package com.ssafy.kkoma.api.product.controller;
 
-import com.ssafy.kkoma.api.product.dto.response.MyWishProductResponse;
+import com.ssafy.kkoma.api.common.dto.BasePageResponse;
+import com.ssafy.kkoma.api.product.dto.ProductSummary;
+
 import com.ssafy.kkoma.api.product.service.ProductService;
 import com.ssafy.kkoma.api.product.dto.ProductWishResponse;
+import com.ssafy.kkoma.domain.product.entity.WishList;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfoDto;
 import com.ssafy.kkoma.global.util.ApiUtils;
@@ -40,9 +43,12 @@ public class WishController {
     }
 
     @GetMapping("/wishes")
-    public ResponseEntity<ApiUtils.ApiResult<MyWishProductResponse>> getMyWishProducts(@MemberInfo MemberInfoDto memberInfoDto, Pageable pageable) {
+    public ResponseEntity<ApiUtils.ApiResult<BasePageResponse<WishList, ProductSummary>>> getMyWishProducts(
+            @MemberInfo MemberInfoDto memberInfoDto,
+            Pageable pageable
+    ) {
         Long memberId = memberInfoDto.getMemberId();
-        MyWishProductResponse response = productService.getMyWishProducts(memberId, pageable);
+        BasePageResponse<WishList, ProductSummary> response = productService.getMyWishProducts(memberId, pageable);
         return ResponseEntity.ok(ApiUtils.success(response));
     }
 }
