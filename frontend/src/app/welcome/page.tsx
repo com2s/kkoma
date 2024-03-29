@@ -11,8 +11,14 @@ import { useRouter } from "next/navigation";
 export default function Join() {
   const router = useRouter();
 
+  const canLogin = async () => {
+    if (await isLogin()) {
+      router.replace("/");
+    }
+  };
+
   useEffect(() => {
-    if (isLogin()) router.replace("/");
+    canLogin();
   }, []);
 
   return (
