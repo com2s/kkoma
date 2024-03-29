@@ -27,7 +27,9 @@ public class PointController {
     @Tag(name = "Point")
     @Operation(summary = "to get a point summary", security = {@SecurityRequirement(name = "bearer-key")})
     @GetMapping("/summary")
-    public ResponseEntity<ApiUtils.ApiResult<PointSummaryResponse>> getPointSummary(@MemberInfo MemberInfoDto memberInfoDto) {
+    public ResponseEntity<ApiUtils.ApiResult<PointSummaryResponse>> getPointSummary(
+        @MemberInfo MemberInfoDto memberInfoDto
+    ) {
         PointSummaryResponse pointSummary = pointService.getPointSummary(memberInfoDto.getMemberId());
         return ResponseEntity.ok(ApiUtils.success(pointSummary));
     }
@@ -36,7 +38,10 @@ public class PointController {
     @Tag(name = "Point")
     @Operation(summary = "to get a point summary", security = {@SecurityRequirement(name = "bearer-key")})
     @GetMapping("/products/{productId}")
-    public ResponseEntity<?> comparePointsToPrice(@MemberInfo MemberInfoDto memberInfoDto, @PathVariable Long productId){
+    public ResponseEntity<?> comparePointsToPrice(
+        @MemberInfo MemberInfoDto memberInfoDto,
+        @PathVariable("productId") Long productId
+    ) {
         pointService.comparePointsToPrice(memberInfoDto.getMemberId(), productId);
         return ResponseEntity.ok().build();
     }
