@@ -1,6 +1,6 @@
 "use client";
 
-import TopBar2 from "@/components/lists/lists-detail-bar";
+import TopBar2 from "@/components/lists/lists-calendar-bar";
 import Calendar from "@/components/common/calendar-offer";
 import RequestDone from "@/components/lists/request-done";
 import { postOffer } from "@/components/lists/lists-ftn";
@@ -38,10 +38,8 @@ export default function RequestDeal({params: { id }} : IParams) {
   const [open, setOpen] = useState(false);
   const [parentDate0, setParentDate0] = useState("");
   const [parentDate1, setParentDate1] = useState("");
-  const [parentDate2, setParentDate2] = useState("");
   const [parentTime0, setParentTime0] = useState("");
   const [parentTime1, setParentTime1] = useState("");
-  const [parentTime2, setParentTime2] = useState("");
   const [selectedTimes, setSelectedTimes] = useState<TimeEntry[]>([]);
 
   const router = useRouter();
@@ -62,22 +60,12 @@ export default function RequestDeal({params: { id }} : IParams) {
     }
   };
 
-  const handleDate2 = (data: string) => {
-    if (data) {
-      setParentDate2(data);
-    } else {
-      setParentDate2("");
-    }
-  };
 
   const handleTime0 = (data: string) => {
     setParentTime0(data);
   };
   const handleTime1 = (data: string) => {
     setParentTime1(data);
-  };
-  const handleTime2 = (data: string) => {
-    setParentTime2(data);
   };
 
   const theme = useTheme();
@@ -91,7 +79,6 @@ export default function RequestDeal({params: { id }} : IParams) {
     const selectedTimes = [
       [parentDate0, parentTime0],
       [parentDate1, parentTime1],
-      [parentDate2, parentTime2],
     ];
 
     const res = await postOffer(id, selectedTimes);
@@ -117,9 +104,6 @@ export default function RequestDeal({params: { id }} : IParams) {
     }
     if (parentDate1 && parentTime1) {
       newSelectedTimes.push({ date: parentDate1, time: parentTime1 });
-    }
-    if (parentDate2 && parentTime2) {
-      newSelectedTimes.push({ date: parentDate2, time: parentTime2 });
     }
 
     setSelectedTimes(newSelectedTimes); // 새로운 상태 설정
@@ -165,8 +149,8 @@ export default function RequestDeal({params: { id }} : IParams) {
               <div style={{ textAlign: "center" }}>
                 {parentDate0 ? (
                   <div>
-                    <p className="text-[16px]">{parentDate0}</p>
-                    <p className="mt-1 text-[16px]">{parentTime0}</p>
+                    <p className="text-[15px]">{parentDate0}</p>
+                    <p className="mt-1 text-[15px]">{parentTime0}</p>
                   </div>
                 ) : (
                   <p>날짜 선택</p>
@@ -175,7 +159,8 @@ export default function RequestDeal({params: { id }} : IParams) {
             }
             {...a11yProps(0)}
             sx={{
-              margin: "8px",
+              margin: "6px",
+              padding: "2px",
               borderRadius: "12px",
               height: "5rem",
               minWidth: "3rem",
@@ -189,8 +174,8 @@ export default function RequestDeal({params: { id }} : IParams) {
               <div style={{ textAlign: "center" }}>
                 {parentDate1 ? (
                   <div>
-                    <p className="text-[16px]">{parentDate1}</p>
-                    <p className="mt-1 text-[16px]">{parentTime1}</p>
+                    <p className="text-[15px]">{parentDate1}</p>
+                    <p className="mt-1 text-[15px]">{parentTime1}</p>
                   </div>
                 ) : (
                   <p>추가 시간 선택</p>
@@ -198,29 +183,6 @@ export default function RequestDeal({params: { id }} : IParams) {
               </div>
             }
             {...a11yProps(1)}
-            sx={{
-              margin: "8px",
-              borderRadius: "12px",
-              minWidth: "3rem",
-              "&.MuiTab-root": {
-                bgcolor: "#f5f5f5",
-              },
-            }}
-          />
-          <Tab
-            label={
-              <div style={{ textAlign: "center" }}>
-                {parentDate2 ? (
-                  <div>
-                    <p className="text-[16px]">{parentDate2}</p>
-                    <p className="mt-1 text-[16px]">{parentTime2}</p>
-                  </div>
-                ) : (
-                  <p>추가 시간 선택</p>
-                )}
-              </div>
-            }
-            {...a11yProps(2)}
             sx={{
               margin: "8px",
               borderRadius: "12px",
@@ -240,7 +202,6 @@ export default function RequestDeal({params: { id }} : IParams) {
             selectedTimes={[
               [parentDate0, parentTime0],
               [parentDate1, parentTime1],
-              [parentDate2, parentTime2],
             ]}
             index={0}
           ></Calendar>
@@ -253,28 +214,14 @@ export default function RequestDeal({params: { id }} : IParams) {
             selectedTimes={[
               [parentDate0, parentTime0],
               [parentDate1, parentTime1],
-              [parentDate2, parentTime2],
             ]}
             index={1}
-          ></Calendar>
-        )}
-
-        {value === 2 && (
-          <Calendar
-            sendDateToParent={handleDate2}
-            sendTimeToParent={handleTime2}
-            selectedTimes={[
-              [parentDate0, parentTime0],
-              [parentDate1, parentTime1],
-              [parentDate2, parentTime2],
-            ]}
-            index={2}
           ></Calendar>
         )}
       </div>
       <div className="flex justify-center">
         <button
-          className="mt-8 mb-8 w-5/6 h-16 bg-primary rounded-xl
+          className="mt-8 mb-8 w-full h-16 bg-primary rounded-xl
          bg-yellow-400 text-black"
           onClick={() => [handleClickOpen(), handleSelectedTimes()]}
         >
@@ -315,7 +262,7 @@ export default function RequestDeal({params: { id }} : IParams) {
         {/* 우선 임시로 닫는 버튼 */}
         <div className="flex justify-center">
           <button
-            className="mt-8 mb-8 w-5/6 h-16 bg-primary rounded-xl
+            className="mt-8 mb-8 w-full h-16 bg-primary rounded-xl
          bg-yellow-400 text-black"
             onClick={() => router.back()}
           >

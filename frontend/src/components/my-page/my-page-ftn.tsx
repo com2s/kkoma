@@ -42,10 +42,27 @@ export async function getMyInfo() {
 }
 
 interface MemberInfo {
-  profileImage: string;
-  nickname: string;
-  name: string;
-  phone: string;
+  profileImage: string|null;
+  nickname: string|null;
+  name: string|null;
+  phone: string|null;
+}
+
+export interface MyInfo {
+  success: boolean;
+  data: {
+    id: number | null;
+    profileImage: string | null;
+    email: string | null;
+    nickname: string | null;
+    name: string | null;
+    phone: string | null;
+    role: string | null;
+  };
+  error: {
+    errorCode: string;
+    errorMessage: string;
+  };
 }
 
 export async function putMyInfo(data: MemberInfo) {

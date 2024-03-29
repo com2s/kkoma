@@ -2,9 +2,9 @@ package com.ssafy.kkoma.api.offer.controller;
 
 import com.ssafy.kkoma.api.deal.dto.request.DecideOfferRequest;
 import com.ssafy.kkoma.api.offer.dto.request.OfferTimeRequest;
+import com.ssafy.kkoma.api.offer.dto.response.DecideOfferResponse;
 import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
 import com.ssafy.kkoma.api.offer.dto.response.SendOfferResponse;
-import com.ssafy.kkoma.api.offer.dto.response.DecideOfferResponse;
 import com.ssafy.kkoma.api.offer.service.OfferDetailService;
 import com.ssafy.kkoma.api.offer.service.OfferService;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
@@ -37,7 +37,11 @@ public class OfferController {
         security = { @SecurityRequirement(name = "bearer-key") }
     )
     @PostMapping("/products/{productId}")
-    public ResponseEntity<?> createOffer(@MemberInfo MemberInfoDto memberInfo, @PathVariable Long productId, @RequestBody List<OfferTimeRequest> offerTimeRequestList){
+    public ResponseEntity<?> createOffer(
+        @MemberInfo MemberInfoDto memberInfo,
+        @PathVariable("productId") Long productId,
+        @RequestBody List<OfferTimeRequest> offerTimeRequestList
+    ){
         Long offerId = offerService.createOffer(memberInfo.getMemberId(), productId);
         SendOfferResponse sendOfferResponse = offerDetailService.createOfferDetail(offerId, offerTimeRequestList);
 
@@ -51,7 +55,9 @@ public class OfferController {
         security = { @SecurityRequirement(name = "bearer-key") }
     )
     @GetMapping("/products/{productId}")
-    public ResponseEntity<ApiUtils.ApiResult<List<OfferResponse>>> getOffers(@PathVariable Long productId) {
+    public ResponseEntity<ApiUtils.ApiResult<List<OfferResponse>>> getOffers(
+        @PathVariable("productId") Long productId
+    ) {
         List<OfferResponse> offerResponseList = offerService.getOffers(productId);
 
         return ResponseEntity.ok(ApiUtils.success(offerResponseList));
@@ -65,8 +71,8 @@ public class OfferController {
     )
     @PatchMapping("/{offerId}")
     public ResponseEntity<?> decideOffer(
-		@PathVariable Long offerId,
-        @Parameter(name = "type", description = "거래 수락 시 accept, 거래 거절 시 reject", in = ParameterIn.QUERY) @RequestParam String type,
+		@PathVariable("offerId") Long offerId,
+        @Parameter(name = "type", description = "거래 수락 시 accept, 거래 거절 시 reject", in = ParameterIn.QUERY) @RequestParam("type") String type,
         @RequestBody DecideOfferRequest decideOfferRequest
     ) {
         DecideOfferResponse decideOfferResponse = null;

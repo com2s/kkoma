@@ -1,5 +1,7 @@
 package com.ssafy.kkoma.api.deal.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.kkoma.api.deal.dto.request.DecideOfferRequest;
@@ -18,6 +20,9 @@ import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -27,6 +32,11 @@ public class DealService {
 
 	public Deal findDealByDealId(Long dealId){
 		return dealRepository.findById(dealId)
+			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.DEAL_NOT_EXISTS));
+	}
+
+	public Deal findDealByProductId(Long productId) {
+		return dealRepository.findDealByProductId(productId)
 			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.DEAL_NOT_EXISTS));
 	}
 
@@ -73,16 +83,16 @@ public class DealService {
 			throw new BusinessException(ErrorCode.INVALID_SELLER);
 		}
 
-		// 판매자에게 포인트 넣어주기
-		seller.getPoint().addBalance(product.getPrice());
-
-		// 상품 status 변경
-		product.updateStatus(ProductType.SOLD);
-
-		// 거래 status 변경
-		deal.updateIsCompleted(Boolean.TRUE);
+		seller.getPoint().addBalance(product.getPrice()); // 판매자에게 포인트 송금
+		product.updateStatus(ProductType.SOLD); // 상품 status 변경
+		deal.updateIsCompleted(Boolean.TRUE); // 거래 status 변경
 
 		return deal;
+	}
+
+	public List<Deal> findScheduledDeal(LocalDateTime now, Pageable pageable) {
+		Page<Deal> pageList = dealRepository.findScheduledDeal(now, pageable);
+		return pageList.getContent();
 	}
 
 }

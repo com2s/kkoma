@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
+import com.ssafy.kkoma.api.product.dto.response.ChatProductResponse;
 import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
 import com.ssafy.kkoma.domain.chat.entity.ChatRoom;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
@@ -205,5 +205,23 @@ class ProductServiceTest {
 		);
 
 	}
+
+	@Test
+	@Transactional
+	public void 채팅방에서_거래_글_정보를_조회한다() throws Exception{
+	    // given
+		Member member = memberFactory.createMember();
+		Category category = categoryFactory.createCategory();
+		ChatRoom chatRoom = chatRoomFactory.createChatRoom();
+		Product product = productFactory.createProduct(member, category,1000);
+		product.setChatRoom(chatRoom);
+
+	    // when
+		ChatProductResponse chatProduct = productService.getChatProduct(chatRoom.getId());
+
+		// then
+		assertEquals(1000, chatProduct.getPrice());
+	}
+
 
 }
