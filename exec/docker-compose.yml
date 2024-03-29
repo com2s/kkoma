@@ -35,14 +35,14 @@ services:
       - backend
 
   mysql-test:
-    image: mysql:8.3.0
+    image: mysql-test:latest
     container_name: mysql-test
     restart: unless-stopped
     volumes:
       - /home/ubuntu/mysql-test/data:/var/lib/mysql
       # - /home/ubuntu/mysql/initdb.d:/docker-entrypoint-initdb.d
     ports:
-      - 3306:3306
+      - 4406:3306
     environment:
       TZ: ${TZ}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
