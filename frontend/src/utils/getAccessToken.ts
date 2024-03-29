@@ -4,19 +4,7 @@ import LocalStorage from "./localStorage";
 
 const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
-export const isLogin = () => {
-  const accessToken = getItemWithExpireTime("accessToken");
-  if (accessToken) return true;
-  const refreshToken = getItemWithExpireTime("refreshToken");
-  if (refreshToken) return true;
-  return false;
-};
-
-export const getAccessToken = async () => {
-  // TODO: 추후 cookie로 받아와서 http secure 옵션 추가해야됨.
-  // const cookieStore = cookies();
-  // const accessToken = cookieStore.get("accessToken");
-
+export const isLogin = async () => {
   const accessToken = getItemWithExpireTime("accessToken");
   if (accessToken) {
     const grantType = LocalStorage.getItem("grantType");
@@ -33,13 +21,23 @@ export const getAccessToken = async () => {
       },
     });
     const obj = await res.json();
+    if (res.status !== 200) {
+      LocalStorage.removeItem("refreshToken");
+      return null;
+    }
     setItemWithExpireTime("accessToken", obj.data.accessToken, obj.data.accessTokenExpireTime);
     const newAccessToken = getItemWithExpireTime("accessToken");
     return `${grantType} ${newAccessToken}`;
   }
 
-  if (typeof window !== "undefined") {
+  return null;
+};
+
+export const getAccessToken = async () => {
+  const token = await isLogin();
+  if (!token && typeof window !== "undefined") {
     alert("로그인이 필요합니다.");
     window.location.href = "/welcome";
   }
+  return token;
 };

@@ -5,7 +5,7 @@ import Title from "@/components/common/title";
 import styles from "./qr.module.scss";
 import { ProductCard } from "@/components/common/product-card";
 import QRCode from "@/components/plan/qr-img";
-import { ProductSm } from "@/types/product";
+import { DetailParams, ProductSm } from "@/types/product";
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import { getDealCodeAPI } from "@/services/deals";
@@ -17,11 +17,11 @@ export default function DealPay() {
   const productId = query.get("product") ?? "";
 
   const [code, setCode] = useState<string>();
-  const [product, setProduct] = useState<ProductSm>();
+  const [product, setProduct] = useState<DetailParams>();
 
   const getCodeAndProduct = async () => {
     const res1 = await getProductDetail(productId);
-    setProduct(res1.data);
+    setProduct(res1);
     const res2 = await getDealCodeAPI({ dealId: params.id });
     setCode(res2);
   };
@@ -34,7 +34,18 @@ export default function DealPay() {
     <div className={styles.qr}>
       <TopBar3 />
       <Title title="거래를 확정해주세요" subtitle="QR코드를 스캔해주세요" />
-      {product ? <ProductCard product={product} /> : <></>}
+      {product ? (
+        <ProductCard
+          product={{
+            id: product.data.id,
+            thumbnailImage: product.data.productImages[0],
+            title: product.data.title,
+            price: product.data.price,
+          }}
+        />
+      ) : (
+        <></>
+      )}
       <div className="flex justify-center w-full">{code ? <QRCode code={code} /> : <></>}</div>
     </div>
   );

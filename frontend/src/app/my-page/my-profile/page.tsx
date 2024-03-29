@@ -24,6 +24,7 @@ export default function MyProfileDetail() {
   const [nickname, setNickname] = useState<string | null>("");
   const [name, setName] = useState<string | null>("");
   const [phone, setPhone] = useState<string | null>("");
+  const [expanded, setExpanded] = useState(false); // 아코디언 확장 상태 관리
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,7 +56,6 @@ export default function MyProfileDetail() {
     );
   }
 
-  const [expanded, setExpanded] = useState(false); // 아코디언 확장 상태 관리
 
   const handleAccordionChange = (panel: boolean) => (event: React.SyntheticEvent, isExpanded: boolean) => {
     setExpanded(isExpanded ? panel : false);
