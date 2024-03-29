@@ -25,6 +25,7 @@ public class ProductDetailResponse {
     private Long elapsedMinutes;
     private MemberSummaryResponse memberSummary;
     private Long chatRoomId;
+    private boolean wish;
     private Long wishCount;
     private Long offerCount;
     private Long viewCount;

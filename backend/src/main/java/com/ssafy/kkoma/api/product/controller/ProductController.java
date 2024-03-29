@@ -60,8 +60,8 @@ public class ProductController {
         security = { @SecurityRequirement(name = "bearer-key") }
     )
     @GetMapping("/{productId}")
-    public ResponseEntity<ApiUtils.ApiResult<ProductDetailResponse>> getProduct(@PathVariable Long productId){
-        ProductDetailResponse productDetailResponse = productService.getProduct(productId);
+    public ResponseEntity<ApiUtils.ApiResult<ProductDetailResponse>> getProduct(@MemberInfo MemberInfoDto memberInfoDto, @PathVariable Long productId){
+        ProductDetailResponse productDetailResponse = productService.getProduct(productId, memberInfoDto.getMemberId());
         productService.addViewCount(productId);
         return ResponseEntity.ok(ApiUtils.success(productDetailResponse));
     }

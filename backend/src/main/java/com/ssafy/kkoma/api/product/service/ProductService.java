@@ -79,12 +79,13 @@ public class ProductService {
 		return buildSearchProductResponse(pageList);
 	}
 
-	public ProductDetailResponse getProduct(Long productId) {
+	public ProductDetailResponse getProduct(Long productId, Long memberId) {
 		Product product = findProductByProductId(productId);
 		List<String> productImageUrls = productImageService.getProductImageUrls(productId);
 		String categoryName = categoryService.getCategoryName(product.getCategory().getId());
-		ProductDetailResponse productDetailResponse = buildProductDetailResponse(product, productImageUrls, categoryName, product.getMember());
-		return productDetailResponse;
+		boolean isWished = wishListRepository.existsByProductIdAndMemberId(productId, memberId);
+
+		return buildProductDetailResponse(product, productImageUrls, categoryName, product.getMember(), isWished);
 	}
 
 	public void addViewCount(Long productId) {
@@ -131,7 +132,7 @@ public class ProductService {
 			savedProductImageUrls.add(productImage.getProductImage());
 		}
 
-		return buildProductDetailResponse(savedProduct, savedProductImageUrls, category.getName(), seller);
+		return buildProductDetailResponse(savedProduct, savedProductImageUrls, category.getName(), seller, false);
 	}
 
 
@@ -139,7 +140,8 @@ public class ProductService {
 		Product product,
 		List<String> productImageUrls,
 		String categoryName,
-		Member seller
+		Member seller,
+		boolean wish
 	) {
 		MemberSummaryResponse sellerSummaryResponse = MemberSummaryResponse.fromEntity(seller);
 
@@ -155,6 +157,7 @@ public class ProductService {
 			.elapsedMinutes(Duration.between(product.getCreatedAt(), LocalDateTime.now()).toMinutes())
 			.memberSummary(sellerSummaryResponse)
 			.chatRoomId(product.getChatRoom().getId())
+			.wish(wish)
 			.wishCount(product.getWishCount())
 			.offerCount(product.getOfferCount())
 			.viewCount(product.getViewCount())
