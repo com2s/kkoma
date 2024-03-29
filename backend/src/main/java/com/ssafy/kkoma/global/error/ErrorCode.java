@@ -65,8 +65,8 @@ public enum ErrorCode {
 
     // WishList
     WISH_LIST_ALREADY_VALID(HttpStatus.BAD_REQUEST, "W-001", "이미 찜한 거래 글입니다"),
-    WISH_LIST_ALREADY_NOT_VALID(HttpStatus.BAD_REQUEST, "W-001", "이미 찜 취소한 거래 글입니다"),
-    WISH_COUNT_ZERO(HttpStatus.BAD_REQUEST, "W-002", "찜 수가 0이라 더 이상 감소될 수 없음");
+    WISH_LIST_ALREADY_NOT_VALID(HttpStatus.BAD_REQUEST, "W-002", "이미 찜 취소한 거래 글입니다"),
+    WISH_COUNT_ZERO(HttpStatus.BAD_REQUEST, "W-003", "찜 수가 0이라 더 이상 감소될 수 없습니다");
 
     ErrorCode(HttpStatus httpStatus, String errorCode, String message) {
         this.httpStatus = httpStatus;
