@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 
 export const metadata: Metadata = {
-      title: "Create Post",
+      title: "거래글 쓰기",
       description: "Creating a post",
     };
 

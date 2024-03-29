@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "마이 페이지",
-  description: "User's personal page",
+  title: "알림",
+  description: "User's notifications page",
 };
 
-export default function MyPageLayout({
+export default function MyNotificationsLayout({
   children,
 }: {
   children: React.ReactNode;
