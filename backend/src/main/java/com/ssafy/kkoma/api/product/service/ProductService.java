@@ -16,6 +16,7 @@ import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
 import com.ssafy.kkoma.api.product.dto.response.ChatProductResponse;
 import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
+import com.ssafy.kkoma.api.product.dto.response.MyWishProductResponse;
 import com.ssafy.kkoma.domain.chat.entity.ChatRoom;
 import com.ssafy.kkoma.api.product.dto.ProductWishResponse;
 
@@ -182,6 +183,24 @@ public class ProductService {
 			.build();
 	}
 
+	private MyWishProductResponse buildWishProductResponse(Page<WishList> page) {
+		List<ProductSummary> content = page.getContent().stream()
+			.map(wishList -> ProductSummary.fromEntity(wishList.getProduct()))
+			.toList();
+
+		return MyWishProductResponse.builder()
+			.content(content)
+			.size(page.getSize())
+			.page(page.getNumber())
+			.numberOfElements(page.getNumberOfElements())
+			.totalElements(page.getTotalElements())
+			.totalPages(page.getTotalPages())
+			.first(page.isFirst())
+			.last(page.isLast())
+			.empty(page.isEmpty())
+			.build();
+	}
+
 	public ProductWishResponse wishProduct(Long productId, Long memberId) {
 		// 글 조회
 		Product product = findProductByProductId(productId); // todo Pessimistic Locking
@@ -220,6 +239,11 @@ public class ProductService {
 		wishList.setValid(false);
 		WishList savedWishList = wishListRepository.save(wishList);
 		return ProductWishResponse.fromEntity(savedWishList, product);
+	}
+
+	public MyWishProductResponse getMyWishProducts(Long memberId, Pageable pageable) {
+		Page<WishList> wishLists = wishListRepository.findWishListsByMemberId(memberId, pageable);
+		return buildWishProductResponse(wishLists);
 	}
 
 	public List<String> getAutoCompleteKeyword(String keyword) {
