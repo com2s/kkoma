@@ -14,12 +14,14 @@ import {
   ListItemText,
 } from "@mui/material";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function MyNotificationsPage() {
   const [notifications, setNotifications] = useState([]);
   const [page, setPage] = useState({});
   const [success, setSuccess] = useState(true);
   const [today, setToday] = useState(new Date());
+  const router = useRouter();
 
   const fetchData = async () => {
     const res = await getMyNotifications();
@@ -52,14 +54,14 @@ export default function MyNotificationsPage() {
     } else {
       return "방금 전";
     }
-  }
+  };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  console.log("notifications: ", notifications);
-  console.log("today: ", today);
+  const handleLinkClick =
+    (id: number, destination: string) => async (e: React.MouseEvent) => {
+      e.preventDefault(); // 기본 동작 중단
+      await postReadNotification(id); // API 요청
+      router.push(destination); // 페이지 이동
+    };
 
   return (
     <div>
@@ -76,34 +78,49 @@ export default function MyNotificationsPage() {
                   sx={{ width: 44, height: 44, marginRight: 2 }}
                 />
               </ListItemAvatar>
-              <ListItemText primary="알림이 없습니다." secondary={formatDate(today)} />
+              <ListItemText
+                primary="알림이 없습니다."
+                secondary={formatDate(today)}
+              />
             </ListItem>
           </>
         )}
         {success === true && notifications.length > 0 && (
           <>
-            {notifications?.length > 0 &&
-              notifications.map((notification: any) => (
-                <Link
-                  href={`${notification.destination}`}
+            {notifications.map((notification: any) => (
+              <List
+                key={notification.id}
+                sx={{
+                  width: "100%",
+                  minWidth: 260,
+                  bgcolor: "background.paper",
+                }}
+              >
+                <a
+                  href={notification.destination}
                   key={notification.id}
-                  onClick={() => postReadNotification(notification.id)}
+                  onClick={handleLinkClick(
+                    notification.id,
+                    notification.destination
+                  )}
+                  style={{ textDecoration: "none" }}
                 >
                   <ListItem sx={{ paddingX: 0 }}>
                     <ListItemAvatar>
                       <Avatar
-                        src="temp-img.svg"
-                        alt="Temp Avatar"
+                        src={"temp-img.svg"}
+                        alt="Notification Avatar"
                         sx={{ width: 44, height: 44, marginRight: 2 }}
                       />
                     </ListItemAvatar>
                     <ListItemText
                       primary={notification.message}
-                      secondary={calculateDate(notification.sentAt)}
+                      secondary={calculateDate(new Date(notification.sentAt))}
                     />
                   </ListItem>
-                </Link>
-              ))}
+                </a>
+              </List>
+            ))}
           </>
         )}
         <Link href="/">
