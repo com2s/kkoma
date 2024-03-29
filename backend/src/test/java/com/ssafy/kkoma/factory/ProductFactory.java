@@ -45,6 +45,9 @@ public class ProductFactory {
         ChatRoom chatRoom = chatRoomFactory.createChatRoom();
         product.setChatRoom(chatRoom);
 
+        return productRepository.save(product);
+    }
+
     public Product createProduct(Member member, Category category, int price, ProductType status) {
         Product product = Product.builder()
                 .title(TITLE)
