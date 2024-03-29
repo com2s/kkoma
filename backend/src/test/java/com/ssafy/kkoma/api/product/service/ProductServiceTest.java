@@ -115,7 +115,7 @@ class ProductServiceTest {
 		Product product = productFactory.createProduct(member, category, chatRoom, 10000);
 
 		// when
-		ProductDetailResponse productDetailResponse = productService.getProduct(product.getId());
+		ProductDetailResponse productDetailResponse = productService.getProduct(product.getId(), member.getId());
 
 	    // then
 		assertEquals("TITLE", productDetailResponse.getTitle());
