@@ -1,8 +1,8 @@
 package com.ssafy.kkoma.api.product.controller;
 
+import com.ssafy.kkoma.api.common.dto.BasePageResponse;
 import com.ssafy.kkoma.api.product.dto.ProductSummary;
 import com.ssafy.kkoma.api.product.dto.ProductWishResponse;
-import com.ssafy.kkoma.api.product.dto.response.MyWishProductResponse;
 import com.ssafy.kkoma.api.product.service.ProductService;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.product.entity.Product;
@@ -94,6 +94,7 @@ class WishControllerTest {
 
 
     @Test
+    @Transactional
     public void 나의_찜_목록_조회하기() throws Exception{
         Member seller = memberFactory.createMember();
         Member buyer = memberFactory.createMember();
@@ -111,23 +112,12 @@ class WishControllerTest {
             wishListFactory.createWishList(buyer, product);
         }
 
-        MyWishProductResponse myWishProductResponse = MyWishProductResponse
-            .builder()
-            .content(wishProductsList)
-            .size(10)
-            .page(0)
-            .numberOfElements(10)
-            .totalElements(15)
-            .totalPages(2)
-            .first(true)
-            .last(false)
-            .empty(false)
-            .build();
+        BasePageResponse<WishList, ProductSummary> myWishProductResponse = new BasePageResponse<>(wishProductsList, 10, 0, 10, 15, 2, true, false, false);
 
         mockMvc.perform(requestUtil.getRequest("/api/products/wishes", buyer).param("page", "0").param("size", "10"))
             .andExpectAll(
                 MockMvcResultMatchers.status().isOk(),
-                requestUtil.jsonContent(MyWishProductResponse.class, myWishProductResponse)
+                requestUtil.jsonContent(BasePageResponse.class, myWishProductResponse)
             );
     }
 

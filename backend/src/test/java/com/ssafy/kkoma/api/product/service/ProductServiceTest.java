@@ -8,11 +8,11 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.ssafy.kkoma.api.common.dto.BasePageResponse;
 import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
 import com.ssafy.kkoma.api.product.dto.response.ChatProductResponse;
 import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
-import com.ssafy.kkoma.api.product.dto.response.MyWishProductResponse;
 import com.ssafy.kkoma.domain.chat.entity.ChatRoom;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
@@ -20,6 +20,7 @@ import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.member.repository.MemberRepository;
 import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
 import com.ssafy.kkoma.domain.product.entity.Category;
+import com.ssafy.kkoma.domain.product.entity.WishList;
 import com.ssafy.kkoma.domain.product.repository.CategoryRepository;
 import com.ssafy.kkoma.factory.CategoryFactory;
 import com.ssafy.kkoma.factory.ChatRoomFactory;
@@ -211,6 +212,7 @@ class ProductServiceTest {
 	}
 
 	@Test
+	@Transactional
 	public void 나의_모든_찜_목록을_조회한다() throws Exception{
 	    // given
 	    Member seller = memberFactory.createMember();
@@ -218,7 +220,7 @@ class ProductServiceTest {
 
 		Pageable pageable = PageRequest.of(0, 10);
 
-		MyWishProductResponse beforeWishList = productService.getMyWishProducts(buyer.getId(), pageable);
+		BasePageResponse<WishList, ProductSummary> beforeWishList = productService.getMyWishProducts(buyer.getId(), pageable);
 
 	    // when
 		for (int i = 0; i < 15; i++) {
@@ -227,7 +229,7 @@ class ProductServiceTest {
 		}
 
 	    // then
-		MyWishProductResponse afterWishList = productService.getMyWishProducts(buyer.getId(), pageable);
+		BasePageResponse<WishList, ProductSummary> afterWishList = productService.getMyWishProducts(buyer.getId(), pageable);
 
 		assertEquals(beforeWishList.getTotalElements() + 15, afterWishList.getTotalElements());
 		assertEquals(beforeWishList.getSize() + 10, afterWishList.getSize() + 10);
