@@ -2,7 +2,7 @@ import { ProductStatus } from "./status";
 
 export interface ProductSm {
   id: number;
-  thumbnail_image: string;
+  thumbnailImage: string;
   title: string;
   price: number;
 }
