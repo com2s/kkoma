@@ -24,8 +24,7 @@ export default function ChildDetailPage({ params: { kidId } }: IParams) {
     setSuccess(res.success);
     if (!res.success) {
       console.error(res.error);
-    }
-    if (res !== null) {
+    } else {
       setName(res.data.name);
       setGender(res.data.gender);
       setBirthDate(res.data.birthDate);

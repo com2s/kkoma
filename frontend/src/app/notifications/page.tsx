@@ -88,17 +88,13 @@ export default function MyNotificationsPage() {
         {success === true && notifications.length > 0 && (
           <>
             {notifications.map((notification: any) => (
-              <List
+              <Link
+                href={notification.destination}
                 key={notification.id}
-                sx={{
-                  width: "100%",
-                  minWidth: 260,
-                  bgcolor: "background.paper",
-                }}
+                passHref
               >
                 <a
                   href={notification.destination}
-                  key={notification.id}
                   onClick={handleLinkClick(
                     notification.id,
                     notification.destination
@@ -119,7 +115,7 @@ export default function MyNotificationsPage() {
                     />
                   </ListItem>
                 </a>
-              </List>
+              </Link>
             ))}
           </>
         )}
