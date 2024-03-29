@@ -3,9 +3,11 @@ package com.ssafy.kkoma.api.offer.service;
 import com.ssafy.kkoma.api.deal.dto.request.DecideOfferRequest;
 import com.ssafy.kkoma.api.deal.service.DealService;
 import com.ssafy.kkoma.api.member.service.MemberService;
+import com.ssafy.kkoma.api.notification.constant.NotiDetailBuilder;
+import com.ssafy.kkoma.api.notification.service.NotificationService;
 import com.ssafy.kkoma.api.offer.dto.response.DecideOfferResponse;
 import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
-import com.ssafy.kkoma.api.point.service.PointService;
+import com.ssafy.kkoma.api.point.service.PointHistoryService;
 import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
 import com.ssafy.kkoma.api.product.service.ProductService;
 import com.ssafy.kkoma.domain.deal.entity.Deal;
@@ -34,8 +36,9 @@ public class OfferService {
     private final OfferRepository offerRepository;
     private final MemberService memberService;
     private final ProductService productService;
-    private final PointService pointService;
     private final DealService dealService;
+    private final NotificationService notificationService;
+    private final PointHistoryService pointHistoryService;
 
     public Offer findOfferByOfferId(Long offerId) {
         return offerRepository.findById(offerId)
@@ -55,16 +58,27 @@ public class OfferService {
             throw new BusinessException(ErrorCode.POINT_NOT_ENOUGH);
         }
 
-        pointService.changePoint(member, PointChangeType.USE, product.getPrice());
+        pointHistoryService.changePoint(member, PointChangeType.PAY, product.getPrice());
 
-        Offer offer = Offer.builder()
-            .product(product)
-            .status(OfferType.SENT)
-            .build();
-
+        Offer offer = Offer.builder().product(product).build();
         offer.setMember(member);
+        Long offerId = offerRepository.save(offer).getId();
 
-        return offerRepository.save(offer).getId();
+        // 판매자에 거래 요청 수신 알림
+        notificationService.createNotification(
+            product.getMember(),
+            NotiDetailBuilder.getInstance().receiveOffer(product.getTitle(), productId)
+        );
+
+        // 구매자에 포인트 출금 알림
+        notificationService.createNotification(
+            offer.getMember(),
+            NotiDetailBuilder.getInstance().changePoint(
+                PointChangeType.PAY, product.getPrice(), offer.getMember().getPoint().getBalance()
+            )
+        );
+
+        return offerId;
     }
 
     public List<OfferResponse> getOffers(Long productId) {
@@ -98,7 +112,11 @@ public class OfferService {
             else {
                 offer.updateStatus(OfferType.REJECTED);
                 Member rejectedBuyer = offer.getMember(); // 거절당한 구매희망자
-                pointService.changePoint(rejectedBuyer, PointChangeType.GET, product.getPrice());
+
+                pointHistoryService.changePoint(rejectedBuyer, PointChangeType.REFUND, product.getPrice());
+                NotiDetailBuilder.getInstance().returnPayment(
+                    product.getTitle(), product.getPrice(), rejectedBuyer.getPoint().getBalance()
+                );
             }
         }
 
