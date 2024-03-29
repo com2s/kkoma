@@ -1,21 +1,19 @@
 package com.ssafy.kkoma.api.notification.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.time.LocalDateTime;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.ssafy.kkoma.api.member.service.MemberService;
-import com.ssafy.kkoma.domain.member.constant.MemberType;
-import com.ssafy.kkoma.domain.member.constant.Role;
+import com.ssafy.kkoma.api.notification.dto.response.NotiDetail;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.notification.entity.Notification;
 import com.ssafy.kkoma.domain.notification.repository.NotificationRepository;
+import com.ssafy.kkoma.factory.MemberFactory;
+import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 
+@Slf4j
 @SpringBootTest
 class NotificationServiceTest {
 
@@ -26,35 +24,29 @@ class NotificationServiceTest {
 	NotificationService notificationService;
 
 	@Autowired
-	MemberService memberService;
+	MemberFactory memberFactory;
 
 	@Test
 	@Transactional
-	public void 알림_전체_조회() throws Exception {
+	public void 알림_생성과_전체_조회() throws Exception {
+		int NUM = 20;
+
 		// given
-		Member member = createMember("hi");
-		Notification noti = createNoti(member);
+		Member member = memberFactory.createMember();
 
 		// when
-		notificationRepository.save(noti);
+		for (int i = 1; i <= NUM; i++) {
+			Notification noti = notificationService.createNotification(
+				member, NotiDetail.builder().message("알림 " + i).destination("?").build()
+			);
+		}
+
+		long totalElements = notificationService.getNotifications(
+			member.getId(), PageRequest.of(0, NUM / 2)
+		).getTotalElements();
 
 		// then
-		assertEquals(1, notificationService.getNotifications(member.getId()).size());
+		Assertions.assertThat(totalElements).isEqualTo(notificationRepository.findByMember(member).size());
 	}
 
-	/*---------------------------------------------------------------------------------------------------------------*/
-
-	private Notification createNoti(Member member) {
-		return Notification.builder()
-			.member(member)
-			.message("임의로 만든 알림 메시지")
-			.sentAt(LocalDateTime.now())
-			.build();
-	}
-
-	private Member createMember(String email) {
-		return memberService.registerMember(
-			Member.builder().name("temp").email(email).memberType(MemberType.KAKAO).role(Role.USER).build()
-		);
-	}
 }

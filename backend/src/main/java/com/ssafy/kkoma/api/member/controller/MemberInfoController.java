@@ -1,16 +1,15 @@
 package com.ssafy.kkoma.api.member.controller;
 
-import com.ssafy.kkoma.api.member.dto.response.MemberInfoResponse;
 import com.ssafy.kkoma.api.member.dto.request.UpdateMemberRequest;
-import com.ssafy.kkoma.api.member.service.MemberInfoService;
+import com.ssafy.kkoma.api.member.dto.response.MemberInfoResponse;
 import com.ssafy.kkoma.api.member.dto.response.MemberSummaryResponse;
+import com.ssafy.kkoma.api.member.service.MemberInfoService;
 import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.global.jwt.service.TokenManager;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfoDto;
 import com.ssafy.kkoma.global.util.ApiUtils;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -64,8 +63,10 @@ public class MemberInfoController {
         security = { @SecurityRequirement(name = "bearer-key") }
     )
     @PutMapping
-    public ResponseEntity<ApiUtils.ApiResult<MemberInfoResponse>> updateMember(@MemberInfo MemberInfoDto memberInfoDto, @RequestBody UpdateMemberRequest updateMemberRequest) {
-
+    public ResponseEntity<ApiUtils.ApiResult<MemberInfoResponse>> updateMember(
+        @MemberInfo MemberInfoDto memberInfoDto,
+        @RequestBody UpdateMemberRequest updateMemberRequest
+    ) {
         Long memberId = memberInfoDto.getMemberId();
         MemberInfoResponse memberInfoResponse = memberService.updateMemberInfo(memberId, updateMemberRequest);
 

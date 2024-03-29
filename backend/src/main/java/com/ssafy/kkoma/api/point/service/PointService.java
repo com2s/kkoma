@@ -23,7 +23,6 @@ public class PointService {
     private final PointRepository pointRepository;
     private final MemberService memberService;
     private final ProductService productService;
-    private final PointHistoryService pointHistoryService;
 
     public Point findPointByPointId(Long pointId) {
         return pointRepository.findById(pointId)
@@ -43,20 +42,5 @@ public class PointService {
         if (balance < price) {
             throw new BusinessException(ErrorCode.POINT_NOT_ENOUGH);
         }
-    }
-
-    public void changePoint(Member member, PointChangeType pointChangeType, int amount) {
-        Point point = member.getPoint();
-
-        if (PointChangeType.GET.equals(pointChangeType)) point.addBalance(amount);
-        else if (PointChangeType.USE.equals(pointChangeType)) point.subBalance(amount);
-
-        PointHistory pointHistory = PointHistory.builder()
-                .point(point)
-                .amount(amount)
-                .pointChangeType(pointChangeType)
-                .balanceAfterChange(point.getBalance())
-                .build();
-        pointHistoryService.createPointHistory(pointHistory);
     }
 }

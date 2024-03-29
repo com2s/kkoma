@@ -111,13 +111,12 @@ class ProductServiceTest {
 
 	@Test
 	@Transactional
-	public void 글_상세_조회하기_성공() throws Exception{
+	public void 글_상세_조회하기_성공() throws Exception {
 
 	    // given
 		Category category = categoryFactory.createCategory("유모차");
-		ChatRoom chatRoom = chatRoomFactory.createChatRoom();
 		Member member = memberFactory.createMember();
-		Product product = productFactory.createProduct(member, category, chatRoom, 10000);
+		Product product = productFactory.createProduct(member, category, 10000);
 
 		// when
 		ProductDetailResponse productDetailResponse = productService.getProduct(product.getId(), member.getId());
@@ -241,12 +240,12 @@ class ProductServiceTest {
 	    // given
 		Member member = memberFactory.createMember();
 		Category category = categoryFactory.createCategory();
-		ChatRoom chatRoom = chatRoomFactory.createChatRoom();
 		Product product = productFactory.createProduct(member, category,1000);
-		product.setChatRoom(chatRoom);
 
 	    // when
-		ChatProductResponse chatProduct = productService.getChatProduct(chatRoom.getId());
+		ChatProductResponse chatProduct = productService.getChatProduct(
+			product.getChatRoom().getId()
+		);
 
 		// then
 		assertEquals(1000, chatProduct.getPrice());

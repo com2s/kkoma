@@ -13,6 +13,8 @@ public class ProductFactory {
 
     @Autowired
     ProductRepository productRepository;
+    @Autowired
+    ChatRoomFactory chatRoomFactory;
 
     private static String TITLE = "TITLE";
     private static String IMAGE_URL = "https://lh3.googleusercontent.com/wAPeTvxh_EwOisF8kMR2L2eOrIOzjfA5AjE28W5asyfGeH85glwrO6zyqL71dCC26R63chADTO7DLOjnqRoXXOAB8t2f4C3QnU6o0BA";
@@ -38,18 +40,10 @@ public class ProductFactory {
                 .price(price)
                 .build();
         product.setMember(seller);
-        return productRepository.save(product);
-    }
 
-    public Product createProduct(Member member, Category category, ChatRoom chatRoom, int price) {
-        Product product = Product.builder()
-                .title(TITLE)
-                .category(category)
-                .chatRoom(chatRoom)
-                .thumbnailImage(IMAGE_URL)
-                .price(price)
-                .build();
-        product.setMember(member);
+        ChatRoom chatRoom = chatRoomFactory.createChatRoom();
+        product.setChatRoom(chatRoom);
+
         return productRepository.save(product);
     }
 

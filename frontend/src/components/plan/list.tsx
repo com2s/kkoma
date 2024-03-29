@@ -5,10 +5,9 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { getDealListAPI } from "@/services/deals";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-function DealCard(deal: PlanCard, key: number) {
-  const router = useRouter();
-
+function DealCard(deal: PlanCard, key: number, router: AppRouterInstance) {
   return (
     <div key={key} className="w-full">
       <div className="flex gap-3 w-full my-2">
@@ -43,18 +42,21 @@ function DealCard(deal: PlanCard, key: number) {
 }
 
 export function DealList() {
+  const router = useRouter();
   const [list, setList] = useState<Array<PlanCard>>([]);
+
   const getList = async () => {
     const res = await getDealListAPI();
     setList(res);
   };
+
   useEffect(() => {
     getList();
   }, []);
 
   return (
     <>
-      {list && list.length !== 0 ? (
+      {list && list.length > 0 ? (
         list.map((i, k) => {
           if (
             k !== list.length &&
@@ -65,11 +67,11 @@ export function DealList() {
                 <div key={k} className="text-body2">
                   {i.selectedTime.substring(0, 10)}
                 </div>
-                {DealCard(i, k)}
+                {DealCard(i, k, router)}
               </>
             );
           }
-          return DealCard(i, k);
+          return DealCard(i, k, router);
         })
       ) : (
         <div>진행 중인 거래가 없습니다.</div>

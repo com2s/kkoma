@@ -75,10 +75,7 @@ export default function Chatting() {
   }, []);
 
   useEffect(() => {
-    if (
-      product &&
-      (product.status === "SOLD" || product.status === "PROGRESS")
-    ) {
+    if (product && (product.status === "SOLD" || product.status === "PROGRESS")) {
       const myId = Number(LocalStorage.getItem("memberId"));
       if (product.buyerId !== myId && product.sellerId !== myId) {
         setCanChat(false);
@@ -91,14 +88,7 @@ export default function Chatting() {
       <TopBar3 />
       {product ? (
         <div className={styles.product}>
-          <ProductCard
-            product={{
-              id: product.id,
-              thumbnail_image: product.thumbnailImage,
-              title: product.title,
-              price: product.price,
-            }}
-          />
+          <ProductCard product={product} />
         </div>
       ) : (
         <></>
@@ -108,9 +98,7 @@ export default function Chatting() {
           chatList.map((item, k) => (
             <div
               key={k}
-              className={
-                item.memberProfile.id === 2 ? styles.chatRight : styles.chatLeft
-              }
+              className={item.memberProfile.id === 2 ? styles.chatRight : styles.chatLeft}
             >
               <Image
                 className={styles.profile}
@@ -120,9 +108,7 @@ export default function Chatting() {
                 height={30}
               />
               <div className={styles.chatBox}>
-                <span className={styles.nickname}>
-                  {item.memberProfile.nickname}
-                </span>
+                <span className={styles.nickname}>{item.memberProfile.nickname}</span>
                 <span className={styles.content}>{item.content}</span>
                 <span className={styles.time}>{item.sentTime}</span>
               </div>

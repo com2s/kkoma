@@ -88,10 +88,10 @@ class MemberInfoControllerTest {
                 .build();
 
         mockMvc.perform(
-                        // JSON과 함께 요청할 때
-                        // 매개변수#3 : 요청 DTO 클래스
-                        // 매개변수#4 : 요청 인스턴스
-                        requestUtil.putRequestWithJson("/api/members", savedMember, UpdateMemberRequest.class, request)
+                    // JSON과 함께 요청할 때
+                    // 매개변수#3 : 요청 DTO 클래스
+                    // 매개변수#4 : 요청 인스턴스
+                    requestUtil.putRequestWithJson("/api/members", savedMember, UpdateMemberRequest.class, request)
                 )
                 .andExpectAll(
                         MockMvcResultMatchers.status().isOk(),

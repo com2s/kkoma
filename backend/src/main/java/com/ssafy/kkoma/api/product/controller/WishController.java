@@ -20,14 +20,20 @@ public class WishController {
     private final ProductService productService;
 
     @PostMapping("/{productId}/wish")
-    public ResponseEntity<ApiUtils.ApiResult<ProductWishResponse>> wishProduct(@MemberInfo MemberInfoDto memberInfoDto, @PathVariable Long productId) {
+    public ResponseEntity<ApiUtils.ApiResult<ProductWishResponse>> wishProduct(
+        @MemberInfo MemberInfoDto memberInfoDto,
+        @PathVariable("productId") Long productId
+    ) {
         Long memberId = memberInfoDto.getMemberId();
         ProductWishResponse response = productService.wishProduct(productId, memberId);
         return ResponseEntity.ok(ApiUtils.success(response));
     }
 
     @PutMapping("/{productId}/unwish")
-    public ResponseEntity<?> unwishProduct(@MemberInfo MemberInfoDto memberInfoDto, @PathVariable Long productId) {
+    public ResponseEntity<?> unwishProduct(
+        @MemberInfo MemberInfoDto memberInfoDto,
+        @PathVariable("productId") Long productId
+    ) {
         Long memberId = memberInfoDto.getMemberId();
         ProductWishResponse response = productService.unwishProduct(productId, memberId);
         return ResponseEntity.ok(ApiUtils.success(response));
