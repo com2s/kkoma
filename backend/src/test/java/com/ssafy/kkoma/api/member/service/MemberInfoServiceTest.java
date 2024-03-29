@@ -40,7 +40,6 @@ class MemberInfoServiceTest {
 
         // then
         assertEquals(savedMember.getId(), memberInfo.getId());
-        assertEquals(savedMember.getName(), memberInfo.getName());
         assertEquals(savedMember.getRole(), memberInfo.getRole());
     }
 

@@ -20,20 +20,29 @@ public class CategoryPreference implements Serializable {
         @EqualsAndHashCode.Include
         private Long id;
 
-//        @EmbeddedId
-//        private CategoryPreferenceId id;
-
-        @ManyToOne//(fetch = FetchType.LAZY)
+        @ManyToOne // (fetch = FetchType.LAZY) todo-siyoon check
         @JoinColumn(name = "member_id")
-//        @MapsId("memberId")
         private Member member;
 
-        @ManyToOne // (fetch = FetchType.LAZY)
+        @ManyToOne // (fetch = FetchType.LAZY) todo-siyoon check
         @JoinColumn(name = "category_id")
-//        @MapsId("categoryId")
         private Category category;
 
         private float preference;
+
+        public void addPreference(float value) {
+                if (this.preference + value > 1) {
+                        preference = 1;
+                }
+                this.preference += value;
+        }
+
+        public void subPreference(float value) {
+                if (this.preference < value) {
+                        preference = 0;
+                }
+                this.preference += value;
+        }
 
         public CategoryPreference() {
 

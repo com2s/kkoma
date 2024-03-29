@@ -4,6 +4,7 @@ import com.ssafy.kkoma.api.deal.dto.request.DecideOfferRequest;
 import com.ssafy.kkoma.api.notification.constant.NotiDetailBuilder;
 import com.ssafy.kkoma.api.notification.service.NotificationService;
 import com.ssafy.kkoma.api.point.service.PointHistoryService;
+import com.ssafy.kkoma.api.product.service.CategoryPreferenceService;
 import com.ssafy.kkoma.domain.deal.entity.Deal;
 import com.ssafy.kkoma.domain.deal.repository.DealRepository;
 import com.ssafy.kkoma.domain.member.entity.Member;
@@ -31,6 +32,7 @@ public class DealService {
 	private final DealRepository dealRepository;
 	private final NotificationService notificationService;
 	private final PointHistoryService pointHistoryService;
+	private final CategoryPreferenceService categoryPreferenceService;
 
 	public Deal findDealByDealId(Long dealId){
 		return dealRepository.findById(dealId)
@@ -94,6 +96,9 @@ public class DealService {
 				product.getTitle(), product.getPrice(), seller.getPoint().getBalance()
 			)
 		);
+
+		// todo-siyoon set category preference (거래 완료에 구매자 정보가 없어서 구현 못하는 중)
+		// categoryPreferenceService.createCategoryPreference(memberId, catego.getId());
 
 		return deal;
 	}

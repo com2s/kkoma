@@ -5,7 +5,10 @@ import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
 import com.ssafy.kkoma.api.product.dto.ProductSummary;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
 import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
+import com.ssafy.kkoma.api.product.service.CategoryPreferenceService;
 import com.ssafy.kkoma.api.product.service.ProductService;
+import com.ssafy.kkoma.domain.product.constant.CategoryPreferenceType;
+import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfoDto;
 
@@ -28,6 +31,7 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+    private final CategoryPreferenceService categoryPreferenceService;
 
     @Tag(name = "Product")
     @Operation(
@@ -63,6 +67,13 @@ public class ProductController {
     public ResponseEntity<ApiUtils.ApiResult<ProductDetailResponse>> getProduct(@MemberInfo MemberInfoDto memberInfoDto, @PathVariable Long productId){
         ProductDetailResponse productDetailResponse = productService.getProduct(productId, memberInfoDto.getMemberId());
         productService.addViewCount(productId);
+
+        // todo-siyoon 서비스 레이어로 옮기기
+        Product product = productService.findProductByProductId(productId);
+        Integer categoryId = product.getCategory().getId();
+        // ----------
+
+        categoryPreferenceService.renewCategoryPreference(memberInfoDto.getMemberId(), categoryId, CategoryPreferenceType.VIEW);
         return ResponseEntity.ok(ApiUtils.success(productDetailResponse));
     }
 
