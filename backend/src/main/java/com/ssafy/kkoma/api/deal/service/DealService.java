@@ -1,24 +1,24 @@
 package com.ssafy.kkoma.api.deal.service;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 import com.ssafy.kkoma.api.deal.dto.request.DecideOfferRequest;
+import com.ssafy.kkoma.api.notification.constant.NotiDetailBuilder;
+import com.ssafy.kkoma.api.notification.service.NotificationService;
+import com.ssafy.kkoma.api.point.service.PointHistoryService;
 import com.ssafy.kkoma.domain.deal.entity.Deal;
 import com.ssafy.kkoma.domain.deal.repository.DealRepository;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.offer.entity.Offer;
-import com.ssafy.kkoma.domain.product.entity.Product;
-
-import org.springframework.transaction.annotation.Transactional;
-
+import com.ssafy.kkoma.domain.point.constant.PointChangeType;
 import com.ssafy.kkoma.domain.product.constant.ProductType;
+import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.global.error.ErrorCode;
 import com.ssafy.kkoma.global.error.exception.BusinessException;
 import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,6 +29,8 @@ import java.util.List;
 public class DealService {
 
 	private final DealRepository dealRepository;
+	private final NotificationService notificationService;
+	private final PointHistoryService pointHistoryService;
 
 	public Deal findDealByDealId(Long dealId){
 		return dealRepository.findById(dealId)
@@ -83,9 +85,15 @@ public class DealService {
 			throw new BusinessException(ErrorCode.INVALID_SELLER);
 		}
 
-		seller.getPoint().addBalance(product.getPrice()); // 판매자에게 포인트 송금
 		product.updateStatus(ProductType.SOLD); // 상품 status 변경
 		deal.updateIsCompleted(Boolean.TRUE); // 거래 status 변경
+
+		pointHistoryService.changePoint(seller, PointChangeType.PROFIT, product.getPrice());
+		notificationService.createNotification(seller,
+			NotiDetailBuilder.getInstance().receivePayment(
+				product.getTitle(), product.getPrice(), seller.getPoint().getBalance()
+			)
+		);
 
 		return deal;
 	}
