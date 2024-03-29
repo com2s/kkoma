@@ -1,12 +1,20 @@
 "use client";
 
-import React from "react";
+import React, {useState, useEffect, use} from "react";
 import styles from "@/components/my-page/my-detail.module.scss";
-import { getMyInfo } from "@/components/my-page/my-page-ftn";
+import { getMyInfo, MyInfo } from "@/components/my-page/my-page-ftn";
 import Avatar from "@mui/material/Avatar";
 
-export default async function MyProfileSummary() {
-  const myDetail = await getMyInfo();
+export default function MyProfileSummary() {
+  const [myDetail, setMyDetail] = useState<MyInfo>();
+  useEffect(() => {
+    const fetchMyDetail = async () => {
+      const response = await getMyInfo();
+      setMyDetail(response);
+    }
+    fetchMyDetail();
+  }, []);
+
 
   return (
     <div className="px-4">

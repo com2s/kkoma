@@ -48,7 +48,7 @@ export default function MyRequest({ params: { dealId } }: IParams) {
       setSuccess(res.success);
     };
     fetchData();
-  }, []);
+  }, [dealId]);
 
   const handleDelete = (requestId: number) => {
     if (window.confirm("거래 요청을 취소하시겠습니까?")) {

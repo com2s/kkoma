@@ -40,7 +40,7 @@ export default function ChildDetailPage({ params: { kidId } }: IParams) {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [kidId]);
 
   const handleGenderChange = (event: SelectChangeEvent) => {
     setGender(event.target.value);

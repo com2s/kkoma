@@ -47,11 +47,11 @@ export default function ChildrenList() {
         <Card
           className="my-6 flex justify-between border-yellow-300 rounded-xl
           border-2 min-w-fit w-2/3 mx-auto"
+          key={index}
         >
           <Link
             href={`/my-page/children/${child.id}`}
             className="my-auto w-full h-full flex justify-between"
-            key={index}
           >
             <CardContent className="min-w-42 p-2">
               <Typography variant="h5" className="mb-2">
@@ -77,7 +77,7 @@ export default function ChildrenList() {
         className="my-6 mx-auto flex justify-between border-gray-300 rounded-xl h-24
         border-2 w-2/3 min-w-64 hover:bg-gray-100 transition duration-300 ease-in-out"
       >
-        <Link href={`/kid/birth`} className="my-auto w-full h-full flex justify-center">
+        <Link href={`/kid/name`} className="my-auto w-full h-full flex justify-center">
           <CardContent className="flex justify-center items-center">
             <ChildCareIcon className="h-full w-fit"/>
             <AddIcon className="h-full w-fit p-1"/>

@@ -54,7 +54,7 @@ export default function ProductDetail({ params: { id } }: IParams) {
       setSuccess(res.success);
     };
     fetchData();
-  }, []);
+  }, [id]);
 
   const settings = {
     // centerMode: true,
