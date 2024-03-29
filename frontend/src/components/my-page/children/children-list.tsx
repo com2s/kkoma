@@ -61,8 +61,8 @@ export default function ChildrenList() {
                 {child.birthDate} {isBirth(child.birthDate)}
               </Typography>
             </CardContent>
-            <CardContent className="py-2 mr-2 bg-blue-200 rounded-xl max-h-24 max-w-24 aspect-square my-auto flex justify-center min-w-fit">
-              <Typography variant="h6" className="flex my-auto">
+            <CardContent className="mr-2 bg-blue-200 rounded-xl max-h-24 max-w-24 aspect-square my-auto flex justify-center min-w-fit p-auto">
+              <Typography variant="h6" className="flex my-auto h-full">
                 {child.gender === "FEMALE"
                   ? "여자"
                   : child.gender === "MALE"

@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "내 거래",
-  description: "User's trade page",
+  title: "알림",
+  description: "User's notifications page",
 };
 
-export default function MyTradeLayout({
+export default function MyNotificationsLayout({
   children,
 }: {
   children: React.ReactNode;

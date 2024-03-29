@@ -60,14 +60,6 @@ export default function MyProfileEdit() {
   console.log("myId: ", myDetail?.data.id);
   console.log(myDetail?.data);
 
-  if (success === false) {
-    return (
-      <div className="border-t-yellow-300 border-t-2">
-        <h1>내 정보를 불러오는데 실패했습니다.</h1>
-      </div>
-    );
-  }
-
   const handleAccordionChange =
     (panel: boolean) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
@@ -110,87 +102,96 @@ export default function MyProfileEdit() {
   };
   return (
     <div className="px-4 mx-auto my-8">
-      <Accordion
-        sx={{
-          margin: "auto",
-          minWidth: "200px",
-          border: "1px solid #999999",
-          "&.MuiPaper-root": { boxShadow: "none" },
-        }}
-        expanded={expanded}
-        onChange={handleAccordionChange(true)}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1-content"
-          id="panel1-header"
-          sx={{ margin: "auto", paddingX: "2rem" }}
-        >
-          프로필 수정
-        </AccordionSummary>
-        <AccordionDetails sx={{ margin: "auto", paddingLeft: "2rem" }}>
-          <label className="min-w-36 h-36 flex flex-col justify-center items-center bg-slate-50 rounded-md">
-            <Avatar
-              src={image?.url ?? ""}
-              alt="Profile Image"
-              // sx={{ width: 56, height: 56 }}
-              className={`${styles.responsiveImg} mx-4`}
-            />
-            <input
-              accept="image/*"
-              type="file"
-              style={{ display: "none" }}
-              onChange={handleImageChange}
-            />
-          </label>
-          <TextField
-            id="standard-basic"
-            label="닉네임"
-            variant="standard"
-            sx={{ marginY: 2, width: "80%", marginX: "auto" }}
-            value={nickname}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setNickname(event.target.value);
+      {success === false && (
+        <div className="border-t-yellow-300 border-t-2">
+          <h1>내 정보를 불러오는데 실패했습니다.</h1>
+        </div>
+      )}
+      {success === true && myDetail && (
+        <>
+          <Accordion
+            sx={{
+              margin: "auto",
+              minWidth: "200px",
+              border: "1px solid #999999",
+              "&.MuiPaper-root": { boxShadow: "none" },
             }}
-          />
-          <TextField
-            id="standard-basic"
-            label="이름"
-            variant="standard"
-            sx={{ marginY: 2, width: "80%", marginX: "auto" }}
-            value={name}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setName(event.target.value);
-            }}
-          />
-          <TextField
-            id="standard-basic"
-            label="전화번호"
-            variant="standard"
-            type="number"
-            sx={{ marginY: 2, width: "90%", marginX: "auto" }}
-            value={phone}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setPhone(event.target.value);
-            }}
-          />
-        </AccordionDetails>
-        <AccordionActions
-          sx={{
-            margin: "12px auto",
-            display: "flex",
-            justifyContent: "space-between",
-            width: "60%",
-          }}
-        >
-          <Button onClick={handleCloseClick} variant="outlined">
-            취소
-          </Button>
-          <Button onClick={handleEditClick} variant="outlined">
-            수정
-          </Button>
-        </AccordionActions>
-      </Accordion>
+            expanded={expanded}
+            onChange={handleAccordionChange(true)}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1-content"
+              id="panel1-header"
+              sx={{ margin: "auto", paddingX: "2rem" }}
+            >
+              프로필 수정
+            </AccordionSummary>
+            <AccordionDetails sx={{ margin: "auto", paddingLeft: "2rem" }}>
+              <label className="min-w-36 h-36 flex flex-col justify-center items-center bg-slate-50 rounded-md">
+                <Avatar
+                  src={image?.url ?? ""}
+                  alt="Profile Image"
+                  // sx={{ width: 56, height: 56 }}
+                  className={`${styles.responsiveImg} mx-4`}
+                />
+                <input
+                  accept="image/*"
+                  type="file"
+                  style={{ display: "none" }}
+                  onChange={handleImageChange}
+                />
+              </label>
+              <TextField
+                id="standard-basic"
+                label="닉네임"
+                variant="standard"
+                sx={{ marginY: 2, width: "80%", marginX: "auto" }}
+                value={nickname}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  setNickname(event.target.value);
+                }}
+              />
+              <TextField
+                id="standard-basic"
+                label="이름"
+                variant="standard"
+                sx={{ marginY: 2, width: "80%", marginX: "auto" }}
+                value={name}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  setName(event.target.value);
+                }}
+              />
+              <TextField
+                id="standard-basic"
+                label="전화번호"
+                variant="standard"
+                type="number"
+                sx={{ marginY: 2, width: "90%", marginX: "auto" }}
+                value={phone}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  setPhone(event.target.value);
+                }}
+              />
+            </AccordionDetails>
+            <AccordionActions
+              sx={{
+                margin: "12px auto",
+                display: "flex",
+                justifyContent: "space-between",
+                width: "60%",
+              }}
+            >
+              <Button onClick={handleCloseClick} variant="outlined">
+                취소
+              </Button>
+              <Button onClick={handleEditClick} variant="outlined">
+                수정
+              </Button>
+            </AccordionActions>
+          </Accordion>
+        </>
+      )}
     </div>
   );
 }

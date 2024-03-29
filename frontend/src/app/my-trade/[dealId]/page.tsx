@@ -57,15 +57,6 @@ export default function MyRequest({ params: { dealId } }: IParams) {
     }
   };
 
-  if (success === false) {
-    return (
-      <React.Fragment>
-        <TopBar2 />
-        <h1>요청자 정보를 불러오는데 실패했습니다.</h1>
-      </React.Fragment>
-    );
-  }
-
   const clickRequest = async (times: Requester["offerTimes"], id: number) => {
     await setOfferTime(times);
     router.push(`/my-trade/${dealId}/${id}`);
@@ -74,60 +65,69 @@ export default function MyRequest({ params: { dealId } }: IParams) {
   return (
     <React.Fragment>
       <TopBar2 />
-      {/* <h1>{id}</h1> */}
-      {requesters?.map((requester, key) => (
-        <Card key={key} variant="outlined" className={styles.card}>
-          <Avatar
-            alt="Product Image"
-            src={requester.memberProfile.profileImage}
-            sx={{ width: 80, height: 80 }}
-            className={styles.avatar}
-            variant="square"
-          />
-          <CardContent sx={{ padding: 1 }} className={styles.cardMiddle}>
-            <Typography variant="h6" component="div">
-              {requester.memberProfile.nickname}
-            </Typography>
-            {/* <Typography color="text.secondary">{requester.productName}</Typography> */}
-            {requester.offerTimes?.map((time, key) => (
-              <Typography key={key} variant="body2">
-                {time.offerDate}
-                <br />• {time.startTime.split(":").slice(0, 2).join(":")} ~{" "}
-                {time.endTime.split(":").slice(0, 2).join(":")}
-              </Typography>
-            ))}
-          </CardContent>
-          <CardContent className={styles.btns} sx={{ padding: 0 }}>
-            {/* <Link href={`/my-trade/${dealId}/${requester.memberProfile.id}`}> */}
-            <IconButton
-              size="small"
-              sx={{
-                "&.MuiIconButton-root": {
-                  bgcolor: "#ffcf00",
-                },
-                margin: 1,
-              }}
-              onClick={() => clickRequest(requester.offerTimes, requester.id)}
-            >
-              <CheckIcon sx={{ color: "white" }} />
-            </IconButton>
-            {/* </Link> */}
-            <IconButton
-              onClick={() => handleDelete(requester.id)}
-              size="small"
-              sx={{
-                "&.MuiIconButton-root": {
-                  bgcolor: "#764c32",
-                },
-                margin: 1,
-              }}
-            >
-              <RemoveIcon sx={{ color: "white" }} />
-            </IconButton>
-          </CardContent>
-        </Card>
-      ))}
-      {(!requesters || requesters.length === 0) && (
+      {success === false && <h1>요청자 정보를 불러오는데 실패했습니다.</h1>}
+      {success === true && requesters && (
+        <>
+          {requesters?.map((requester, key) => (
+            <Card key={key} variant="outlined" className={styles.card}>
+              <Avatar
+                alt="Product Image"
+                src={requester.memberProfile.profileImage}
+                sx={{ width: 80, height: 80 }}
+                className={styles.avatar}
+                variant="square"
+              />
+              <CardContent sx={{ padding: 1 }} className={styles.cardMiddle}>
+                <Typography variant="h6" component="div">
+                  {requester.memberProfile.nickname}
+                </Typography>
+                {/* <Typography color="text.secondary">{requester.productName}</Typography> */}
+                {requester.offerTimes?.map((time, key) => (
+                  <Typography key={key} variant="body2">
+                    {time.offerDate}
+                    <br />• {time.startTime
+                      .split(":")
+                      .slice(0, 2)
+                      .join(":")} ~{" "}
+                    {time.endTime.split(":").slice(0, 2).join(":")}
+                  </Typography>
+                ))}
+              </CardContent>
+              <CardContent className={styles.btns} sx={{ padding: 0 }}>
+                {/* <Link href={`/my-trade/${dealId}/${requester.memberProfile.id}`}> */}
+                <IconButton
+                  size="small"
+                  sx={{
+                    "&.MuiIconButton-root": {
+                      bgcolor: "#ffcf00",
+                    },
+                    margin: 1,
+                  }}
+                  onClick={() =>
+                    clickRequest(requester.offerTimes, requester.id)
+                  }
+                >
+                  <CheckIcon sx={{ color: "white" }} />
+                </IconButton>
+                {/* </Link> */}
+                <IconButton
+                  onClick={() => handleDelete(requester.id)}
+                  size="small"
+                  sx={{
+                    "&.MuiIconButton-root": {
+                      bgcolor: "#764c32",
+                    },
+                    margin: 1,
+                  }}
+                >
+                  <RemoveIcon sx={{ color: "white" }} />
+                </IconButton>
+              </CardContent>
+            </Card>
+          ))}
+        </>
+      )}
+      {requesters.length === 0 && (
         <h2 className="p-4">아직 요청이 없습니다.</h2>
       )}
     </React.Fragment>
