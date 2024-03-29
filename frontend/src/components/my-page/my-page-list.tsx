@@ -1,12 +1,12 @@
 import styles from "@/components/my-page/my-page-list.module.scss";
 import "@/app/globals.scss";
 import Link from "next/link";
-import { Icon } from "@mui/material";
+import LogOutItem from "@/components/my-page/my-page-logout";
+
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import RoomOutlinedIcon from "@mui/icons-material/RoomOutlined";
 import QueryBuilderIcon from "@mui/icons-material/QueryBuilder";
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -41,12 +41,7 @@ export default function MyPageList() {
           </ListItemIcon>
           <ListItemText primary="아이 정보 변경" />
         </ListItem>
-        <ListItem button component={Link} href="/my-page/edit-account">
-          <ListItemIcon>
-            <PersonOutlineIcon />
-          </ListItemIcon>
-          <ListItemText primary="계정 정보 변경" />
-        </ListItem>
+        <LogOutItem />
       </List>
     </div>
   );

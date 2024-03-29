@@ -17,3 +17,13 @@ export async function getMyPoints() {
 
   return response;
 }
+
+export async function getLogOut() {
+  const response = await APIModule({
+    action: "/logout",
+    method: "GET",
+    data: null,
+  });
+
+  return response;
+}

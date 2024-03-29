@@ -1,18 +1,14 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "My Page",
-    description: "User's personal page",
-  };
+  title: "마이 페이지",
+  description: "User's personal page",
+};
 
 export default function MyPageLayout({
-    children,
-  }: {
-    children: React.ReactNode
-  }) {
-    return (
-        <div>
-          {children}
-        </div>
-    )
-  }
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <div>{children}</div>;
+}
