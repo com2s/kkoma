@@ -20,7 +20,8 @@ public class Category {
 	@Column(length = 20)
 	private String name;
 
-	@OneToMany(mappedBy = "member")
+	@OneToMany(mappedBy = "category")
+	@Builder.Default
 	private List<Product> products = new ArrayList<>();
 
 }

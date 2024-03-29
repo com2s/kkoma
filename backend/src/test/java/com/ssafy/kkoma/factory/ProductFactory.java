@@ -5,6 +5,7 @@ import com.ssafy.kkoma.domain.kid.constant.GenderType;
 import com.ssafy.kkoma.domain.kid.entity.Kid;
 import com.ssafy.kkoma.domain.kid.repository.KidRepository;
 import com.ssafy.kkoma.domain.member.entity.Member;
+import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.domain.product.entity.Category;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.domain.product.repository.ProductRepository;
@@ -43,6 +44,18 @@ public class ProductFactory {
                 .category(category)
                 .thumbnailImage(IMAGE_URL)
                 .price(price)
+                .build();
+        product.setMember(member);
+        return productRepository.save(product);
+    }
+
+    public Product createProduct(Member member, Category category, int price, ProductType status) {
+        Product product = Product.builder()
+                .title(TITLE)
+                .category(category)
+                .thumbnailImage(IMAGE_URL)
+                .price(price)
+                .status(status)
                 .build();
         product.setMember(member);
         return productRepository.save(product);
