@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
+import com.ssafy.kkoma.api.product.dto.response.ChatProductResponse;
 import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
 import com.ssafy.kkoma.domain.chat.entity.ChatRoom;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
@@ -106,13 +106,12 @@ class ProductServiceTest {
 
 	@Test
 	@Transactional
-	public void 글_상세_조회하기_성공() throws Exception{
+	public void 글_상세_조회하기_성공() throws Exception {
 
 	    // given
 		Category category = categoryFactory.createCategory("유모차");
-		ChatRoom chatRoom = chatRoomFactory.createChatRoom();
 		Member member = memberFactory.createMember();
-		Product product = productFactory.createProduct(member, category, chatRoom, 10000);
+		Product product = productFactory.createProduct(member, category, 10000);
 
 		// when
 		ProductDetailResponse productDetailResponse = productService.getProduct(product.getId());
@@ -205,5 +204,23 @@ class ProductServiceTest {
 		);
 
 	}
+
+	@Test
+	@Transactional
+	public void 채팅방에서_거래_글_정보를_조회한다() throws Exception{
+	    // given
+		Member member = memberFactory.createMember();
+		Category category = categoryFactory.createCategory();
+		Product product = productFactory.createProduct(member, category,1000);
+
+	    // when
+		ChatProductResponse chatProduct = productService.getChatProduct(
+			product.getChatRoom().getId()
+		);
+
+		// then
+		assertEquals(1000, chatProduct.getPrice());
+	}
+
 
 }

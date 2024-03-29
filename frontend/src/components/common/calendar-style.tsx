@@ -12,7 +12,7 @@ export const StyledCalendarWrapper = styled.div`
     border: none;
     border-radius: 0.5rem;
     box-shadow: 4px 2px 10px 0px rgba(0, 0, 0, 0.2);
-    padding: 3%;
+    padding: 2%;
     padding-top: 18px;
     padding-bottom: 120px;
     background-color: white;
@@ -22,6 +22,7 @@ export const StyledCalendarWrapper = styled.div`
   .react-calendar__month-view {
     abbr {
       color: #656565;
+      font-family: "Noto Sans KR", sans-serif;
     }
   }
 
@@ -186,6 +187,7 @@ export const StyledDate = styled.div`
 export const StyledToday = styled.div`
   font-size: x-small;
   color: #764c32;
+  min-width: 3rem;
   font-weight: 600;
   position: absolute;
   top: 50%;

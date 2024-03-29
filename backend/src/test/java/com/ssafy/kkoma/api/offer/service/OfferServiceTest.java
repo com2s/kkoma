@@ -2,78 +2,67 @@ package com.ssafy.kkoma.api.offer.service;
 
 import com.ssafy.kkoma.api.deal.dto.request.DecideOfferRequest;
 import com.ssafy.kkoma.api.member.service.MemberService;
-import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
 import com.ssafy.kkoma.api.offer.dto.response.DecideOfferResponse;
-import com.ssafy.kkoma.api.point.service.PointService;
-import com.ssafy.kkoma.domain.member.constant.MemberType;
-import com.ssafy.kkoma.domain.member.constant.Role;
+import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
 import com.ssafy.kkoma.domain.member.entity.Member;
-import com.ssafy.kkoma.domain.member.repository.MemberRepository;
 import com.ssafy.kkoma.domain.offer.constant.OfferType;
 import com.ssafy.kkoma.domain.offer.entity.Offer;
 import com.ssafy.kkoma.domain.offer.entity.OfferDetail;
 import com.ssafy.kkoma.domain.offer.repository.OfferDetailRepository;
 import com.ssafy.kkoma.domain.offer.repository.OfferRepository;
-import com.ssafy.kkoma.domain.point.entity.Point;
 import com.ssafy.kkoma.domain.product.entity.Category;
 import com.ssafy.kkoma.domain.product.entity.Product;
-import com.ssafy.kkoma.domain.product.repository.CategoryRepository;
-import com.ssafy.kkoma.domain.product.repository.ProductRepository;
+import com.ssafy.kkoma.factory.CategoryFactory;
+import com.ssafy.kkoma.factory.MemberFactory;
+import com.ssafy.kkoma.factory.OfferFactory;
+import com.ssafy.kkoma.factory.ProductFactory;
 import com.ssafy.kkoma.global.error.ErrorCode;
 import com.ssafy.kkoma.global.error.exception.BusinessException;
-
-import org.junit.jupiter.api.BeforeAll;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
-import lombok.extern.slf4j.Slf4j;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Slf4j
 class OfferServiceTest {
 
     @Autowired
-    MemberRepository memberRepository;
-
+    MemberFactory memberFactory;
     @Autowired
-    CategoryRepository categoryRepository;
+    CategoryFactory categoryFactory;
+    @Autowired
+    OfferFactory offerFactory;
+    @Autowired
+    ProductFactory productFactory;
 
     @Autowired
     OfferRepository offerRepository;
-
-    @Autowired
-    ProductRepository productRepository;
-
     @Autowired
     OfferDetailRepository offerDetailRepository;
 
     @Autowired
     OfferService offerService;
-
     @Autowired
     MemberService memberService;
-
-    @Autowired
-    PointService pointService;
 
     @Test
     @Transactional
     public void 거래_요청_성공() throws Exception{
         // given
-        Category category = createCategory("목욕 용품");
-        Member seller = createMember("1@z.com");
-        Member buyer = createMember("a@z.com");
+        Category category = categoryFactory.createCategory("목욕 용품");
+        Member seller = memberFactory.createMember();
+        Member buyer = memberFactory.createMember();
         buyer.getPoint().addBalance(20000);
-        Product product = createProduct(category, seller, 20000);
+        Product product = productFactory.createProduct(seller, category, 20000);
 
         // when
         Long offerId = offerService.createOffer(buyer.getId(), product.getId());
@@ -87,10 +76,10 @@ class OfferServiceTest {
     @Transactional
     public void 거래_요청_실패() throws Exception{
         // given
-        Category category = createCategory("목욕 용품");
-        Member seller = createMember("seller@z.com");
-        Product product = createProduct(category, seller, 20000);
-        Member buyer = createMember("fail@z.com");
+        Category category = categoryFactory.createCategory("목욕 용품");
+        Member seller = memberFactory.createMember();
+        Product product = productFactory.createProduct(seller, category, 20000);
+        Member buyer = memberFactory.createMember();
 
         // when & then
 
@@ -112,11 +101,11 @@ class OfferServiceTest {
     @Transactional
     public void 거래_요청_목록_조회() throws Exception{
         // given
-        Category category = createCategory("목욕 용품");
-        Member seller = createMember("seller@z.com");
-        Product product = createProduct(category, seller, 20000);
+        Category category = categoryFactory.createCategory("목욕 용품");
+        Member seller = memberFactory.createMember();
+        Product product = productFactory.createProduct(seller, category, 20000);
 
-        Member buyer = createMember("buyer@z.com");
+        Member buyer = memberFactory.createMember();
         Offer offer = offerRepository.save(Offer.builder().product(product).member(buyer).build());
 
         for (int i = 0; i < 3; i++) {
@@ -141,15 +130,15 @@ class OfferServiceTest {
     @Transactional
     public void 거래_요청_선택() throws Exception {
         // given
-        Category category = createCategory("목욕 용품");
-        Member seller = createMember("a@z.com");
-        Product product = createProduct(category, seller, 0);
+        Category category = categoryFactory.createCategory("목욕 용품");
+        Member seller = memberFactory.createMember();
+        Product product = productFactory.createProduct(seller, category, 0);
 
-        Member befBuyer1 = createMember("b@z.com");
-        Offer befOffer1 = createOffer(product, befBuyer1);
+        Member befBuyer1 = memberFactory.createMember();
+        Offer befOffer1 = offerFactory.createOffer(product, befBuyer1);
 
-        Member befBuyer2 = createMember("c@z.com");
-        Offer befOffer2 = createOffer(product, befBuyer2);
+        Member befBuyer2 = memberFactory.createMember();
+        Offer befOffer2 = offerFactory.createOffer(product, befBuyer2);
         int befBalance2 = befBuyer2.getPoint().getBalance();
 
         DecideOfferRequest decideOfferRequest = DecideOfferRequest.builder().selectedTime(LocalDateTime.now()).build();
@@ -167,33 +156,6 @@ class OfferServiceTest {
 
         Member aftBuyer2 = memberService.findMemberByMemberId(befBuyer2.getId());
         assertEquals(befBalance2 + product.getPrice(), aftBuyer2.getPoint().getBalance());
-    }
-
-    /*-----------------------------------------------------------------------------------------------------------------*/
-
-    private Category createCategory(String name) {
-        return categoryRepository.save(
-            Category.builder().name(name).build()
-        );
-    }
-
-    private Product createProduct(Category category, Member seller, int price) {
-        return productRepository.save(
-            Product.builder().title("상품명").thumbnailImage("썸네일")
-                .category(category).member(seller).price(price).build()
-        );
-    }
-
-    private Offer createOffer(Product product, Member buyer) {
-        return offerRepository.save(
-            Offer.builder().product(product).member(buyer).build()
-        );
-    }
-
-    private Member createMember(String email) {
-        return memberService.registerMember(
-            Member.builder().name("temp").email(email).memberType(MemberType.KAKAO).role(Role.USER).build()
-        );
     }
 
 }

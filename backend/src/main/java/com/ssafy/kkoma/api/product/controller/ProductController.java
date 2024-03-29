@@ -82,4 +82,15 @@ public class ProductController {
         return ResponseEntity.ok().body(ApiUtils.success(productDetailResponse));
     }
 
+    @Tag(name = "Product")
+    @Operation(
+        summary = "상품 검색어 자동완성 키워드 조회",
+        security = { @SecurityRequirement(name = "bearer-key") }
+    )
+    @GetMapping("/search/complete")
+    public ResponseEntity<ApiUtils.ApiResult<List<String>>> getAutoComplete(@RequestParam String keyword) {
+        List<String> response = productService.getAutoCompleteKeyword(keyword);
+        return ResponseEntity.ok(ApiUtils.success(response));
+    }
+
 }

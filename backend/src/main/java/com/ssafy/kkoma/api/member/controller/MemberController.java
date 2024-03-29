@@ -38,7 +38,7 @@ public class MemberController {
     @GetMapping("/products")
     ResponseEntity<ApiUtils.ApiResult<List<ProductInfoResponse>>> getMyProducts(
         @MemberInfo MemberInfoDto memberInfoDto,
-        @RequestParam String type
+        @RequestParam("type") String type
     ) {
         Long memberId = memberInfoDto.getMemberId();
         List<ProductInfoResponse> productInfoResponses = new ArrayList<>();

@@ -1,6 +1,9 @@
 package com.ssafy.kkoma.api.point.service;
 
 import com.ssafy.kkoma.api.point.dto.PointSummaryResponse;
+import com.ssafy.kkoma.domain.member.entity.Member;
+import com.ssafy.kkoma.domain.point.constant.PointChangeType;
+import com.ssafy.kkoma.domain.point.entity.PointHistory;
 import com.ssafy.kkoma.domain.point.repository.PointRepository;
 import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.api.product.service.ProductService;

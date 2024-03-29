@@ -62,7 +62,7 @@ export default function ProductDetail({ params: { id } }: IParams) {
   if (success === false) return <div>상품 정보를 불러오는데 실패했습니다.</div>;
   
   const settings = {
-    centerMode: true,
+    // centerMode: true,
     autoplay: (product && (product.data.productImages.length > 1)) ? true : false,
     // 이동부터 다음 이동까지의 시간
     autoplaySpeed: 2000,
@@ -86,9 +86,9 @@ export default function ProductDetail({ params: { id } }: IParams) {
                 src={img ?? "/temp-img.svg"} // Route of the image file
                 alt={`Slide ${index + 1}`}
                 priority
-                width={300} // Adjust as needed
-                height={300} // Adjust as needed
-                style={{ width: "100%", height: "100%" }}
+                width={250} // Adjust as needed
+                height={250} // Adjust as needed
+                style={{ margin: "0 auto"}}
               />
             </div>
           ))}

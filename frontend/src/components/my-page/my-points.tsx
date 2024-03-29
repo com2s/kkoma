@@ -47,7 +47,7 @@ export default function MyPoints() {
           className={styles.btn}
           onClick={() => alert("포인트 송금 페이지로 이동합니다.")}
         >
-          <span className="text-black font-semibold">포인트 송금</span>
+          <span className="text-black font-semibold">송금</span>
         </Button>
         <Button
           startIcon={<AttachMoneyIcon color="error" />}
@@ -55,7 +55,7 @@ export default function MyPoints() {
           className={styles.btn}
           onClick={() => alert("포인트 충전 페이지로 이동합니다.")}
         >
-          <span className="text-black font-semibold">포인트 충전</span>
+          <span className="text-black font-semibold">충전</span>
         </Button>
       </div>
     </div>
