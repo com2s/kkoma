@@ -18,12 +18,7 @@ import Image from "next/image";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Button,
-} from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Button } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import Link from "next/link";
@@ -43,32 +38,29 @@ interface IParams {
 // }
 
 export default function ProductDetail({ params: { id } }: IParams) {
-  const [product, setProduct] = useState<DetailParams|null>(null);
+  const [product, setProduct] = useState<DetailParams | null>(null);
   const [myId, setMyId] = useState<string | null>(null);
   const [success, setSuccess] = useState(true);
+
+  const fetchData = async () => {
+    setMyId(LocalStorage.getItem("memberId"));
+    const res = await getProductDetail(id);
+    setProduct(await res);
+    setSuccess(await res.success);
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await getProductDetail(id);
-      setMyId(LocalStorage.getItem("memberId"));
-      setProduct(res);
-      setSuccess(res.success);
-    };
     fetchData();
   }, []);
-  console.log("myId: ", myId);
-  
-  console.log(product);
-  
-  if (success === false) return <div>상품 정보를 불러오는데 실패했습니다.</div>;
-  
+
   const settings = {
     // centerMode: true,
-    autoplay: (product && (product.data.productImages.length > 1)) ? true : false,
+    autoplay: product && product.data.productImages.length > 1 ? true : false,
     // 이동부터 다음 이동까지의 시간
     autoplaySpeed: 2000,
     dots: true,
     arrows: false,
-    infinite: (product && (product.data.productImages.length > 1)) ? true : false,
+    infinite: product && product.data.productImages.length > 1 ? true : false,
     // 이동하는데 걸리는 시간
     speed: 500,
     slidesToShow: 1,
@@ -88,7 +80,7 @@ export default function ProductDetail({ params: { id } }: IParams) {
                 priority
                 width={250} // Adjust as needed
                 height={250} // Adjust as needed
-                style={{ margin: "0 auto"}}
+                style={{ margin: "0 auto" }}
               />
             </div>
           ))}
@@ -116,27 +108,19 @@ export default function ProductDetail({ params: { id } }: IParams) {
           {/* <SubBtn next={"/"}>홈 화면</SubBtn>
         <NormalBtn next={"/"}>아이 정보 입력</NormalBtn> */}
           <Link href={`/my-trade/${id}`} className="w-full">
-            <button className={`${styles.btn} ${styles.normal}`}>
-              요청 보기
-            </button>
+            <button className={`${styles.btn} ${styles.normal}`}>요청 보기</button>
           </Link>
           <Link href={`/lists/${id}/edit`} className="w-full">
-            <button className={`${styles.btn} ${styles.normal} ${styles.gray}`}>
-              상품 수정
-            </button>
+            <button className={`${styles.btn} ${styles.normal} ${styles.gray}`}>상품 수정</button>
           </Link>
         </div>
       ) : (
         <div className="flex gap-8 py-4 px-6">
           <Link href={`/lists/${id}/request`} className="w-full">
-            <button className={`${styles.btn} ${styles.normal}`}>
-              거래 요청
-            </button>
+            <button className={`${styles.btn} ${styles.normal}`}>거래 요청</button>
           </Link>
           <Link href={`/lists/${id}/chat`} className="w-full">
-            <button className={`${styles.btn} ${styles.normal} ${styles.gray}`}>
-              채팅 문의
-            </button>
+            <button className={`${styles.btn} ${styles.normal} ${styles.gray}`}>채팅 문의</button>
           </Link>
         </div>
       )}

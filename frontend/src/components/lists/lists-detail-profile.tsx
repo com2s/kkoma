@@ -16,12 +16,7 @@ interface UserProfileProps {
     | undefined;
 }
 
-export default function UserProfile({
-  propsId,
-  memberSummary,
-}: UserProfileProps) {
-  console.log("UserProfileProps: ", memberSummary);
-
+export default function UserProfile({ propsId, memberSummary }: UserProfileProps) {
   return (
     <div>
       {memberSummary === undefined ? (
@@ -38,14 +33,9 @@ export default function UserProfile({
           {/* <Avatar {...stringAvatar('Kent Dodds')} /> */}
           <div className={`${styles.nickname} min-w-32 text-pretty mr-1 `}>
             <h4 className="">{memberSummary.nickname ?? "닉네임 미등록"}</h4>
-            <span className="text-slate-500">
-              {memberSummary.preferredPlace ?? "지역 미등록"}
-            </span>
+            <span className="text-slate-500">{memberSummary.preferredPlace ?? "지역 미등록"}</span>
           </div>
-          <button
-            onClick={() => alert("유저 프로필 보기")}
-            className="min-w-28"
-          >
+          <button onClick={() => alert("유저 프로필 보기")} className="min-w-28">
             <ArrowForwardIosIcon />
           </button>
           {/* <Link href="/my-page/my-profile" passHref>

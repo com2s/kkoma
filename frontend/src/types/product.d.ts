@@ -4,7 +4,10 @@ export interface ProductSm {
   id: number;
   thumbnailImage: string;
   title: string;
+  dealPlace: string;
   price: number;
+  status: ProductStatus;
+  elapsedMinutes: number;
 }
 
 export type ChatProduct = {
@@ -17,19 +20,14 @@ export type ChatProduct = {
   buyerId: number;
 };
 
+export interface Category {
+  id: number | null;
+  name: string;
+}
+
 export interface Product {
   success: boolean;
-  data: [
-    {
-      id: number;
-      thumbnailImage: string;
-      title: string;
-      dealPlace: string;
-      price: number;
-      status: "SALE" | "PROGRESS" | "SOLD";
-      elapsedMinutes: number;
-    }
-  ];
+  data: Array<ProductSm>;
   error: {
     errorCode: string;
     errorMessage: string;
@@ -45,7 +43,7 @@ interface DetailParams {
     description: string;
     categoryName: string;
     price: number;
-    status: "SALE";
+    status: ProductStatus;
     dealPlace: string;
     elapsedMinutes: number;
     memberSummary: {
