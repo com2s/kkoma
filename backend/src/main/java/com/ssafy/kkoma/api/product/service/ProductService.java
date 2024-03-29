@@ -115,7 +115,6 @@ public class ProductService {
 
 		Product product = Product.builder()
 				.member(seller)
-				.category(category)
 				.thumbnailImage(productImageUrls.isEmpty() ? null : productImageUrls.get(0))
 				.placeDetail("TODO: MVP 개발 이후 location과 placeDetail 저장하는 로직 짜야돼")
 				.title(productCreateRequest.getTitle())
@@ -123,6 +122,7 @@ public class ProductService {
 				.price(productCreateRequest.getPrice())
 				.build();
 
+		product.setCategory(category);
 		product.setChatRoom(chatRoom);
 
 		Product savedProduct = productRepository.save(product);
@@ -241,6 +241,10 @@ public class ProductService {
 		return ProductWishResponse.fromEntity(savedWishList, product);
 	}
 
+	public List<Product> findProductForSaleByCategoryId(Integer categoryId) {
+		return productRepository.findByCategoryIdAndStatus(categoryId, ProductType.SALE);
+	}
+	
 	public MyWishProductResponse getMyWishProducts(Long memberId, Pageable pageable) {
 		Page<WishList> wishLists = wishListRepository.findWishListsByMemberId(memberId, pageable);
 		return buildWishProductResponse(wishLists);

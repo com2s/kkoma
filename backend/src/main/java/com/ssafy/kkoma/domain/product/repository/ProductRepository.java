@@ -20,4 +20,8 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
     @Lock(value = LockModeType.PESSIMISTIC_WRITE)
     @Query("select s from Product s where s.id=:id")
     Product findByIdWithPessimisticLock(Long id);
+
+    @Query("select s from Product s where s.category.id=:categoryId AND s.status=:status ORDER BY s.createdAt DESC LIMIT 20")
+    List<Product> findByCategoryIdAndStatus(Integer categoryId, ProductType status);
+
 }

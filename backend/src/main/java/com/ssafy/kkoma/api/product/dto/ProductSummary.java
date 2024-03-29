@@ -5,12 +5,14 @@ import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Builder
 @Getter
+@ToString
 public class ProductSummary {
 
 	private Long id;

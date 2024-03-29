@@ -1,11 +1,10 @@
 package com.ssafy.kkoma.domain.product.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,5 +19,9 @@ public class Category {
 
 	@Column(length = 20)
 	private String name;
+
+	@OneToMany(mappedBy = "category")
+	@Builder.Default
+	private List<Product> products = new ArrayList<>();
 
 }
