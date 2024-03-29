@@ -1,32 +1,22 @@
 package com.ssafy.kkoma.domain.offer.entity;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.ssafy.kkoma.api.kid.dto.request.UpdateKidRequest;
 import com.ssafy.kkoma.domain.common.entity.BaseTimeEntity;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.offer.constant.OfferType;
 import com.ssafy.kkoma.domain.product.entity.Product;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import lombok.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Offer extends BaseTimeEntity {
 
 	@Id
@@ -42,8 +32,7 @@ public class Offer extends BaseTimeEntity {
 	private Product product;
 
 	@OneToMany(mappedBy = "offer")
-	@Builder.Default
-	private List<OfferDetail> offerDetails = new ArrayList<>();
+	private List<OfferDetail> offerDetails;
 
 	@Enumerated(EnumType.STRING)
 	private OfferType status;
@@ -51,6 +40,16 @@ public class Offer extends BaseTimeEntity {
 	private LocalDateTime repliedAt;
 
 	private LocalDateTime cancelledAt;
+
+	@Builder
+	public Offer(Member member, Product product) {
+		this.member = member;
+		this.product = product;
+		this.offerDetails = new ArrayList<>();
+		this.status = OfferType.SENT;
+		this.repliedAt = null;
+		this.cancelledAt = null;
+	}
 
 	public void setMember(Member member) {
 		this.member = member;
