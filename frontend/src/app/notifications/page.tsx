@@ -63,6 +63,10 @@ export default function MyNotificationsPage() {
       router.push(destination); // 페이지 이동
     };
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <div>
       <TopBar2 />
