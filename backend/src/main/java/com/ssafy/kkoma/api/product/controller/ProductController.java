@@ -7,6 +7,7 @@ import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
 import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
 import com.ssafy.kkoma.api.product.service.CategoryPreferenceService;
 import com.ssafy.kkoma.api.product.service.ProductService;
+import com.ssafy.kkoma.api.product.service.ViewHistoryService;
 import com.ssafy.kkoma.domain.product.constant.CategoryPreferenceType;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
@@ -32,6 +33,7 @@ public class ProductController {
 
     private final ProductService productService;
     private final CategoryPreferenceService categoryPreferenceService;
+    private final ViewHistoryService viewHistoryService;
 
     @Tag(name = "Product")
     @Operation(
@@ -67,6 +69,8 @@ public class ProductController {
     public ResponseEntity<ApiUtils.ApiResult<ProductDetailResponse>> getProduct(@MemberInfo MemberInfoDto memberInfoDto, @PathVariable Long productId){
         ProductDetailResponse productDetailResponse = productService.getProduct(productId, memberInfoDto.getMemberId());
         productService.addViewCount(productId);
+
+        viewHistoryService.createViewHistory(memberInfoDto.getMemberId(), productId);
 
         // todo-siyoon 서비스 레이어로 옮기기
         Product product = productService.findProductByProductId(productId);
