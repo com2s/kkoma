@@ -1,9 +1,12 @@
 package com.ssafy.kkoma.job.dealReminder;
 
+import com.ssafy.kkoma.api.notification.constant.NotiDetailBuilder;
+import com.ssafy.kkoma.api.notification.dto.response.NotiDetail;
 import com.ssafy.kkoma.domain.deal.entity.Deal;
 import com.ssafy.kkoma.domain.deal.repository.DealRepository;
 import com.ssafy.kkoma.domain.notification.entity.Notification;
 import com.ssafy.kkoma.domain.notification.repository.NotificationRepository;
+import com.ssafy.kkoma.domain.product.constant.MyProductType;
 import com.ssafy.kkoma.job.JobLoggerListener;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -88,18 +91,25 @@ public class DealReminderJobConfig {
             public List<Notification> process(Deal deal) throws Exception {
                 List<Notification> notiList = new ArrayList<>();
 
+                NotiDetail sell = NotiDetailBuilder.getInstance().scheduledDeal(
+                    deal.getProduct().getTitle(), MyProductType.SELL, deal.getProduct().getChatRoom().getId()
+                );
+                NotiDetail buy = NotiDetailBuilder.getInstance().scheduledDeal(
+                    deal.getProduct().getTitle(), MyProductType.BUY, deal.getProduct().getChatRoom().getId()
+                );
+
                 notiList.add(Notification.builder()
                     .member(deal.getProduct().getMember())
-                    .message("1시간 후 '" + deal.getProduct().getTitle() + "' 판매 약속이 예정되어 있습니다!")
-                    .destination("todo")
+                    .message(sell.getMessage())
+                    .destination(sell.getDestination())
                     .sentAt(LocalDateTime.now())
                     .build()
                 );
 
                 notiList.add(Notification.builder()
                     .member(deal.getMember())
-                    .message("1시간 후 '" + deal.getProduct().getTitle() + "' 구매 약속이 예정되어 있습니다!")
-                    .destination("todo")
+                    .message(buy.getMessage())
+                    .destination(buy.getDestination())
                     .sentAt(LocalDateTime.now())
                     .build()
                 );

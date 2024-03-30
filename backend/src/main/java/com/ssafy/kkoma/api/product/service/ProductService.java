@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.ssafy.kkoma.api.chat.service.ChatRoomService;
+import com.ssafy.kkoma.api.common.dto.BasePageResponse;
 import com.ssafy.kkoma.api.deal.service.DealService;
 import com.ssafy.kkoma.api.member.dto.response.MemberSummaryResponse;
 import com.ssafy.kkoma.api.member.service.MemberService;
@@ -79,12 +80,13 @@ public class ProductService {
 		return buildSearchProductResponse(pageList);
 	}
 
-	public ProductDetailResponse getProduct(Long productId) {
+	public ProductDetailResponse getProduct(Long productId, Long memberId) {
 		Product product = findProductByProductId(productId);
 		List<String> productImageUrls = productImageService.getProductImageUrls(productId);
 		String categoryName = categoryService.getCategoryName(product.getCategory().getId());
-		ProductDetailResponse productDetailResponse = buildProductDetailResponse(product, productImageUrls, categoryName, product.getMember());
-		return productDetailResponse;
+		boolean isWished = wishListRepository.existsByProductIdAndMemberId(productId, memberId);
+
+		return buildProductDetailResponse(product, productImageUrls, categoryName, product.getMember(), isWished);
 	}
 
 	public void addViewCount(Long productId) {
@@ -113,7 +115,6 @@ public class ProductService {
 
 		Product product = Product.builder()
 				.member(seller)
-				.category(category)
 				.thumbnailImage(productImageUrls.isEmpty() ? null : productImageUrls.get(0))
 				.placeDetail("TODO: MVP 개발 이후 location과 placeDetail 저장하는 로직 짜야돼")
 				.title(productCreateRequest.getTitle())
@@ -121,6 +122,7 @@ public class ProductService {
 				.price(productCreateRequest.getPrice())
 				.build();
 
+		product.setCategory(category);
 		product.setChatRoom(chatRoom);
 
 		Product savedProduct = productRepository.save(product);
@@ -131,7 +133,7 @@ public class ProductService {
 			savedProductImageUrls.add(productImage.getProductImage());
 		}
 
-		return buildProductDetailResponse(savedProduct, savedProductImageUrls, category.getName(), seller);
+		return buildProductDetailResponse(savedProduct, savedProductImageUrls, category.getName(), seller, false);
 	}
 
 
@@ -139,7 +141,8 @@ public class ProductService {
 		Product product,
 		List<String> productImageUrls,
 		String categoryName,
-		Member seller
+		Member seller,
+		boolean wish
 	) {
 		MemberSummaryResponse sellerSummaryResponse = MemberSummaryResponse.fromEntity(seller);
 
@@ -155,6 +158,7 @@ public class ProductService {
 			.elapsedMinutes(Duration.between(product.getCreatedAt(), LocalDateTime.now()).toMinutes())
 			.memberSummary(sellerSummaryResponse)
 			.chatRoomId(product.getChatRoom().getId())
+			.wish(wish)
 			.wishCount(product.getWishCount())
 			.offerCount(product.getOfferCount())
 			.viewCount(product.getViewCount())
@@ -217,6 +221,18 @@ public class ProductService {
 		wishList.setValid(false);
 		WishList savedWishList = wishListRepository.save(wishList);
 		return ProductWishResponse.fromEntity(savedWishList, product);
+	}
+
+	public List<Product> findProductForSaleByCategoryId(Integer categoryId) {
+		return productRepository.findByCategoryIdAndStatus(categoryId, ProductType.SALE);
+	}
+	
+	public BasePageResponse<WishList, ProductSummary> getMyWishProducts(Long memberId, Pageable pageable) {
+		Page<WishList> wishLists = wishListRepository.findWishListsByMemberId(memberId, pageable);
+		List<ProductSummary> content = wishLists.getContent().stream()
+				.map(wishList -> ProductSummary.fromEntity(wishList.getProduct()))
+				.toList();
+		return new BasePageResponse<>(content, wishLists);
 	}
 
 	public List<String> getAutoCompleteKeyword(String keyword) {

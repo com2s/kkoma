@@ -30,4 +30,14 @@ public class KidFactory {
         return kidRepository.save(kid);
     }
 
+    public Kid createKid(Member member, GenderType genderType, LocalDate birthDate) {
+        Kid kid = Kid.builder()
+                .name(RandomStringGenerator.randomUUID(10))
+                .gender(genderType)
+                .birthDate(birthDate)
+                .build();
+        kid.setMember(member);
+        return kidRepository.save(kid);
+    }
+
 }

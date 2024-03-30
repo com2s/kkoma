@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "My Trade",
+  title: "내 거래",
   description: "User's trade page",
 };
 

@@ -8,10 +8,7 @@ import com.ssafy.kkoma.domain.notification.repository.NotificationRepository;
 import com.ssafy.kkoma.domain.offer.entity.Offer;
 import com.ssafy.kkoma.domain.product.entity.Category;
 import com.ssafy.kkoma.domain.product.entity.Product;
-import com.ssafy.kkoma.factory.CategoryFactory;
-import com.ssafy.kkoma.factory.MemberFactory;
-import com.ssafy.kkoma.factory.OfferFactory;
-import com.ssafy.kkoma.factory.ProductFactory;
+import com.ssafy.kkoma.factory.*;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -52,7 +49,7 @@ class DealReminderJobConfigTest {
     OfferService offerService;
 
     @Test
-    public void success_noData() throws Exception {
+    public void success() throws Exception {
         int NUM = 3;
 
         // given

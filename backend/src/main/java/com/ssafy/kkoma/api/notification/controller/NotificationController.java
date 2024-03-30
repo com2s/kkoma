@@ -2,10 +2,11 @@ package com.ssafy.kkoma.api.notification.controller;
 
 import java.util.List;
 
+import com.ssafy.kkoma.api.common.dto.BasePageResponse;
+import com.ssafy.kkoma.domain.notification.entity.Notification;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ssafy.kkoma.api.notification.dto.response.NotificationSummary;
 import com.ssafy.kkoma.api.notification.service.NotificationService;
@@ -33,10 +34,27 @@ public class NotificationController {
 		security = {@SecurityRequirement(name = "bearer-key")}
 	)
 	@GetMapping("")
-	public ResponseEntity<ApiUtils.ApiResult<List<NotificationSummary>>> getNotifications(
-		@MemberInfo MemberInfoDto memberInfoDto
+	public ResponseEntity<ApiUtils.ApiResult<BasePageResponse<Notification, NotificationSummary>>> getNotifications(
+		@MemberInfo MemberInfoDto memberInfoDto,
+		Pageable pageable
 	) {
-		List<NotificationSummary> notiList = notificationService.getNotifications(memberInfoDto.getMemberId());
-		return ResponseEntity.ok(ApiUtils.success(notiList));
+		BasePageResponse<Notification, NotificationSummary> notiSummaryListResponse
+			= notificationService.getNotifications(memberInfoDto.getMemberId(), pageable);
+		return ResponseEntity.ok(ApiUtils.success(notiSummaryListResponse));
+	}
+
+	@Tag(name = "Notification")
+	@Operation(
+		summary = "알림 읽음 처리",
+		description = "[[노션](https://www.notion.so/todays-jiwoo/bc29cfa76089469193f61073f956e55c?pvs=4)] 유저가 알림을 클릭하면 읽음으로 처리한다.",
+		security = {@SecurityRequirement(name = "bearer-key")}
+	)
+	@PostMapping("/read/{notificationId}")
+	public ResponseEntity<ApiUtils.ApiResult<List<NotificationSummary>>> readNotification(
+		@MemberInfo MemberInfoDto memberInfoDto,
+		@PathVariable("notificationId") Long notificationId
+	) {
+		notificationService.readNotification(memberInfoDto.getMemberId(), notificationId);
+		return ResponseEntity.ok(ApiUtils.success(null));
 	}
 }

@@ -43,7 +43,7 @@ interface IParams {
 // }
 
 export default function ProductDetail({ params: { id } }: IParams) {
-  const [product, setProduct] = useState<DetailParams|null>(null);
+  const [product, setProduct] = useState<DetailParams | null>(null);
   const [myId, setMyId] = useState<string | null>(null);
   const [success, setSuccess] = useState(true);
   useEffect(() => {
@@ -52,23 +52,21 @@ export default function ProductDetail({ params: { id } }: IParams) {
       setMyId(LocalStorage.getItem("memberId"));
       setProduct(res);
       setSuccess(res.success);
+      if (!res.success) {
+        console.warn(res.error);
+      }
     };
     fetchData();
-  }, []);
-  console.log("myId: ", myId);
-  
-  console.log(product);
-  
-  if (success === false) return <div>상품 정보를 불러오는데 실패했습니다.</div>;
-  
+  }, [id]);
+
   const settings = {
     // centerMode: true,
-    autoplay: (product && (product.data.productImages.length > 1)) ? true : false,
+    autoplay: product && product.data.productImages.length > 1 ? true : false,
     // 이동부터 다음 이동까지의 시간
     autoplaySpeed: 2000,
     dots: true,
     arrows: false,
-    infinite: (product && (product.data.productImages.length > 1)) ? true : false,
+    infinite: product && product.data.productImages.length > 1 ? true : false,
     // 이동하는데 걸리는 시간
     speed: 500,
     slidesToShow: 1,
@@ -78,67 +76,81 @@ export default function ProductDetail({ params: { id } }: IParams) {
   return (
     <div className={styles.container}>
       <TopBar2 />
-      <div className={styles.carousel}>
-        <Slider {...settings}>
-          {product?.data.productImages.map((img, index) => (
-            <div key={index} className={styles.image}>
-              <Image
-                src={img ?? "/temp-img.svg"} // Route of the image file
-                alt={`Slide ${index + 1}`}
-                priority
-                width={250} // Adjust as needed
-                height={250} // Adjust as needed
-                style={{ margin: "0 auto"}}
-              />
-            </div>
-          ))}
-        </Slider>
-      </div>
-      <Profile propsId={id} memberSummary={product?.data.memberSummary} />
-      <Content propsId={id} product={product?.data} />
-      <Accordion className="mt-4">
-        {/* 거래 장소 선택(필수항목) */}
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1-content"
-          id="panel1-header"
-        >
-          <LocationOnOutlinedIcon className="mr-4" />
-          <span>거래 장소</span>
-        </AccordionSummary>
-        <AccordionDetails>
-          <span>*여기서 주소 받아오기*</span>
-          <Map />
-        </AccordionDetails>
-      </Accordion>
-      {myId && myId === product?.data.memberSummary.memberId.toString() ? (
-        <div className="flex gap-8 py-4 px-6">
-          {/* <SubBtn next={"/"}>홈 화면</SubBtn>
+      {success === false && (
+        <div>
+          <h4>상품 정보를 불러오는데 실패했습니다.</h4>
+          <h6>{product?.error.errorMessage}</h6>
+        </div>
+      )}
+      {success === true && product?.data && (
+        <>
+          <div className={styles.carousel}>
+            <Slider {...settings}>
+              {product?.data.productImages.map((img, index) => (
+                <div key={index} className={styles.image}>
+                  <Image
+                    src={img ?? "/temp-img.svg"} // Route of the image file
+                    alt={`Slide ${index + 1}`}
+                    priority
+                    width={250} // Adjust as needed
+                    height={250} // Adjust as needed
+                    style={{ margin: "0 auto" }}
+                  />
+                </div>
+              ))}
+            </Slider>
+          </div>
+          <Profile propsId={id} memberSummary={product?.data.memberSummary} />
+          <Content propsId={id} product={product?.data} />
+          <Accordion className="mt-4">
+            {/* 거래 장소 선택(필수항목) */}
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1-content"
+              id="panel1-header"
+            >
+              <LocationOnOutlinedIcon className="mr-4" />
+              <span>거래 장소</span>
+            </AccordionSummary>
+            <AccordionDetails>
+              <span>*여기서 주소 받아오기*</span>
+              <Map />
+            </AccordionDetails>
+          </Accordion>
+          {myId && myId === product?.data.memberSummary.memberId.toString() ? (
+            <div className="flex gap-8 py-4 px-6">
+              {/* <SubBtn next={"/"}>홈 화면</SubBtn>
         <NormalBtn next={"/"}>아이 정보 입력</NormalBtn> */}
-          <Link href={`/my-trade/${id}`} className="w-full">
-            <button className={`${styles.btn} ${styles.normal}`}>
-              요청 보기
-            </button>
-          </Link>
-          <Link href={`/lists/${id}/edit`} className="w-full">
-            <button className={`${styles.btn} ${styles.normal} ${styles.gray}`}>
-              상품 수정
-            </button>
-          </Link>
-        </div>
-      ) : (
-        <div className="flex gap-8 py-4 px-6">
-          <Link href={`/lists/${id}/request`} className="w-full">
-            <button className={`${styles.btn} ${styles.normal}`}>
-              거래 요청
-            </button>
-          </Link>
-          <Link href={`/lists/${id}/chat`} className="w-full">
-            <button className={`${styles.btn} ${styles.normal} ${styles.gray}`}>
-              채팅 문의
-            </button>
-          </Link>
-        </div>
+              <Link href={`/my-trade/${id}`} className="w-full">
+                <button className={`${styles.btn} ${styles.normal}`}>
+                  요청 보기
+                </button>
+              </Link>
+              <Link href={`/lists/${id}/edit`} className="w-full">
+                <button
+                  className={`${styles.btn} ${styles.normal} ${styles.gray}`}
+                >
+                  상품 수정
+                </button>
+              </Link>
+            </div>
+          ) : (
+            <div className="flex gap-8 py-4 px-6">
+              <Link href={`/lists/${id}/request`} className="w-full">
+                <button className={`${styles.btn} ${styles.normal}`}>
+                  거래 요청
+                </button>
+              </Link>
+              <Link href={`/lists/${id}/chat`} className="w-full">
+                <button
+                  className={`${styles.btn} ${styles.normal} ${styles.gray}`}
+                >
+                  채팅 문의
+                </button>
+              </Link>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
