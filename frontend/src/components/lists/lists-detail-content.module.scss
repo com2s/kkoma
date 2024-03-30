@@ -1,9 +1,5 @@
-.container {
-    padding: rem(10);
-}
-
 .title {
-    // height: 60px;
+  // height: 60px;
   align-self: stretch;
   flex-grow: 0;
   display: flex;
@@ -11,13 +7,8 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: 3px;
-  padding: rem(5);
 }
 
 .price {
-    padding: rem(15) 0;
-}
-
-.content {
-    padding: rem(10);
+  padding: rem(15) 0;
 }

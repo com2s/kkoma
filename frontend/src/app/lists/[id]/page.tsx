@@ -18,7 +18,12 @@ import Image from "next/image";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import { Accordion, AccordionDetails, AccordionSummary, Button } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Button,
+} from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import Link from "next/link";
@@ -26,16 +31,6 @@ import Link from "next/link";
 interface IParams {
   params: { id: string };
 }
-// 아래에서 IParams 로 쓰이는데, 이것은 interface로, 타입을 정의하는 것이다.
-// export async function generateMetadata({ params: { id } }: IParams) {
-//   // const movie = await getMovie(id);
-
-//   return {
-//     //   title: movie.title,
-//     title: `상품 ID = ${id}`,
-//     description: "Product detail page",
-//   };
-// }
 
 export default function ProductDetail({ params: { id } }: IParams) {
   const [product, setProduct] = useState<DetailParams | null>(null);
@@ -105,22 +100,28 @@ export default function ProductDetail({ params: { id } }: IParams) {
       </Accordion>
       {myId && myId === product?.data.memberSummary.memberId.toString() ? (
         <div className="flex gap-8 py-4 px-6">
-          {/* <SubBtn next={"/"}>홈 화면</SubBtn>
-        <NormalBtn next={"/"}>아이 정보 입력</NormalBtn> */}
           <Link href={`/my-trade/${id}`} className="w-full">
-            <button className={`${styles.btn} ${styles.normal}`}>요청 보기</button>
+            <button className={`${styles.btn} ${styles.normal}`}>
+              요청 보기
+            </button>
           </Link>
           <Link href={`/lists/${id}/edit`} className="w-full">
-            <button className={`${styles.btn} ${styles.normal} ${styles.gray}`}>상품 수정</button>
+            <button className={`${styles.btn} ${styles.normal} ${styles.gray}`}>
+              상품 수정
+            </button>
           </Link>
         </div>
       ) : (
         <div className="flex gap-8 py-4 px-6">
           <Link href={`/lists/${id}/request`} className="w-full">
-            <button className={`${styles.btn} ${styles.normal}`}>거래 요청</button>
+            <button className={`${styles.btn} ${styles.normal}`}>
+              거래 요청
+            </button>
           </Link>
           <Link href={`/lists/${id}/chat`} className="w-full">
-            <button className={`${styles.btn} ${styles.normal} ${styles.gray}`}>채팅 문의</button>
+            <button className={`${styles.btn} ${styles.normal} ${styles.gray}`}>
+              채팅 문의
+            </button>
           </Link>
         </div>
       )}
