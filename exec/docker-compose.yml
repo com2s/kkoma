@@ -35,7 +35,7 @@ services:
       - backend
 
   mysql-test:
-    image: mysql-test:latest
+    image: kkoma-mysql:latest
     container_name: mysql-test
     restart: unless-stopped
     volumes:
