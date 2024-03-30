@@ -18,7 +18,6 @@ public class AreaRepositoryImpl implements AreaRepositoryCustom {
 
 	@Override
 	public List<Area> getArea(int level, Long code, Long digit, Long nextDigit) {
-
 		return queryFactory
 			.selectFrom(area)
 			.where(
@@ -48,6 +47,5 @@ public class AreaRepositoryImpl implements AreaRepositoryCustom {
 	private BooleanExpression codeEq(Long code) {
 		return code == null ? null : area.id.eq(code).not();
 	}
-
 
 }

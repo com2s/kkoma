@@ -14,7 +14,6 @@ import com.ssafy.kkoma.global.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AreaService {
@@ -46,4 +45,5 @@ public class AreaService {
 		}
 		return 4;
 	}
+
 }

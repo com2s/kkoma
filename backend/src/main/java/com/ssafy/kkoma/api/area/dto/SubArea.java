@@ -20,11 +20,12 @@ public class SubArea {
 	}
 
 	private static String getSubName(Area area, int level) {
-        return switch (level + 1) {
+		return switch (level + 1) {
             case 2 -> area.getSubName2();
             case 3 -> area.getSubName3();
             case 4 -> area.getSubName4();
             default -> area.getSubName1();
-        };
+		};
 	}
+
 }
