@@ -20,11 +20,11 @@ public class CategoryPreference implements Serializable {
         @EqualsAndHashCode.Include
         private Long id;
 
-        @ManyToOne // (fetch = FetchType.LAZY) todo-siyoon check
+        @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "member_id")
         private Member member;
 
-        @ManyToOne // (fetch = FetchType.LAZY) todo-siyoon check
+        @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "category_id")
         private Category category;
 

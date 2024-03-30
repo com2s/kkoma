@@ -38,51 +38,27 @@ public class RecommendationService {
     private final DataSource dataSource;
     private final MemberService memberService;
     private final ProductService productService;
-    private final MemberRepository memberRepository;
 
-    public List<RecommendedItem> recommendCategory(Long memberId) throws SQLException {
+    public List<RecommendedItem> recommendCategory(Long memberId) {
 
         Member member = memberService.findMemberByMemberId(memberId);
-        log.info("dataSource={}", dataSource);
-        log.info("dataSource.getConnection={}", dataSource.getConnection());
-        try {
-            DataModel dataModel = new MySQLJDBCDataModel(dataSource,
-                    "category_preference",
-                    "member_id",
-                    "category_id",
-                    "preference",
-                    null);
 
-            log.info("dataModel={}", dataModel);
-            log.info("dataModel UserID={}", dataModel.getUserIDs());
-            log.info("dataModel ItemID={}", dataModel.getItemIDs());
+        try {
+            DataModel dataModel = new MySQLJDBCDataModel(dataSource, "category_preference", "member_id", "category_id", "preference", null);
+
             // user-based recommendation
             UserSimilarity userSimilarity = new PearsonCorrelationSimilarity(dataModel);
-            log.info("userSimilarity={}", userSimilarity);
             UserNeighborhood userNeighborhood = new NearestNUserNeighborhood(2, userSimilarity, dataModel);
-            log.info("userNeighborhood={}", userNeighborhood);
             GenericBooleanPrefUserBasedRecommender userBasedRecommender = new GenericBooleanPrefUserBasedRecommender(dataModel, userNeighborhood, userSimilarity);
-            log.info("userBasedRecommender={}", userBasedRecommender);
             List<RecommendedItem> userBasedRecommendations = userBasedRecommender.recommend(member.getId(), 1, true); // 최대 10개 추천
-            log.info("userBasedRecommendations={}", userBasedRecommendations.size());
 
             // item-based recommendation
             ItemSimilarity itemSimilarity = new PearsonCorrelationSimilarity(dataModel);
-            log.info("itemSimilarity={}", itemSimilarity);
             GenericItemBasedRecommender itemBasedRecommender = new GenericItemBasedRecommender(dataModel, itemSimilarity);
-            log.info("itemBasedRecommender={}", itemBasedRecommender);
-
-            log.info("member={}", memberRepository.findById(memberId));
-            log.info("member={}", memberRepository.findById(member.getId()));
             List<RecommendedItem> itemBasedRecommendations = itemBasedRecommender.recommend(member.getId(), 1, true); // 최대 10개 추천
-            log.info("itemBasedRecommendations={}", itemBasedRecommendations.size());
-
-            // combine
-            List<RecommendedItem> recommendations = combineRecommendations(itemBasedRecommendations, userBasedRecommendations);
-
-            return recommendations; // todo naming
+            return combineRecommendations(itemBasedRecommendations, userBasedRecommendations);
         } catch (TasteException e) {
-            // todo: move to global exception handler
+            // todo-siyoon move to global exception handler
             e.printStackTrace();
             return new ArrayList<>();
         }
@@ -97,7 +73,7 @@ public class RecommendationService {
 
     public List<ProductSummary> recommendProduct(Long memberId) throws SQLException {
 
-        // todo use lambda
+        // todo-siyoon use lambda
         List<ProductSummary> productSummaries = new ArrayList<>();
         List<RecommendedItem> recommendedCategories = recommendCategory(memberId);
         for(RecommendedItem recommendedCategory : recommendedCategories) {
