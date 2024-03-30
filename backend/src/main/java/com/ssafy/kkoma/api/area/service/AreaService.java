@@ -21,7 +21,7 @@ public class AreaService {
 
 	private final AreaRepository areaRepository;
 
-	public List<Area> getArea(Long code) {
+	public List<SubArea> getArea(Long code) {
 		int level = code == null ? 0 : codeLevel(code);
 		if(level == 4) {
 			throw new BusinessException(ErrorCode.SUB_AREA_NOT_EXISTS);
@@ -30,10 +30,9 @@ public class AreaService {
 		long digit = levelDigit(level);
 		long nextDigit = levelDigit(level + 1);
 
-		return areaRepository.getArea(level, code, digit, nextDigit);
-			// .stream()
-			// .map(sub -> SubArea.fromEntity(sub, level))
-			// .collect(Collectors.toList());
+		return areaRepository.getArea(level, code, digit, nextDigit).stream()
+				.map(sub -> SubArea.fromEntity(sub, level))
+				.collect(Collectors.toList());
 	}
 
 

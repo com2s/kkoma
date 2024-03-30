@@ -25,8 +25,8 @@ public class AreaController {
 	private final AreaService areaService;
 
 	@GetMapping
-	public ResponseEntity<ApiUtils.ApiResult<List<Area>>> getArea(@RequestParam(required = false) Long code) {
-		List<Area> response = areaService.getArea(code);
+	public ResponseEntity<ApiUtils.ApiResult<List<SubArea>>> getArea(@RequestParam(required = false) Long code) {
+		List<SubArea> response = areaService.getArea(code);
 		return ResponseEntity.ok(ApiUtils.success(response));
 	}
 

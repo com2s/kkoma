@@ -20,7 +20,16 @@ public class Area {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(length = 50)
-	private String name;
+	@Column(length = 10)
+	private String subName1;
+
+	@Column(length = 10)
+	private String subName2;
+
+	@Column(length = 10)
+	private String subName3;
+
+	@Column(length = 10)
+	private String subName4;
 
 }
