@@ -34,6 +34,25 @@ services:
     networks:
       - backend
 
+  mysql-test:
+    image: mysql-test:latest
+    container_name: mysql-test
+    restart: unless-stopped
+    volumes:
+      - /home/ubuntu/mysql-test/data:/var/lib/mysql
+      # - /home/ubuntu/mysql/initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - 4406:3306
+    environment:
+      TZ: ${TZ}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    networks:
+      - backend
+
   redis:
     image: redis:7.2-alpine
     container_name: redis
