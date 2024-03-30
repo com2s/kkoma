@@ -7,7 +7,7 @@ import lombok.*;
 
 import java.util.Date;
 
-// todo request, response로 분할
+// todo-siyoon request, response로 분할
 public class OauthLoginDto {
 
     @Getter @Setter

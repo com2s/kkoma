@@ -30,7 +30,7 @@ class KidServiceTest {
     KidService kidService;
 
     @Autowired
-    MemberService memberService; // todo mocking
+    MemberService memberService;
 
     @Autowired
     MemberRepository memberRepository;
