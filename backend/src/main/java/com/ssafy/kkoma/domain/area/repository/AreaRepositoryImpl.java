@@ -3,7 +3,6 @@ package com.ssafy.kkoma.domain.area.repository;
 import java.util.List;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.kkoma.domain.area.entity.Area;
 import static com.ssafy.kkoma.domain.area.entity.QArea.area;
