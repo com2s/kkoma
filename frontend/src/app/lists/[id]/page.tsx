@@ -52,6 +52,9 @@ export default function ProductDetail({ params: { id } }: IParams) {
       setMyId(LocalStorage.getItem("memberId"));
       setProduct(res);
       setSuccess(res.success);
+      if (!res.success) {
+        console.warn(res.error);
+      }
     };
     fetchData();
   }, [id]);

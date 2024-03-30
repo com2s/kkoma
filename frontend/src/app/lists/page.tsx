@@ -239,7 +239,7 @@ export default function ListPage() {
       <div>
         {filteredProducts?.map((product) => (
           <Link href={`/lists/${product.id}`} key={product.id} prefetch={false}>
-            <Card key={product.id} variant="outlined" className={styles.card}>
+            <Card variant="outlined" className={styles.card}>
               <Avatar
                 alt="Product Image"
                 src={

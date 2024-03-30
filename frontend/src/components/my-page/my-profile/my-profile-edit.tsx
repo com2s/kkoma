@@ -42,6 +42,8 @@ export default function MyProfileEdit() {
     setNickname(data.nickname ?? "");
     setPhone(data.phone ?? "");
     setImage({ url: data.profileImage ?? "" });
+    console.log("myId: ", data.id);
+    console.log(data);
   };
 
   // 이미지 파일 변경 처리
@@ -57,8 +59,6 @@ export default function MyProfileEdit() {
     }
   };
 
-  console.log("myId: ", myDetail?.data.id);
-  console.log(myDetail?.data);
 
   const handleAccordionChange =
     (panel: boolean) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -81,7 +81,9 @@ export default function MyProfileEdit() {
   const handleEditClick = async () => {
     const formData = new FormData();
     let profileImage = null;
+    let isUpload = false;
     if (image?.file) {
+      isUpload = true;
       formData.append("images", image.file);
       // console.log("image: ", image);
       profileImage = await uploadImagesAPI(formData);
@@ -89,12 +91,13 @@ export default function MyProfileEdit() {
     }
 
     const data = {
-      profileImage: profileImage[0] ?? null,
+      // profileImage: profileImage ? profileImage[0] : null,
+      profileImage: isUpload ? profileImage[0] : myDetail?.data.profileImage,
       nickname: nickname === "" ? null : nickname,
       name: name === "" ? null : name,
       phone: phone === "" ? null : phone,
     };
-    // console.log("data: ", data);
+    console.log("data: ", data);
     const res = await putMyInfo(data);
     await alert("수정되었습니다.");
     setExpanded(false); // 아코디언 닫기
@@ -142,6 +145,7 @@ export default function MyProfileEdit() {
                   onChange={handleImageChange}
                 />
               </label>
+              {/* <Button color="warning" sx={{display:'block'}}>사진 지우기</Button> */}
               <TextField
                 id="standard-basic"
                 label="닉네임"
@@ -152,7 +156,7 @@ export default function MyProfileEdit() {
                   setNickname(event.target.value);
                 }}
               />
-              <TextField
+              {/* <TextField
                 id="standard-basic"
                 label="이름"
                 variant="standard"
@@ -172,7 +176,7 @@ export default function MyProfileEdit() {
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                   setPhone(event.target.value);
                 }}
-              />
+              /> */}
             </AccordionDetails>
             <AccordionActions
               sx={{
