@@ -32,7 +32,7 @@ export default function Home() {
       <Navigation />
       <div className={styles.home}>
         <TopBar />
-        {!kidList && kidList.length > 0 ? (
+        {kidList && kidList.length > 0 ? (
           <>
             <KidCardList kidList={kidList} setSelectedName={setSelectedName} />
             <RecommandProductList name={selectedName} />

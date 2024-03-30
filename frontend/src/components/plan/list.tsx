@@ -27,6 +27,7 @@ export function DealCard(
           status: "PROGRESS",
           elapsedMinutes: Number(deal.selectedTime),
         }}
+        next={`/chat/${deal.id}`}
       />
       <button
         className="flex bg-slate-50 text-caption w-full rounded-sm py-1 justify-center my-2"

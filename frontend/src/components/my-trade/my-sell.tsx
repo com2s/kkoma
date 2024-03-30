@@ -16,6 +16,7 @@ import Link from "next/link";
 import { NoContents } from "../common/no-contents";
 import Image from "next/image";
 import { SmallBtn } from "../common/buttons";
+import { ProductCard } from "../common/product-card";
 
 export default function MySell() {
   const [deals, setDeals] = useState<Deal[]>([]);
@@ -104,87 +105,29 @@ export default function MySell() {
         ))}
       </Stack>
       <div>
-        {filteredDeals.map((deal) => (
-          <Card key={deal.id} variant="outlined" className={styles.card}>
-            <Avatar
-              alt="Product Image"
-              src={deal.thumbnailImage}
-              sx={{ width: 80, height: 80 }}
-              className={styles.avatar}
-              variant="square"
-            />
-            <CardContent sx={{ padding: 1 }} className={styles.cardMiddle}>
-              <Typography variant="h6" component="div">
-                {deal.price.toLocaleString()}원{" "}
-              </Typography>
-              <Typography color="text.secondary">{deal.title}</Typography>
-              <Typography variant="body2">
-                {deal.dealPlace ?? "거래 장소 null"} •{" "}
-                {deal.elapsedMinutes >= 1440 // 1440분 = 24시간
-                  ? `${Math.floor(deal.elapsedMinutes / 1440)}일 전`
-                  : deal.elapsedMinutes >= 60
-                  ? `${Math.floor(deal.elapsedMinutes / 60)}시간 전`
-                  : `${deal.elapsedMinutes}분 전`}
-              </Typography>
-              <Typography variant="caption" className="text-gray-400">
-                조회 {deal.viewCount} • 거래 요청 {deal.offerCount} • 찜{" "}
-                {deal.wishCount}
-              </Typography>
-            </CardContent>
-            <CardContent
-              sx={{
-                padding: 0,
-                margin: 0,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
+        {filteredDeals.map((deal, k) => (
+          <div className="flex justify-between items-start" key={k}>
+            <ProductCard product={deal} next={`/lists/${deal.id}`} />
+            <IconButton
+              aria-label="menu"
+              onClick={(e) => handleMenuClick(e, deal.id)} // 클릭 핸들러에 deal.id 전달
             >
-              <IconButton
-                aria-label="menu"
-                onClick={(e) => handleMenuClick(e, deal.id)} // 클릭 핸들러에 deal.id 전달
-              >
-                <MoreVertIcon />
-              </IconButton>
-              <Menu
-                anchorEl={anchorEl}
-                open={open && openMenuId === deal.id} // 현재 카드의 메뉴만 열림
-                // open={open}
-                onClose={handleMenuClose}
-                PaperProps={{
-                  elevation: 1,
-                }}
-              >
-                <Link href={`/my-trade/${deal.id}`}>
-                  <MenuItem onClick={handleRequestOpen}>거래요청목록</MenuItem>
-                </Link>
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              open={open && openMenuId === deal.id} // 현재 카드의 메뉴만 열림
+              onClose={handleMenuClose}
+            >
+              <Link href={`/my-trade/${deal.id}`}>
+                <MenuItem onClick={handleRequestOpen}>거래요청목록</MenuItem>
+              </Link>
 
-                <MenuItem onClick={handleMenuCloseAndDelete}>
-                  판매글 삭제
-                </MenuItem>
-              </Menu>
-              <Typography
-                variant="body1"
-                textAlign={"center"}
-                sx={{
-                  mt: 2,
-                  fontWeight: "bold",
-                  width: "70px",
-                  color:
-                    // deal.status2 의 값에 따라 색상을 다르게 표시
-                    deal.status === "PROGRESS"
-                      ? "crimson"
-                      : deal.status === "SOLD"
-                      ? "dimgray"
-                      : deal.status === "SALE"
-                      ? "orange"
-                      : "black", // 기본값
-                }}
-              >
-                {deal.status === "SALE" ? "판매 중" : "거래 완료"}
-              </Typography>
-            </CardContent>
-          </Card>
+              <MenuItem onClick={handleMenuCloseAndDelete}>
+                판매글 삭제
+              </MenuItem>
+            </Menu>
+          </div>
         ))}
         {filteredDeals.length === 0 && (
           <NoContents>

@@ -41,12 +41,17 @@ export default function DealPay() {
             thumbnailImage: product.data.productImages[0],
             title: product.data.title,
             price: product.data.price,
+            dealPlace: product.data.dealPlace,
+            status: product.data.status,
+            elapsedMinutes: product.data.elapsedMinutes,
           }}
         />
       ) : (
         <></>
       )}
-      <div className="flex justify-center w-full">{code ? <QRCode code={code} /> : <></>}</div>
+      <div className="flex justify-center w-full">
+        {code ? <QRCode code={code} /> : <></>}
+      </div>
     </div>
   );
 }

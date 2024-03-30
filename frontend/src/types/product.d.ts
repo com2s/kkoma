@@ -7,7 +7,10 @@ export interface ProductSm {
   dealPlace: string;
   price: number;
   status: ProductStatus;
-  elapsedMinutes: number;
+  elapsedMinutes: number | string;
+  wishCount?: number | null;
+  offerCount?: number | null;
+  viewCount?: number | null;
 }
 
 export type ChatProduct = {

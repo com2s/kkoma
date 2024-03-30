@@ -5,6 +5,7 @@ import TopBar from "@/components/common/top-bar";
 import styles from "@/components/lists/lists.module.scss";
 import Navigation from "@/components/common/navigation";
 import { ProductCard } from "@/components/common/product-card";
+import { NoContents } from "@/components/common/no-contents";
 import { getCategoryAPI, getSearchProductAPI } from "@/services/product";
 
 // 인터페이스
@@ -12,6 +13,7 @@ import { SearchParms } from "@/types/search";
 import { Category, ProductSm } from "@/types/product";
 
 import Link from "next/link";
+import Image from "next/image";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
@@ -59,11 +61,15 @@ export default function ListPage() {
 
   // 검색어 초기화
   const clearSearch = () => {
-    setSearchQuery((prev) => ({ ...prev, keyword: null }));
+    setSearchQuery((prev) => ({ ...prev, keyword: "" }));
   };
 
   const handleCategoryClick = (option: number | null) => {
     setSearchQuery((prev) => ({ ...prev, categoryId: option }));
+    setAnchorEls({ ...anchorEls, category: null });
+  };
+
+  const handleCategoryClose = () => {
     setAnchorEls({ ...anchorEls, category: null });
   };
 
@@ -82,7 +88,7 @@ export default function ListPage() {
   };
 
   useEffect(() => {
-    // fetchOptions();
+    fetchOptions();
   }, []);
 
   useEffect(() => {
@@ -143,6 +149,7 @@ export default function ListPage() {
             <Menu
               anchorEl={anchorEls.category}
               open={Boolean(anchorEls.category)}
+              onClose={handleCategoryClose}
             >
               {categoryOptions?.map((option, k) => (
                 <MenuItem
@@ -188,13 +195,19 @@ export default function ListPage() {
       {/* 본문 리스트 시작 */}
       <div className="flex flex-col gap-5 mt-3">
         {products && products.length > 0 ? (
-          products.map((item) => (
-            <Link href={`/lists/${item.id}`} key={item.id}>
-              <ProductCard product={item} />
-            </Link>
+          products.map((item, k) => (
+            <ProductCard product={item} next={`/lists/${item.id}`} key={k} />
           ))
         ) : (
-          <div>거래글이 없습니다.</div>
+          <NoContents>
+            <h4 className="c-text3">일치하는 글이 없습니다.</h4>
+            <Image
+              src={"/images/Empty-BOX.png"}
+              alt="empty"
+              width={100}
+              height={100}
+            />
+          </NoContents>
         )}
       </div>
       {/* 본문 리스트 끝 */}

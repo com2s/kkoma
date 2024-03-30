@@ -37,7 +37,9 @@ export function ProductStatusFormat(status: ProductStatus) {
 }
 
 export function calcElapsedMinutes(elapsedMinutes: number) {
-  if (elapsedMinutes >= 1440) return `${Math.floor(elapsedMinutes / 1440)}일 전`;
-  else if (elapsedMinutes >= 60) return `${Math.floor(elapsedMinutes / 60)}시간 전`;
+  if (elapsedMinutes >= 1440)
+    return `${Math.floor(elapsedMinutes / 1440)}일 전`;
+  else if (elapsedMinutes >= 60)
+    return `${Math.floor(elapsedMinutes / 60)}시간 전`;
   else return `${elapsedMinutes}분 전`;
 }
