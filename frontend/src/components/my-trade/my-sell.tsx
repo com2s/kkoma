@@ -13,6 +13,9 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import styles from "@/components/my-trade/sell-buy.module.scss";
 import Link from "next/link";
+import { NoContents } from "../common/no-contents";
+import Image from "next/image";
+import { SmallBtn } from "../common/buttons";
 
 export default function MySell() {
   const [deals, setDeals] = useState<Deal[]>([]);
@@ -67,7 +70,8 @@ export default function MySell() {
     }
   };
 
-  const filteredDeals = deals?.filter((deal) =>
+  const filteredDeals = deals
+    ?.filter((deal) =>
       selectedChip === "모두"
         ? true
         : selectedChip === "판매 중"
@@ -183,7 +187,16 @@ export default function MySell() {
           </Card>
         ))}
         {filteredDeals.length === 0 && (
-          <h2 className="p-4">해당 거래가 아직 없습니다.</h2>
+          <NoContents>
+            <h4 className="c-text3">판매한 상품이 없어요</h4>
+            <Image
+              src={"/images/Empty-BOX.png"}
+              alt="empty"
+              width={100}
+              height={100}
+            />
+            <SmallBtn next={"/lists/create"}>상품 판매하러 가기</SmallBtn>
+          </NoContents>
         )}
       </div>
     </React.Fragment>

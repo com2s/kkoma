@@ -45,7 +45,7 @@ export default function ListPage() {
     regionCode: null,
     categoryId: null,
     memberId: null,
-    keyword: null,
+    keyword: "",
     status: null,
     page: 0,
     size: 10,
@@ -76,23 +76,27 @@ export default function ListPage() {
     setProducts(product?.content);
   };
 
-  useEffect(() => {
-    fetchData();
-  }, [searchQuery]);
-
   const fetchOptions = async () => {
     const category = await getCategoryAPI();
     setCategoryOptions([{ id: null, name: "카테고리" }, ...category]);
   };
 
   useEffect(() => {
-    fetchOptions();
+    // fetchOptions();
   }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [searchQuery]);
 
   return (
     <div className={styles.container}>
       <TopBar />
-      <div className={showSearch ? "mt-2 mb-2 flex justify-center items-center" : ""}>
+      <div
+        className={
+          showSearch ? "mt-2 mb-2 flex justify-center items-center" : ""
+        }
+      >
         {showSearch && (
           <Box className="flex items-center justify-center w-full px-2">
             <TextField
@@ -119,18 +123,32 @@ export default function ListPage() {
         spacing={1}
         className={`${styles.chips} flex-wrap justify-between gap-2 `}
       >
-        <Stack direction="row" spacing={1} className={`${styles.chips} flex-wrap gap-2 `}>
+        <Stack
+          direction="row"
+          spacing={1}
+          className={`${styles.chips} flex-wrap gap-2 `}
+        >
           <Box className={styles.box}>
             <Chip
-              label={categoryOptions.find((item) => item.id == searchQuery?.categoryId)?.name}
+              label={
+                categoryOptions.find(
+                  (item) => item.id == searchQuery?.categoryId
+                )?.name
+              }
               onClick={handleCategory}
               color={searchQuery?.categoryId ? "primary" : "default"}
               variant={searchQuery?.categoryId ? "filled" : "outlined"}
               className={styles.chip}
             />
-            <Menu anchorEl={anchorEls.category} open={Boolean(anchorEls.category)}>
+            <Menu
+              anchorEl={anchorEls.category}
+              open={Boolean(anchorEls.category)}
+            >
               {categoryOptions?.map((option, k) => (
-                <MenuItem key={k} onClick={() => handleCategoryClick(option.id)}>
+                <MenuItem
+                  key={k}
+                  onClick={() => handleCategoryClick(option.id)}
+                >
                   {option.name}
                 </MenuItem>
               ))}
@@ -138,7 +156,10 @@ export default function ListPage() {
           </Box>
         </Stack>
         <Box>
-          <IconButton aria-label="search" onClick={() => setShowSearch(!showSearch)}>
+          <IconButton
+            aria-label="search"
+            onClick={() => setShowSearch(!showSearch)}
+          >
             <SearchIcon
               style={{
                 color: showSearch ? "pink" : "inherit",

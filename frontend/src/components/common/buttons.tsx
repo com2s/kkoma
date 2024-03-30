@@ -31,7 +31,10 @@ export function WideBtn({ children, next }: btnProps) {
   const router = useRouter();
 
   return (
-    <button className={`${styles.btn} ${styles.wide}`} onClick={() => onclickBtn(router, next)}>
+    <button
+      className={`${styles.btn} ${styles.wide}`}
+      onClick={() => onclickBtn(router, next)}
+    >
       <div>{children}</div>
     </button>
   );
@@ -57,6 +60,20 @@ export function SubBtn({ children, next, display = true }: btnProps) {
   return (
     <button
       className={`${styles.btn} ${styles.normal} ${styles.gray}`}
+      style={display ? {} : { display: "none" }}
+      onClick={() => onclickBtn(router, next)}
+    >
+      <div>{children}</div>
+    </button>
+  );
+}
+
+export function SmallBtn({ children, next, display = true }: btnProps) {
+  const router = useRouter();
+
+  return (
+    <button
+      className={`${styles.btn} ${styles.small}`}
       style={display ? {} : { display: "none" }}
       onClick={() => onclickBtn(router, next)}
     >
