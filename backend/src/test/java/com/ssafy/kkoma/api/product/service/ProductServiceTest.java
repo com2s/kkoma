@@ -211,6 +211,7 @@ class ProductServiceTest {
 	}
 
 	@Test
+	@Transactional
 	public void 나의_모든_찜_목록을_조회한다() throws Exception{
 	    // given
 	    Member seller = memberFactory.createMember();

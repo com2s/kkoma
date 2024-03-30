@@ -54,6 +54,7 @@ class ViewHistoryServiceTest {
     }
 
     @Test
+    @Transactional
     public void 이미_조회한_글을_다시_조회해도_기록이_새로_생성되지_않는다() throws Exception{
         // given
         Member seller = memberFactory.createMember();

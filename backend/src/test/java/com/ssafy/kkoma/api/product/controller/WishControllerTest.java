@@ -94,6 +94,7 @@ class WishControllerTest {
 
 
     @Test
+    @Transactional
     public void 나의_찜_목록_조회하기() throws Exception{
         Member seller = memberFactory.createMember();
         Member buyer = memberFactory.createMember();

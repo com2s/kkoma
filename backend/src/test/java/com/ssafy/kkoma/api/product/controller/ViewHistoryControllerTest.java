@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,7 @@ class ViewHistoryControllerTest {
     ViewHistoryService viewHistoryService;
 
     @Test
+    @Transactional
     public void 내가_최근_열람한_글_조회() throws Exception{
         Member seller = memberFactory.createMember();
         Member member = memberFactory.createMember();
