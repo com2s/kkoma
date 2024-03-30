@@ -166,7 +166,8 @@ class DealServiceTest {
 
 	/*-----------------------------------------------------------------------------------------------------------*/
 
-	private void createDeal(LocalDateTime dealTime) {
+	@Transactional
+	protected void createDeal(LocalDateTime dealTime) {
 		Member seller = memberFactory.createMember();
 		Member buyer = memberFactory.createMember();
 
