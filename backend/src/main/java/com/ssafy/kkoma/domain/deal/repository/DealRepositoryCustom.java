@@ -10,5 +10,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface DealRepositoryCustom {
 
-	Page<Deal> findScheduledDeal(LocalDateTime now, Pageable pageable);
+	Page<Deal> findScheduledDealAfterLastRun(LocalDateTime lastRun, LocalDateTime curRun, Pageable pageable);
 }
