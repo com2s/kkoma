@@ -56,6 +56,7 @@ interface DetailParams {
       preferredPlace: string;
     };
     chatRoomId: number;
+    wish: boolean;
     wishCount: number;
     offerCount: number;
     viewCount: number;

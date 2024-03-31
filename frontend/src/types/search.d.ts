@@ -2,14 +2,14 @@ import { ProductSm } from "./product";
 import { ProductStatus } from "./status";
 
 export type SearchParms = {
-  regionCode: number | null;
-  categoryId: number | null;
-  memberId: number | null;
-  keyword: string | null;
-  status: ProductStatus | null;
-  page: number | null;
-  size: 10 | null;
-  sort: string | null;
+  [regionCode: string]: number | null;
+  [categoryId: string]: number | null;
+  [memberId: string]: number | null;
+  [keyword: string]: string | null;
+  [status: string]: ProductStatus | null;
+  [page: string]: number | null;
+  [size: string]: 10 | null;
+  [sort: string]: string | null;
 };
 
 export type SearchResults = {

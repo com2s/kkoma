@@ -4,7 +4,7 @@ import APIModule from "@/utils/apiModule";
 
 export const getSearchProductAPI = async (params: SearchParms) => {
   const queryString = Object.keys(params)
-    .filter((i) => params[i] !== null && params[i] !== "" && params[i] !== 0)
+    .filter((i) => params[i] !== null && params[i] !== 0)
     .map((k) => {
       const value = params[k];
       if (value !== null) {
