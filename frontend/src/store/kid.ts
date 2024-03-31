@@ -6,19 +6,9 @@ export const kidNameState = atom<string | null>({
   default: null,
 });
 
-export const kidYearState = atom<string | null>({
-  key: "kidYearState",
-  default: "2024",
-});
-
-export const kidMonthState = atom<string | null>({
-  key: "kidMonthState",
-  default: "01",
-});
-
-export const kidDateState = atom<string | null>({
-  key: "kidDaState",
-  default: "01",
+export const kidBirthDateState = atom<string | null>({
+  key: "kidBirthDateState",
+  default: null,
 });
 
 export const kidGenderState = atom<Gender | null>({
