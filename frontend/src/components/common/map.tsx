@@ -13,7 +13,6 @@ interface Props {
   setLocation: Dispatch<SetStateAction<string>>;
 }
 
-// TODO: 사용자 위치 받아오기, 마커 찍기, 마커 주소 받아오기
 export default function Map({ setLocation }: Props) {
   let map: any, geocoder: any;
   const MAP_API_KEY = process.env.NEXT_PUBLIC_KAKAO_JS_KEY;
@@ -21,16 +20,38 @@ export default function Map({ setLocation }: Props) {
   const displayCenterInfo = (result: any, status: any) => {
     if (status === window.kakao.maps.services.Status.OK) {
       for (let i = 0; i < result.length; i++) {
-        if (result[i].region_type === "H") {
-          setLocation(result[i].address_name);
+        if (result[i].region_type === "B") {
+          console.log("법정동 코드", result[i].code);
           break;
         }
       }
     }
   };
 
-  const searchAddrFromCoords = (coords: any, callback: any) => {
-    geocoder.coord2RegionCode(coords.getLng(), coords.getLat(), callback);
+  const displayAddressInfo = (result: any, status: any) => {
+    if (status === window.kakao.maps.services.Status.OK) {
+      if (result[0]?.road_address?.address_name) {
+        console.log("주소", result[0].road_address.address_name);
+        setLocation(result[0].road_address.address_name);
+      } else {
+        console.log("주소", result[0].address.address_name);
+        setLocation(result[0].address.address_name);
+      }
+    }
+  };
+
+  const searchAddrFromCoords = (coords: any) => {
+    console.log("중심좌표 lng=", coords.getLng(), "lat=", coords.getLat());
+    geocoder.coord2RegionCode(
+      coords.getLng(),
+      coords.getLat(),
+      displayCenterInfo
+    );
+    geocoder.coord2Address(
+      coords.getLng(),
+      coords.getLat(),
+      displayAddressInfo
+    );
   };
 
   useEffect(() => {
@@ -58,7 +79,7 @@ export default function Map({ setLocation }: Props) {
         });
 
         window.kakao.maps.event.addListener(map, "idle", () =>
-          searchAddrFromCoords(map.getCenter(), displayCenterInfo)
+          searchAddrFromCoords(map.getCenter())
         );
       });
     };

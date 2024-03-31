@@ -26,7 +26,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { TransitionProps } from "@mui/material/transitions";
 import Slide from "@mui/material/Slide";
 import Title from "@/components/common/title";
-import { NormalBtn } from "@/components/common/buttons";
+import { ButtonContainer, NormalBtn } from "@/components/common/buttons";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -280,7 +280,9 @@ export default function CreatePost() {
                 <></>
               )}
               <Map setLocation={setLocation} />
-              <NormalBtn next={handleSelect}>선택</NormalBtn>
+              <ButtonContainer>
+                <NormalBtn next={handleSelect}>선택</NormalBtn>
+              </ButtonContainer>
             </div>
           </Dialog>
         </form>
