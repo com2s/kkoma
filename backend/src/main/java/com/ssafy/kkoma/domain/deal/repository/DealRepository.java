@@ -11,7 +11,7 @@ import com.ssafy.kkoma.domain.product.entity.Product;
 @Repository
 public interface DealRepository extends JpaRepository<Deal, Long>, DealRepositoryCustom {
 
-	Deal findByProduct(Product product);
+	Deal findByProductOrderBySelectedTimeDesc(Product product);
 
 	Optional<Deal> findDealByProductId(Long productId);
 

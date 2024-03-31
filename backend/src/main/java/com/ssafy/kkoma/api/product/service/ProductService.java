@@ -98,7 +98,7 @@ public class ProductService {
 	public ProductInfoResponse getProductInfoResponse(Long productId) {
 
 		Product product = findProductByProductId(productId);
-		Deal deal = dealRepository.findByProduct(product);
+		Deal deal = dealRepository.findByProductOrderBySelectedTimeDesc(product);
 		return ProductInfoResponse.fromEntity(
 			product,
 			MyProductType.BUY,
