@@ -6,6 +6,7 @@ import styles from "@/components/my-trade/my-request.module.scss";
 import { Requester } from "@/types/offer";
 import { getRequesters } from "@/components/my-trade/my-trade-ftn";
 import { offerTimeState } from "@/store/offer";
+import { patchOfferReject } from "@/components/my-trade/my-trade-ftn";
 import {
   Card,
   CardContent,
@@ -50,8 +51,9 @@ export default function MyRequest({ params: { dealId } }: IParams) {
     fetchData();
   }, [dealId]);
 
-  const handleDelete = (requestId: number) => {
+  const handleDelete = async (requestId: number) => {
     if (window.confirm("거래 요청을 취소하시겠습니까?")) {
+      await patchOfferReject(requestId);
       alert("거래 요청이 취소되었습니다.");
       console.log(requestId);
     }
