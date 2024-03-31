@@ -1,6 +1,6 @@
 import { ProductStatus } from "./status";
 
-export interface ProductSm {
+interface ProductSm {
   id: number;
   thumbnailImage: string;
   title: string;
@@ -13,7 +13,14 @@ export interface ProductSm {
   viewCount?: number | null;
 }
 
-export type ChatProduct = {
+type ProductSmCard = {
+  id: number;
+  thumbnailImage: string;
+  title: string;
+  price: number;
+};
+
+type ChatProduct = {
   id: number;
   thumbnailImage: string;
   title: string;
@@ -23,12 +30,12 @@ export type ChatProduct = {
   buyerId: number;
 };
 
-export interface Category {
+interface Category {
   id: number | null;
   name: string;
 }
 
-export interface Product {
+interface Product {
   success: boolean;
   data: Array<ProductSm>;
   error: {
@@ -66,3 +73,12 @@ interface DetailParams {
     errorMessage: string;
   };
 }
+
+export type {
+  ProductSm,
+  ProductSmCard,
+  ChatProduct,
+  Category,
+  Product,
+  DetailParams,
+};

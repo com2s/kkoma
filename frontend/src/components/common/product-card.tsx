@@ -2,7 +2,7 @@
 
 import styles from "./product-card.module.scss";
 import Image from "next/image";
-import { Product, ProductSm } from "@/types/product";
+import { ProductSmCard, ProductSm } from "@/types/product";
 import {
   MoneyFormat,
   ProductStatusFormat,
@@ -10,7 +10,7 @@ import {
 } from "@/utils/format";
 import { useRouter } from "next/navigation";
 
-export function ProductSmCard(props: { product: ProductSm }) {
+export function ProductSmCard(props: { product: ProductSmCard }) {
   const { thumbnailImage, id, title, price } = props.product;
   const router = useRouter();
 

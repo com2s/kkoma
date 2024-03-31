@@ -41,9 +41,6 @@ export default function DealPay() {
             thumbnailImage: product.data.productImages[0],
             title: product.data.title,
             price: product.data.price,
-            dealPlace: product.data.dealPlace,
-            status: product.data.status,
-            elapsedMinutes: product.data.elapsedMinutes,
           }}
         />
       ) : (

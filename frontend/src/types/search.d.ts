@@ -1,18 +1,18 @@
 import { ProductSm } from "./product";
 import { ProductStatus } from "./status";
 
-export type SearchParms = {
+type SearchParms = {
   [regionCode: string]: number | null;
   [categoryId: string]: number | null;
   [memberId: string]: number | null;
-  [keyword: string]: string | null;
   [status: string]: ProductStatus | null;
   [page: string]: number | null;
   [size: string]: 10 | null;
+  [keyword: string]: string | null;
   [sort: string]: string | null;
 };
 
-export type SearchResults = {
+type SearchResults = {
   content: Array<ProductSm>;
   size: number;
   page: number;
@@ -23,3 +23,5 @@ export type SearchResults = {
   last: boolean;
   empty: boolean;
 };
+
+export type { SearchParms, SearchResults };
