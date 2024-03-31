@@ -25,9 +25,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import SearchIcon from "@mui/icons-material/Search";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import MenuItem from "@mui/material/MenuItem";
+import { useRouter } from "next/navigation";
 
 export default function ListPage() {
   const theme = useTheme();
+  const router = useRouter();
+
   const [categoryOptions, setCategoryOptions] = useState<Array<Category>>([
     { id: null, name: "카테고리" },
   ]);
@@ -175,23 +178,12 @@ export default function ListPage() {
           </IconButton>
         </Box>
       </Stack>
-      <Link href="lists/create">
-        <Fab
-          color="primary"
-          sx={{
-            "&.MuiFab-root": {
-              // MUI Fab 루트에 대한 스타일을 재정의
-              boxShadow: theme.shadows[2], // 이는 elevation 1에 해당하는 그림자입니다.
-              backgroundColor: "gold",
-              color: "black",
-            },
-          }}
-          className={styles.fab}
-          aria-label="add"
-        >
-          <EditIcon />
-        </Fab>
-      </Link>
+      <button
+        className={styles.fab}
+        onClick={() => router.push("/lists/create")}
+      >
+        <EditIcon />
+      </button>
       {/* 본문 리스트 시작 */}
       <div className="flex flex-col gap-5 mt-3">
         {products && products.length > 0 ? (
