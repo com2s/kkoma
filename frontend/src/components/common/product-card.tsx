@@ -2,7 +2,7 @@
 
 import styles from "./product-card.module.scss";
 import Image from "next/image";
-import { ProductSmCard, ProductSm } from "@/types/product";
+import type { ProductSmCard, ProductSm } from "@/types/product";
 import {
   MoneyFormat,
   ProductStatusFormat,
