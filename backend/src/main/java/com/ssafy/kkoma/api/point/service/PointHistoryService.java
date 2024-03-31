@@ -26,7 +26,7 @@ public class PointHistoryService {
 	private final MemberService memberService;
 	private final PointHistoryRepository pointHistoryRepository;
 
-	public void changePoint(Member member, PointChangeType pointChangeType, int amount) {
+	public int changePoint(Member member, PointChangeType pointChangeType, int amount) {
 		Point point = member.getPoint();
 
 		if (pointChangeType == PointChangeType.CHARGE || pointChangeType == PointChangeType.PROFIT) {
@@ -42,6 +42,8 @@ public class PointHistoryService {
 				.balanceAfterChange(point.getBalance())
 				.build();
 		pointHistoryRepository.save(pointHistory);
+
+		return point.getBalance(); // 잔액 반환
 	}
 
 	public BasePageResponse<PointHistory, PointHistorySummary> getPointHistory(Long memberId, Pageable pageable) {
@@ -59,4 +61,9 @@ public class PointHistoryService {
 		pointHistoryRepository.save(pointHistory);
 	}
 
+//	public PointSummaryResponse transferPoint(Long memberId, TransferPointRequest transferPointRequest) {
+//		Member member = memberService.findMemberByMemberId(memberId);
+//		int balance = changePoint(member, transferPointRequest.getType(), transferPointRequest.getAmount());
+//		return PointSummaryResponse.builder().balance(balance).build();
+//	}
 }

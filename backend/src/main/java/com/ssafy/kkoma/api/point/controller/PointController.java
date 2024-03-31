@@ -2,10 +2,10 @@ package com.ssafy.kkoma.api.point.controller;
 
 import com.ssafy.kkoma.api.common.dto.BasePageResponse;
 import com.ssafy.kkoma.api.point.dto.PointHistorySummary;
-import com.ssafy.kkoma.api.point.dto.PointSummaryResponse;
+import com.ssafy.kkoma.api.point.dto.request.TransferPointRequest;
+import com.ssafy.kkoma.api.point.dto.response.PointSummaryResponse;
 import com.ssafy.kkoma.api.point.service.PointHistoryService;
 import com.ssafy.kkoma.api.point.service.PointService;
-import com.ssafy.kkoma.api.product.service.ProductService;
 import com.ssafy.kkoma.domain.point.entity.PointHistory;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfoDto;
@@ -14,17 +14,16 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Point")
 @RestController
 @RequestMapping("/api/points")
 @RequiredArgsConstructor
+@Slf4j
 public class PointController {
 
     private final PointService pointService;
@@ -65,5 +64,21 @@ public class PointController {
         BasePageResponse<PointHistory, PointHistorySummary> pointHistorySummaryListResponse =
                 pointHistoryService.getPointHistory(memberInfoDto.getMemberId(), pageable);
         return ResponseEntity.ok(ApiUtils.success(pointHistorySummaryListResponse));
+    }
+
+    @Tag(name = "Point")
+    @Operation(
+            summary = "포인트 충전 및 계좌 송금",
+            description = "[[노션]()] ",
+            security = { @SecurityRequirement(name = "bearer-key") }
+    )
+    @PostMapping("")
+    public ResponseEntity<?> transferPoint(
+            @MemberInfo MemberInfoDto memberInfoDto,
+            @RequestBody TransferPointRequest transferPointRequest
+    ){
+        PointSummaryResponse pointSummaryResponse =
+                pointService.transferPoint(memberInfoDto.getMemberId(), transferPointRequest);
+        return ResponseEntity.ok(ApiUtils.success(pointSummaryResponse));
     }
 }
