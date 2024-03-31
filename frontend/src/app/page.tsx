@@ -9,17 +9,27 @@ import { getKidsSummary } from "@/services/kid";
 import KidCardList from "@/components/home/kidCardList";
 import { NoKids } from "@/components/home/noKids";
 import { KidSummary } from "@/types/kid";
+import { isLogin } from "@/utils/getAccessToken";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [kidList, setKidList] = useState<Array<KidSummary>>([]);
   const [selectedName, setSelectedName] = useState<string | null>(null);
+  const router = useRouter();
 
   const getKidList = async () => {
     const res = await getKidsSummary();
     setKidList(res.data);
   };
 
+  const canAccess = async () => {
+    if (!(await isLogin())) {
+      router.replace("/welcome");
+    }
+  };
+
   useEffect(() => {
+    canAccess();
     getKidList();
   }, []);
 
