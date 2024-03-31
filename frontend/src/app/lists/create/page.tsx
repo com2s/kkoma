@@ -291,9 +291,11 @@ export default function CreatePost() {
                 <></>
               )}
               <Map setLocation={setLocation} />
-              <ButtonContainer>
-                <NormalBtn next={() => handleSelect(0)}>선택</NormalBtn>
-              </ButtonContainer>
+              <div className="w-full">
+                <ButtonContainer>
+                  <NormalBtn next={() => handleSelect(0)}>선택</NormalBtn>
+                </ButtonContainer>
+              </div>
             </div>
           </Dialog>
         </form>
