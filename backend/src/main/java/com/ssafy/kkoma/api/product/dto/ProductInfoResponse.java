@@ -28,6 +28,7 @@ public class ProductInfoResponse {
 	private Long viewCount;
 	private Long offerCount;
 	private MyProductType type;
+	private Long chatRoomId;
 
 	// 거래 관련
 	private Long dealId;
@@ -51,6 +52,7 @@ public class ProductInfoResponse {
 			.viewCount(product.getViewCount())
 			.offerCount(product.getOfferCount())
 			.type(type)
+			.chatRoomId(product.getChatRoom().getId())
 			.dealId(dealId)
 			.selectedTime(dealTime)
 			.build();

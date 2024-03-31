@@ -5,6 +5,7 @@ import com.ssafy.kkoma.api.member.dto.request.UpdateMemberRequest;
 import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
 import com.ssafy.kkoma.api.product.dto.ProductSummary;
+import com.ssafy.kkoma.domain.chat.entity.ChatRoom;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.domain.member.entity.Member;
@@ -14,6 +15,7 @@ import com.ssafy.kkoma.domain.product.constant.MyProductType;
 import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.domain.product.repository.ProductRepository;
+import com.ssafy.kkoma.factory.ChatRoomFactory;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,9 @@ class MemberServiceTest {
 
     @Autowired
     ProductRepository productRepository;
+
+    @Autowired
+    ChatRoomFactory chatRoomFactory;
 
     @Test
     @Disabled(value = "Member name, email 삭제해야돼서 비활성화")
@@ -92,19 +97,23 @@ class MemberServiceTest {
 
 
         for (int i = 0; i < 10; i++) {
+            ChatRoom chatRoom = chatRoomFactory.createChatRoom();
             Product product = Product.builder()
                     .title("...")
                     .status(ProductType.SALE)
                     .build();
             product.setMember(savedMember);
+            product.setChatRoom(chatRoom);
             productRepository.save(product);
         }
         for (int i = 0; i < 10; i++) {
+            ChatRoom chatRoom = chatRoomFactory.createChatRoom();
             Product product = Product.builder()
                     .title("...")
                     .status(ProductType.PROGRESS)
                     .build();
             product.setMember(savedMember);
+            product.setChatRoom(chatRoom);
             productRepository.save(product);
         }
 
