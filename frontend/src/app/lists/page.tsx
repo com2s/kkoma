@@ -3,130 +3,104 @@
 import React, { useState, useEffect } from "react";
 import TopBar from "@/components/common/top-bar";
 import styles from "@/components/lists/lists.module.scss";
-import { getProducts } from "@/components/lists/lists-ftn";
 import Navigation from "@/components/common/navigation";
+import { ProductCard } from "@/components/common/product-card";
+import { NoContents } from "@/components/common/no-contents";
+import { getCategoryAPI, getSearchProductAPI } from "@/services/product";
 
 // 인터페이스
-import { Product } from "@/types/product";
+import { SearchParms } from "@/types/search";
+import { Category, ProductSm } from "@/types/product";
 
 import Link from "next/link";
+import Image from "next/image";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
-import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import Box from "@mui/material/Box";
 import Fab from "@mui/material/Fab";
-import {
-  Avatar,
-  Card,
-  CardContent,
-  InputAdornment,
-  TextField,
-  Typography,
-  useTheme,
-} from "@mui/material";
-
-import AddIcon from "@mui/icons-material/Add";
-import MenuIcon from "@mui/icons-material/Menu";
+import { InputAdornment, TextField, useTheme } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import SearchIcon from "@mui/icons-material/Search";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
-import UnfoldLessIcon from "@mui/icons-material/UnfoldLess";
-
-// 옵션 데이터
-const chipData = {
-  region: {
-    default: "거래 지역",
-    options: ["거래 지역", "지역 1", "지역 2", "지역 3"],
-  },
-  age: {
-    default: "사용 연령",
-    options: ["사용 연령", "연령대 1", "연령대 2", "연령대 3"],
-  },
-  status: {
-    default: "거래 상태",
-    options: ["거래 상태", "판매 중", "거래 중", "거래 완료"],
-  },
-};
+import MenuItem from "@mui/material/MenuItem";
 
 export default function ListPage() {
   const theme = useTheme();
-  const [chips, setChips] = useState({
-    region: chipData.region.default,
-    age: chipData.age.default,
-    status: chipData.status.default,
-  });
+  const [categoryOptions, setCategoryOptions] = useState<Array<Category>>([
+    { id: null, name: "카테고리" },
+  ]);
+  const statusOptions = [
+    { id: "SALE", name: "판매중" },
+    { id: "PROGRESS", name: "거래중" },
+    { id: "PROGRESS", name: "거래중" },
+  ];
   const [anchorEls, setAnchorEls] = useState({
     region: null,
-    age: null,
+    category: null,
     status: null,
   });
-
   const [showSearch, setShowSearch] = useState(false); // 검색 필드 표시 여부
-  const [searchText, setSearchText] = useState(""); // 검색어
+  const [products, setProducts] = useState<Array<ProductSm>>();
+  const [searchQuery, setSearchQuery] = useState<SearchParms>({
+    regionCode: null,
+    categoryId: null,
+    memberId: null,
+    keyword: "",
+    status: null,
+    page: 0,
+    size: 10,
+    sort: "createdAt,desc",
+  });
 
   // 검색어 변경 처리
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchText(event.target.value);
+    setSearchQuery((prev) => ({ ...prev, keyword: event.target.value }));
   };
 
   // 검색어 초기화
   const clearSearch = () => {
-    setSearchText("");
+    setSearchQuery((prev) => ({ ...prev, keyword: "" }));
   };
 
-  const [products, setProducts] = useState<Product>();
+  const handleCategoryClick = (option: number | null) => {
+    setSearchQuery((prev) => ({ ...prev, categoryId: option }));
+    setAnchorEls({ ...anchorEls, category: null });
+  };
+
+  const handleCategoryClose = () => {
+    setAnchorEls({ ...anchorEls, category: null });
+  };
+
+  const handleCategory = (e: any) => {
+    setAnchorEls({ ...anchorEls, category: e.currentTarget });
+  };
+
+  const fetchData = async () => {
+    const product = await getSearchProductAPI(searchQuery);
+    setProducts(product?.content);
+  };
+
+  const fetchOptions = async () => {
+    const category = await getCategoryAPI();
+    setCategoryOptions([{ id: null, name: "카테고리" }, ...category]);
+  };
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      const product: Product = await getProducts();
-      setProducts(product);
-    };
-    fetchProducts();
+    fetchOptions();
   }, []);
 
-  const handleChipClick = (
-    chipKey: keyof typeof chips,
-    event: React.MouseEvent<HTMLDivElement>
-  ) => {
-    setAnchorEls({ ...anchorEls, [chipKey]: event.currentTarget });
-  };
-
-  const handleMenuClose = (chipKey: keyof typeof chips, option: string) => {
-    setChips({ ...chips, [chipKey]: option });
-    setAnchorEls({ ...anchorEls, [chipKey]: null });
-  };
-
-  // 필터링된 제품 목록. 검색어에 따라 필터링
-  // const filteredProducts = products
-  console.log(products);
-  const filteredProducts = products?.success === true ? products?.data
-    .filter(
-      (product) =>
-        chips.status === "거래 상태"
-          ? true
-          : product.status === "SALE"
-          ? chips.status === "판매 중"
-          : product.status === "PROGRESS"
-          ? chips.status === "거래 중"
-          : product.status === "SOLD"
-          ? chips.status === "거래 완료"
-          : false
-      // chips.region, chips.age 에 대해서도 마찬가지로 가능
-    )
-    .filter((product) =>
-      product.title.toLowerCase().includes(searchText.toLowerCase())
-    )
-    .sort((a, b) => a.elapsedMinutes - b.elapsedMinutes)
-    : [];
+  useEffect(() => {
+    fetchData();
+  }, [searchQuery]);
 
   return (
     <div className={styles.container}>
       <TopBar />
       <div
         className={
-          showSearch ? "mt-4 mb-4 flex justify-center items-center" : ""
+          showSearch ? "mt-2 mb-2 flex justify-center items-center" : ""
         }
       >
         {showSearch && (
@@ -134,7 +108,7 @@ export default function ListPage() {
             <TextField
               variant="outlined"
               placeholder="검색어를 입력해주세요."
-              value={searchText}
+              value={searchQuery.keyword}
               onChange={handleSearchChange}
               className="w-full md:w-3/4 lg:w-5/6" // 너비 설정을 조금 조정
               InputProps={{
@@ -147,60 +121,47 @@ export default function ListPage() {
                 ),
               }}
             />
-            <IconButton className="ml-2" onClick={() => setShowSearch(false)}>
-              <UnfoldLessIcon fontSize="large" />
-            </IconButton>
           </Box>
         )}
       </div>
       <Stack
         direction="row"
         spacing={1}
-        className={styles.chips}
-        justifyContent={"space-between"}
+        className={`${styles.chips} flex-wrap justify-between gap-2 `}
       >
-        {Object.entries(chipData).map(
-          ([key, { default: defaultLabel, options }]) => (
-            <Box key={key} className={styles.box}>
-              <Chip
-                label={chips[key as keyof typeof chips]}
-                onClick={(e) => handleChipClick(key as keyof typeof chips, e)}
-                color={
-                  chips[key as keyof typeof chips] !== defaultLabel
-                    ? "primary"
-                    : "default"
-                }
-                variant={
-                  chips[key as keyof typeof chips] !== defaultLabel
-                    ? "filled"
-                    : "outlined"
-                }
-                className={styles.chip}
-              />
-              <Menu
-                anchorEl={anchorEls[key as keyof typeof chips]}
-                open={Boolean(anchorEls[key as keyof typeof chips])}
-                onClose={() =>
-                  handleMenuClose(
-                    key as keyof typeof chips,
-                    chips[key as keyof typeof chips]
-                  )
-                }
-              >
-                {options.map((option) => (
-                  <MenuItem
-                    key={option}
-                    onClick={() =>
-                      handleMenuClose(key as keyof typeof chips, option)
-                    }
-                  >
-                    {option}
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
-          )
-        )}
+        <Stack
+          direction="row"
+          spacing={1}
+          className={`${styles.chips} flex-wrap gap-2 `}
+        >
+          <Box className={styles.box}>
+            <Chip
+              label={
+                categoryOptions.find(
+                  (item) => item.id == searchQuery?.categoryId
+                )?.name
+              }
+              onClick={handleCategory}
+              color={searchQuery?.categoryId ? "primary" : "default"}
+              variant={searchQuery?.categoryId ? "filled" : "outlined"}
+              className={styles.chip}
+            />
+            <Menu
+              anchorEl={anchorEls.category}
+              open={Boolean(anchorEls.category)}
+              onClose={handleCategoryClose}
+            >
+              {categoryOptions?.map((option, k) => (
+                <MenuItem
+                  key={k}
+                  onClick={() => handleCategoryClick(option.id)}
+                >
+                  {option.name}
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+        </Stack>
         <Box>
           <IconButton
             aria-label="search"
@@ -208,14 +169,10 @@ export default function ListPage() {
           >
             <SearchIcon
               style={{
-                color: searchText ? "deepskyblue" : "inherit",
-                fontSize: searchText ? "30px" : "inherit",
+                color: showSearch ? "pink" : "inherit",
               }}
             />
           </IconButton>
-          {/* <IconButton aria-label="menu">
-            <MenuIcon />
-          </IconButton> */}
         </Box>
       </Stack>
       <Link href="lists/create">
@@ -236,76 +193,23 @@ export default function ListPage() {
         </Fab>
       </Link>
       {/* 본문 리스트 시작 */}
-      <div>
-        {filteredProducts?.map((product) => (
-          <Link href={`/lists/${product.id}`} key={product.id} prefetch={false}>
-            <Card variant="outlined" className={styles.card}>
-              <Avatar
-                alt="Product Image"
-                src={
-                  product.thumbnailImage ?? "/temp-img.svg"
-                }
-                sx={{ width: 80, height: 80 }}
-                className={styles.avatar}
-                variant="square"
-              />
-              <CardContent sx={{ padding: 1 }} className={styles.cardMiddle}>
-                <Typography variant="h5" component="div">
-                  {product.price.toLocaleString()}원
-                </Typography>
-                <Typography variant="body1" color="text.secondary">
-                  {product.title ?? "제목 없음"}
-                </Typography>
-                <Typography variant="body2">
-                  {product.dealPlace ?? "거래 장소 null"} •{" "}
-                  {product.elapsedMinutes >= 1440 // 1440분 = 24시간
-                    ? `${Math.floor(product.elapsedMinutes / 1440)}일 전`
-                    : product.elapsedMinutes >= 60
-                    ? `${Math.floor(product.elapsedMinutes / 60)}시간 전`
-                    : `${product.elapsedMinutes}분 전`}
-                </Typography>
-              </CardContent>
-              <CardContent
-                sx={{
-                  padding: 0,
-                  margin: 0,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
-                <Typography
-                  variant="body1"
-                  sx={{
-                    mt: 2,
-                    fontWeight: "bold",
-                    minWidth: "fit-content",
-                    color:
-                      product.status === "SALE"
-                        ? "crimson"
-                        : product.status === "SOLD"
-                        ? "dimgray"
-                        : product.status === "PROGRESS"
-                        ? "orange"
-                        : "black", // 기본값
-                  }}
-                >
-                  {product.status === "SALE"
-                    ? "판매 중"
-                    : product.status === "SOLD"
-                    ? "거래 완료"
-                    : "거래 중"}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Link>
-        ))}
+      <div className="flex flex-col gap-5 mt-3">
+        {products && products.length > 0 ? (
+          products.map((item, k) => (
+            <ProductCard product={item} next={`/lists/${item.id}`} key={k} />
+          ))
+        ) : (
+          <NoContents>
+            <h4 className="c-text3">일치하는 글이 없습니다.</h4>
+            <Image
+              src={"/images/Empty-BOX.png"}
+              alt="empty"
+              width={100}
+              height={100}
+            />
+          </NoContents>
+        )}
       </div>
-      {products?.success === false && (
-        <Typography variant="h5" className={styles.error}>
-          {products.error.errorMessage}
-        </Typography>
-      )}
       {/* 본문 리스트 끝 */}
       <Navigation />
     </div>

@@ -7,7 +7,7 @@ const __dirname = path.resolve();
 const nextConfig = {
   images: {
     // domains: ['sitem.ssgcdn.com','kkoma.s3.ap-northeast-2.amazonaws.com'],
-    domains: ['kkoma.s3.ap-northeast-2.amazonaws.com'],
+    domains: ["kkoma.s3.ap-northeast-2.amazonaws.com"],
     remotePatterns: [
       {
         protocol: "https",
@@ -18,6 +18,12 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "picsum.photos",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
         port: "",
         pathname: "/**",
       },
@@ -34,7 +40,7 @@ const nextConfig = {
     includePaths: [path.join(__dirname, "styles")],
     prependData: `@import "src/styles/_variables.scss"; @import "src/styles/_mixins.scss";`,
   },
-  output: 'standalone',
+  output: "standalone",
 };
 
 export default nextConfig;

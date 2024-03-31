@@ -7,6 +7,7 @@ import styles from "./home.module.scss";
 import { useEffect, useState } from "react";
 import { getKidsSummary } from "@/services/kid";
 import KidCardList from "@/components/home/kidCardList";
+import { NoKids } from "@/components/home/noKids";
 import { KidSummary } from "@/types/kid";
 
 export default function Home() {
@@ -32,11 +33,13 @@ export default function Home() {
       <div className={styles.home}>
         <TopBar />
         {kidList && kidList.length > 0 ? (
-          <KidCardList kidList={kidList} setSelectedName={setSelectedName} />
+          <>
+            <KidCardList kidList={kidList} setSelectedName={setSelectedName} />
+            <RecommandProductList name={selectedName} />
+          </>
         ) : (
-          <></>
+          <NoKids />
         )}
-        <RecommandProductList name={selectedName} />
       </div>
     </div>
   );

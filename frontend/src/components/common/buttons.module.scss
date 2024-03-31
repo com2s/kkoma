@@ -17,6 +17,7 @@
     background-color: $color-text4;
     color: $color-text3;
   }
+  cursor: pointer;
 }
 
 .wide {
@@ -35,6 +36,15 @@
 
 .small {
   @include text-caption;
+  @include flex();
   height: fit-content;
-  padding-top: rem(13);
+  padding: rem(10) rem(20);
+  background-color: $color-text4;
+  border-radius: rem(30);
+  width: fit-content;
+  cursor: pointer;
+  &:disabled {
+    background-color: $color-text4;
+    color: $color-text3;
+  }
 }
