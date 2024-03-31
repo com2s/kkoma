@@ -14,6 +14,12 @@ export default function AddNickname() {
 
   const router = useRouter();
 
+  const handleOnKeyUp = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter") {
+      joinMember();
+    }
+  };
+
   const joinMember = async () => {
     if (nickname !== null) {
       let profileImage;
@@ -43,6 +49,7 @@ export default function AddNickname() {
         variant="standard"
         sx={{ width: "100%", fontWeight: "bold" }}
         onChange={(e) => setNickname(e.target.value)}
+        onKeyUp={handleOnKeyUp}
       />
       <ButtonContainer>
         <NormalBtn
