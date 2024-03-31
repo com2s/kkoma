@@ -74,3 +74,22 @@ export async function putMyInfo(data: MemberInfo) {
 
   return response;
 }
+
+// export interface WishList {
+
+export async function getMyWishes(page?: number, size?: number) {
+  const queryObject = {
+    page: page?.toString()??'0',
+    size: size?.toString()??'20',
+  };
+
+  const query = new URLSearchParams(queryObject).toString();
+
+  const response = await APIModule({
+    action: `/products/wishes?${query}`,
+    method: "GET",
+    data: null,
+  });
+
+  return response;
+}

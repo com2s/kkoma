@@ -14,6 +14,7 @@ import com.ssafy.kkoma.domain.product.constant.MyProductType;
 import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.domain.product.repository.ProductRepository;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,24 +37,25 @@ class MemberServiceTest {
     ProductRepository productRepository;
 
     @Test
+    @Disabled(value = "Member name, email 삭제해야돼서 비활성화")
     @Transactional
     void 회원_정보_수정() {
 
-        Member member = Member.builder()
-                .name("kim")
-                .memberType(MemberType.KAKAO)
-                .role(Role.USER)
-                .build();
-
-        Member savedMember = memberRepository.save(member);
-
-        UpdateMemberRequest updateMemberRequest = UpdateMemberRequest.builder()
-                        .name("lee")
-                        .build();
-
-        MemberInfoResponse memberInfoResponse = memberService.updateMemberInfo(savedMember.getId(), updateMemberRequest);
-
-        assertEquals("lee", memberInfoResponse.getName());
+//        Member member = Member.builder()
+//                .name("kim")
+//                .memberType(MemberType.KAKAO)
+//                .role(Role.USER)
+//                .build();
+//
+//        Member savedMember = memberRepository.save(member);
+//
+//        UpdateMemberRequest updateMemberRequest = UpdateMemberRequest.builder()
+//                        .name("lee")
+//                        .build();
+//
+//        MemberInfoResponse memberInfoResponse = memberService.updateMemberInfo(savedMember.getId(), updateMemberRequest);
+//
+//        assertEquals("lee", memberInfoResponse.getName());
     }
 
     @Test

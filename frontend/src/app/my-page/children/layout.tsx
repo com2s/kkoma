@@ -4,7 +4,7 @@ import MyProfile from "@/components/my-page/my-profile";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Children",
+  title: "아이 정보",
   description: "My Children Page",
 };
 

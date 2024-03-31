@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @CustomMockMvcSpringBootTest
@@ -32,6 +33,7 @@ class MemberInfoControllerTest {
     MemberFactory memberFactory;
 
     @Test
+    @Transactional
     void getMemberInfo() throws Exception {
 
         // 필요한 인스턴스 생성
@@ -56,6 +58,7 @@ class MemberInfoControllerTest {
     }
 
     @Test
+    @Transactional
     void getMemberSummary() throws Exception {
 
         Member savedMember = memberFactory.createMember();
@@ -73,6 +76,7 @@ class MemberInfoControllerTest {
     }
 
     @Test
+    @Transactional
     void updateMember() throws Exception {
 
         // 인스턴스 생성
@@ -88,10 +92,10 @@ class MemberInfoControllerTest {
                 .build();
 
         mockMvc.perform(
-                        // JSON과 함께 요청할 때
-                        // 매개변수#3 : 요청 DTO 클래스
-                        // 매개변수#4 : 요청 인스턴스
-                        requestUtil.putRequestWithJson("/api/members", savedMember, UpdateMemberRequest.class, request)
+                    // JSON과 함께 요청할 때
+                    // 매개변수#3 : 요청 DTO 클래스
+                    // 매개변수#4 : 요청 인스턴스
+                    requestUtil.putRequestWithJson("/api/members", savedMember, UpdateMemberRequest.class, request)
                 )
                 .andExpectAll(
                         MockMvcResultMatchers.status().isOk(),

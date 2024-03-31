@@ -31,8 +31,9 @@ public class KidController {
         security = { @SecurityRequirement(name = "bearer-key") }
     )
     @GetMapping("/summary")
-    public ResponseEntity<ApiUtils.ApiResult<List<KidSummaryResponse>>> getKidSummaryDtos(@MemberInfo MemberInfoDto memberInfoDto) {
-
+    public ResponseEntity<ApiUtils.ApiResult<List<KidSummaryResponse>>> getKidSummaryDtos(
+            @MemberInfo MemberInfoDto memberInfoDto
+    ) {
         Long memberId = memberInfoDto.getMemberId();
         List<KidSummaryResponse> kidSummaryResponseDtos = kidService.getKids(memberId);
 
@@ -47,8 +48,10 @@ public class KidController {
         security = { @SecurityRequirement(name = "bearer-key") }
     )
     @GetMapping("/summary/{kidId}")
-    public ResponseEntity<ApiUtils.ApiResult<KidSummaryResponse>> getKidSummaryDtos(@PathVariable Long kidId, @MemberInfo MemberInfoDto memberInfoDto) {
-
+    public ResponseEntity<ApiUtils.ApiResult<KidSummaryResponse>> getKidSummaryDtos(
+        @PathVariable("kidId") Long kidId,
+        @MemberInfo MemberInfoDto memberInfoDto
+    ) {
         Long memberId = memberInfoDto.getMemberId();
         KidSummaryResponse kidSummaryResponseDto = kidService.getKid(kidId, memberId);
 
@@ -82,8 +85,11 @@ public class KidController {
         security = { @SecurityRequirement(name = "bearer-key") }
     )
     @PutMapping("/{kidId}")
-    public ResponseEntity<ApiUtils.ApiResult<KidSummaryResponse>> updateKid(@PathVariable Long kidId, @MemberInfo MemberInfoDto memberInfoDto, @RequestBody UpdateKidRequest updateKidRequest) {
-
+    public ResponseEntity<ApiUtils.ApiResult<KidSummaryResponse>> updateKid(
+        @PathVariable("kidId") Long kidId,
+        @MemberInfo MemberInfoDto memberInfoDto,
+        @RequestBody UpdateKidRequest updateKidRequest
+    ) {
         Long memberId = memberInfoDto.getMemberId();
         KidSummaryResponse kidSummaryResponseDto = kidService.updateKidInfo(kidId, memberId, updateKidRequest);
 

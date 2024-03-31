@@ -8,10 +8,7 @@ import com.ssafy.kkoma.domain.notification.repository.NotificationRepository;
 import com.ssafy.kkoma.domain.offer.entity.Offer;
 import com.ssafy.kkoma.domain.product.entity.Category;
 import com.ssafy.kkoma.domain.product.entity.Product;
-import com.ssafy.kkoma.factory.CategoryFactory;
-import com.ssafy.kkoma.factory.MemberFactory;
-import com.ssafy.kkoma.factory.OfferFactory;
-import com.ssafy.kkoma.factory.ProductFactory;
+import com.ssafy.kkoma.factory.*;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -21,6 +18,7 @@ import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -52,7 +50,7 @@ class DealReminderJobConfigTest {
     OfferService offerService;
 
     @Test
-    public void success_noData() throws Exception {
+    public void success() throws Exception {
         int NUM = 3;
 
         // given
@@ -69,7 +67,8 @@ class DealReminderJobConfigTest {
         Assertions.assertThat(notificationRepository.count()).isGreaterThanOrEqualTo(befNotiCount + NUM * 2);
     }
 
-    private void createDeal(LocalDateTime dealTime) {
+    @Transactional
+    protected void createDeal(LocalDateTime dealTime) {
         Member seller = memberFactory.createMember();
         Member buyer = memberFactory.createMember();
 
