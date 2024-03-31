@@ -4,3 +4,9 @@
   overflow: auto;
   margin: rem(10) 0;
 }
+
+.dialog {
+  @include flex(center, flex-start, column);
+  gap: rem(12);
+  padding: rem(28) rem(26) rem(16);
+}

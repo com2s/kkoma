@@ -7,28 +7,35 @@ import { postProduct } from "@/components/lists/lists-ftn";
 import { uploadImagesAPI } from "@/services/upload";
 
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
-import {
-  Button,
-  TextField,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Typography,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  //   ImageList,
-  //   ImageListItem,
-} from "@mui/material";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+import {
+  Button,
+  TextField,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Dialog,
+} from "@mui/material";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import PhotoCameraOutlinedIcon from "@mui/icons-material/PhotoCameraOutlined";
-import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
+import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+import NavigateNextOutlinedIcon from "@mui/icons-material/NavigateNextOutlined";
 import ClearIcon from "@mui/icons-material/Clear";
+import { TransitionProps } from "@mui/material/transitions";
+import Slide from "@mui/material/Slide";
+import Title from "@/components/common/title";
+import { NormalBtn } from "@/components/common/buttons";
+
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & {
+    children: React.ReactElement;
+  },
+  ref: React.Ref<unknown>
+) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 export default function CreatePost() {
   const formButtonRef = useRef<HTMLButtonElement>(null); // form 참조 생성
@@ -40,6 +47,15 @@ export default function CreatePost() {
   const [images, setImages] = useState<{ url: string; file: File }[]>([]);
   const [location, setLocation] = useState(""); // TODO: 위치 정보 입력 받기
   const router = useRouter();
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleCategoryChange = (event: SelectChangeEvent) => {
     //TODO: 변경처리 해야됨
@@ -122,11 +138,9 @@ export default function CreatePost() {
 
   return (
     <div className={styles.container}>
-      {/* form 내부에 있는 제출 버튼을 끌어온다. */}
       <div className="mb-4 max-w-4xl mx-auto">
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <TopBar2 />
-          {/*  이미지를 렌더링할 때 파일 이름도 표시하고 삭제 버튼을 제공 */}
           <div
             ref={scrollRef}
             className="flex items-end grid-cols-3 gap-3 overflow-x-auto scroll-smooth mb-8 "
@@ -219,24 +233,40 @@ export default function CreatePost() {
             required
             fullWidth
           />
-          {/* 선택 옵션 */}
-          <Accordion>
-            {/* 거래 장소 선택 */}
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1-content"
-              id="panel1-header"
-            >
-              <LocationOnOutlinedIcon className="mr-4" />
-              <span>거래 장소 설정</span>
-            </AccordionSummary>
-            <AccordionDetails>
-              <span>여기서 주소 받아오기</span>
+          <div
+            onClick={handleClickOpen}
+            className="flex items-center justify-between border-b pb-3"
+          >
+            <div className="flex items-center gap-2">
+              <LocationOnOutlinedIcon className="c-text2" />
+              <div className="text-body">거래 장소 설정</div>
+            </div>
+            <NavigateNextOutlinedIcon className="c-text2" />
+          </div>
+          <Dialog
+            fullScreen
+            open={open}
+            onClose={handleClose}
+            TransitionComponent={Transition}
+          >
+            <div className={styles.dialog}>
+              <div className="flex justify-end pb-2 w-full ">
+                <ClearIcon onClick={handleClose} />
+              </div>
+              <Title
+                title="거래하고 싶은 장소를 선택해주세요"
+                subtitle="누구나 찾기 쉬운 공공장소가 좋아요"
+              />
+              <Image
+                src={"/images/Pin.png"}
+                alt="pin"
+                width={100}
+                height={100}
+              />
               <Map />
-            </AccordionDetails>
-          </Accordion>
-
-          <Button ref={formButtonRef} type="submit" hidden></Button>
+              <NormalBtn next={() => console.log("선택")}>선택</NormalBtn>
+            </div>
+          </Dialog>
         </form>
       </div>
     </div>
