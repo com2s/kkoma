@@ -1,6 +1,5 @@
 package com.ssafy.kkoma.api.point.dto.request;
 
-import com.ssafy.kkoma.domain.kid.constant.GenderType;
 import com.ssafy.kkoma.domain.point.constant.PointChangeType;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -13,8 +12,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class TransferPointRequest {
 
-    private int amount;
-
     @Enumerated(EnumType.STRING)
     private PointChangeType type;
+
+    private int amount;
 }

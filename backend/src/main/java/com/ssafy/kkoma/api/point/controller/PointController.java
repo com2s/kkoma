@@ -52,7 +52,7 @@ public class PointController {
 
     @Tag(name = "Point")
     @Operation(
-            summary = "포인트 히스토리 전체 조회",
+            summary = "유저 포인트 히스토리 전체 조회",
             description = "[[노션](https://www.notion.so/todays-jiwoo/e2afab87fc3842728c08f00104e01428?pvs=4)] ",
             security = { @SecurityRequirement(name = "bearer-key") }
     )
@@ -69,7 +69,7 @@ public class PointController {
     @Tag(name = "Point")
     @Operation(
             summary = "포인트 충전 및 계좌 송금",
-            description = "[[노션]()] ",
+            description = "[[노션](https://www.notion.so/todays-jiwoo/09ec3c5c44c241f8af8193b1e7ef6e24?pvs=4)] type은 충전 시 charge, 계좌 인출 시 withdraw",
             security = { @SecurityRequirement(name = "bearer-key") }
     )
     @PostMapping("")
