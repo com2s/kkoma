@@ -74,6 +74,11 @@ public class MemberInfoController {
         return ResponseEntity.ok(ApiUtils.success(memberInfoResponse));
     }
 
+    @Tag(name = "Member")
+    @Operation(
+        summary = "마이페이지 프로필 정보 조회",
+        security = { @SecurityRequirement(name = "bearer-key") }
+    )
     @GetMapping("/profile")
     public ResponseEntity<ApiUtils.ApiResult<MyPageMemberProfileResponse>> getMyPageMemberProfile(
             @MemberInfo MemberInfoDto memberInfoDto
