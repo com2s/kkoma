@@ -12,7 +12,7 @@ import { Chat } from "@/types/chat";
 import LocalStorage from "@/utils/localStorage";
 
 import SendIcon from "@mui/icons-material/Send";
-import { ProductCard } from "@/components/common/product-card";
+import { ProductSmCard } from "@/components/common/product-card";
 import { ChatProduct } from "@/types/product";
 
 let ws: CompatClient;
@@ -88,7 +88,7 @@ export default function Chatting() {
       <TopBar3 />
       {product ? (
         <div className={styles.product}>
-          <ProductCard product={product} />
+          <ProductSmCard product={product} />
         </div>
       ) : (
         <></>

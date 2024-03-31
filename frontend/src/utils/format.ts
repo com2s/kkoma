@@ -1,3 +1,5 @@
+import { ProductStatus } from "@/types/status";
+
 export function MoneyFormat(money: number) {
   return money.toLocaleString() + "원";
 }
@@ -26,4 +28,18 @@ export function KidBirthFormat(birthDate: string) {
     }
     return `만 ${age}살 (D+${dday.toLocaleString()})`;
   }
+}
+
+export function ProductStatusFormat(status: ProductStatus) {
+  if (status === "PROGRESS") return "거래중";
+  else if (status === "SALE") return "판매중";
+  else return "판매종료";
+}
+
+export function calcElapsedMinutes(elapsedMinutes: number) {
+  if (elapsedMinutes >= 1440)
+    return `${Math.floor(elapsedMinutes / 1440)}일 전`;
+  else if (elapsedMinutes >= 60)
+    return `${Math.floor(elapsedMinutes / 60)}시간 전`;
+  else return `${elapsedMinutes}분 전`;
 }

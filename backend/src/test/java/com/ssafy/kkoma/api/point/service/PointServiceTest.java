@@ -29,7 +29,7 @@ class PointServiceTest {
     PointRepository pointRepository;
 
     @Autowired
-    MemberService memberService; // todo mocking
+    MemberService memberService;
 
     @Autowired
     private MemberRepository memberRepository;

@@ -1,0 +1,9 @@
+.container {
+  @include flex(center, flex-start, column);
+  gap: rem(10);
+  width: 100%;
+  min-width: 90%;
+  border-radius: rem(15);
+  padding: rem(30) rem(20);
+  background-color: $color-text5;
+}

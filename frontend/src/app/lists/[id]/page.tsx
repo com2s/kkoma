@@ -18,57 +18,48 @@ import Image from "next/image";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Button,
-} from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import Link from "next/link";
+import ShareLocationIcon from "@mui/icons-material/ShareLocation";
+import { sendUnWishAPI, sendWishAPI } from "@/services/wish";
 
 interface IParams {
   params: { id: string };
 }
-// 아래에서 IParams 로 쓰이는데, 이것은 interface로, 타입을 정의하는 것이다.
-// export async function generateMetadata({ params: { id } }: IParams) {
-//   // const movie = await getMovie(id);
-
-//   return {
-//     //   title: movie.title,
-//     title: `상품 ID = ${id}`,
-//     description: "Product detail page",
-//   };
-// }
 
 export default function ProductDetail({ params: { id } }: IParams) {
-  const [product, setProduct] = useState<DetailParams|null>(null);
+  const [product, setProduct] = useState<DetailParams | null>(null);
   const [myId, setMyId] = useState<string | null>(null);
-  const [success, setSuccess] = useState(true);
+  const [liked, setLiked] = useState(false);
+
+  const fetchData = async () => {
+    setMyId(LocalStorage.getItem("memberId"));
+    const res = await getProductDetail(id);
+    setProduct(await res);
+    setLiked(await res.data.wish);
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await getProductDetail(id);
-      setMyId(LocalStorage.getItem("memberId"));
-      setProduct(res);
-      setSuccess(res.success);
-    };
     fetchData();
   }, []);
-  console.log("myId: ", myId);
-  
-  console.log(product);
-  
-  if (success === false) return <div>상품 정보를 불러오는데 실패했습니다.</div>;
-  
+
+  const handleLiked = async () => {
+    if (liked) {
+      await sendUnWishAPI(id);
+      setLiked(false);
+    } else {
+      await sendWishAPI(id);
+      setLiked(true);
+    }
+  };
+
   const settings = {
     // centerMode: true,
-    autoplay: (product && (product.data.productImages.length > 1)) ? true : false,
+    autoplay: product && product.data.productImages.length > 1 ? true : false,
     // 이동부터 다음 이동까지의 시간
     autoplaySpeed: 2000,
     dots: true,
     arrows: false,
-    infinite: (product && (product.data.productImages.length > 1)) ? true : false,
+    infinite: product && product.data.productImages.length > 1 ? true : false,
     // 이동하는데 걸리는 시간
     speed: 500,
     slidesToShow: 1,
@@ -77,7 +68,7 @@ export default function ProductDetail({ params: { id } }: IParams) {
 
   return (
     <div className={styles.container}>
-      <TopBar2 />
+      <TopBar2 liked={liked} setLiked={setLiked} handleLiked={handleLiked} />
       <div className={styles.carousel}>
         <Slider {...settings}>
           {product?.data.productImages.map((img, index) => (
@@ -88,7 +79,7 @@ export default function ProductDetail({ params: { id } }: IParams) {
                 priority
                 width={250} // Adjust as needed
                 height={250} // Adjust as needed
-                style={{ margin: "0 auto"}}
+                style={{ margin: "0 auto" }}
               />
             </div>
           ))}
@@ -96,25 +87,19 @@ export default function ProductDetail({ params: { id } }: IParams) {
       </div>
       <Profile propsId={id} memberSummary={product?.data.memberSummary} />
       <Content propsId={id} product={product?.data} />
-      <Accordion className="mt-4">
-        {/* 거래 장소 선택(필수항목) */}
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1-content"
-          id="panel1-header"
-        >
-          <LocationOnOutlinedIcon className="mr-4" />
-          <span>거래 장소</span>
-        </AccordionSummary>
-        <AccordionDetails>
-          <span>*여기서 주소 받아오기*</span>
-          <Map />
-        </AccordionDetails>
-      </Accordion>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-1">
+          <ShareLocationIcon className="c-text1" />
+          <div className={`min-w-fit text-body2 ${styles.dealPlace}`}>
+            거래 장소
+          </div>
+        </div>
+        <div className="text-body2 c-text2">서울시 강남구 테헤란로 10</div>
+      </div>
+      {/* <div className="text-caption c-text2">{product?.data.dealPlace}</div> */}
+      <Map />
       {myId && myId === product?.data.memberSummary.memberId.toString() ? (
-        <div className="flex gap-8 py-4 px-6">
-          {/* <SubBtn next={"/"}>홈 화면</SubBtn>
-        <NormalBtn next={"/"}>아이 정보 입력</NormalBtn> */}
+        <div className="flex gap-8 py-4">
           <Link href={`/my-trade/${id}`} className="w-full">
             <button className={`${styles.btn} ${styles.normal}`}>
               요청 보기
@@ -127,7 +112,7 @@ export default function ProductDetail({ params: { id } }: IParams) {
           </Link>
         </div>
       ) : (
-        <div className="flex gap-8 py-4 px-6">
+        <div className="flex gap-8 py-4">
           <Link href={`/lists/${id}/request`} className="w-full">
             <button className={`${styles.btn} ${styles.normal}`}>
               거래 요청

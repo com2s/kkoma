@@ -9,6 +9,8 @@ import com.ssafy.kkoma.domain.point.repository.PointRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -55,4 +57,11 @@ public class MemberFactory {
         return randomString;
     }
 
+    public List<Member> createMembers(int n) {
+        List<Member> members = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            members.add(createMember());
+        }
+        return members;
+    }
 }

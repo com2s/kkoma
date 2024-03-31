@@ -8,22 +8,24 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.ssafy.kkoma.api.common.dto.BasePageResponse;
 import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
 import com.ssafy.kkoma.api.product.dto.response.ChatProductResponse;
 import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
-import com.ssafy.kkoma.domain.chat.entity.ChatRoom;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.member.repository.MemberRepository;
 import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
 import com.ssafy.kkoma.domain.product.entity.Category;
+import com.ssafy.kkoma.domain.product.entity.WishList;
 import com.ssafy.kkoma.domain.product.repository.CategoryRepository;
 import com.ssafy.kkoma.factory.CategoryFactory;
 import com.ssafy.kkoma.factory.ChatRoomFactory;
 import com.ssafy.kkoma.factory.MemberFactory;
 import com.ssafy.kkoma.factory.ProductFactory;
+import com.ssafy.kkoma.factory.WishListFactory;
 import com.ssafy.kkoma.global.error.exception.BusinessException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -63,6 +65,9 @@ class ProductServiceTest {
 
 	@Autowired
 	private ChatRoomFactory chatRoomFactory;
+
+	@Autowired
+	private WishListFactory wishListFactory;
 
 	private static final String TITLE = "TITLE";
 	private static final String IMAGE_URL = "IMAGE_URL";
@@ -114,7 +119,7 @@ class ProductServiceTest {
 		Product product = productFactory.createProduct(member, category, 10000);
 
 		// when
-		ProductDetailResponse productDetailResponse = productService.getProduct(product.getId());
+		ProductDetailResponse productDetailResponse = productService.getProduct(product.getId(), member.getId());
 
 	    // then
 		assertEquals("TITLE", productDetailResponse.getTitle());
@@ -204,6 +209,31 @@ class ProductServiceTest {
 		);
 
 	}
+
+	@Test
+	@Transactional
+	public void 나의_모든_찜_목록을_조회한다() throws Exception{
+	    // given
+	    Member seller = memberFactory.createMember();
+		Member buyer = memberFactory.createMember();
+
+		Pageable pageable = PageRequest.of(0, 10);
+
+		BasePageResponse<WishList, ProductSummary> beforeWishList = productService.getMyWishProducts(buyer.getId(), pageable);
+
+	    // when
+		for (int i = 0; i < 15; i++) {
+			Product product = productFactory.createProduct(seller);
+			wishListFactory.createWishList(buyer, product);
+		}
+
+	    // then
+		BasePageResponse<WishList, ProductSummary> afterWishList = productService.getMyWishProducts(buyer.getId(), pageable);
+
+		assertEquals(beforeWishList.getTotalElements() + 15, afterWishList.getTotalElements());
+		assertEquals(beforeWishList.getSize() + 10, afterWishList.getSize() + 10);
+	}
+
 
 	@Test
 	@Transactional

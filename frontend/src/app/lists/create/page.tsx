@@ -124,7 +124,7 @@ export default function CreatePost() {
     <div className={styles.container}>
       {/* form 내부에 있는 제출 버튼을 끌어온다. */}
       <TopBar2 onFormSubmit={() => formButtonRef.current?.click()} />
-      <div className="mb-4  max-w-4xl mx-auto">
+      <div className="mb-4 max-w-4xl mx-auto">
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {/*  이미지를 렌더링할 때 파일 이름도 표시하고 삭제 버튼을 제공 */}
           <div
@@ -151,7 +151,7 @@ export default function CreatePost() {
                 </div>
               </div>
             ))}
-            <label className="min-w-36 h-36 block flex flex-col justify-center items-center bg-slate-50 rounded-md">
+            <label className="min-w-36 h-36 flex flex-col justify-center items-center bg-slate-50 rounded-md">
               <PhotoCameraOutlinedIcon className="c-text2" />
               <input
                 accept="image/*"

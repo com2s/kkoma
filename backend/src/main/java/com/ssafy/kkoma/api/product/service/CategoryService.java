@@ -1,7 +1,9 @@
 package com.ssafy.kkoma.api.product.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.ssafy.kkoma.api.product.dto.response.CategoryResponse;
 import com.ssafy.kkoma.domain.product.entity.Category;
 import com.ssafy.kkoma.domain.product.repository.CategoryRepository;
 import com.ssafy.kkoma.global.error.ErrorCode;
@@ -31,8 +33,14 @@ public class CategoryService {
         return category;
     }
 
-    public List<Category> getCategories() {
-        return categoryRepository.findAll();
+    public List<CategoryResponse> getCategories() {
+        return categoryRepository.findAll().stream()
+                .map(CategoryResponse::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    public CategoryResponse getCategory(Integer categoryId) {
+        return CategoryResponse.fromEntity(findCategoryById(categoryId));
     }
 
 }

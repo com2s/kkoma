@@ -3,13 +3,11 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import styles from "@/components/common/top-bar2.module.scss";
-import Button from "@mui/material/Button"; // Material-UI 버튼 사용
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew"; // Material-UI 뒤로 가기 아이콘
-import { useState } from "react";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import { Dispatch, SetStateAction } from "react";
 import { IconButton } from "@mui/material";
-
 // 차후 각 페이지 별로 상단에 고정된 헤더를 만들기 위한 템플릿으로 사용합니다.
 // 사용 예시
 {
@@ -26,42 +24,30 @@ import { IconButton } from "@mui/material";
 // AppBar 컴포넌트는 상단에 고정된 헤더를 만들 때 사용합니다.
 // 그래서 이 컴포넌트에 쓰면 헤더가 중복이 되어 에러가 발생합니다.
 
-export default function TopBar2() {
+export default function TopBar2(props: {
+  liked: boolean;
+  setLiked: Dispatch<SetStateAction<boolean>>;
+  handleLiked: Function;
+}) {
   const router = useRouter();
-  const [liked, setLiked] = useState(false);
-  const likeFtn = () => {
-    setLiked(!liked);
-    if (liked) {
-      alert("좋아요 취소");
-    } else {
-      alert("좋아요");
-    }
-  }
 
   return (
     <>
       <div className={styles.header}>
-        <Button
-          onClick={() => router.back()}
-          startIcon={<ArrowBackIosNewIcon />}
-          sx={{ color: "black", height: "32px" }}
-        ></Button>
-        <span className={styles.logo}>{" "}</span>
-        <div className={styles.notifications}>
-          <IconButton
-            aria-label="delete"
-            onClick={() => likeFtn()}
-          >
-            {liked ? (
-              <FavoriteIcon sx={{ color: "red" }} fontSize="large" />
-            ) : (
-              <FavoriteBorderIcon />
-            )}
-          </IconButton>
-        </div>
+        <NavigateBeforeIcon className="c-text2" onClick={() => router.back()} />
+        {props.liked ? (
+          <FavoriteIcon
+            sx={{ color: "red" }}
+            onClick={() => props.handleLiked()}
+          />
+        ) : (
+          <FavoriteBorderIcon
+            className="c-text2"
+            onClick={() => props.handleLiked()}
+          />
+        )}
       </div>
-      <div className={styles.headerSpacer}></div>{" "}
-      {/* 상단 바 높이만큼의 빈 공간 */}
+      <div className={styles.headerSpacer}></div>
     </>
   );
 }
