@@ -1,4 +1,4 @@
-package com.ssafy.kkoma.api.recommendation.api;
+package com.ssafy.kkoma.api.recommendation.controller;
 import com.ssafy.kkoma.api.product.dto.ProductSummary;
 import com.ssafy.kkoma.api.recommendation.service.RecommendationService;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
