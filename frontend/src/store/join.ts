@@ -9,13 +9,3 @@ export const userNicknameState = atom<string | null>({
   key: "userNicknameState",
   default: null,
 });
-
-export const userNameState = atom<string | null>({
-  key: "userNameState",
-  default: null,
-});
-
-export const userPhoneState = atom<string | null>({
-  key: "userPhoneState",
-  default: null,
-});

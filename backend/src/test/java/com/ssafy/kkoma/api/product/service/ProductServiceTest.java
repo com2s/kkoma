@@ -10,6 +10,7 @@ import java.util.concurrent.Executors;
 
 import com.ssafy.kkoma.api.common.dto.BasePageResponse;
 import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
+import com.ssafy.kkoma.api.product.dto.ProductWishResponse;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
 import com.ssafy.kkoma.api.product.dto.response.ChatProductResponse;
 import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
@@ -252,5 +253,31 @@ class ProductServiceTest {
 		assertEquals(1000, chatProduct.getPrice());
 	}
 
+	@Test
+	void 찜_하기() {
+		Member member = memberFactory.createMember();
+		Product product = productFactory.createProduct(member);
+		Long beforeWish = product.getWishCount();
+
+		ProductWishResponse productWishResponse = productService.wishProduct(product.getId(), member.getId());
+
+        assertTrue(productWishResponse.isWish());
+		assertEquals(beforeWish + 1, productWishResponse.getWishCount());
+	}
+
+	@Test
+	void 찜_취소_하기() {
+		Member member = memberFactory.createMember();
+		Product product = productFactory.createProduct(member);
+		Long beforeWish = product.getWishCount();
+
+		ProductWishResponse wishResponse = productService.wishProduct(product.getId(), member.getId());
+        assertTrue(wishResponse.isWish());
+		assertEquals(beforeWish + 1, wishResponse.getWishCount());
+
+		ProductWishResponse unwishResponse = productService.unwishProduct(product.getId(), member.getId());
+        assertFalse(unwishResponse.isWish());
+		assertEquals(beforeWish, unwishResponse.getWishCount());
+	}
 
 }

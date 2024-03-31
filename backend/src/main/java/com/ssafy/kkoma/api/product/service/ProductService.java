@@ -205,20 +205,16 @@ public class ProductService {
 
 	public ProductWishResponse unwishProduct(Long productId, Long memberId) {
 		Product product = productRepository.findByIdWithPessimisticLock(productId);
-		product.subWishCount();
-		Member member = memberService.findMemberByMemberId(memberId);
 
 		WishList wishList = wishListRepository.findByProductIdAndMemberId(productId, memberId);
 		if (wishList == null) {
-			wishList = WishList.builder()
-					.isValid(false)
-					.build();
-			wishList.setMemberAndProduct(member, product);
+			throw new BusinessException(ErrorCode.WISH_LIST_DOES_NOT_EXISTS);
 		} else if (!wishList.getIsValid()) {
 			throw new BusinessException(ErrorCode.WISH_LIST_ALREADY_NOT_VALID);
 		}
 
 		wishList.setValid(false);
+		product.subWishCount();
 		WishList savedWishList = wishListRepository.save(wishList);
 		return ProductWishResponse.fromEntity(savedWishList, product);
 	}
