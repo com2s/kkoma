@@ -35,8 +35,9 @@
   bottom: rem(80);
   right: rem(20);
   z-index: 1100;
-  @media (min-width: 600px) {
-    right: 50%;
-    transform: translateX(rem(280));
-  }
+  background-color: $color-yellow;
+  border-radius: 50%;
+  padding: rem(10);
+  color: $color-text1;
+  @include sha-drop;
 }
