@@ -104,7 +104,7 @@ export default function MySell() {
           />
         ))}
       </Stack>
-      <div>
+      <div className="flex flex-col gap-5">
         {filteredDeals.map((deal, k) => (
           <div className="flex justify-between items-start" key={k}>
             <ProductCard product={deal} next={`/lists/${deal.id}`} />

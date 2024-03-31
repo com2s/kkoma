@@ -26,7 +26,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { TransitionProps } from "@mui/material/transitions";
 import Slide from "@mui/material/Slide";
 import Title from "@/components/common/title";
-import { NormalBtn } from "@/components/common/buttons";
+import { ButtonContainer, NormalBtn } from "@/components/common/buttons";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -47,19 +47,30 @@ export default function CreatePost() {
   const [images, setImages] = useState<{ url: string; file: File }[]>([]);
   const [location, setLocation] = useState(""); // TODO: 위치 정보 입력 받기
   const router = useRouter();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState([false, false]);
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleClickOpen = (index: number) => {
+    let temp = [...open];
+    temp[index] = true;
+    setOpen(temp);
   };
 
-  const handleClose = () => {
+  const handleClose = (index: number) => {
     setLocation("");
-    setOpen(false);
+    let temp = [...open];
+    temp[index] = false;
+    setOpen(temp);
   };
 
-  const handleSelect = () => {
-    setOpen(false);
+  const handleSelect = (index: number) => {
+    // if (index === 0) {
+    //   setOpen([true, true]);
+    // } else {
+    //   setOpen([false, false]);
+    // }
+    let temp = [...open];
+    temp[index] = false;
+    setOpen(temp);
   };
 
   const handleCategoryChange = (event: SelectChangeEvent) => {
@@ -239,7 +250,7 @@ export default function CreatePost() {
             fullWidth
           />
           <div
-            onClick={handleClickOpen}
+            onClick={() => handleClickOpen(0)}
             className="flex items-center justify-between border-b pb-3"
           >
             <div className="flex items-center gap-2">
@@ -254,13 +265,13 @@ export default function CreatePost() {
           </div>
           <Dialog
             fullScreen
-            open={open}
-            onClose={handleClose}
+            open={open[0]}
+            onClose={() => handleClose(0)}
             TransitionComponent={Transition}
           >
             <div className={styles.dialog}>
               <div className="flex justify-end pb-2 w-full ">
-                <ClearIcon onClick={handleClose} />
+                <ClearIcon onClick={() => handleClose(0)} />
               </div>
               <Title
                 title="거래하고 싶은 장소를 선택해주세요"
@@ -280,7 +291,11 @@ export default function CreatePost() {
                 <></>
               )}
               <Map setLocation={setLocation} />
-              <NormalBtn next={handleSelect}>선택</NormalBtn>
+              <div className="w-full">
+                <ButtonContainer>
+                  <NormalBtn next={() => handleSelect(0)}>선택</NormalBtn>
+                </ButtonContainer>
+              </div>
             </div>
           </Dialog>
         </form>
