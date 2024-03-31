@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Dispatch, SetStateAction } from "react";
+import FmdGoodIcon from "@mui/icons-material/FmdGood";
 
 declare global {
   interface Window {
@@ -8,8 +9,12 @@ declare global {
   }
 }
 
+interface Props {
+  setLocation: Dispatch<SetStateAction<string>>;
+}
+
 // TODO: 사용자 위치 받아오기, 마커 찍기, 마커 주소 받아오기
-export default function Home() {
+export default function Map({ setLocation }: Props) {
   let map: any, geocoder: any;
   const MAP_API_KEY = process.env.NEXT_PUBLIC_KAKAO_JS_KEY;
 
@@ -17,7 +22,7 @@ export default function Home() {
     if (status === window.kakao.maps.services.Status.OK) {
       for (let i = 0; i < result.length; i++) {
         if (result[i].region_type === "H") {
-          console.log("중심?", result[i].address_name);
+          setLocation(result[i].address_name);
           break;
         }
       }
@@ -62,12 +67,15 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="w-full flex flex-col items-center justify-center pt-4">
-      <div className="w-full aspect-square">
+    <main className="w-full flex flex-col items-center justify-center pt-1">
+      <div className="w-full aspect-square relative">
         <div
           id="map"
           style={{ width: "100%", height: "100%", borderRadius: "10px" }}
         ></div>
+        <div className="pointer-events-none absolute z-10 top-0 left-0 w-full h-full flex items-center justify-center">
+          <FmdGoodIcon fontSize="large" className="c-text2" />
+        </div>
       </div>
     </main>
   );

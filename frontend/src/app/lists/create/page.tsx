@@ -54,6 +54,11 @@ export default function CreatePost() {
   };
 
   const handleClose = () => {
+    setLocation("");
+    setOpen(false);
+  };
+
+  const handleSelect = () => {
     setOpen(false);
   };
 
@@ -239,9 +244,13 @@ export default function CreatePost() {
           >
             <div className="flex items-center gap-2">
               <LocationOnOutlinedIcon className="c-text2" />
-              <div className="text-body">거래 장소 설정</div>
+              {location && location !== "" ? (
+                <div className="text-body2">{location}</div>
+              ) : (
+                <div className="text-body">거래 장소 설정</div>
+              )}
             </div>
-            <NavigateNextOutlinedIcon className="c-text2" />
+            <NavigateNextOutlinedIcon className="c-text2 min-w-fit" />
           </div>
           <Dialog
             fullScreen
@@ -263,8 +272,15 @@ export default function CreatePost() {
                 width={100}
                 height={100}
               />
-              <Map />
-              <NormalBtn next={() => console.log("선택")}>선택</NormalBtn>
+              {location ? (
+                <div className="text-caption !text-white bg-gray-500 py-1 px-2 rounded-xl w-fit	text-center">
+                  {location}
+                </div>
+              ) : (
+                <></>
+              )}
+              <Map setLocation={setLocation} />
+              <NormalBtn next={handleSelect}>선택</NormalBtn>
             </div>
           </Dialog>
         </form>
