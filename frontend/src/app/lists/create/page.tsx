@@ -123,9 +123,9 @@ export default function CreatePost() {
   return (
     <div className={styles.container}>
       {/* form 내부에 있는 제출 버튼을 끌어온다. */}
-      <TopBar2 onFormSubmit={() => formButtonRef.current?.click()} />
       <div className="mb-4 max-w-4xl mx-auto">
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <TopBar2 />
           {/*  이미지를 렌더링할 때 파일 이름도 표시하고 삭제 버튼을 제공 */}
           <div
             ref={scrollRef}
@@ -161,7 +161,9 @@ export default function CreatePost() {
                 multiple
                 disabled={images.length >= 10}
               />
-              <span className="c-text2">{`${images ? images.length : 0}/10`}</span>
+              <span className="c-text2">{`${
+                images ? images.length : 0
+              }/10`}</span>
             </label>
           </div>
           <div className="flex gap-4">
@@ -234,9 +236,7 @@ export default function CreatePost() {
             </AccordionDetails>
           </Accordion>
 
-          <Button ref={formButtonRef} type="submit" color="primary" hidden>
-            게시글 올리기
-          </Button>
+          <Button ref={formButtonRef} type="submit" hidden></Button>
         </form>
       </div>
     </div>
