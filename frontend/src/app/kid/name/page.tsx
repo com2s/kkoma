@@ -41,11 +41,16 @@ export default function KidName() {
             setName(null);
             router.push("/kid/birth");
           }}
-          display={name === (null || undefined || "")}
+          display={name === null || name === ""}
         >
           건너뛰기
         </SubBtn>
-        <NormalBtn next={() => router.push("/kid/birth")}>다음</NormalBtn>
+        <NormalBtn
+          next={() => router.push("/kid/birth")}
+          disabled={name === null || name === ""}
+        >
+          다음
+        </NormalBtn>
       </ButtonContainer>
     </>
   );

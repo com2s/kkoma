@@ -16,9 +16,10 @@ import { MobileDatePicker } from "@mui/x-date-pickers";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { koKR } from "@mui/x-date-pickers/locales";
 
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useRecoilState } from "recoil";
 import { kidBirthDateState } from "@/store/kid";
+import { useRouter } from "next/navigation";
 
 export default function KidBirth() {
   const [birthDate, setBirthDate] = useRecoilState(kidBirthDateState);
@@ -26,13 +27,11 @@ export default function KidBirth() {
   const [disable, setDisable] = useState(false);
   const [errmsg, setErrMsg] = useState<string | null>(null);
 
+  const router = useRouter();
+
   const handelChange = (e: ChangeEvent<HTMLInputElement>) => {
     setIsBirthYet(e.target.checked);
   };
-
-  useEffect(() => {
-    console.log("bb====", birthDate);
-  }, [birthDate]);
 
   return (
     <>
@@ -64,7 +63,7 @@ export default function KidBirth() {
           disableFuture={!isBirthYet}
           disablePast={isBirthYet}
           format="YYYY-MM-DD"
-          defaultValue={dayjs()}
+          defaultValue={dayjs(birthDate)}
           onError={(e) => {
             if (e) {
               setDisable(true);
@@ -82,7 +81,14 @@ export default function KidBirth() {
         />
       </LocalizationProvider>
       <ButtonContainer>
-        <SubBtn next={"/kid/gender"}>건너뛰기</SubBtn>
+        <SubBtn
+          next={() => {
+            setBirthDate(null);
+            router.push("/kid/gender");
+          }}
+        >
+          건너뛰기
+        </SubBtn>
         <NormalBtn next={"/kid/gender"} disabled={disable}>
           완료
         </NormalBtn>
