@@ -97,7 +97,7 @@ export default function ProductDetail({ params: { id } }: IParams) {
         <div className="text-body2 c-text2">서울시 강남구 테헤란로 10</div>
       </div>
       {/* <div className="text-caption c-text2">{product?.data.dealPlace}</div> */}
-      <Map />
+      {/* <Map /> */}
       {myId && myId === product?.data.memberSummary.memberId.toString() ? (
         <div className="flex gap-8 py-4">
           <Link href={`/my-trade/${id}`} className="w-full">
