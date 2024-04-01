@@ -1,16 +1,13 @@
 package com.ssafy.kkoma.api.member.service;
 
-import com.ssafy.kkoma.api.common.dto.BasePageResponse;
 import com.ssafy.kkoma.api.member.dto.response.MemberInfoResponse;
 import com.ssafy.kkoma.api.member.dto.response.MemberProfileResponse;
 import com.ssafy.kkoma.api.member.dto.response.MemberSummaryResponse;
 import com.ssafy.kkoma.api.member.dto.response.MyPageMemberProfileResponse;
 import com.ssafy.kkoma.api.product.dto.ProductSummary;
-import com.ssafy.kkoma.api.product.service.ProductService;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
