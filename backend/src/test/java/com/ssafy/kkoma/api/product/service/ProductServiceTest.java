@@ -9,11 +9,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.ssafy.kkoma.api.common.dto.BasePageResponse;
+import com.ssafy.kkoma.api.location.dto.request.CreateLocationRequest;
 import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
 import com.ssafy.kkoma.api.product.dto.ProductWishResponse;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
 import com.ssafy.kkoma.api.product.dto.response.ChatProductResponse;
 import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
+import com.ssafy.kkoma.domain.location.entity.Location;
+import com.ssafy.kkoma.domain.location.repository.LocationRepository;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.domain.member.entity.Member;
@@ -69,6 +72,9 @@ class ProductServiceTest {
 
 	@Autowired
 	private WishListFactory wishListFactory;
+
+	@Autowired
+	private LocationRepository locationRepository;
 
 	private static final String TITLE = "TITLE";
 	private static final String IMAGE_URL = "IMAGE_URL";
@@ -165,12 +171,15 @@ class ProductServiceTest {
 		// given
 		Category category = categoryRepository.save(Category.builder().name("유모차").build());
 		Member member = memberRepository.save(Member.builder().name(NAME).memberType(MemberType.KAKAO).role(Role.USER).build());
+		Location location = locationRepository.save(Location.builder().regionCode(1111111L).x(111.11111).y(111.11111).placeDetail("지하철역 앞").build());
+
 		ProductCreateRequest productCreateRequest = ProductCreateRequest.builder()
 				.title("TITLE")
 				.productImages(List.of("...", "..."))
 				.description("...")
 				.price(10000)
 				.categoryId(category.getId())
+				.createLocationRequest(CreateLocationRequest.fromEntity(location))
 				.build();
 
 		// when
