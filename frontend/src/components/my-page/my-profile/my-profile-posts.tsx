@@ -53,12 +53,12 @@ export default function MyProfilePosts() {
   };
 
   return (
-    <div className="px-4 mx-auto my-8">
+    <div className=" mx-auto my-8">
       <Accordion
         sx={{
           margin: "auto",
           minWidth: "200px",
-          border: "1px solid #999999",
+          border: "2px solid #d3d3d3",
           "&.MuiPaper-root": { boxShadow: "none" },
         }}
         expanded={expanded}
@@ -68,11 +68,11 @@ export default function MyProfilePosts() {
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1-content"
           id="panel1-header"
-          sx={{ margin: "auto", paddingX: "2rem" }}
+          sx={{ margin: "auto" }}
         >
-          내가 쓴 게시글
+          등록한 거래글 {posts.length}개
         </AccordionSummary>
-
+        {posts.length === 0 && (<p className="m-4 p-2 rounded-lg bg-pink-100">등록한 거래글이 없습니다.</p>)}
         {posts.map((post, index) => (
           <AccordionDetails
             key={index}

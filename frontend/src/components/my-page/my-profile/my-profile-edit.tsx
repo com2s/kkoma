@@ -118,7 +118,7 @@ export default function MyProfileEdit() {
             sx={{
               margin: "auto",
               minWidth: "200px",
-              border: "1px solid #999999",
+              border: "2px solid #d3d3d3",
               "&.MuiPaper-root": { boxShadow: "none" },
             }}
             expanded={expanded}
@@ -132,7 +132,7 @@ export default function MyProfileEdit() {
             >
               프로필 수정
             </AccordionSummary>
-            <AccordionDetails sx={{ margin: "auto", paddingLeft: "2rem" }}>
+            <AccordionDetails sx={{ margin: "auto", paddingX: "2rem" }}>
               <label className="min-w-36 h-36 flex flex-col justify-center items-center bg-slate-50 rounded-md">
                 <Avatar
                   src={image?.url ?? ""}
@@ -185,7 +185,7 @@ export default function MyProfileEdit() {
                 margin: "12px auto",
                 display: "flex",
                 justifyContent: "space-between",
-                width: "60%",
+                width: "70%",
               }}
             >
               <Button onClick={handleCloseClick} variant="outlined">
