@@ -5,6 +5,7 @@ import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.time.Duration;
@@ -18,6 +19,8 @@ public class ProductSummary {
 	private Long id;
 	private String thumbnailImage;
 	private String title;
+
+	@Setter
 	private String dealPlace;
 	private ProductType status;
 	private int price;
@@ -34,7 +37,6 @@ public class ProductSummary {
 				.id(product.getId())
 				.thumbnailImage(product.getThumbnailImage())
 				.title(product.getTitle())
-				.dealPlace("todo")
 				.status(product.getStatus())
 				.price(product.getPrice())
 				.elapsedMinutes((elapsedDuration != null) ? elapsedDuration.toMinutes() : null)
