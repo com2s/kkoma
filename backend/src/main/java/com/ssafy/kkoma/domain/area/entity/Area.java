@@ -31,4 +31,20 @@ public class Area {
 	@Column(length = 10)
 	private String subName4;
 
+	public String getFullArea() {
+		StringBuilder fullArea = new StringBuilder();
+
+		String[] subNames = new String[]{subName1, subName2, subName3, subName4};
+
+		for(String subName : subNames) {
+			if ("".equals(subName)) {
+				break;
+			} else {
+				fullArea.append(subName).append(" ");
+			}
+		}
+
+		return fullArea.substring(0, fullArea.length() - 1);
+	}
+
 }
