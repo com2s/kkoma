@@ -37,7 +37,7 @@ public class Area {
 		String[] subNames = new String[]{subName1, subName2, subName3, subName4};
 
 		for(String subName : subNames) {
-			if ("".equals(subName)) {
+			if ("".equals(subName) || subName == null) {
 				break;
 			} else {
 				fullArea.append(subName).append(" ");
