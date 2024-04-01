@@ -103,3 +103,30 @@ export interface RecentList {
         errorMessage: string;
     };
 }
+
+interface Notification {
+    id: number;
+    message: string;
+    destination: string;
+    sentAt: string;
+    readAt: string|null;
+}
+
+export interface NotificationList {
+    success: boolean;
+    data: {
+        content: Notification[];
+        size: number;
+        page: number;
+        numberOfElements: number;
+        totalElements: number;
+        totalPages: number;
+        first: boolean;
+        last: boolean;
+        empty: boolean;
+    };
+    error: {
+        errorCode: string;
+        errorMessage: string;
+    };
+}

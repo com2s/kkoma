@@ -3,7 +3,6 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import Button from "@mui/material/Button";
 import AppBar from "@mui/material/AppBar";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
