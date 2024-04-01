@@ -5,11 +5,11 @@ import { useRouter } from "next/navigation";
 import React, { useState, useEffect, use } from "react";
 import Button from "@mui/material/Button"; // Material-UI 버튼 사용
 import { Avatar, Card, CardContent, Typography } from "@mui/material";
+import Image from "next/image";
 
 import { getMyWishes } from "@/components/my-page/my-page-ftn";
 import { WishContent, WishData } from "@/types/member";
 import { ProductCard } from "@/components/common/product-card";
-
 
 export default function WishList() {
   const [wishes, setWishes] = useState<WishContent[]>([]);
@@ -32,9 +32,20 @@ export default function WishList() {
 
   return (
     <>
-      {success === false && <h3 className="p-2">찜 목록을 불러오는데 실패했습니다.</h3>}
+      {success === false && (
+        <h3 className="p-2">찜 목록을 불러오는데 실패했습니다.</h3>
+      )}
       {success === true && data?.empty && (
-        <h3 className="p-2">찜 목록이 비어있습니다.</h3>
+        <div className="flex-row justify-center m-4 rounded-3xl bg-slate-100">
+          <Image
+            src={"/images/wish-empty.png"}
+            alt="빈 목록"
+            height={300}
+            width={300}
+            style={{ margin: "auto", padding: '24px'}}
+          />
+          <h4 className="mt-4 pb-8 text-center font-semibold">찜 목록이 비어있습니다.</h4>
+        </div>
       )}
       {success === true && wishes.length > 0 && (
         <>

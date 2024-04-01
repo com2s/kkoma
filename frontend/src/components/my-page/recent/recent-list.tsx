@@ -9,6 +9,7 @@ import { RecentList } from "@/types/member";
 import { ProductCard } from "@/components/common/product-card";
 
 import { Button } from "@mui/material";
+import Image from "next/image";
 
 export default function MyRecent() {
   const [page, setPage] = useState(0);
@@ -31,7 +32,16 @@ export default function MyRecent() {
         <h3 className="p-2">최근 본 상품을 불러오는데 실패했습니다.</h3>
       )}
       {success && recentList?.data.empty && (
-        <h3 className="p-2">최근 본 상품이 없습니다.</h3>
+        <div className="flex-row justify-center m-4 rounded-3xl bg-slate-100">
+        <Image
+          src={"/images/list-empty.png"}
+          alt="빈 목록"
+          height={300}
+          width={300}
+          style={{ margin: "auto", padding: "24px"}}
+        />
+        <h4 className="mt-4 pb-8 text-center font-semibold">최근 본 글이 없습니다.</h4>
+      </div>
       )}
       {success && (
         <div>

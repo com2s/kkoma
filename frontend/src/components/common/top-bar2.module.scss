@@ -18,6 +18,7 @@
     @include flex(center, flex-start, row);
     gap: rem(10);
     font-size: 1.1rem;
+    // font-family: 'Noto Sans KR', sans-serif;
   }
   .notifications {
     color: $color-text2;
