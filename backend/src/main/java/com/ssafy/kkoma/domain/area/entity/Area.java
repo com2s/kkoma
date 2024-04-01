@@ -13,11 +13,10 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class Area {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(length = 10)
@@ -31,5 +30,21 @@ public class Area {
 
 	@Column(length = 10)
 	private String subName4;
+
+	public String getFullArea() {
+		StringBuilder fullArea = new StringBuilder();
+
+		String[] subNames = new String[]{subName1, subName2, subName3, subName4};
+
+		for(String subName : subNames) {
+			if ("".equals(subName)) {
+				break;
+			} else {
+				fullArea.append(subName).append(" ");
+			}
+		}
+
+		return fullArea.substring(0, fullArea.length() - 1);
+	}
 
 }

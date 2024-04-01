@@ -3,6 +3,7 @@ package com.ssafy.kkoma.api.product.dto;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import com.ssafy.kkoma.domain.area.entity.Area;
 import com.ssafy.kkoma.domain.deal.entity.Deal;
 import com.ssafy.kkoma.domain.product.constant.MyProductType;
 import com.ssafy.kkoma.domain.product.constant.ProductType;
@@ -35,7 +36,7 @@ public class ProductInfoResponse {
 	private LocalDateTime selectedTime;
 
 	public static ProductInfoResponse fromEntity(
-		Product product, MyProductType type, Long dealId, LocalDateTime dealTime
+		Product product, MyProductType type, Long dealId, LocalDateTime dealTime, Area area
 	) {
 		LocalDateTime createdAt = product.getCreatedAt();
 		Duration elapsedDuration = (createdAt != null) ? Duration.between(createdAt, LocalDateTime.now()) : null;
@@ -44,7 +45,7 @@ public class ProductInfoResponse {
 			.id(product.getId())
 			.thumbnailImage(product.getThumbnailImage())
 			.title(product.getTitle())
-			.dealPlace(product.getPlaceDetail())
+			.dealPlace(area.getFullArea())
 			.status(product.getStatus())
 			.price(product.getPrice())
 			.elapsedMinutes((elapsedDuration != null) ? elapsedDuration.toMinutes() : null)
