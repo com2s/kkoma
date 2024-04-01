@@ -10,10 +10,18 @@ declare global {
 }
 
 interface Props {
-  setLocation: Dispatch<SetStateAction<string>>;
+  setLocation?: Dispatch<SetStateAction<string>>;
+  setRegionCode?: Dispatch<SetStateAction<string>>;
+  setLng?: Dispatch<SetStateAction<number>>;
+  setLat?: Dispatch<SetStateAction<number>>;
 }
 
-export default function Map({ setLocation }: Props) {
+export default function Map({
+  setLocation,
+  setRegionCode,
+  setLng,
+  setLat,
+}: Props) {
   let map: any, geocoder: any;
   const MAP_API_KEY = process.env.NEXT_PUBLIC_KAKAO_JS_KEY;
 
@@ -21,7 +29,7 @@ export default function Map({ setLocation }: Props) {
     if (status === window.kakao.maps.services.Status.OK) {
       for (let i = 0; i < result.length; i++) {
         if (result[i].region_type === "B") {
-          console.log("법정동 코드", result[i].code);
+          setRegionCode && setRegionCode(result[i].code);
           break;
         }
       }
@@ -31,17 +39,19 @@ export default function Map({ setLocation }: Props) {
   const displayAddressInfo = (result: any, status: any) => {
     if (status === window.kakao.maps.services.Status.OK) {
       if (result[0]?.road_address?.address_name) {
-        console.log("주소", result[0].road_address.address_name);
-        setLocation(result[0].road_address.address_name);
+        setLocation && setLocation(result[0].road_address.address_name);
       } else {
-        console.log("주소", result[0].address.address_name);
-        setLocation(result[0].address.address_name);
+        setLocation && setLocation(result[0].address.address_name);
       }
     }
   };
 
   const searchAddrFromCoords = (coords: any) => {
     console.log("중심좌표 lng=", coords.getLng(), "lat=", coords.getLat());
+    if (setLng && setLat) {
+      setLng(coords.getLng());
+      setLat(coords.getLat());
+    }
     geocoder.coord2RegionCode(
       coords.getLng(),
       coords.getLat(),
