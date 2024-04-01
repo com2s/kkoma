@@ -79,11 +79,10 @@ public class MemberInfoController {
         summary = "마이페이지 프로필 정보 조회",
         security = { @SecurityRequirement(name = "bearer-key") }
     )
-    @GetMapping("/profile")
+    @GetMapping("/{memberId}/profile")
     public ResponseEntity<ApiUtils.ApiResult<MyPageMemberProfileResponse>> getMyPageMemberProfile(
-            @MemberInfo MemberInfoDto memberInfoDto
+            @PathVariable Long memberId
     ) {
-        Long memberId = memberInfoDto.getMemberId();
         MyPageMemberProfileResponse memberProfileResponse = memberInfoService.getMyPageMemberProfile(memberId);
 
         return ResponseEntity.ok(ApiUtils.success(memberProfileResponse));
