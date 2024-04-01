@@ -103,8 +103,8 @@ public class DealService {
 		return deal;
 	}
 
-	public List<Deal> findScheduledDeal(LocalDateTime now, Pageable pageable) {
-		Page<Deal> pageList = dealRepository.findScheduledDeal(now, pageable);
+	public List<Deal> findScheduledDealAfterLastRun(LocalDateTime lastRun, LocalDateTime curRun, Pageable pageable) {
+		Page<Deal> pageList = dealRepository.findScheduledDealAfterLastRun(lastRun, curRun, pageable);
 		return pageList.getContent();
 	}
 
