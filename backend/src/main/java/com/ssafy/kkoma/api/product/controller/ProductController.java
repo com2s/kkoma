@@ -54,8 +54,8 @@ public class ProductController {
         security = { @SecurityRequirement(name = "bearer-key") }
     )
     @GetMapping("/search")
-    public ResponseEntity<ApiUtils.ApiResult<SearchProductResponse>> searchProducts(SearchProductRequest searchProductRequest, Pageable pageable) {
-        SearchProductResponse searchProductResponse = productService.searchProduct(searchProductRequest, pageable);
+    public ResponseEntity<ApiUtils.ApiResult<SearchProductResponse>> searchProducts(@MemberInfo MemberInfoDto memberInfoDto, SearchProductRequest searchProductRequest, Pageable pageable) {
+        SearchProductResponse searchProductResponse = productService.searchProduct(memberInfoDto.getMemberId(), searchProductRequest, pageable);
         return ResponseEntity.ok(ApiUtils.success(searchProductResponse));
     }
 
