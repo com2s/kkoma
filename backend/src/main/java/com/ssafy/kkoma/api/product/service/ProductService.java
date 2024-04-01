@@ -22,6 +22,8 @@ import com.ssafy.kkoma.api.product.dto.ProductWishResponse;
 
 import com.ssafy.kkoma.domain.deal.entity.Deal;
 import com.ssafy.kkoma.domain.deal.repository.DealRepository;
+import com.ssafy.kkoma.domain.location.entity.Location;
+import com.ssafy.kkoma.domain.location.repository.LocationRepository;
 import com.ssafy.kkoma.domain.member.entity.Member;
 
 import com.ssafy.kkoma.domain.product.constant.MyProductType;
@@ -61,6 +63,7 @@ public class ProductService {
 	private final WishListRepository wishListRepository;
 	private final DealRepository dealRepository;
 	private final DealService dealService;
+	private final LocationRepository locationRepository;
 
 	public Product findProductByProductId(Long productId){
 		return productRepository.findById(productId)
@@ -112,11 +115,12 @@ public class ProductService {
 		Member seller = memberService.findMemberByMemberId(memberId);
 		Category category = categoryService.findCategoryById(productCreateRequest.getCategoryId());
 		ChatRoom chatRoom = chatRoomService.createChatRoom();
+		Location location = locationRepository.save(productCreateRequest.getCreateLocationRequest().toEntity());
 
 		Product product = Product.builder()
 				.member(seller)
 				.thumbnailImage(productImageUrls.isEmpty() ? null : productImageUrls.get(0))
-				.placeDetail("TODO: MVP 개발 이후 location과 placeDetail 저장하는 로직 짜야돼")
+				.location(location)
 				.title(productCreateRequest.getTitle())
 				.description(productCreateRequest.getDescription())
 				.price(productCreateRequest.getPrice())
@@ -155,7 +159,6 @@ public class ProductService {
 			.categoryName(categoryName)
 			.price(product.getPrice())
 			.status(product.getStatus())
-			.dealPlace(product.getPlaceDetail())
 			.elapsedMinutes(Duration.between(product.getCreatedAt(), LocalDateTime.now()).toMinutes())
 			.memberSummary(sellerSummaryResponse)
 			.chatRoomId(product.getChatRoom().getId())
