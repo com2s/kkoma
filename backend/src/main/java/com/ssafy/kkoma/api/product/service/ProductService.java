@@ -176,6 +176,8 @@ public class ProductService {
 			.price(product.getPrice())
 			.status(product.getStatus())
 			.dealPlace(area.getFullArea() + " " + placeDetail)
+			.x(product.getLocation().getX())
+			.y(product.getLocation().getY())
 			.elapsedMinutes(Duration.between(product.getCreatedAt(), LocalDateTime.now()).toMinutes())
 			.memberSummary(sellerSummaryResponse)
 			.chatRoomId(product.getChatRoom().getId())
