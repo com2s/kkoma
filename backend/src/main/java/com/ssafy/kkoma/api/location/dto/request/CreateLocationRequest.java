@@ -22,4 +22,13 @@ public class CreateLocationRequest {
 			.placeDetail(this.placeDetail)
 			.build();
 	}
+
+	public static CreateLocationRequest fromEntity(Location location) {
+		return CreateLocationRequest.builder()
+			.regionCode(location.getRegionCode())
+			.x(location.getX())
+			.y(location.getY())
+			.placeDetail(location.getPlaceDetail())
+			.build();
+	}
 }
