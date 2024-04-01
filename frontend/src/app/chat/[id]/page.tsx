@@ -31,7 +31,6 @@ export default function Chatting() {
 
   if (typeof window !== "undefined") {
     initialInnerHeight = window.innerHeight;
-    console.log(window.innerHeight);
   }
   if (typeof document !== "undefined") {
     el = document.getElementById("chat");
@@ -72,7 +71,6 @@ export default function Chatting() {
   const handleTouch = () => {
     const innerHeight = window.innerHeight;
     const heightGap = initialInnerHeight - innerHeight;
-    console.log("heightGap: " + heightGap);
     const top = heightGap;
     el.scrollTo(0, top);
   };
