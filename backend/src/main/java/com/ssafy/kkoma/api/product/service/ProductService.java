@@ -122,6 +122,7 @@ public class ProductService {
 				.price(productCreateRequest.getPrice())
 				.build();
 
+		//product.setMember(seller);
 		product.setCategory(category);
 		product.setChatRoom(chatRoom);
 

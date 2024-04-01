@@ -3,9 +3,14 @@ package com.ssafy.kkoma.api.member.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.kkoma.api.member.dto.request.UpdateMemberRequest;
 import com.ssafy.kkoma.api.member.dto.response.MemberInfoResponse;
+import com.ssafy.kkoma.api.member.dto.response.MemberProfileResponse;
 import com.ssafy.kkoma.api.member.dto.response.MemberSummaryResponse;
+import com.ssafy.kkoma.api.member.dto.response.MyPageMemberProfileResponse;
+import com.ssafy.kkoma.api.product.dto.ProductSummary;
 import com.ssafy.kkoma.domain.member.entity.Member;
+import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.factory.MemberFactory;
+import com.ssafy.kkoma.factory.ProductFactory;
 import com.ssafy.kkoma.global.util.CustomMockMvcSpringBootTest;
 import com.ssafy.kkoma.global.util.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +20,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @CustomMockMvcSpringBootTest
@@ -31,6 +39,9 @@ class MemberInfoControllerTest {
 
     @Autowired
     MemberFactory memberFactory;
+
+    @Autowired
+    ProductFactory productFactory;
 
     @Test
     @Transactional
@@ -103,5 +114,30 @@ class MemberInfoControllerTest {
                 );
 
         log.info(expectedResponse.toString());
+    }
+
+    @Test
+    @Transactional
+    public void 마이페이지_프로필_정보_조회하기() throws Exception{
+        Member member = memberFactory.createMember();
+        List<ProductSummary> productSummaryList = new ArrayList<>();
+
+        final int COUNT = 10;
+
+        for (int i = 0; i < COUNT; i++) {
+            Product product = productFactory.createProduct(member);
+            productSummaryList.add(ProductSummary.fromEntity(product));
+        }
+
+        MyPageMemberProfileResponse memberProfileResponse = MyPageMemberProfileResponse.builder()
+                .memberProfileResponse(MemberProfileResponse.fromEntity(member))
+                .myProductList(productSummaryList)
+                .build();
+
+        mockMvc.perform(requestUtil.getRequest("/api/members/profile", member))
+                .andExpectAll(
+                        MockMvcResultMatchers.status().isOk(),
+                        requestUtil.jsonContent(MyPageMemberProfileResponse.class, memberProfileResponse)
+                );
     }
 }
