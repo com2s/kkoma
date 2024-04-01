@@ -75,3 +75,13 @@ export async function postOffer(productId: string, selectedTimes: string[][]) {
 
   return response;
 }
+
+export async function getIsBuyable(productId: string) {
+  const response = await APIModule({
+    action: `/points/products/${productId}`,
+    method: "GET",
+    data: null,
+  });
+
+  return response;
+}

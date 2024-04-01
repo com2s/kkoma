@@ -11,10 +11,12 @@ import TopBar2 from "@/components/lists/lists-detail-bar";
 import Profile from "@/components/lists/lists-detail-profile";
 import Content from "@/components/lists/lists-detail-content";
 import LocalStorage from "@/utils/localStorage";
+import { getIsBuyable } from "@/components/lists/lists-ftn";
 
 import Map from "@/components/common/map";
 import Slider from "react-slick";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -36,6 +38,8 @@ export default function ProductDetail({ params: { id } }: IParams) {
   const [myId, setMyId] = useState<string | null>(null);
   const [liked, setLiked] = useState(false);
 
+  const router = useRouter();
+
   const fetchData = async () => {
     setMyId(LocalStorage.getItem("memberId"));
     const res = await getProductDetail(id);
@@ -56,6 +60,20 @@ export default function ProductDetail({ params: { id } }: IParams) {
       setLiked(true);
     }
   };
+
+  const handleRequest = async (id:string) => {
+    const isBuyable = await getIsBuyable(id);
+    if (isBuyable.success) {
+      router.push(`/lists/${id}/request`);
+    } else {
+      alert(isBuyable.error.errorMessage);
+    }
+  }
+
+  const handleNull = () => {
+    return null;
+  }
+
 
   const settings = {
     // centerMode: true,
@@ -112,7 +130,9 @@ export default function ProductDetail({ params: { id } }: IParams) {
         </ButtonContainer>
       ) : (
         <ButtonContainer>
-          <NormalBtn next={`/lists/${id}/request`}>거래 요청</NormalBtn>
+          <div onClick={() => handleRequest(id)} className="w-full">
+          <NormalBtn next={handleNull}>거래 요청</NormalBtn>
+          </div>
           <SubBtn next={`/lists/${id}/chat`}>채팅 문의</SubBtn>
         </ButtonContainer>
       )}
