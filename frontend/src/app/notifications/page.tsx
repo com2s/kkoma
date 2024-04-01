@@ -74,7 +74,7 @@ export default function MyNotificationsPage() {
       <List sx={{ width: "100%", minWidth: 260, bgcolor: "background.paper" }}>
         {success === true && notifications.length === 0 && (
           <>
-            <ListItem sx={{ paddingX: 0 }}>
+            <ListItem sx={{ paddingX: 0, minHeight: '90px' }}>
               <ListItemAvatar>
                 <Avatar
                   src="temp-img.svg"
@@ -105,7 +105,7 @@ export default function MyNotificationsPage() {
                   )}
                   style={{ textDecoration: "none" }}
                 >
-                  <ListItem sx={{ paddingX: 0 }}>
+                  <ListItem sx={{ paddingX: 0, minHeight: '90px' }}>
                     <ListItemAvatar>
                       <Avatar
                         src={"temp-img.svg"}
@@ -124,7 +124,7 @@ export default function MyNotificationsPage() {
           </>
         )}
         <Link href="/">
-          <ListItem sx={{ paddingX: 0 }}>
+          <ListItem sx={{ paddingX: 0, minHeight: '90px' }}>
             <ListItemAvatar>
               <Avatar
                 src="temp-img.svg"

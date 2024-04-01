@@ -32,7 +32,7 @@ export default function TopBar2(props: {
   return (
     <>
       <div className={styles.header}>
-        <NavigateBeforeIcon className="c-text2" onClick={() => router.back()} />
+        <NavigateBeforeIcon className="c-text2" onClick={() => router.back()} sx={{width: '32px', height: "32px"}} />
         {props.liked ? (
           <FavoriteIcon
             sx={{ color: "red" }}

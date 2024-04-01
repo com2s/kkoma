@@ -38,7 +38,7 @@ export async function getRequesters(productId: string) {
 }
 
 export async function patchOfferAccept(
-  offerId: string | string[] | undefined,
+  offerId: string,
   date: string,
   time: string
 ) {
@@ -54,6 +54,20 @@ export async function patchOfferAccept(
     data: {
       selectedTime: isoString,
     },
+  });
+
+  return response;
+}
+
+export async function patchOfferReject(offerId: number) {
+  const queryObject = {
+    type: "reject",
+  };
+  const query = new URLSearchParams(queryObject).toString();
+  const response = await APIModule({
+    action: `/offers/${offerId}?${query}`,
+    method: "PATCH",
+    data: null,
   });
 
   return response;
