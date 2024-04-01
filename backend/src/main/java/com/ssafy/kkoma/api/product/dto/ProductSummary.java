@@ -19,9 +19,12 @@ public class ProductSummary {
 	private String thumbnailImage;
 	private String title;
 	private String dealPlace;
-	private int price;
 	private ProductType status;
+	private int price;
 	private Long elapsedMinutes;
+	private Long wishCount;
+	private Long viewCount;
+	private Long offerCount;
 
 	public static ProductSummary fromEntity(Product product){
 		LocalDateTime createdAt = product.getCreatedAt();
@@ -31,10 +34,13 @@ public class ProductSummary {
 				.id(product.getId())
 				.thumbnailImage(product.getThumbnailImage())
 				.title(product.getTitle())
-				.dealPlace(product.getPlaceDetail())
-				.price(product.getPrice())
+				.dealPlace("todo")
 				.status(product.getStatus())
+				.price(product.getPrice())
 				.elapsedMinutes((elapsedDuration != null) ? elapsedDuration.toMinutes() : null)
+				.wishCount(product.getWishCount())
+				.viewCount(product.getViewCount())
+				.offerCount(product.getOfferCount())
 				.build();
 	}
 
