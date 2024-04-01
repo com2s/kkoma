@@ -32,14 +32,13 @@ export default function TopBar2() {
           startIcon={<ArrowBackIosNewIcon />}
           sx={{ color: "black", height: "32px" }}
         ></Button>
-        <span className={styles.logo}>찜 목록</span>
+        <span className={styles.logo}>프로필 페이지</span>
         <div className={styles.notifications}>
           <Button disabled>
-          {" "}
           </Button>
         </div>
       </div>
-      <div className={styles.headerSpacer}></div>
+      <div className={styles.headerSpacer}></div>{" "}
       {/* 상단 바 높이만큼의 빈 공간 */}
     </>
   );

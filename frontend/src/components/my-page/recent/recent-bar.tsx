@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import styles from "@/components/common/top-bar2.module.scss";
 import Button from "@mui/material/Button"; // Material-UI 버튼 사용
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew"; // Material-UI 뒤로 가기 아이콘
 
 // 차후 각 페이지 별로 상단에 고정된 헤더를 만들기 위한 템플릿으로 사용합니다.
@@ -32,7 +33,7 @@ export default function TopBar2() {
           startIcon={<ArrowBackIosNewIcon />}
           sx={{ color: "black", height: "32px" }}
         ></Button>
-        <span className={styles.logo}>찜 목록</span>
+        <span className={styles.logo}>최근에 본 게시물</span>
         <div className={styles.notifications}>
           <Button disabled>
           {" "}

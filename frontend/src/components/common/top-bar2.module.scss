@@ -22,11 +22,11 @@
   .notifications {
     color: $color-text2;
     display: flex;
-    height: rem(24);
-    width: rem(24);
+    height: rem(32);
+    width: rem(64);
   }
 }
 
 .headerSpacer {
-  height: rem(60); // 상단 바의 높이와 동일하게 설정
+  height: rem(65); // 상단 바의 높이와 동일하게 설정
 }
