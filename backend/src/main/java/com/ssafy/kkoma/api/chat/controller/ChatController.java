@@ -33,9 +33,8 @@ public class ChatController {
 	private final ProductService productService;
 
 	@MessageMapping("/chatRooms/{chatRoomId}")
-	public void chat( @DestinationVariable Long chatRoomId, ChatMessageRequest chatMessageRequest) {
+	public void chat(@DestinationVariable("chatRoomId") Long chatRoomId, ChatMessageRequest chatMessageRequest) {
 		ChatMessageResponse chatMessage = chatMessageService.createChatMessage(chatRoomId, chatMessageRequest);
-
 		simpMessagingTemplate.convertAndSend("/topic/chatRooms/" + chatRoomId, chatMessage);
 	}
 

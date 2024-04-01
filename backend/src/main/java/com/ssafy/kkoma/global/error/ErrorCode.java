@@ -61,6 +61,7 @@ public enum ErrorCode {
     // Area
     AREA_LEVEL_RANGE_VALID(HttpStatus.BAD_REQUEST, "AR-001", "유효하지 않은 지역 레벨입니다."),
     SUB_AREA_NOT_EXISTS(HttpStatus.BAD_REQUEST, "AR-002", "하위 지역코드가 존재하지 않습니다."),
+    AREA_NOT_EXISTS(HttpStatus.BAD_REQUEST, "AR-003", "해당 법정코드에 대한 지역 정보가 존재하지 않습니다"),
 
     // Util
     IMAGE_NOT_EXISTS(HttpStatus.BAD_REQUEST, "U-001", "업로드 한 이미지가 비어있습니다."),
@@ -71,10 +72,11 @@ public enum ErrorCode {
     WISH_LIST_ALREADY_VALID(HttpStatus.BAD_REQUEST, "W-001", "이미 찜한 거래 글입니다"),
     WISH_LIST_ALREADY_NOT_VALID(HttpStatus.BAD_REQUEST, "W-002", "이미 찜 취소한 거래 글입니다"),
     WISH_COUNT_ZERO(HttpStatus.BAD_REQUEST, "W-003", "찜 수가 0이라 더 이상 감소될 수 없습니다"),
+    WISH_LIST_DOES_NOT_EXISTS(HttpStatus.BAD_REQUEST, "W-004", "찜한 기록이 없어서 찜을 취소할 수 없습니다."),
 
     // Notification
-    NOTI_NOT_EXISTS(HttpStatus.BAD_REQUEST, "NOTI-001", "해당 알림은 존재하지 않습니다.");
-
+    NOTI_NOT_EXISTS(HttpStatus.BAD_REQUEST, "NOTI-001", "해당 알림은 존재하지 않습니다."),
+    ;
 
     ErrorCode(HttpStatus httpStatus, String errorCode, String message) {
         this.httpStatus = httpStatus;

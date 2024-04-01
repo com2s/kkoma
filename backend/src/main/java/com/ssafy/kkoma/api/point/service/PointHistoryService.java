@@ -1,16 +1,21 @@
 package com.ssafy.kkoma.api.point.service;
 
+import com.ssafy.kkoma.api.common.dto.BasePageResponse;
+import com.ssafy.kkoma.api.member.service.MemberService;
+import com.ssafy.kkoma.api.point.dto.PointHistorySummary;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.point.constant.PointChangeType;
 import com.ssafy.kkoma.domain.point.entity.Point;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
 import com.ssafy.kkoma.domain.point.entity.PointHistory;
 import com.ssafy.kkoma.domain.point.repository.PointHistoryRepository;
-
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -18,12 +23,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PointHistoryService {
 
+	private final MemberService memberService;
 	private final PointHistoryRepository pointHistoryRepository;
 
-	public void changePoint(Member member, PointChangeType pointChangeType, int amount) {
+	public int changePoint(Member member, PointChangeType pointChangeType, int amount) {
 		Point point = member.getPoint();
 
-		if (pointChangeType == PointChangeType.CHARGE ||pointChangeType == PointChangeType.PROFIT) {
+		if (pointChangeType == PointChangeType.CHARGE || pointChangeType == PointChangeType.PROFIT) {
 			point.addBalance(amount);
 		} else {
 			point.subBalance(amount);
@@ -36,10 +42,28 @@ public class PointHistoryService {
 				.balanceAfterChange(point.getBalance())
 				.build();
 		pointHistoryRepository.save(pointHistory);
+
+		return point.getBalance(); // 잔액 반환
+	}
+
+	public BasePageResponse<PointHistory, PointHistorySummary> getPointHistory(Long memberId, Pageable pageable) {
+		Member member = memberService.findMemberByMemberId(memberId);
+		Page<PointHistory> page = pointHistoryRepository.findByPoint(member.getPoint(), pageable);
+
+		List<PointHistorySummary> content = page.getContent().stream()
+			.map(PointHistorySummary::fromEntity)
+			.toList();
+
+		return new BasePageResponse<>(content, page);
 	}
 
 	public void createPointHistory(PointHistory pointHistory) {
 		pointHistoryRepository.save(pointHistory);
 	}
 
+//	public PointSummaryResponse transferPoint(Long memberId, TransferPointRequest transferPointRequest) {
+//		Member member = memberService.findMemberByMemberId(memberId);
+//		int balance = changePoint(member, transferPointRequest.getType(), transferPointRequest.getAmount());
+//		return PointSummaryResponse.builder().balance(balance).build();
+//	}
 }

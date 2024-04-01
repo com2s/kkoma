@@ -35,10 +35,11 @@ export default function TopBar2() {
         <span className={styles.logo}>찜 목록</span>
         <div className={styles.notifications}>
           <Button disabled>
+          {" "}
           </Button>
         </div>
       </div>
-      <div className={styles.headerSpacer}></div>{" "}
+      <div className={styles.headerSpacer}></div>
       {/* 상단 바 높이만큼의 빈 공간 */}
     </>
   );

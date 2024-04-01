@@ -1,8 +1,9 @@
 "use client";
 
-import React, {useState, useEffect, use} from "react";
+import React, {useState, useEffect } from "react";
 import styles from "@/components/my-page/my-detail.module.scss";
-import { getMyInfo, MyInfo } from "@/components/my-page/my-page-ftn";
+import { getMyInfo } from "@/components/my-page/my-page-ftn";
+import { MyInfo } from "@/types/member";
 import Avatar from "@mui/material/Avatar";
 
 export default function MyProfileSummary() {
