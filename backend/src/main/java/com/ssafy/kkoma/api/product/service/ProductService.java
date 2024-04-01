@@ -87,9 +87,9 @@ public class ProductService {
 		return productSummaries;
 	}
 
-	public SearchProductResponse searchProduct(SearchProductRequest searchProductRequest, Pageable pageable) {
+	public SearchProductResponse searchProduct(Long memberId, SearchProductRequest searchProductRequest, Pageable pageable) {
 		Page<Product> pageList = productRepository.searchProduct(searchProductRequest, pageable);
-		return buildSearchProductResponse(pageList);
+		return buildSearchProductResponse(memberId, pageList);
 	}
 
 	public ProductDetailResponse getProduct(Long productId, Long memberId) {
@@ -186,7 +186,7 @@ public class ProductService {
 			.build();
 	}
 
-	private SearchProductResponse buildSearchProductResponse(Page<Product> page) {
+	private SearchProductResponse buildSearchProductResponse(Long memberId, Page<Product> page) {
 		List<ProductSummary> content = new ArrayList<>();
 
 		for (Product product : page.getContent()) {
@@ -196,8 +196,11 @@ public class ProductService {
 			content.add(productSummary);
 		}
 
+		Member member = memberService.findMemberByMemberId(memberId);
+
 		return SearchProductResponse.builder()
 			.content(content)
+			.preferredPlaceRegionCode(member.getPreferredPlaceRegionCode())
 			.size(page.getSize())
 			.page(page.getNumber())
 			.numberOfElements(page.getNumberOfElements())

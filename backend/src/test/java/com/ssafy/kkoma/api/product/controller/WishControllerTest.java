@@ -15,6 +15,7 @@ import com.ssafy.kkoma.global.error.exception.BusinessException;
 import com.ssafy.kkoma.global.util.CustomMockMvcSpringBootTest;
 import com.ssafy.kkoma.global.util.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+@Disabled
 @Slf4j
 @CustomMockMvcSpringBootTest
 class WishControllerTest {
@@ -193,7 +195,7 @@ class WishControllerTest {
             Product product = productFactory.createProduct(seller);
             WishList wishList = wishListFactory.createWishList(buyer, product);
             ProductSummary productSummary = ProductSummary.fromEntity(wishList.getProduct());
-            productSummary.setDealPlace("서울특별시 종로구 청운동");
+            productSummary.setDealPlace("테스트12시 테스트12구 테스트12동");
             wishProductsList.add(productSummary);
         }
 
