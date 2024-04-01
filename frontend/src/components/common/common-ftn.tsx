@@ -19,10 +19,10 @@ export async function getMyPoints() {
 }
 
 
-export async function getLogOut() {
+export async function postLogOut() {
   const response = await APIModule({
     action: "/logout",
-    method: "GET",
+    method: "POST",
     data: null,
   });
 
