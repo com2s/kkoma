@@ -123,6 +123,13 @@ export default function CreatePost() {
       alert("제목, 내용, 가격은 필수 입력 사항입니다.");
       return;
     }
+    
+    // 사진 1장 이상 요구하기
+    if (images.length === 0) {
+      alert("제품 사진은 1장 이상 첨부해주세요.");
+      return;
+    }
+
     // 확인 대화 상자 표시
     if (!window.confirm("게시글을 제출하시겠습니까?")) {
       return;

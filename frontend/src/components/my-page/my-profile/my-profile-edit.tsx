@@ -2,7 +2,9 @@
 
 import styles from "@/components/my-page/my-detail.module.scss";
 import React, { ChangeEvent, useEffect, useState, useRef } from "react";
-import { getMyInfo, putMyInfo, MyInfo } from "@/components/my-page/my-page-ftn";
+import { getMyInfo, putMyInfo } from "@/components/my-page/my-page-ftn";
+import { MyInfo } from "@/types/member";
+
 import { uploadImagesAPI } from "@/services/upload";
 
 import Avatar from "@mui/material/Avatar";
