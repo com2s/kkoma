@@ -11,9 +11,9 @@ import com.ssafy.kkoma.domain.area.repository.AreaRepository;
 import com.ssafy.kkoma.global.error.ErrorCode;
 import com.ssafy.kkoma.global.error.exception.BusinessException;
 import com.ssafy.kkoma.global.util.AreaCodeUtils;
+import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +33,11 @@ public class AreaService {
 		return areaRepository.getArea(level, code, digit, nextDigit).stream()
 				.map(sub -> SubArea.fromEntity(sub, level))
 				.collect(Collectors.toList());
+	}
+
+	public Area findAreaById(Long id) {
+		return areaRepository.findAreaById(id)
+			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.AREA_NOT_EXISTS));
 	}
 
 }
