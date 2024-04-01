@@ -21,6 +21,11 @@ import "slick-carousel/slick/slick-theme.css";
 import Link from "next/link";
 import ShareLocationIcon from "@mui/icons-material/ShareLocation";
 import { sendUnWishAPI, sendWishAPI } from "@/services/wish";
+import {
+  ButtonContainer,
+  NormalBtn,
+  SubBtn,
+} from "@/components/common/buttons";
 
 interface IParams {
   params: { id: string };
@@ -67,64 +72,50 @@ export default function ProductDetail({ params: { id } }: IParams) {
   };
 
   return (
-    <div className={styles.container}>
-      <TopBar2 liked={liked} setLiked={setLiked} handleLiked={handleLiked} />
-      <div className={styles.carousel}>
-        <Slider {...settings}>
-          {product?.data.productImages.map((img, index) => (
-            <div key={index} className={styles.image}>
-              <Image
-                src={img ?? "/temp-img.svg"} // Route of the image file
-                alt={`Slide ${index + 1}`}
-                priority
-                width={250} // Adjust as needed
-                height={250} // Adjust as needed
-                style={{ margin: "0 auto" }}
-              />
+    <>
+      <div className={styles.container}>
+        <TopBar2 liked={liked} setLiked={setLiked} handleLiked={handleLiked} />
+        <div className={styles.carousel}>
+          <Slider {...settings}>
+            {product?.data.productImages.map((img, index) => (
+              <div key={index} className={styles.image}>
+                <Image
+                  src={img ?? "/temp-img.svg"} // Route of the image file
+                  alt={`Slide ${index + 1}`}
+                  priority
+                  width={250} // Adjust as needed
+                  height={250} // Adjust as needed
+                  style={{ margin: "0 auto" }}
+                />
+              </div>
+            ))}
+          </Slider>
+        </div>
+        <Profile propsId={id} memberSummary={product?.data.memberSummary} />
+        <Content propsId={id} product={product?.data} />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1">
+            <ShareLocationIcon className="c-text1" />
+            <div className={`min-w-fit text-body2 ${styles.dealPlace}`}>
+              거래 장소
             </div>
-          ))}
-        </Slider>
-      </div>
-      <Profile propsId={id} memberSummary={product?.data.memberSummary} />
-      <Content propsId={id} product={product?.data} />
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-1">
-          <ShareLocationIcon className="c-text1" />
-          <div className={`min-w-fit text-body2 ${styles.dealPlace}`}>
-            거래 장소
           </div>
+          <div className="text-body2 c-text2">서울시 강남구 테헤란로 10</div>
         </div>
-        <div className="text-body2 c-text2">서울시 강남구 테헤란로 10</div>
+        {/* <div className="text-caption c-text2">{product?.data.dealPlace}</div> */}
+        {/* <Map /> */}
       </div>
-      {/* <div className="text-caption c-text2">{product?.data.dealPlace}</div> */}
-      <Map />
       {myId && myId === product?.data.memberSummary.memberId.toString() ? (
-        <div className="flex gap-8 py-4">
-          <Link href={`/my-trade/${id}`} className="w-full">
-            <button className={`${styles.btn} ${styles.normal}`}>
-              요청 보기
-            </button>
-          </Link>
-          <Link href={`/lists/${id}/edit`} className="w-full">
-            <button className={`${styles.btn} ${styles.normal} ${styles.gray}`}>
-              상품 수정
-            </button>
-          </Link>
-        </div>
+        <ButtonContainer>
+          <NormalBtn next={`/my-trade/${id}`}>요청 보기</NormalBtn>
+          <SubBtn next={`/lists/${id}/edit`}>상품 수정</SubBtn>
+        </ButtonContainer>
       ) : (
-        <div className="flex gap-8 py-4">
-          <Link href={`/lists/${id}/request`} className="w-full">
-            <button className={`${styles.btn} ${styles.normal}`}>
-              거래 요청
-            </button>
-          </Link>
-          <Link href={`/lists/${id}/chat`} className="w-full">
-            <button className={`${styles.btn} ${styles.normal} ${styles.gray}`}>
-              채팅 문의
-            </button>
-          </Link>
-        </div>
+        <ButtonContainer>
+          <NormalBtn next={`/lists/${id}/request`}>거래 요청</NormalBtn>
+          <SubBtn next={`/lists/${id}/chat`}>채팅 문의</SubBtn>
+        </ButtonContainer>
       )}
-    </div>
+    </>
   );
 }

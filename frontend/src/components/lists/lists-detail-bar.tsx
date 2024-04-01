@@ -1,13 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import styles from "@/components/common/top-bar2.module.scss";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import { Dispatch, SetStateAction } from "react";
-import { IconButton } from "@mui/material";
 // 차후 각 페이지 별로 상단에 고정된 헤더를 만들기 위한 템플릿으로 사용합니다.
 // 사용 예시
 {

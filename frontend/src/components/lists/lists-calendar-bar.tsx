@@ -4,8 +4,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import styles from "@/components/common/top-bar2.module.scss";
 import Button from "@mui/material/Button"; // Material-UI 버튼 사용
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew"; // Material-UI 뒤로 가기 아이콘
 import { useState } from "react";
 import { IconButton } from "@mui/material";
@@ -36,7 +34,7 @@ export default function TopBar2() {
     } else {
       alert("좋아요");
     }
-  }
+  };
 
   return (
     <>
@@ -46,10 +44,8 @@ export default function TopBar2() {
           startIcon={<ArrowBackIosNewIcon />}
           sx={{ color: "black", height: "32px" }}
         ></Button>
-        <span className={styles.logo}>{" "}</span>
-        <div className={styles.notifications}>
-          {" "}
-        </div>
+        <span className={styles.logo}> </span>
+        <div className={styles.notifications}> </div>
       </div>
       <div className={styles.headerSpacer}></div>{" "}
       {/* 상단 바 높이만큼의 빈 공간 */}

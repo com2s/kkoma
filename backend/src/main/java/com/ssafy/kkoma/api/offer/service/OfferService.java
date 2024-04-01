@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,12 +106,14 @@ public class OfferService {
             // 수락한 offer에 대해서 accept 처리
             if (offer.getId() == offerId) {
                 offer.updateStatus(OfferType.ACCEPTED);
+                offer.updateRepliedAt(LocalDateTime.now());
                 offer.getProduct().updateStatus(ProductType.PROGRESS);
                 acceptedDeal = dealService.createDeal(offer, decideOfferRequest);
             }
             // 나머지 offer에 대해서 deny 처리, 선입금한 포인트 반환
             else {
                 offer.updateStatus(OfferType.REJECTED);
+                offer.updateCancelledAt(LocalDateTime.now());
                 Member rejectedBuyer = offer.getMember(); // 거절당한 구매희망자
 
                 pointHistoryService.changePoint(rejectedBuyer, PointChangeType.REFUND, product.getPrice());

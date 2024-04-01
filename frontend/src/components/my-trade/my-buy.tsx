@@ -96,7 +96,7 @@ export default function MyBuy() {
           />
         ))}
       </Stack>
-      <div>
+      <div className="flex flex-col gap-5">
         {filteredDeals.map((deal) => (
           <Card key={deal.id} variant="outlined" className={styles.card}>
             <Avatar

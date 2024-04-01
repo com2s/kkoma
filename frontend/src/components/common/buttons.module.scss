@@ -1,11 +1,21 @@
 .container {
+  position: fixed;
+  bottom: 0;
+  padding: rem(16) 0;
+  width: 100%;
+  max-width: 580px;
+  z-index: 3000;
+  background-color: white;
+}
+
+.spacer {
+  height: rem(58);
+}
+
+.child {
   @include flex(center, space-around, row);
   gap: rem(12);
-  position: fixed;
-  bottom: rem(10);
   width: calc(100% - rem(52));
-  margin: auto;
-  max-width: 580px;
 }
 
 .btn {
