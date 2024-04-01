@@ -10,14 +10,7 @@ import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import {
-  Button,
-  TextField,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Dialog,
-} from "@mui/material";
+import { Button, TextField, FormControl, InputLabel, MenuItem, Dialog } from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import PhotoCameraOutlinedIcon from "@mui/icons-material/PhotoCameraOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
@@ -27,6 +20,8 @@ import { TransitionProps } from "@mui/material/transitions";
 import Slide from "@mui/material/Slide";
 import Title from "@/components/common/title";
 import { ButtonContainer, NormalBtn } from "@/components/common/buttons";
+import { Category } from "@/types/product";
+import { getCategoryAPI } from "@/services/product";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -38,9 +33,11 @@ const Transition = React.forwardRef(function Transition(
 });
 
 export default function CreatePost() {
-  const formButtonRef = useRef<HTMLButtonElement>(null); // form 참조 생성
   const scrollRef = useRef(null);
-  const [category, setCategory] = useState<number>(1); // TODO: 카테고리
+  const [category, setCategory] = useState<number>(0);
+  const [categoryList, setCategoryList] = useState<Array<Category>>([
+    { id: null, name: "카테고리" },
+  ]);
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState<number | null>();
   const [content, setContent] = useState("");
@@ -63,20 +60,13 @@ export default function CreatePost() {
   };
 
   const handleSelect = (index: number) => {
-    // if (index === 0) {
-    //   setOpen([true, true]);
-    // } else {
-    //   setOpen([false, false]);
-    // }
     let temp = [...open];
     temp[index] = false;
     setOpen(temp);
   };
 
   const handleCategoryChange = (event: SelectChangeEvent) => {
-    //TODO: 변경처리 해야됨
-    // setCategory(parseInt(event.target.value));
-    setCategory(1);
+    setCategory(Number(event.target.value));
   };
 
   // 가격 변경 처리
@@ -103,6 +93,15 @@ export default function CreatePost() {
     }
   };
 
+  const fetchCategoryList = async () => {
+    const res = await getCategoryAPI();
+    setCategoryList([{ id: 0, name: "카테고리" }, ...res]);
+  };
+
+  useEffect(() => {
+    fetchCategoryList();
+  }, []);
+
   // images 배열이 변경될 때마다 실행
   useEffect(() => {
     if (scrollRef.current) {
@@ -119,11 +118,18 @@ export default function CreatePost() {
 
   // 폼 제출 처리
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    //TODO: alert 시 새로고침 안되게.
+
+    if (category === 0) {
+      alert("카테고리를 선택해주세요.");
+      return;
+    }
+
     if (!title.trim() || !content.trim() || !price) {
       alert("제목, 내용, 가격은 필수 입력 사항입니다.");
       return;
     }
-    
+
     // 사진 1장 이상 요구하기
     if (images.length === 0) {
       alert("제품 사진은 1장 이상 첨부해주세요.");
@@ -198,9 +204,7 @@ export default function CreatePost() {
                 multiple
                 disabled={images.length >= 10}
               />
-              <span className="c-text2">{`${
-                images ? images.length : 0
-              }/10`}</span>
+              <span className="c-text2">{`${images ? images.length : 0}/10`}</span>
             </label>
           </div>
           <div className="flex gap-4">
@@ -213,12 +217,12 @@ export default function CreatePost() {
                 label="카테고리"
                 onChange={handleCategoryChange}
               >
-                <MenuItem value="">
-                  <em>없음</em>
-                </MenuItem>
-                <MenuItem value={0}>카테고리 없음 {category}</MenuItem>
-                <MenuItem value={1}>카테고리 1 : {category}</MenuItem>
-                <MenuItem value={2}>카테고리 2 : {category}</MenuItem>
+                {categoryList &&
+                  categoryList?.map((item, k) => (
+                    <MenuItem value={item.id?.toString()} key={k}>
+                      {item?.name}
+                    </MenuItem>
+                  ))}
               </Select>
             </FormControl>
           </div>
@@ -284,12 +288,7 @@ export default function CreatePost() {
                 title="거래하고 싶은 장소를 선택해주세요"
                 subtitle="누구나 찾기 쉬운 공공장소가 좋아요"
               />
-              <Image
-                src={"/images/Pin.png"}
-                alt="pin"
-                width={100}
-                height={100}
-              />
+              <Image src={"/images/Pin.png"} alt="pin" width={100} height={100} />
               {location ? (
                 <div className="text-caption !text-white bg-gray-500 py-1 px-2 rounded-xl w-fit	text-center">
                   {location}
