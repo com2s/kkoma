@@ -1,14 +1,15 @@
 "use client";
 
 import { Card, CardContent, Typography, IconButton } from "@mui/material";
-import ChildCareIcon from '@mui/icons-material/ChildCare';
-import AddIcon from '@mui/icons-material/Add';
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import { KidsSummary, getKidsSummary } from "@/services/kid";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function ChildrenList() {
   const [children, setChildren] = useState<KidsSummary>();
+  const [success, setSuccess] = useState(true);
   const today = new Date();
 
   useEffect(() => {
@@ -16,6 +17,7 @@ export default function ChildrenList() {
       const data = await getKidsSummary();
       console.log(data);
       setChildren(data);
+      setSuccess(data.success);
     };
     fetchChildren();
   }, []);
@@ -43,10 +45,27 @@ export default function ChildrenList() {
 
   return (
     <div>
+      {success && children?.data?.length === 0 && (
+        <Card
+          className="my-6 flex justify-center border-yellow-200 rounded-xl
+        border-2 min-w-64 w-2/3 mx-auto py-8"
+        >
+          <div>
+            <Image
+              src={"/images/logo-icon.svg"}
+              alt=""
+              width={100}
+              height={100}
+              style={{ margin: "auto" }}
+            />
+            <p className="mt-6">아직 등록된 아이 정보가 없어요...</p>
+          </div>
+        </Card>
+      )}
       {children?.data?.map((child, index) => (
         <Card
-          className="my-6 flex justify-between border-yellow-300 rounded-xl
-          border-2 min-w-fit w-2/3 mx-auto"
+          className="my-6 py-2 flex justify-between border-yellow-300 rounded-xl
+          border-2 min-w-64 w-2/3 mx-auto"
           key={index}
         >
           <Link
@@ -54,10 +73,10 @@ export default function ChildrenList() {
             className="my-auto w-full h-full flex justify-between"
           >
             <CardContent className="min-w-42 p-2">
-              <Typography variant="h5" className="mb-2">
+              <Typography variant="h6" className="mb-2">
                 {child.name ?? "이름"}
               </Typography>
-              <Typography variant="h6">
+              <Typography variant="subtitle1">
                 {child.birthDate} {isBirth(child.birthDate)}
               </Typography>
             </CardContent>
@@ -77,10 +96,12 @@ export default function ChildrenList() {
         className="my-6 mx-auto flex justify-between border-gray-300 rounded-xl h-24
         border-2 w-2/3 min-w-64 hover:bg-gray-100 transition duration-300 ease-in-out"
       >
-        <Link href={`/kid/name`} className="my-auto w-full h-full flex justify-center">
+        <Link
+          href={`/kid/name`}
+          className="my-auto w-full h-full flex justify-center"
+        >
           <CardContent className="flex justify-center items-center">
-            <ChildCareIcon className="h-full w-fit"/>
-            <AddIcon className="h-full w-fit p-1"/>
+            <AddRoundedIcon className="h-full w-fit" sx={{ color: "gray" }} />
           </CardContent>
         </Link>
       </Card>

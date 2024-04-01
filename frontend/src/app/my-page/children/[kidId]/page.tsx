@@ -83,23 +83,26 @@ export default function ChildDetailPage({ params: { kidId } }: IParams) {
                 width: "70%",
               }}
             />
-            <Select
-              labelId="gender-select-standard-label"
-              id="gender-select-standard"
-              value={gender}
-              onChange={handleGenderChange}
-              // label="성별"
-              sx={{
-                margin: "2rem 0.5rem",
-                width: "50%",
-              }}
-            >
-              <MenuItem value="MALE">남자</MenuItem>
-              <MenuItem value="FEMALE">여자</MenuItem>
-              <MenuItem value="UNKNOWN">
-                <em>미정</em>
-              </MenuItem>
-            </Select>
+            <div className="flex items-center">
+              <p className="pl-2">성별 : </p>
+              <Select
+                labelId="gender-select-standard-label"
+                id="gender-select-standard"
+                value={gender}
+                onChange={handleGenderChange}
+                // label="성별"
+                sx={{
+                  margin: "2rem 0.5rem",
+                  width: "50%",
+                }}
+              >
+                <MenuItem value="MALE">남자</MenuItem>
+                <MenuItem value="FEMALE">여자</MenuItem>
+                <MenuItem value="UNKNOWN">
+                  <em>미정</em>
+                </MenuItem>
+              </Select>
+            </div>
             <TextField
               id="standard-basic"
               label="생년월일"
