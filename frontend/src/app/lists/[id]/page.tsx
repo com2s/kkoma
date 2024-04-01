@@ -61,19 +61,18 @@ export default function ProductDetail({ params: { id } }: IParams) {
     }
   };
 
-  const handleRequest = async (id:string) => {
+  const handleRequest = async (id: string) => {
     const isBuyable = await getIsBuyable(id);
     if (isBuyable.success) {
       router.push(`/lists/${id}/request`);
     } else {
       alert(isBuyable.error.errorMessage);
     }
-  }
+  };
 
   const handleNull = () => {
     return null;
-  }
-
+  };
 
   const settings = {
     // centerMode: true,
@@ -126,14 +125,14 @@ export default function ProductDetail({ params: { id } }: IParams) {
       {myId && myId === product?.data.memberSummary.memberId.toString() ? (
         <ButtonContainer>
           <NormalBtn next={`/my-trade/${id}`}>요청 보기</NormalBtn>
-          <SubBtn next={`/lists/${id}/edit`}>상품 수정</SubBtn>
+          <SubBtn next={`/chat/${product?.data.chatRoomId}`}>채팅 확인</SubBtn>
         </ButtonContainer>
       ) : (
         <ButtonContainer>
           <div onClick={() => handleRequest(id)} className="w-full">
-          <NormalBtn next={handleNull}>거래 요청</NormalBtn>
+            <NormalBtn next={handleNull}>거래 요청</NormalBtn>
           </div>
-          <SubBtn next={`/lists/${id}/chat`}>채팅 문의</SubBtn>
+          <SubBtn next={`/chat/${product?.data.chatRoomId}`}>채팅 문의</SubBtn>
         </ButtonContainer>
       )}
     </>
