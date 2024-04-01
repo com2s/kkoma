@@ -52,9 +52,6 @@ public class Product extends BaseTimeEntity {
 	@Builder.Default
 	private Set<WishList> wishes = new HashSet<>();
 
-	@Column(length = 50)
-	private String placeDetail;
-
 	@Column(length = 100)
 	private String title;
 
