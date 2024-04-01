@@ -3,6 +3,7 @@ package com.ssafy.kkoma.api.member.controller;
 import com.ssafy.kkoma.api.member.dto.request.UpdateMemberRequest;
 import com.ssafy.kkoma.api.member.dto.response.MemberInfoResponse;
 import com.ssafy.kkoma.api.member.dto.response.MemberSummaryResponse;
+import com.ssafy.kkoma.api.member.dto.response.MyPageMemberProfileResponse;
 import com.ssafy.kkoma.api.member.service.MemberInfoService;
 import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.global.jwt.service.TokenManager;
@@ -73,4 +74,18 @@ public class MemberInfoController {
         return ResponseEntity.ok(ApiUtils.success(memberInfoResponse));
     }
 
+    @Tag(name = "Member")
+    @Operation(
+        summary = "마이페이지 프로필 정보 조회",
+        security = { @SecurityRequirement(name = "bearer-key") }
+    )
+    @GetMapping("/profile")
+    public ResponseEntity<ApiUtils.ApiResult<MyPageMemberProfileResponse>> getMyPageMemberProfile(
+            @MemberInfo MemberInfoDto memberInfoDto
+    ) {
+        Long memberId = memberInfoDto.getMemberId();
+        MyPageMemberProfileResponse memberProfileResponse = memberInfoService.getMyPageMemberProfile(memberId);
+
+        return ResponseEntity.ok(ApiUtils.success(memberProfileResponse));
+    }
 }

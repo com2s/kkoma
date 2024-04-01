@@ -1,8 +1,10 @@
 package com.ssafy.kkoma.api.member.service;
 
+import com.ssafy.kkoma.api.area.service.AreaService;
 import com.ssafy.kkoma.api.member.dto.response.MemberInfoResponse;
 import com.ssafy.kkoma.api.member.dto.request.UpdateMemberRequest;
 import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
+import com.ssafy.kkoma.domain.area.entity.Area;
 import com.ssafy.kkoma.domain.deal.entity.Deal;
 import com.ssafy.kkoma.domain.deal.repository.DealRepository;
 import com.ssafy.kkoma.domain.point.repository.PointRepository;
@@ -37,6 +39,7 @@ public class MemberService {
     private final PointRepository pointRepository;
     private final KidRepository kidRepository;
     private final DealRepository dealRepository;
+    private final AreaService areaService;
 
     public Member registerMember(Member member) {
         validateDuplicateMember(member);
@@ -115,6 +118,7 @@ public class MemberService {
         // todo-siyoon 고도화 (동적 쿼리 사용해서 DB에서 가져오는 단계에서 타입에 조건을 걸어서 조회)
         for (Product product : products) {
             Deal deal = dealRepository.findByProductOrderBySelectedTimeDesc(product);
+            Area area = areaService.findAreaById(product.getLocation().getRegionCode());
 
             for (ProductType productType : productTypes) {
                 if (product.getStatus() == productType) {
@@ -122,7 +126,8 @@ public class MemberService {
                         product,
                         MyProductType.SELL,
                         deal != null ? deal.getId() : null,
-                        deal != null ? deal.getSelectedTime() : null
+                        deal != null ? deal.getSelectedTime() : null,
+                        area
                     ));
                     break;
                 }
@@ -133,7 +138,8 @@ public class MemberService {
                     product,
                     MyProductType.SELL,
                     deal != null ? deal.getId() : null,
-                    deal != null ? deal.getSelectedTime() : null
+                    deal != null ? deal.getSelectedTime() : null,
+                    area
                 ));
             }
         }

@@ -1,0 +1,4 @@
+.point {
+  @include flex(flex-start, center, column);
+  gap: rem(42);
+}

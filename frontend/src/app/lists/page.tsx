@@ -100,12 +100,13 @@ export default function ListPage() {
 
   return (
     <div className={styles.container}>
+      <div className={styles.fab}>
+        <button className={styles.btn} onClick={() => router.push("/lists/create")}>
+          <EditIcon />
+        </button>
+      </div>
       <TopBar />
-      <div
-        className={
-          showSearch ? "mt-2 mb-2 flex justify-center items-center" : ""
-        }
-      >
+      <div className={showSearch ? "mt-2 mb-2 flex justify-center items-center" : ""}>
         {showSearch && (
           <Box className="flex items-center justify-center w-full px-2">
             <TextField
@@ -132,18 +133,10 @@ export default function ListPage() {
         spacing={1}
         className={`${styles.chips} flex-wrap justify-between gap-2 `}
       >
-        <Stack
-          direction="row"
-          spacing={1}
-          className={`${styles.chips} flex-wrap gap-2 `}
-        >
+        <Stack direction="row" spacing={1} className={`${styles.chips} flex-wrap gap-2 `}>
           <Box className={styles.box}>
             <Chip
-              label={
-                categoryOptions.find(
-                  (item) => item.id == searchQuery?.categoryId
-                )?.name
-              }
+              label={categoryOptions.find((item) => item.id == searchQuery?.categoryId)?.name}
               onClick={handleCategory}
               color={searchQuery?.categoryId ? "primary" : "default"}
               variant={searchQuery?.categoryId ? "filled" : "outlined"}
@@ -155,10 +148,7 @@ export default function ListPage() {
               onClose={handleCategoryClose}
             >
               {categoryOptions?.map((option, k) => (
-                <MenuItem
-                  key={k}
-                  onClick={() => handleCategoryClick(option.id)}
-                >
+                <MenuItem key={k} onClick={() => handleCategoryClick(option.id)}>
                   {option.name}
                 </MenuItem>
               ))}
@@ -166,10 +156,7 @@ export default function ListPage() {
           </Box>
         </Stack>
         <Box>
-          <IconButton
-            aria-label="search"
-            onClick={() => setShowSearch(!showSearch)}
-          >
+          <IconButton aria-label="search" onClick={() => setShowSearch(!showSearch)}>
             <SearchIcon
               style={{
                 color: showSearch ? "pink" : "inherit",
@@ -178,12 +165,6 @@ export default function ListPage() {
           </IconButton>
         </Box>
       </Stack>
-      <button
-        className={styles.fab}
-        onClick={() => router.push("/lists/create")}
-      >
-        <EditIcon />
-      </button>
       {/* 본문 리스트 시작 */}
       <div className="flex flex-col gap-5 mt-3">
         {products && products.length > 0 ? (
@@ -193,12 +174,7 @@ export default function ListPage() {
         ) : (
           <NoContents>
             <h4 className="c-text3">일치하는 글이 없습니다.</h4>
-            <Image
-              src={"/images/Empty-BOX.png"}
-              alt="empty"
-              width={100}
-              height={100}
-            />
+            <Image src={"/images/Empty-BOX.png"} alt="empty" width={100} height={100} />
           </NoContents>
         )}
       </div>

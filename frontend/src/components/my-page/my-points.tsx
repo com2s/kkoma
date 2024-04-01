@@ -6,6 +6,7 @@ import { Button } from "@mui/material";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import TollIcon from "@mui/icons-material/Toll";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function MyPoints() {
   {
@@ -13,6 +14,8 @@ export default function MyPoints() {
   }
   const [point, setPoint] = useState(0);
   const [success, setSuccess] = useState(true);
+
+  const router = useRouter();
 
   const getPoint = async () => {
     const res = await getMyPoints();
@@ -37,15 +40,15 @@ export default function MyPoints() {
       <div className="flex justify-between items-center p-4">
         <span className="text-lg px-4 font-semibold">내 포인트</span>
         <span className="text-xl px-4 font-bold text-red-500">
-          {success? `${formattedPoints(point)}P` : `포인트 조회 실패`}
-          </span>
+          {success ? `${formattedPoints(point)}P` : `포인트 조회 실패`}
+        </span>
       </div>
       <div className="flex justify-between items-center p-4 btn-line">
         <Button
           startIcon={<TollIcon color="primary" />}
           variant="outlined"
           className={styles.btn}
-          onClick={() => alert("포인트 송금 페이지로 이동합니다.")}
+          onClick={() => router.push("/point/withdraw")}
         >
           <span className="text-black font-semibold">송금</span>
         </Button>
@@ -53,7 +56,7 @@ export default function MyPoints() {
           startIcon={<AttachMoneyIcon color="error" />}
           variant="outlined"
           className={styles.btn}
-          onClick={() => alert("포인트 충전 페이지로 이동합니다.")}
+          onClick={() => router.push("/point/charge")}
         >
           <span className="text-black font-semibold">충전</span>
         </Button>

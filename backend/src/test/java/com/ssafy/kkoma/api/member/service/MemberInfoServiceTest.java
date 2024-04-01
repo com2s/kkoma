@@ -2,10 +2,13 @@ package com.ssafy.kkoma.api.member.service;
 
 import com.ssafy.kkoma.api.member.dto.response.MemberInfoResponse;
 import com.ssafy.kkoma.api.member.dto.response.MemberSummaryResponse;
+import com.ssafy.kkoma.api.member.dto.response.MyPageMemberProfileResponse;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.member.repository.MemberRepository;
+import com.ssafy.kkoma.factory.MemberFactory;
+import com.ssafy.kkoma.factory.ProductFactory;
 import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,12 @@ class MemberInfoServiceTest {
 
     @Autowired
     MemberRepository memberRepository;
+
+    @Autowired
+    MemberFactory memberFactory;
+
+    @Autowired
+    ProductFactory productFactory;
 
     @Test
     @Transactional
@@ -81,6 +90,26 @@ class MemberInfoServiceTest {
 
         // when&then
         assertThrows(EntityNotFoundException.class, () -> memberInfoService.getMemberSummary(NON_EXISTENT_MEMBER_ID));
+    }
+
+    @Test
+    @Transactional
+    public void 마이페이지_회원_프로필_정보_조회하기() throws Exception{
+        // given
+        Member member = memberFactory.createMember();
+        MyPageMemberProfileResponse beforeProfile = memberInfoService.getMyPageMemberProfile(member.getId());
+
+        // when
+        final int COUNT = 10;
+
+        for (int i = 0; i < COUNT; i++) {
+            productFactory.createProduct(member);
+        }
+
+        MyPageMemberProfileResponse afterProfile = memberInfoService.getMyPageMemberProfile(member.getId());
+
+        // then
+        assertEquals(beforeProfile.getMyProductList().size() + COUNT, afterProfile.getMyProductList().size());
     }
 
 }

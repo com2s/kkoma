@@ -16,7 +16,14 @@ export function ButtonContainer({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <div className={styles.container}>{children}</div>;
+  return (
+    <>
+      <div className={styles.container}>
+        <div className={styles.child}>{children}</div>
+      </div>
+      <div className={styles.spacer}></div>
+    </>
+  );
 }
 
 const onclickBtn = (router: AppRouterInstance, next: string | Function) => {

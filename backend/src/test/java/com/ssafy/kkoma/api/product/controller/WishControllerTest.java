@@ -192,7 +192,9 @@ class WishControllerTest {
         for (int i = 0; i < 10; i++) {
             Product product = productFactory.createProduct(seller);
             WishList wishList = wishListFactory.createWishList(buyer, product);
-            wishProductsList.add(ProductSummary.fromEntity(wishList.getProduct()));
+            ProductSummary productSummary = ProductSummary.fromEntity(wishList.getProduct());
+            productSummary.setDealPlace("서울특별시 종로구 청운동");
+            wishProductsList.add(productSummary);
         }
 
         for (int i = 0; i < 5; i++) {

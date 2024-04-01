@@ -1,39 +1,28 @@
 package com.ssafy.kkoma.api.deal.controller;
 
-import java.util.List;
-
-import com.ssafy.kkoma.global.util.ApiUtils;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.ssafy.kkoma.api.deal.service.DealService;
-import com.ssafy.kkoma.api.product.service.ProductService;
-import com.ssafy.kkoma.domain.deal.entity.Deal;
-import com.ssafy.kkoma.global.error.ErrorCode;
-import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfoDto;
-
+import com.ssafy.kkoma.global.util.ApiUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @Tag(name = "Deal")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/deals")
 public class DealController {
 
-	private final ProductService productService;
 	private final DealService dealService;
+	private final SimpMessagingTemplate simpMessagingTemplate;
 
 	@Tag(name = "Deal")
 	@Operation(
@@ -41,8 +30,11 @@ public class DealController {
 		description = "[[노션](https://www.notion.so/todays-jiwoo/2b5ad0af9abe4f1086c0fa20e63250f9?pvs=4)] 구매자는 거래 코드를 담고 있는 QR코드를 조회할 수 있다.",
 		security = { @SecurityRequirement(name = "bearer-key") }
 	)
-	@GetMapping("/{dealId}/code")
-	public ResponseEntity<ApiUtils.ApiResult<String>> getDealCode(@PathVariable Long dealId, @MemberInfo MemberInfoDto memberInfoDto){
+	@GetMapping("/api/deals/{dealId}/code")
+	public ResponseEntity<ApiUtils.ApiResult<String>> getDealCode(
+			@PathVariable("dealId") Long dealId,
+			@MemberInfo MemberInfoDto memberInfoDto
+	) {
 		return ResponseEntity.ok(ApiUtils.success(dealService.getCode(dealId, memberInfoDto.getMemberId())));
 	}
 
@@ -52,13 +44,19 @@ public class DealController {
 		description = "[[노션](https://www.notion.so/todays-jiwoo/0a4d8787ee1a48a6983a52be2e8a1a9c?pvs=4)] 판매자는 구매자가 보여준 QR코드를 촬영해 거래를 마무리한다.",
 		security = { @SecurityRequirement(name = "bearer-key") }
 	)
-	@PostMapping("/{dealId}/accept")
-	public ResponseEntity<?> processDealCompletion(
-		@PathVariable Long dealId,
+	@PostMapping("/api/deals/{dealId}/accept")
+	public ResponseEntity<?> finishDealSeller(
+		@PathVariable("dealId") Long dealId,
 		@MemberInfo MemberInfoDto memberInfoDto,
-		@RequestParam String code
+		@RequestParam("code") String code
 	){
 		dealService.finishDeal(dealId, memberInfoDto.getMemberId(), code);
+		finishDealBuyer(dealId);
 		return ResponseEntity.ok(ApiUtils.success(dealId));
+	}
+
+	@MessageMapping("/deals/{dealId}")
+	public void finishDealBuyer(@DestinationVariable("dealId") Long dealId) {
+		simpMessagingTemplate.convertAndSend("/topic/deals/" + dealId, ApiUtils.success(dealId));
 	}
 }

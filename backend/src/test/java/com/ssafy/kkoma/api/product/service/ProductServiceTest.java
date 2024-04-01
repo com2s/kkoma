@@ -9,11 +9,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.ssafy.kkoma.api.common.dto.BasePageResponse;
+import com.ssafy.kkoma.api.location.dto.request.CreateLocationRequest;
 import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
 import com.ssafy.kkoma.api.product.dto.ProductWishResponse;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
 import com.ssafy.kkoma.api.product.dto.response.ChatProductResponse;
 import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
+import com.ssafy.kkoma.domain.area.entity.Area;
+import com.ssafy.kkoma.domain.location.entity.Location;
+
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.domain.member.entity.Member;
@@ -22,8 +26,10 @@ import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
 import com.ssafy.kkoma.domain.product.entity.Category;
 import com.ssafy.kkoma.domain.product.entity.WishList;
 import com.ssafy.kkoma.domain.product.repository.CategoryRepository;
+import com.ssafy.kkoma.factory.AreaFactory;
 import com.ssafy.kkoma.factory.CategoryFactory;
 import com.ssafy.kkoma.factory.ChatRoomFactory;
+import com.ssafy.kkoma.factory.LocationFactory;
 import com.ssafy.kkoma.factory.MemberFactory;
 import com.ssafy.kkoma.factory.ProductFactory;
 import com.ssafy.kkoma.factory.WishListFactory;
@@ -70,6 +76,12 @@ class ProductServiceTest {
 	@Autowired
 	private WishListFactory wishListFactory;
 
+	@Autowired
+	private AreaFactory areaFactory;
+
+	@Autowired
+	private LocationFactory locationFactory;
+
 	private static final String TITLE = "TITLE";
 	private static final String IMAGE_URL = "IMAGE_URL";
 	private static final String NAME = "NAME";
@@ -81,8 +93,11 @@ class ProductServiceTest {
 		List<Product> products = new ArrayList<>();
 		List<ProductSummary> productSummariesBefore = productService.getProducts();
 		int sizeBefore = productSummariesBefore.size();
+		Area area = areaFactory.createArea();
+
 		for (int i = 0; i < 10; i++) {
-	    	products.add(productRepository.save(Product.builder().title(TITLE).thumbnailImage(IMAGE_URL).build()));
+			Location location = locationFactory.createLocation();
+	    	products.add(productRepository.save(Product.builder().title(TITLE).thumbnailImage(IMAGE_URL).location(location).build()));
 		}
 
 	    // when
@@ -96,8 +111,13 @@ class ProductServiceTest {
 	@Transactional
 	public void 글_키워드_검색() throws Exception {
 		// given
-		productRepository.save(Product.builder().title("keyword").thumbnailImage(IMAGE_URL).build());
-		productRepository.save(Product.builder().title(TITLE).thumbnailImage(IMAGE_URL).description("keyword").build());
+		Area area = areaFactory.createArea();
+
+		for (int i = 0; i < 2; i++) {
+			Location location = locationFactory.createLocation();
+			productRepository.save(Product.builder().title(TITLE).thumbnailImage(IMAGE_URL).description("keyword").location(location).build());
+		}
+
 		SearchProductRequest searchProductRequest = SearchProductRequest.builder()
 			.keyword("key")
 			.build();
@@ -165,12 +185,15 @@ class ProductServiceTest {
 		// given
 		Category category = categoryRepository.save(Category.builder().name("유모차").build());
 		Member member = memberRepository.save(Member.builder().name(NAME).memberType(MemberType.KAKAO).role(Role.USER).build());
+		Location location = locationFactory.createLocation();
+
 		ProductCreateRequest productCreateRequest = ProductCreateRequest.builder()
 				.title("TITLE")
 				.productImages(List.of("...", "..."))
 				.description("...")
 				.price(10000)
 				.categoryId(category.getId())
+				.createLocationRequest(CreateLocationRequest.fromEntity(location))
 				.build();
 
 		// when
