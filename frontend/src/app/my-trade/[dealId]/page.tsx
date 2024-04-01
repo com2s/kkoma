@@ -20,8 +20,9 @@ import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import CheckIcon from "@mui/icons-material/Check";
 import RemoveIcon from "@mui/icons-material/Remove";
-import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { NoContents } from "@/components/common/no-contents";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -130,7 +131,15 @@ export default function MyRequest({ params: { dealId } }: IParams) {
         </>
       )}
       {requesters.length === 0 && (
-        <h2 className="p-4">아직 요청이 없습니다.</h2>
+        <NoContents>
+          <h4 className="c-text3">아직 거래 요청이 없어요</h4>
+          <Image
+            src={"/images/Empty-BOX.png"}
+            alt="empty"
+            width={100}
+            height={100}
+          />
+        </NoContents>
       )}
     </React.Fragment>
   );

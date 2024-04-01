@@ -11,7 +11,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import {
-  Button,
   TextField,
   FormControl,
   InputLabel,
@@ -46,6 +45,10 @@ export default function CreatePost() {
   const [content, setContent] = useState("");
   const [images, setImages] = useState<{ url: string; file: File }[]>([]);
   const [location, setLocation] = useState(""); // TODO: 위치 정보 입력 받기
+  const [regionCode, setRegionCode] = useState("");
+  const [lng, setLng] = useState(0);
+  const [lat, setLat] = useState(0);
+  const [dealPlace, setDealPlace] = useState("");
   const router = useRouter();
   const [open, setOpen] = useState([false, false]);
 
@@ -63,14 +66,14 @@ export default function CreatePost() {
   };
 
   const handleSelect = (index: number) => {
-    // if (index === 0) {
-    //   setOpen([true, true]);
-    // } else {
-    //   setOpen([false, false]);
-    // }
-    let temp = [...open];
-    temp[index] = false;
-    setOpen(temp);
+    if (index === 0) {
+      setOpen([true, true]);
+    } else {
+      setOpen([false, false]);
+    }
+    // let temp = [...open];
+    // temp[index] = false;
+    // setOpen(temp);
   };
 
   const handleCategoryChange = (event: SelectChangeEvent) => {
@@ -123,7 +126,7 @@ export default function CreatePost() {
       alert("제목, 내용, 가격은 필수 입력 사항입니다.");
       return;
     }
-    
+
     // 사진 1장 이상 요구하기
     if (images.length === 0) {
       alert("제품 사진은 1장 이상 첨부해주세요.");
@@ -152,9 +155,15 @@ export default function CreatePost() {
       title,
       description,
       price,
+      createLocationRequest: {
+        regionCode: regionCode,
+        x: lng,
+        y: lat,
+        placeDetail: dealPlace,
+      },
     };
 
-    const response = await postProduct(data);
+    await postProduct(data);
 
     router.push("/lists");
   };
@@ -262,8 +271,10 @@ export default function CreatePost() {
           >
             <div className="flex items-center gap-2">
               <LocationOnOutlinedIcon className="c-text2" />
-              {location && location !== "" ? (
-                <div className="text-body2">{location}</div>
+              {location && location !== "" && dealPlace ? (
+                <div className="text-body2">
+                  {location} {dealPlace}
+                </div>
               ) : (
                 <div className="text-body">거래 장소 설정</div>
               )}
@@ -275,6 +286,12 @@ export default function CreatePost() {
             open={open[0]}
             onClose={() => handleClose(0)}
             TransitionComponent={Transition}
+            sx={{
+              width: "100%",
+              maxWidth: "600px",
+              left: "50%",
+              transform: "translateX(-50%)",
+            }}
           >
             <div className={styles.dialog}>
               <div className="flex justify-end pb-2 w-full ">
@@ -297,12 +314,53 @@ export default function CreatePost() {
               ) : (
                 <></>
               )}
-              <Map setLocation={setLocation} />
+              <Map
+                setLocation={setLocation}
+                setRegionCode={setRegionCode}
+                setLat={setLat}
+                setLng={setLng}
+              />
               <div className="w-full">
                 <ButtonContainer>
                   <NormalBtn next={() => handleSelect(0)}>선택</NormalBtn>
                 </ButtonContainer>
               </div>
+            </div>
+          </Dialog>
+          <Dialog
+            fullScreen
+            open={open[1]}
+            onClose={() => handleClose(1)}
+            TransitionComponent={Transition}
+            sx={{
+              width: "100%",
+              maxWidth: "600px",
+              left: "50%",
+              transform: "translateX(-50%)",
+            }}
+          >
+            <div className={styles.dialog}>
+              <div className="flex justify-end pb-2 w-full ">
+                <ClearIcon onClick={() => handleClose(1)} />
+              </div>
+              <Title
+                title="선택한 곳의 장소명을 입력해주세요"
+                subtitle="예) 강남역 1번 출구, 교보타워 정문앞"
+              />
+              <TextField
+                variant="outlined"
+                value={dealPlace}
+                onChange={(e) => setDealPlace(e.target.value)}
+                onKeyUp={(e) => e.key === "Enter" && handleSelect(1)}
+                margin="normal"
+                required
+                fullWidth
+              />
+              <ButtonContainer>
+                <NormalBtn next={() => handleSelect(1)} disabled={!dealPlace}>
+                  완료
+                </NormalBtn>
+              </ButtonContainer>
             </div>
           </Dialog>
         </form>

@@ -2,7 +2,7 @@
 
 import SockJS from "sockjs-client";
 import { CompatClient, Stomp } from "@stomp/stompjs";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState, useRef } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import TopBar3 from "@/components/common/top-bar3";
@@ -23,6 +23,18 @@ export default function Chatting() {
   const [product, setProduct] = useState<ChatProduct>();
   const [canChat, setCanChat] = useState<boolean>(true);
   const [msg, setMsg] = useState<string>("");
+
+  const messageEndRef = useRef<HTMLDivElement | null>(null);
+
+  let initialInnerHeight: any;
+  let el: any;
+
+  if (typeof window !== "undefined") {
+    initialInnerHeight = window.innerHeight;
+  }
+  if (typeof document !== "undefined") {
+    el = document.getElementById("chat");
+  }
 
   const connectChat = () => {
     const serverURL = process.env.NEXT_PUBLIC_API_URL + "/chat";
@@ -56,6 +68,13 @@ export default function Chatting() {
     setMsg(e.target.value);
   };
 
+  const handleTouch = () => {
+    const innerHeight = window.innerHeight;
+    const heightGap = initialInnerHeight - innerHeight;
+    const top = heightGap;
+    el.scrollTo(0, top);
+  };
+
   const sendChat = () => {
     console.log(ws);
     if (ws && ws.connected && msg.length > 0) {
@@ -75,13 +94,20 @@ export default function Chatting() {
   }, []);
 
   useEffect(() => {
-    if (product && (product.status === "SOLD" || product.status === "PROGRESS")) {
+    if (
+      product &&
+      (product.status === "SOLD" || product.status === "PROGRESS")
+    ) {
       const myId = Number(LocalStorage.getItem("memberId"));
       if (product.buyerId !== myId && product.sellerId !== myId) {
         setCanChat(false);
       }
     }
   }, [product]);
+
+  useEffect(() => {
+    messageEndRef?.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chatList]);
 
   return (
     <div className={styles.chat}>
@@ -98,7 +124,9 @@ export default function Chatting() {
           chatList.map((item, k) => (
             <div
               key={k}
-              className={item.memberProfile.id === 2 ? styles.chatRight : styles.chatLeft}
+              className={
+                item.memberProfile.id === 2 ? styles.chatRight : styles.chatLeft
+              }
             >
               <Image
                 className={styles.profile}
@@ -108,7 +136,9 @@ export default function Chatting() {
                 height={30}
               />
               <div className={styles.chatBox}>
-                <span className={styles.nickname}>{item.memberProfile.nickname}</span>
+                <span className={styles.nickname}>
+                  {item.memberProfile.nickname}
+                </span>
                 <span className={styles.content}>{item.content}</span>
                 <span className={styles.time}>{item.sentTime}</span>
               </div>
@@ -117,11 +147,14 @@ export default function Chatting() {
         ) : (
           <></>
         )}
+        <div ref={messageEndRef}></div>
       </section>
-      <div className={styles.inputLine}>
+      <div className={styles.inputLine} id="chat">
         <input
           type="text"
+          onMouseUp={handleTouch}
           onChange={handleChatInput}
+          onKeyUp={(e) => e.key === "Enter" && sendChat()}
           value={msg}
           placeholder={canChat ? "채팅 입력" : "이미 진행 중인 거래입니다."}
           disabled={!canChat}
