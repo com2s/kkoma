@@ -13,9 +13,9 @@ public class AreaFactory {
 	AreaRepository areaRepository;
 
 	public Area createArea() {
-		final Long REGIONCODE = 1111111L;
+		final Long REGIONCODE = 12L;
 
-		Area area = new Area(REGIONCODE, "서울특별시", "종로구", "청운동", "");
+		Area area = new Area(REGIONCODE, "테스트12시", "테스트12구", "테스트12동", null);
 
 		return areaRepository.save(area);
 	}

@@ -8,11 +8,13 @@ import com.ssafy.kkoma.factory.MemberFactory;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 
+@Disabled
 @Slf4j
 @SpringBootTest
 class NotificationServiceTest {

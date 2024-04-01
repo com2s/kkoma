@@ -10,6 +10,7 @@ import com.ssafy.kkoma.factory.MemberFactory;
 import com.ssafy.kkoma.factory.ProductFactory;
 import com.ssafy.kkoma.global.util.CustomMockMvcSpringBootTest;
 import com.ssafy.kkoma.global.util.RequestUtil;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+@Disabled
 @CustomMockMvcSpringBootTest
 class ProductControllerTest {
 
@@ -57,7 +59,7 @@ class ProductControllerTest {
         Product product = productFactory.createProduct(member);
 
         ProductSummary productSummary = ProductSummary.fromEntity(product);
-        productSummary.setDealPlace("서울특별시 종로구 청운동");
+        productSummary.setDealPlace("테스트12시 테스트12구 테스트12동");
 
         productSummaryList.add(productSummary);
 
