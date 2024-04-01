@@ -31,6 +31,7 @@
 }
 
 .fab {
+  @include flex(center, flex-end, row);
   position: fixed;
   bottom: rem(80);
   right: rem(20);
@@ -40,9 +41,15 @@
   min-width: rem(50);
   aspect-ratio: 1;
   z-index: 1100;
-  background-color: $color-yellow;
   border-radius: 50%;
-  padding: auto;
-  color: $color-text1;
-  @include sha-drop;
+  width: calc(100% - rem(52));
+  max-width: calc(600px - rem(52));
+  min-width: calc(320px - rem(52));
+  .btn {
+    background-color: $color-yellow;
+    border-radius: 50%;
+    padding: rem(10);
+    color: $color-text1;
+    @include sha-drop;
+  }
 }
