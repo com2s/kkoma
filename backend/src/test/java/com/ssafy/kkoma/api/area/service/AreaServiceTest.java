@@ -12,7 +12,6 @@ import com.ssafy.kkoma.domain.area.entity.Area;
 import com.ssafy.kkoma.factory.AreaFactory;
 import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
 
-@Disabled
 @SpringBootTest
 class AreaServiceTest {
 

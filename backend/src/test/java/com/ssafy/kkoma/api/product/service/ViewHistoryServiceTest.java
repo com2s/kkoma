@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Disabled
 @SpringBootTest
 class ViewHistoryServiceTest {
 
