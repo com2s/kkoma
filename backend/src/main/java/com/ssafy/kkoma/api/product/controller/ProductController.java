@@ -12,13 +12,11 @@ import com.ssafy.kkoma.domain.product.constant.CategoryPreferenceType;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfoDto;
-
 import com.ssafy.kkoma.global.util.ApiUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -54,7 +52,11 @@ public class ProductController {
         security = { @SecurityRequirement(name = "bearer-key") }
     )
     @GetMapping("/search")
-    public ResponseEntity<ApiUtils.ApiResult<SearchProductResponse>> searchProducts(@MemberInfo MemberInfoDto memberInfoDto, SearchProductRequest searchProductRequest, Pageable pageable) {
+    public ResponseEntity<ApiUtils.ApiResult<SearchProductResponse>> searchProducts(
+        @MemberInfo MemberInfoDto memberInfoDto,
+        SearchProductRequest searchProductRequest,
+        Pageable pageable
+    ) {
         SearchProductResponse searchProductResponse = productService.searchProduct(memberInfoDto.getMemberId(), searchProductRequest, pageable);
         return ResponseEntity.ok(ApiUtils.success(searchProductResponse));
     }
@@ -66,7 +68,10 @@ public class ProductController {
         security = { @SecurityRequirement(name = "bearer-key") }
     )
     @GetMapping("/{productId}")
-    public ResponseEntity<ApiUtils.ApiResult<ProductDetailResponse>> getProduct(@MemberInfo MemberInfoDto memberInfoDto, @PathVariable Long productId){
+    public ResponseEntity<ApiUtils.ApiResult<ProductDetailResponse>> getProduct(
+        @MemberInfo MemberInfoDto memberInfoDto,
+        @PathVariable("productId") Long productId
+    ) {
         ProductDetailResponse productDetailResponse = productService.getProduct(productId, memberInfoDto.getMemberId());
         productService.addViewCount(productId);
 
@@ -103,7 +108,7 @@ public class ProductController {
         security = { @SecurityRequirement(name = "bearer-key") }
     )
     @GetMapping("/search/complete")
-    public ResponseEntity<ApiUtils.ApiResult<List<String>>> getAutoComplete(@RequestParam String keyword) {
+    public ResponseEntity<ApiUtils.ApiResult<List<String>>> getAutoComplete(@RequestParam("keyword") String keyword) {
         List<String> response = productService.getAutoCompleteKeyword(keyword);
         return ResponseEntity.ok(ApiUtils.success(response));
     }
