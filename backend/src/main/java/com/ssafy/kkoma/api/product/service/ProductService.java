@@ -98,7 +98,11 @@ public class ProductService {
 		Product product = findProductByProductId(productId);
 		List<String> productImageUrls = productImageService.getProductImageUrls(productId);
 		String categoryName = categoryService.getCategoryName(product.getCategory().getId());
-		boolean isWished = wishListRepository.existsByProductIdAndMemberId(productId, memberId);
+		WishList wishList = wishListRepository.findByProductIdAndMemberId(productId, memberId);
+		boolean isWished = true;
+		if (wishList == null || !wishList.getIsValid())
+			isWished = false;
+
 		Area area = areaService.findAreaById(product.getLocation().getRegionCode());
 
 		return buildProductDetailResponse(product, productImageUrls, categoryName, product.getMember(), isWished, area, product.getLocation().getPlaceDetail());
