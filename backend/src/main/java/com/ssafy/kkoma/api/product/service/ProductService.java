@@ -1,10 +1,5 @@
 package com.ssafy.kkoma.api.product.service;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.ssafy.kkoma.api.area.service.AreaService;
 import com.ssafy.kkoma.api.chat.service.ChatRoomService;
 import com.ssafy.kkoma.api.common.dto.BasePageResponse;
@@ -12,40 +7,39 @@ import com.ssafy.kkoma.api.deal.service.DealService;
 import com.ssafy.kkoma.api.member.dto.response.MemberSummaryResponse;
 import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.api.product.dto.*;
+import com.ssafy.kkoma.api.product.dto.hourly.ProductHourlyWished;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
 import com.ssafy.kkoma.api.product.dto.response.ChatProductResponse;
 import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
 import com.ssafy.kkoma.domain.area.entity.Area;
 import com.ssafy.kkoma.domain.chat.entity.ChatRoom;
-
 import com.ssafy.kkoma.domain.deal.entity.Deal;
 import com.ssafy.kkoma.domain.deal.repository.DealRepository;
 import com.ssafy.kkoma.domain.location.entity.Location;
 import com.ssafy.kkoma.domain.location.repository.LocationRepository;
 import com.ssafy.kkoma.domain.member.entity.Member;
-
 import com.ssafy.kkoma.domain.product.constant.MyProductType;
-
 import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.domain.product.entity.Category;
-
+import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.domain.product.entity.ProductImage;
 import com.ssafy.kkoma.domain.product.entity.WishList;
+import com.ssafy.kkoma.domain.product.repository.ProductRepository;
 import com.ssafy.kkoma.domain.product.repository.WishListRepository;
 import com.ssafy.kkoma.global.error.ErrorCode;
 import com.ssafy.kkoma.global.error.exception.BusinessException;
 import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
-
+import com.ssafy.kkoma.global.util.complete.AutoCompleteUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import com.ssafy.kkoma.domain.product.entity.Product;
-import com.ssafy.kkoma.domain.product.repository.ProductRepository;
-import com.ssafy.kkoma.global.util.complete.AutoCompleteUtils;
-
-import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -292,8 +286,8 @@ public class ProductService {
 		return productRepository.findFirstByStatus(ProductType.SALE);
 	}
 
-	public List<ProductHourlyViewed> getMostWishedProductsPerHour(int limit, LocalDateTime now, Pageable pageable) {
-		Page<ProductHourlyViewed> pageList = productRepository.getMostViewedProductsPerHour(limit, now, pageable);
+	public List<ProductHourlyWished> getHourlyMostWishedProducts(int limit, LocalDateTime now, Pageable pageable) {
+		Page<ProductHourlyWished> pageList = productRepository.getHourlyMostWishedProducts(limit, now, pageable);
 		return pageList.getContent();
 	}
 
