@@ -21,7 +21,9 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
     @Query("select s from Product s where s.id=:id")
     Product findByIdWithPessimisticLock(@Param("id") Long id);
 
-    @Query("select s from Product s where s.category.id=:categoryId AND s.status=:status ORDER BY s.createdAt DESC LIMIT 20")
-    List<Product> findByCategoryIdAndStatus(@Param("categoryId") Integer categoryId, @Param("status") ProductType status);
+    @Query("select s from Product s where s.category.id=:categoryId AND s.status=:status ORDER BY s.viewCount DESC")
+    List<Product> findByCategoryIdAndStatus(Integer categoryId, ProductType status);
 
+    @Query("select s from Product s where s.status=:status ORDER BY s.wishCount DESC")
+    Product findFirstByStatus(ProductType status);
 }
