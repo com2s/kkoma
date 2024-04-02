@@ -64,9 +64,11 @@ export default function CreatePost() {
   };
 
   const handleSelect = (index: number) => {
-    let temp = [...open];
-    temp[index] = false;
-    setOpen(temp);
+    if (index === 0) {
+      setOpen([true, true]);
+    } else {
+      setOpen([false, false]);
+    }
   };
 
   const handleCategoryChange = (event: SelectChangeEvent) => {
