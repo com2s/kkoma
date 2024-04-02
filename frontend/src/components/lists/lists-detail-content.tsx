@@ -2,7 +2,7 @@ import styles from "@/components/lists/lists-detail-content.module.scss";
 
 // 인터페이스
 import { DetailParams } from "@/types/product";
-import { calcElapsedMinutes } from "@/utils/format";
+import { ProductStatusFormat, calcElapsedMinutes } from "@/utils/format";
 
 interface DetailTypes {
   propsId: string;
@@ -23,12 +23,15 @@ export default async function DetailContent({ propsId, product }: DetailTypes) {
           </p>
           <div className="flex justify-between mb-2">
             <h3 className={styles.title}>{product.title}</h3>
-            <div>{product.status}</div>
+            <div className="min-w-fit">
+              {ProductStatusFormat(product.status)}
+            </div>
           </div>
           <div className="views">
             <p className="text-caption c-text3">
-              조회 {product.viewCount} &#183; 거래 요청 {product.offerCount}
-              &#183; 찜{product.wishCount}
+              조회 {product.viewCount.toLocaleString()} &#183; 거래 요청{" "}
+              {product.offerCount}
+              &#183; 찜 {product.wishCount}
             </p>
           </div>
 

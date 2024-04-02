@@ -10,7 +10,13 @@ import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import { TextField, FormControl, InputLabel, MenuItem, Dialog } from "@mui/material";
+import {
+  TextField,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Dialog,
+} from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import PhotoCameraOutlinedIcon from "@mui/icons-material/PhotoCameraOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
@@ -143,7 +149,7 @@ export default function CreatePost() {
     }
 
     // 확인 대화 상자 표시
-    if (!window.confirm("게시글을 제출하시겠습니까?")) {
+    if (!window.confirm("판매글을 등록할까요?")) {
       return;
     }
 
@@ -216,7 +222,9 @@ export default function CreatePost() {
                 multiple
                 disabled={images.length >= 10}
               />
-              <span className="c-text2">{`${images ? images.length : 0}/10`}</span>
+              <span className="c-text2">{`${
+                images ? images.length : 0
+              }/10`}</span>
             </label>
           </div>
           <div className="flex gap-4">
@@ -308,7 +316,12 @@ export default function CreatePost() {
                 title="거래하고 싶은 장소를 선택해주세요"
                 subtitle="누구나 찾기 쉬운 공공장소가 좋아요"
               />
-              <Image src={"/images/Pin.png"} alt="pin" width={100} height={100} />
+              <Image
+                src={"/images/Pin.png"}
+                alt="pin"
+                width={100}
+                height={100}
+              />
               {location ? (
                 <div className="text-caption !text-white bg-gray-500 py-1 px-2 rounded-xl w-fit	text-center">
                   {location}

@@ -8,7 +8,11 @@ import TollIcon from "@mui/icons-material/Toll";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function MyPoints() {
+interface Props {
+  next?: string;
+}
+
+export default function MyPoints({ next }: Props) {
   {
     /* '내 포인트'에 천의 자리를 표시하는 ',' 표시와 끝에 P 를 붙인다. */
   }
@@ -37,7 +41,10 @@ export default function MyPoints() {
   };
   return (
     <div className={styles.container}>
-      <div className="flex justify-between items-center p-4">
+      <div
+        className="flex justify-between items-center p-4"
+        onClick={() => (next ? router.push(next) : "")}
+      >
         <span className="text-lg px-4 font-semibold">내 포인트</span>
         <span className="text-xl px-4 font-bold text-red-500">
           {success ? `${formattedPoints(point)}P` : `포인트 조회 실패`}
@@ -45,20 +52,20 @@ export default function MyPoints() {
       </div>
       <div className="flex justify-between items-center p-4 btn-line">
         <Button
-          startIcon={<TollIcon color="primary" />}
-          variant="outlined"
-          className={styles.btn}
-          onClick={() => router.push("/point/withdraw")}
-        >
-          <span className="text-black font-semibold">송금</span>
-        </Button>
-        <Button
-          startIcon={<AttachMoneyIcon color="error" />}
+          // startIcon={<TollIcon color="primary" />}
           variant="outlined"
           className={styles.btn}
           onClick={() => router.push("/point/charge")}
         >
-          <span className="text-black font-semibold">충전</span>
+          <span className="text-black font-semibold">포인트 충전</span>
+        </Button>
+        <Button
+          // startIcon={<TollIcon color="error" />}
+          variant="outlined"
+          className={styles.btn}
+          onClick={() => router.push("/point/withdraw")}
+        >
+          <span className="text-black font-semibold">출금</span>
         </Button>
       </div>
     </div>

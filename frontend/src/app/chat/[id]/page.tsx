@@ -125,21 +125,35 @@ export default function Chatting() {
             <div
               key={k}
               className={
-                item.memberProfile.id === 2 ? styles.chatRight : styles.chatLeft
+                item.memberProfile.id ===
+                Number(LocalStorage.getItem("memberId"))
+                  ? styles.chatRight
+                  : styles.chatLeft
               }
             >
               <Image
-                className={styles.profile}
                 src={item.memberProfile.profileImage}
                 alt="profile"
-                width={30}
-                height={30}
+                width={32}
+                height={32}
+                style={{ objectFit: "cover", borderRadius: "50%" }}
+                className="aspect-square"
               />
               <div className={styles.chatBox}>
                 <span className={styles.nickname}>
-                  {item.memberProfile.nickname}
+                  {item.memberProfile.id === product?.sellerId
+                    ? `👑${item.memberProfile.nickname}`
+                    : `${item.memberProfile.nickname}`}
                 </span>
-                <span className={styles.content}>{item.content}</span>
+                <span
+                  className={
+                    item.memberProfile.id === product?.sellerId
+                      ? styles.seller
+                      : styles.content
+                  }
+                >
+                  {item.content}
+                </span>
                 <span className={styles.time}>{item.sentTime}</span>
               </div>
             </div>

@@ -12,9 +12,7 @@ export default async function MyPage() {
     <div className={styles.container}>
       <TopBar />
       <MyProfile />
-      <Link href={"/point"}>
-        <MyPoints />
-      </Link>
+      <MyPoints next="/point" />
       <MyPageList />
       <Navigation />
     </div>
