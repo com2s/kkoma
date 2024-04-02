@@ -12,15 +12,18 @@ import { getCategoryAPI, getSearchProductAPI } from "@/services/product";
 import { SearchParms } from "@/types/search";
 import { Category, ProductSm } from "@/types/product";
 
-import Link from "next/link";
 import Image from "next/image";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import Box from "@mui/material/Box";
-import Fab from "@mui/material/Fab";
-import { InputAdornment, TextField, useTheme } from "@mui/material";
+import {
+  CircularProgress,
+  InputAdornment,
+  TextField,
+  useTheme,
+} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import SearchIcon from "@mui/icons-material/Search";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
@@ -45,7 +48,7 @@ export default function ListPage() {
     status: null,
   });
   const [showSearch, setShowSearch] = useState(false); // 검색 필드 표시 여부
-  const [products, setProducts] = useState<Array<ProductSm>>();
+  const [products, setProducts] = useState<Array<ProductSm>>([]);
   const [searchQuery, setSearchQuery] = useState<SearchParms>({
     regionCode: null,
     categoryId: null,
@@ -53,9 +56,11 @@ export default function ListPage() {
     keyword: "",
     status: null,
     page: 0,
-    size: 10,
+    size: 5,
     sort: "createdAt,desc",
   });
+
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   // 검색어 변경 처리
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,8 +86,23 @@ export default function ListPage() {
   };
 
   const fetchData = async () => {
+    setLoading(true);
     const product = await getSearchProductAPI(searchQuery);
-    setProducts(product?.content);
+    if (product?.content) {
+      const arr: Array<ProductSm> = [...products, ...product?.content];
+      console.log(
+        `Promise.all 후에 받는 데이터 : ${JSON.stringify(arr, null, "\t")}`
+      );
+      const newArr = arr.filter((i, idx) => {
+        return (
+          arr.findIndex((j) => {
+            return i.id === j.id;
+          }) === idx
+        );
+      });
+      setProducts(newArr);
+    }
+    setLoading(false);
   };
 
   const fetchOptions = async () => {
@@ -90,13 +110,38 @@ export default function ListPage() {
     setCategoryOptions([{ id: null, name: "카테고리" }, ...category]);
   };
 
+  const handleObserver = (entries: IntersectionObserverEntry[]) => {
+    const target = entries[0];
+    if (target.isIntersecting && !isLoading) {
+      const page = searchQuery.page ?? -1;
+      setSearchQuery((prev) => ({
+        ...prev,
+        page: page + 1,
+      }));
+    }
+  };
+
   useEffect(() => {
     fetchOptions();
+    const observer = new IntersectionObserver(handleObserver, {
+      threshold: 0, //  Intersection Observer의 옵션, 0일 때는 교차점이 한 번만 발생해도 실행, 1은 모든 영역이 교차해야 콜백 함수가 실행.
+    });
+    // 최하단 요소를 관찰 대상으로 지정함
+    const observerTarget = document.getElementById("observer");
+    // 관찰 시작
+    if (observerTarget) {
+      observer.observe(observerTarget);
+    }
   }, []);
 
   useEffect(() => {
+    console.log("change query", searchQuery);
     fetchData();
   }, [searchQuery]);
+
+  useEffect(() => {
+    console.log("products= ", products);
+  }, [products]);
 
   return (
     <div className={styles.container}>
@@ -203,6 +248,8 @@ export default function ListPage() {
             />
           </NoContents>
         )}
+        {isLoading && <CircularProgress color="inherit" />}
+        <div id="observer" style={{ height: "10px" }}></div>
       </div>
       {/* 본문 리스트 끝 */}
       <Navigation />

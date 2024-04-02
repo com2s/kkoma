@@ -9,7 +9,7 @@ type SearchParms = {
   keyword: string | null;
   status: ProductStatus | null;
   page: number | null;
-  size: 10 | null;
+  size: number | null;
   sort: string | null;
 };
 
