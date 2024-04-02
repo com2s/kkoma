@@ -9,3 +9,5 @@ export type PointHistory = {
   last: boolean;
   empty: boolean;
 };
+
+export type PointChangeType = "CHARGE" | "PAY" | "PROFIT" | "REFUND" | "WITHDRAW";

@@ -1,3 +1,4 @@
+import { PointChangeType } from "@/types/point";
 import { ProductStatus } from "@/types/status";
 
 export function MoneyFormat(money: number) {
@@ -36,10 +37,16 @@ export function ProductStatusFormat(status: ProductStatus) {
   else return "판매종료";
 }
 
+export function PointChangeTypeFormat(type: PointChangeType) {
+  if (type === "CHARGE") return "충전";
+  else if (type === "PAY") return "구매";
+  else if (type === "PROFIT") return "판매";
+  else if (type === "REFUND") return "취소";
+  else return "출금";
+}
+
 export function calcElapsedMinutes(elapsedMinutes: number) {
-  if (elapsedMinutes >= 1440)
-    return `${Math.floor(elapsedMinutes / 1440)}일 전`;
-  else if (elapsedMinutes >= 60)
-    return `${Math.floor(elapsedMinutes / 60)}시간 전`;
+  if (elapsedMinutes >= 1440) return `${Math.floor(elapsedMinutes / 1440)}일 전`;
+  else if (elapsedMinutes >= 60) return `${Math.floor(elapsedMinutes / 60)}시간 전`;
   else return `${elapsedMinutes}분 전`;
 }
