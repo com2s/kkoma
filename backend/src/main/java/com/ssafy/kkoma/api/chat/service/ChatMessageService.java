@@ -36,4 +36,17 @@ public class ChatMessageService {
 		return ChatMessageResponse.fromEntity(chatMessageRepository.save(chatMessage));
 	}
 
+	@Transactional
+	public void createChatMessage(Long chatRoomId, Long memberId) {
+		Member member = memberService.findMemberByMemberId(memberId);
+		ChatRoom chatRoom = chatRoomService.getChatRoom(chatRoomId);
+
+		ChatMessage chatMessage = ChatMessage.builder()
+			.content("거래가 성사되었습니다")
+			.member(member)
+			.build();
+
+		chatMessage.setChatRoom(chatRoom);
+	}
+
 }
