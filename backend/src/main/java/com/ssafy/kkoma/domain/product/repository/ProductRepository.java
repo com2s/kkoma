@@ -25,5 +25,5 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
     List<Product> findByCategoryIdAndStatus(Integer categoryId, ProductType status);
 
     @Query("select s from Product s where s.status=:status ORDER BY s.wishCount DESC")
-    Product findFirstByStatus(ProductType status);
+    List<Product> findFirstByStatus(ProductType status);
 }

@@ -250,7 +250,7 @@ public class ProductService {
 		return chatProductResponse;
 	}
 
-	public Product findProductForSale() {
+	public List<Product> findProductForSale() {
 		return productRepository.findFirstByStatus(ProductType.SALE);
 	}
 
