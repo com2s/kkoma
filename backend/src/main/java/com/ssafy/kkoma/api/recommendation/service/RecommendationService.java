@@ -2,12 +2,10 @@ package com.ssafy.kkoma.api.recommendation.service;
 
 import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.api.product.dto.ProductSummary;
-import com.ssafy.kkoma.api.product.service.CategoryService;
 import com.ssafy.kkoma.api.product.service.ProductService;
-import com.ssafy.kkoma.domain.kid.entity.Kid;
-import com.ssafy.kkoma.domain.member.entity.Member;
-import com.ssafy.kkoma.domain.member.repository.MemberRepository;
 import com.ssafy.kkoma.domain.product.entity.Product;
+import com.ssafy.kkoma.global.error.ErrorCode;
+import com.ssafy.kkoma.global.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.mahout.cf.taste.common.TasteException;
@@ -39,29 +37,24 @@ public class RecommendationService {
     private final MemberService memberService;
     private final ProductService productService;
 
-    public List<RecommendedItem> recommendCategory(Long memberId) {
+    private DataModel dataModel;
+    private UserSimilarity userSimilarity;
+    private UserNeighborhood userNeighborhood;
+    private GenericBooleanPrefUserBasedRecommender userBasedRecommender;
+    private ItemSimilarity itemSimilarity;
+    private GenericItemBasedRecommender itemBasedRecommender;
 
-        Member member = memberService.findMemberByMemberId(memberId);
+    private final static int MAX_NUM_OF_RECOMMENDED_ITEMS = 4;
+    private final static int DEFAULT_NUM_OF_RECOMMENDED_ITEMS = 1;
 
-        try {
-            DataModel dataModel = new MySQLJDBCDataModel(dataSource, "category_preference", "member_id", "category_id", "preference", null);
 
-            // user-based recommendation
-            UserSimilarity userSimilarity = new PearsonCorrelationSimilarity(dataModel);
-            UserNeighborhood userNeighborhood = new NearestNUserNeighborhood(2, userSimilarity, dataModel);
-            GenericBooleanPrefUserBasedRecommender userBasedRecommender = new GenericBooleanPrefUserBasedRecommender(dataModel, userNeighborhood, userSimilarity);
-            List<RecommendedItem> userBasedRecommendations = userBasedRecommender.recommend(member.getId(), 1, true); // 최대 10개 추천
-
-            // item-based recommendation
-            ItemSimilarity itemSimilarity = new PearsonCorrelationSimilarity(dataModel);
-            GenericItemBasedRecommender itemBasedRecommender = new GenericItemBasedRecommender(dataModel, itemSimilarity);
-            List<RecommendedItem> itemBasedRecommendations = itemBasedRecommender.recommend(member.getId(), 1, true); // 최대 10개 추천
-            return combineRecommendations(itemBasedRecommendations, userBasedRecommendations);
-        } catch (TasteException e) {
-            // todo-siyoon move to global exception handler
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
+    private void initDataModel() throws SQLException, TasteException {
+        dataModel = new MySQLJDBCDataModel(dataSource, "category_preference", "member_id", "category_id", "preference", null);
+        userSimilarity = new PearsonCorrelationSimilarity(dataModel);
+        itemSimilarity = new PearsonCorrelationSimilarity(dataModel);
+        userNeighborhood = new NearestNUserNeighborhood(1, userSimilarity, dataModel);
+        userBasedRecommender = new GenericBooleanPrefUserBasedRecommender(dataModel, userNeighborhood, userSimilarity);
+        itemBasedRecommender = new GenericItemBasedRecommender(dataModel, itemSimilarity);
     }
 
     private List<RecommendedItem> combineRecommendations(List<RecommendedItem> src, List<RecommendedItem> newItems) {
@@ -71,21 +64,50 @@ public class RecommendationService {
         return src;
     }
 
-    public List<ProductSummary> recommendProduct(Long memberId) throws SQLException {
+    public List<ProductSummary> recommendProduct(Long memberId, Integer num) throws SQLException, TasteException {
 
-        // todo-siyoon use lambda
+        if (!memberService.existsMemberByMemberId(memberId)) {
+            throw new BusinessException(ErrorCode.MEMBER_NOT_EXISTS);
+        }
+
+        // set default value
+        if (num == null) {
+            num = DEFAULT_NUM_OF_RECOMMENDED_ITEMS;
+        }
+        else if (num > MAX_NUM_OF_RECOMMENDED_ITEMS) {
+            num = MAX_NUM_OF_RECOMMENDED_ITEMS;
+        }
+
+        initDataModel();
+
+        // todo-siyoon optimize
+        List<RecommendedItem> recommendedCategories = userBasedRecommender.recommend(memberId, 3, true);
+//        List<RecommendedItem> itemBasedRecommendations = itemBasedRecommender.recommend(member.getId(), howMany, true); // todo-siyoon use
+
+        // todo-siyoon use 'num' as num of result
         List<ProductSummary> productSummaries = new ArrayList<>();
-        List<RecommendedItem> recommendedCategories = recommendCategory(memberId);
-        for(RecommendedItem recommendedCategory : recommendedCategories) {
-            List<Product> products = productService.findProductForSaleByCategoryId((int) recommendedCategory.getItemID());
-            Optional<Product> result = products.stream()
-                    .max(Comparator.comparingDouble(p -> (double)p.getWishCount() / p.getViewCount()));
+        for (RecommendedItem recommendedCategory : recommendedCategories) {
+            Integer categoryId = (int) recommendedCategory.getItemID();
+            List<Product> products = productService.findProductForSaleByCategoryId(categoryId);
+            Optional<Product> result = products.stream().max(Comparator.comparingDouble(p -> (double) p.getWishCount() / (p.getViewCount() + 1)));
+
             if (result.isPresent()) {
                 Product product = result.get();
                 productSummaries.add(ProductSummary.fromEntity(product));
             }
+
+            // todo-siyoon delete
+            if (productSummaries.size() == num) {
+                break;
+            }
+        }
+
+        if (productSummaries.isEmpty()) {
+            Product product = productService.findProductForSale();
+            productSummaries.add(ProductSummary.fromEntity(product));
         }
 
         return productSummaries;
     }
+
 }

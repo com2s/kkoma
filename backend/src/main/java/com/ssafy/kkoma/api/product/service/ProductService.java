@@ -250,4 +250,8 @@ public class ProductService {
 		return chatProductResponse;
 	}
 
+	public Product findProductForSale() {
+		return productRepository.findFirstByStatus(ProductType.SALE);
+	}
+
 }

@@ -25,6 +25,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(
+		name = "product",
+		indexes = {
+			@Index(name = "product_category_id_idx", columnList = "category_id"),
+			@Index(name = "product_status_idx", columnList = "status")
+		}
+)
 public class Product extends BaseTimeEntity {
 
 	@Id

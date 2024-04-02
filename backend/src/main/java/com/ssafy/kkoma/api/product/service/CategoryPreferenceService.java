@@ -27,6 +27,7 @@ public class CategoryPreferenceService {
             categoryPreference = CategoryPreference.builder()
                     .member(memberService.findMemberByMemberId(memberId))
                     .category(categoryService.findCategoryById(categoryId))
+                    .preference(0)
                     .build();
         }
 

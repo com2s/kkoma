@@ -147,4 +147,8 @@ public class MemberService {
         return member.getOffers();
     }
 
+    public boolean existsMemberByMemberId(Long memberId) {
+        return memberRepository.existsById(memberId);
+    }
+
 }
