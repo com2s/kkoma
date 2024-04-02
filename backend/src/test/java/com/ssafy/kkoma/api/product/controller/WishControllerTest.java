@@ -15,6 +15,7 @@ import com.ssafy.kkoma.global.error.exception.BusinessException;
 import com.ssafy.kkoma.global.util.CustomMockMvcSpringBootTest;
 import com.ssafy.kkoma.global.util.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
@@ -192,7 +193,9 @@ class WishControllerTest {
         for (int i = 0; i < 10; i++) {
             Product product = productFactory.createProduct(seller);
             WishList wishList = wishListFactory.createWishList(buyer, product);
-            wishProductsList.add(ProductSummary.fromEntity(wishList.getProduct()));
+            ProductSummary productSummary = ProductSummary.fromEntity(wishList.getProduct());
+            productSummary.setDealPlace("테스트12시 테스트12구 테스트12동");
+            wishProductsList.add(productSummary);
         }
 
         for (int i = 0; i < 5; i++) {

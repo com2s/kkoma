@@ -22,7 +22,9 @@ export async function getServerSideProps() {}
 
 export default function UploadBtn() {
   const [imgFile, setImgFile] = useState<File | null>();
-  const [preview, setPreview] = useState<string | null>("");
+  const [preview, setPreview] = useState<string | null>(
+    "https://kkoma.s3.ap-northeast-2.amazonaws.com/images/e3a028fb-3355-4888-afd6-21a15a1f4c95.png"
+  );
   const [profile, setProfile] = useRecoilState(userProfileState);
 
   const onChangeImg = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,9 +49,13 @@ export default function UploadBtn() {
         setPreview(reader.result as string);
       };
       reader.readAsDataURL(imgFile);
-      setPreview(null);
+      setPreview(
+        "https://kkoma.s3.ap-northeast-2.amazonaws.com/images/e3a028fb-3355-4888-afd6-21a15a1f4c95.png"
+      );
     } else {
-      setPreview(null);
+      setPreview(
+        "https://kkoma.s3.ap-northeast-2.amazonaws.com/images/e3a028fb-3355-4888-afd6-21a15a1f4c95.png"
+      );
     }
   }, [imgFile, setProfile]);
 
@@ -64,7 +70,11 @@ export default function UploadBtn() {
           backgroundPosition: "center center",
         }}
       >
-        <VisuallyHiddenInput type="file" accept="image/*" onChange={onChangeImg} />
+        <VisuallyHiddenInput
+          type="file"
+          accept="image/*"
+          onChange={onChangeImg}
+        />
       </label>
     </div>
   );

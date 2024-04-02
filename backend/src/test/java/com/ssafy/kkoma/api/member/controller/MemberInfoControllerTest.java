@@ -2,18 +2,26 @@ package com.ssafy.kkoma.api.member.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.kkoma.api.member.dto.request.UpdateMemberRequest;
-import com.ssafy.kkoma.api.member.dto.response.MemberInfoResponse;
-import com.ssafy.kkoma.api.member.dto.response.MemberSummaryResponse;
+import com.ssafy.kkoma.api.member.dto.response.*;
+import com.ssafy.kkoma.api.product.dto.ProductSummary;
+import com.ssafy.kkoma.domain.area.repository.AreaRepository;
 import com.ssafy.kkoma.domain.member.entity.Member;
+import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.factory.MemberFactory;
+import com.ssafy.kkoma.factory.ProductFactory;
 import com.ssafy.kkoma.global.util.CustomMockMvcSpringBootTest;
 import com.ssafy.kkoma.global.util.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @CustomMockMvcSpringBootTest
@@ -31,7 +39,14 @@ class MemberInfoControllerTest {
     @Autowired
     MemberFactory memberFactory;
 
+    @Autowired
+    ProductFactory productFactory;
+
+    @Autowired
+    AreaRepository areaRepository;
+
     @Test
+    @Transactional
     void getMemberInfo() throws Exception {
 
         // 필요한 인스턴스 생성
@@ -56,6 +71,7 @@ class MemberInfoControllerTest {
     }
 
     @Test
+    @Transactional
     void getMemberSummary() throws Exception {
 
         Member savedMember = memberFactory.createMember();
@@ -73,6 +89,7 @@ class MemberInfoControllerTest {
     }
 
     @Test
+    @Transactional
     void updateMember() throws Exception {
 
         // 인스턴스 생성
@@ -99,5 +116,48 @@ class MemberInfoControllerTest {
                 );
 
         log.info(expectedResponse.toString());
+    }
+
+    @Test
+    @Transactional
+    public void 마이페이지_프로필_정보_조회하기() throws Exception{
+        Member member = memberFactory.createMember();
+        List<ProductSummary> productSummaryList = new ArrayList<>();
+
+        final int COUNT = 10;
+
+        for (int i = 0; i < COUNT; i++) {
+            Product product = productFactory.createProduct(member);
+            productSummaryList.add(ProductSummary.fromEntity(product));
+        }
+
+        MyPageMemberProfileResponse memberProfileResponse = MyPageMemberProfileResponse.builder()
+                .memberProfileResponse(MemberProfileResponse.fromEntity(member))
+                .myProductList(productSummaryList)
+                .build();
+
+        mockMvc.perform(requestUtil.getRequest("/api/members/{memberId}/profile", member, member.getId()))
+                .andExpectAll(
+                        MockMvcResultMatchers.status().isOk(),
+                        requestUtil.jsonContent(MyPageMemberProfileResponse.class, memberProfileResponse)
+                );
+    }
+
+    @Test
+    @Transactional
+    public void 회원_선호_거래_지역_정보_조회하기() throws Exception{
+        Member member = memberFactory.createMember();
+        final Long REGIONCODE = 10L;
+        member.setPreferredPlaceRegionCode(REGIONCODE);
+
+        MemberPreferredPlaceResponse memberPreferredPlaceResponse = MemberPreferredPlaceResponse.builder()
+                .preferredPlaceRegionCode(member.getPreferredPlaceRegionCode())
+                .build();
+
+        mockMvc.perform(requestUtil.getRequest("/api/members/place", member))
+                .andExpectAll(
+                        MockMvcResultMatchers.status().isOk(),
+                        requestUtil.jsonContent(MemberPreferredPlaceResponse.class, memberPreferredPlaceResponse)
+                );
     }
 }

@@ -32,9 +32,8 @@ public class Member extends BaseTimeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "location_id")
-	private Location location;
+	@Setter
+	private Long preferredPlaceRegionCode;
 
 	@Column(length = 50)
 	private String email;

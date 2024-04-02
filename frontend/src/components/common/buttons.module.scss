@@ -1,11 +1,25 @@
 .container {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: rem(16) 0;
+  width: 100%;
+  max-width: 600px;
+  z-index: 1200;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+}
+
+.spacer {
+  height: rem(74);
+}
+
+.child {
   @include flex(center, space-around, row);
   gap: rem(12);
-  position: fixed;
-  bottom: rem(10);
   width: calc(100% - rem(52));
-  margin: auto;
-  max-width: 580px;
 }
 
 .btn {
@@ -17,6 +31,7 @@
     background-color: $color-text4;
     color: $color-text3;
   }
+  cursor: pointer;
 }
 
 .wide {
@@ -35,6 +50,15 @@
 
 .small {
   @include text-caption;
+  @include flex();
   height: fit-content;
-  padding-top: rem(13);
+  padding: rem(10) rem(20);
+  background-color: $color-text4;
+  border-radius: rem(30);
+  width: fit-content;
+  cursor: pointer;
+  &:disabled {
+    background-color: $color-text4;
+    color: $color-text3;
+  }
 }

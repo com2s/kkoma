@@ -1,24 +1,20 @@
 "use client";
 
 import Title from "@/components/common/title";
-import { ButtonContainer, SubBtn, NormalBtn } from "@/components/common/buttons";
+import {
+  ButtonContainer,
+  SubBtn,
+  NormalBtn,
+} from "@/components/common/buttons";
 import GenderBtn from "@/components/kid/gender-btn";
 import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  kidNameState,
-  kidYearState,
-  kidMonthState,
-  kidDateState,
-  kidGenderState,
-} from "@/store/kid";
+import { kidNameState, kidBirthDateState, kidGenderState } from "@/store/kid";
 import { updateKidAPI } from "@/services/kid";
 import { useRouter } from "next/navigation";
 
 export default function KidGender() {
   const name = useRecoilValue(kidNameState);
-  const year = useRecoilValue(kidYearState);
-  const month = useRecoilValue(kidMonthState);
-  const date = useRecoilValue(kidDateState);
+  const birthDate = useRecoilValue(kidBirthDateState);
   const [gender, setGender] = useRecoilState(kidGenderState);
 
   const router = useRouter();
@@ -26,7 +22,7 @@ export default function KidGender() {
   const updateKid = async () => {
     const obj = await updateKidAPI({
       name: name,
-      birthDate: year + "-" + month + "-" + date,
+      birthDate: birthDate,
       gender: gender ?? null,
     });
 
@@ -35,7 +31,10 @@ export default function KidGender() {
 
   return (
     <>
-      <Title title={`아이의\n성별을 알려주세요`} subtitle="제품 추천에 도움을 줄게요" />
+      <Title
+        title={`아이의\n성별을 알려주세요`}
+        subtitle="제품 추천에 도움을 줄게요"
+      />
       <GenderBtn />
       <ButtonContainer>
         <SubBtn next={() => setGender(null)}>건너뛰기</SubBtn>

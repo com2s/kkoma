@@ -19,6 +19,7 @@ import com.ssafy.kkoma.factory.ProductFactory;
 import com.ssafy.kkoma.global.error.ErrorCode;
 import com.ssafy.kkoma.global.error.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -92,7 +93,7 @@ class OfferServiceTest {
         // 2) 존재하지 않는 상품글에 거래 요청
         buyer.getPoint().addBalance(20000);
         BusinessException invalidProductException = assertThrows(BusinessException.class, () -> {
-            offerService.createOffer(buyer.getId(), 2L);
+            offerService.createOffer(buyer.getId(), -1000L);
         });
         assertEquals(invalidProductException.getErrorCode(), ErrorCode.PRODUCT_NOT_EXISTS);
     }

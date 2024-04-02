@@ -8,18 +8,6 @@ import APIModule from "@/utils/apiModule";
 
 //   return obj;
 // };
-export interface mySummary {
-  success: boolean;
-  data: {
-    profileImage: string;
-    nickname: string;
-    preferredPlace: string;
-  };
-  error: {
-    errorCode: string;
-    errorMessage: string;
-  };
-}
 
 export async function getMySummary() {
   const response = await APIModule({
@@ -42,27 +30,10 @@ export async function getMyInfo() {
 }
 
 interface MemberInfo {
-  profileImage: string|null;
-  nickname: string|null;
-  name: string|null;
-  phone: string|null;
-}
-
-export interface MyInfo {
-  success: boolean;
-  data: {
-    id: number | null;
-    profileImage: string | null;
-    email: string | null;
-    nickname: string | null;
-    name: string | null;
-    phone: string | null;
-    role: string | null;
-  };
-  error: {
-    errorCode: string;
-    errorMessage: string;
-  };
+  profileImage: string | null;
+  nickname: string | null;
+  name: string | null;
+  phone: string | null;
 }
 
 export async function putMyInfo(data: MemberInfo) {
@@ -79,14 +50,41 @@ export async function putMyInfo(data: MemberInfo) {
 
 export async function getMyWishes(page?: number, size?: number) {
   const queryObject = {
-    page: page?.toString()??'0',
-    size: size?.toString()??'20',
+    page: page?.toString() ?? "0",
+    size: size?.toString() ?? "20",
   };
 
   const query = new URLSearchParams(queryObject).toString();
 
   const response = await APIModule({
     action: `/products/wishes?${query}`,
+    method: "GET",
+    data: null,
+  });
+
+  return response;
+}
+
+export async function getMyPosts(id: number) {
+  const response = await APIModule({
+    action: `/members/${id}/profile`,
+    method: "GET",
+    data: null,
+  });
+
+  return response;
+}
+
+export async function getRecentList(page?: number, size?: number) {
+  const queryObject = {
+    page: page?.toString() ?? "0",
+    size: size?.toString() ?? "20",
+  };
+
+  const query = new URLSearchParams(queryObject).toString();
+
+  const response = await APIModule({
+    action: `/products/viewHistories?${query}`,
     method: "GET",
     data: null,
   });

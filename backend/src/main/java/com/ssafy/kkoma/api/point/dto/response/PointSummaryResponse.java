@@ -1,4 +1,4 @@
-package com.ssafy.kkoma.api.point.dto;
+package com.ssafy.kkoma.api.point.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;

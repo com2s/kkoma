@@ -1,36 +1,29 @@
 "use client";
 
-import React, {useState, useEffect, use} from "react";
 import styles from "@/components/my-page/my-detail.module.scss";
-import { getMyInfo, MyInfo } from "@/components/my-page/my-page-ftn";
-import Avatar from "@mui/material/Avatar";
+import { MyInfo } from "@/types/member";
+import Image from "next/image";
 
-export default function MyProfileSummary() {
-  const [myDetail, setMyDetail] = useState<MyInfo>();
-  useEffect(() => {
-    const fetchMyDetail = async () => {
-      const response = await getMyInfo();
-      setMyDetail(response);
-    }
-    fetchMyDetail();
-  }, []);
+interface Props {
+  myDetail: MyInfo;
+}
 
-
+export default function MyProfileSummary({ myDetail }: Props) {
   return (
-    <div className="px-4">
-      <div className="flex justify-between h-28">
-        <div className={`${styles.nickname} min-w-28 text-pretty mr-1 ml-4`}>
-          <h4 className="my-4">
-            {myDetail?.data?.nickname ?? "닉네임 미등록"}
-          </h4>
-          <span className="text-slate-400">#{myDetail?.data?.id}</span>
+    <div>
+      <div className="flex justify-between h-28 mr-2 ml-4">
+        <div className={`${styles.nickname} min-w-28 text-pretty`}>
+          <h4 className="my-4">{myDetail?.nickname ?? "닉네임 미등록"}</h4>
+          <span className="text-slate-400">#{myDetail?.id}</span>
         </div>
-        <Avatar
-          src={myDetail?.data?.profileImage ?? ""}
-          alt="Profile Image"
-          // sx={{ width: 56, height: 56 }}
-          className={`${styles.responsiveImg} mx-4`}
-        />
+        <div className={styles.responsiveImg} style={{ position: "relative" }}>
+          <Image
+            src={myDetail?.profileImage ?? ""}
+            alt="Profile Image"
+            fill
+            style={{ objectFit: "cover", borderRadius: "50%" }}
+          />
+        </div>
       </div>
     </div>
   );

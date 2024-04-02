@@ -69,7 +69,7 @@ public class OfferController {
         description = "[[노션](https://www.notion.so/todays-jiwoo/3aec242d1997458f9cf4337f4134613a?pvs=4)] 판매자는 거래 요청 중 하나를 선택하고 거래 시간을 확정한다.",
         security = { @SecurityRequirement(name = "bearer-key") }
     )
-    @PatchMapping("/{offerId}")
+    @PutMapping("/{offerId}")
     public ResponseEntity<?> decideOffer(
 		@PathVariable("offerId") Long offerId,
         @Parameter(name = "type", description = "거래 수락 시 accept, 거래 거절 시 reject", in = ParameterIn.QUERY) @RequestParam("type") String type,

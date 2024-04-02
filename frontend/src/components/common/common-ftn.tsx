@@ -18,21 +18,11 @@ export async function getMyPoints() {
   return response;
 }
 
-// 구매가능한 포인트가 있는가? (부족할 경우 success: false)
-export async function getIsBuyable(productId: string) {
-  const response = await APIModule({
-    action: `/points/products/${productId}`,  
-    method: "GET",
-    data: null,
-  });
 
-  return response;
-}
-
-export async function getLogOut() {
+export async function postLogOut() {
   const response = await APIModule({
     action: "/logout",
-    method: "GET",
+    method: "POST",
     data: null,
   });
 

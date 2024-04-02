@@ -1,13 +1,26 @@
 import { ProductStatus } from "./status";
 
-export interface ProductSm {
+interface ProductSm {
+  id: number;
+  thumbnailImage: string;
+  title: string;
+  dealPlace: string;
+  price: number;
+  status: ProductStatus;
+  elapsedMinutes: number | string;
+  wishCount?: number | null;
+  offerCount?: number | null;
+  viewCount?: number | null;
+}
+
+type ProductSmCard = {
   id: number;
   thumbnailImage: string;
   title: string;
   price: number;
-}
+};
 
-export type ChatProduct = {
+type ChatProduct = {
   id: number;
   thumbnailImage: string;
   title: string;
@@ -17,19 +30,14 @@ export type ChatProduct = {
   buyerId: number;
 };
 
-export interface Product {
+interface Category {
+  id: number | null;
+  name: string;
+}
+
+interface Product {
   success: boolean;
-  data: [
-    {
-      id: number;
-      thumbnailImage: string;
-      title: string;
-      dealPlace: string;
-      price: number;
-      status: "SALE" | "PROGRESS" | "SOLD";
-      elapsedMinutes: number;
-    }
-  ];
+  data: Array<ProductSm>;
   error: {
     errorCode: string;
     errorMessage: string;
@@ -45,7 +53,7 @@ interface DetailParams {
     description: string;
     categoryName: string;
     price: number;
-    status: "SALE";
+    status: ProductStatus;
     dealPlace: string;
     elapsedMinutes: number;
     memberSummary: {
@@ -55,12 +63,17 @@ interface DetailParams {
       preferredPlace: string;
     };
     chatRoomId: number;
+    wish: boolean;
     wishCount: number;
     offerCount: number;
     viewCount: number;
+    x: number;
+    y: number;
   };
   error: {
     errorCode: string;
     errorMessage: string;
   };
 }
+
+export type { ProductSm, ProductSmCard, ChatProduct, Category, Product, DetailParams };

@@ -19,6 +19,8 @@ public class ProductDetailResponse {
     private int price;
     private ProductType status;
     private String dealPlace;
+    private Double x;
+    private Double y;
     private Long elapsedMinutes;
     private MemberSummaryResponse memberSummary;
     private Long chatRoomId;

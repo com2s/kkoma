@@ -58,6 +58,11 @@ public enum ErrorCode {
     // Temporary,
     UPDATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "T-004", "회원 정보를 수정에 실패하였습니다."),
 
+    // Area
+    AREA_LEVEL_RANGE_VALID(HttpStatus.BAD_REQUEST, "AR-001", "유효하지 않은 지역 레벨입니다."),
+    SUB_AREA_NOT_EXISTS(HttpStatus.BAD_REQUEST, "AR-002", "하위 지역코드가 존재하지 않습니다."),
+    AREA_NOT_EXISTS(HttpStatus.BAD_REQUEST, "AR-003", "해당 법정코드에 대한 지역 정보가 존재하지 않습니다"),
+
     // Util
     IMAGE_NOT_EXISTS(HttpStatus.BAD_REQUEST, "U-001", "업로드 한 이미지가 비어있습니다."),
     S3UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "U-002", "이미지 업로드에 실패하였습니다."),

@@ -4,8 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import styles from "@/components/common/top-bar2.module.scss";
 import Button from "@mui/material/Button"; // Material-UI 버튼 사용
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew"; // Material-UI 뒤로 가기 아이콘
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 
 // 차후 각 페이지 별로 상단에 고정된 헤더를 만들기 위한 템플릿으로 사용합니다.
 // 사용 예시
@@ -30,7 +30,7 @@ export default function TopBar2() {
       <div className={styles.header}>
         <Button
           onClick={() => router.back()}
-          startIcon={<ArrowBackIosNewIcon />}
+          startIcon={<NavigateBeforeIcon />}
           sx={{ color: "black", height: "32px" }}
         ></Button>
         <span className={styles.logo}>페이지 타이틀</span>
@@ -40,8 +40,7 @@ export default function TopBar2() {
           </Button>
         </div>
       </div>
-      <div className={styles.headerSpacer}></div>{" "}
-      {/* 상단 바 높이만큼의 빈 공간 */}
+      <div className={styles.headerSpacer}></div>
     </>
   );
 }

@@ -1,5 +1,6 @@
 package com.ssafy.kkoma.api.product.dto;
 
+import com.ssafy.kkoma.api.location.dto.request.CreateLocationRequest;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.domain.product.entity.ProductImage;
 import lombok.AllArgsConstructor;
@@ -20,5 +21,6 @@ public class ProductCreateRequest {
     private String title;
     private String description;
     private int price;
+    private CreateLocationRequest createLocationRequest;
 
 }
