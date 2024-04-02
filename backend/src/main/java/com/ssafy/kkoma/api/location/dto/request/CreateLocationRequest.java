@@ -1,12 +1,13 @@
 package com.ssafy.kkoma.api.location.dto.request;
 
 import com.ssafy.kkoma.domain.location.entity.Location;
-
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 @Getter
 @Builder
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CreateLocationRequest {
 
 	private Long regionCode;

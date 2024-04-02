@@ -70,7 +70,7 @@ public class OfferService {
             throw new BusinessException(ErrorCode.POINT_NOT_ENOUGH);
         }
 
-        pointHistoryService.changePoint(member, PointChangeType.PAY, product.getPrice());
+        pointHistoryService.changePoint(member, PointChangeType.PAY, product.getPrice(), product);
 
         Offer offer = Offer.builder().product(product).build();
         offer.setMember(member);
@@ -136,7 +136,7 @@ public class OfferService {
                 offer.updateCancelledAt(LocalDateTime.now());
                 Member rejectedBuyer = offer.getMember(); // 거절당한 구매희망자
 
-                pointHistoryService.changePoint(rejectedBuyer, PointChangeType.REFUND, product.getPrice());
+                pointHistoryService.changePoint(rejectedBuyer, PointChangeType.REFUND, product.getPrice(), product);
                 NotiDetailBuilder.getInstance().returnPayment(
                     product.getTitle(), product.getPrice(), rejectedBuyer.getPoint().getBalance()
                 );

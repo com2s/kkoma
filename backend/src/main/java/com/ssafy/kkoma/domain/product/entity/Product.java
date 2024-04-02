@@ -1,24 +1,18 @@
 package com.ssafy.kkoma.domain.product.entity;
 
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-
 import com.ssafy.kkoma.domain.chat.entity.ChatRoom;
-
 import com.ssafy.kkoma.domain.common.entity.BaseTimeEntity;
 import com.ssafy.kkoma.domain.location.entity.Location;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.product.constant.ProductType;
-
 import com.ssafy.kkoma.global.error.ErrorCode;
 import com.ssafy.kkoma.global.error.exception.BusinessException;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter

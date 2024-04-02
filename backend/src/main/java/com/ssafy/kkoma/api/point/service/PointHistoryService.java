@@ -8,6 +8,7 @@ import com.ssafy.kkoma.domain.point.constant.PointChangeType;
 import com.ssafy.kkoma.domain.point.entity.Point;
 import com.ssafy.kkoma.domain.point.entity.PointHistory;
 import com.ssafy.kkoma.domain.point.repository.PointHistoryRepository;
+import com.ssafy.kkoma.domain.product.entity.Product;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -26,13 +27,13 @@ public class PointHistoryService {
 	private final MemberService memberService;
 	private final PointHistoryRepository pointHistoryRepository;
 
-	public int changePoint(Member member, PointChangeType pointChangeType, int amount) {
+	public int changePoint(Member member, PointChangeType pointChangeType, int amount, Product product) {
 		Point point = member.getPoint();
 
-		if (pointChangeType == PointChangeType.CHARGE || pointChangeType == PointChangeType.PROFIT) {
-			point.addBalance(amount);
-		} else {
+		if (pointChangeType == PointChangeType.PAY || pointChangeType == PointChangeType.WITHDRAW) {
 			point.subBalance(amount);
+		} else {
+			point.addBalance(amount);
 		}
 
 		PointHistory pointHistory = PointHistory.builder()
@@ -40,6 +41,7 @@ public class PointHistoryService {
 				.amount(amount)
 				.pointChangeType(pointChangeType)
 				.balanceAfterChange(point.getBalance())
+				.product(product)
 				.build();
 		pointHistoryRepository.save(pointHistory);
 
@@ -56,14 +58,4 @@ public class PointHistoryService {
 
 		return new BasePageResponse<>(content, page);
 	}
-
-	public void createPointHistory(PointHistory pointHistory) {
-		pointHistoryRepository.save(pointHistory);
-	}
-
-//	public PointSummaryResponse transferPoint(Long memberId, TransferPointRequest transferPointRequest) {
-//		Member member = memberService.findMemberByMemberId(memberId);
-//		int balance = changePoint(member, transferPointRequest.getType(), transferPointRequest.getAmount());
-//		return PointSummaryResponse.builder().balance(balance).build();
-//	}
 }

@@ -83,7 +83,7 @@ public class MemberInfoController {
     )
     @GetMapping("/{memberId}/profile")
     public ResponseEntity<ApiUtils.ApiResult<MyPageMemberProfileResponse>> getMyPageMemberProfile(
-        @PathVariable Long memberId
+        @PathVariable("memberId") Long memberId
     ) {
         MyPageMemberProfileResponse memberProfileResponse = memberInfoService.getMyPageMemberProfile(memberId);
 

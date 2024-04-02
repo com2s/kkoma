@@ -35,7 +35,7 @@ class PointHistoryServiceTest {
 
         // when
         for (int i = 1; i <= NUM; i++) {
-            pointHistoryService.changePoint(member, PointChangeType.CHARGE, i * 100);
+            pointHistoryService.changePoint(member, PointChangeType.CHARGE, i * 100, null);
         }
 
         long totalElements = pointHistoryService.getPointHistory(
