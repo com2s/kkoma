@@ -43,6 +43,7 @@ public class Product extends BaseTimeEntity {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "location_id")
 	private Location location;
+
 	private String thumbnailImage;
 
 	@OneToOne(fetch = FetchType.LAZY)

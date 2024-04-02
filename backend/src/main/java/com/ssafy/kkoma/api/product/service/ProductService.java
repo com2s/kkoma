@@ -11,15 +11,12 @@ import com.ssafy.kkoma.api.common.dto.BasePageResponse;
 import com.ssafy.kkoma.api.deal.service.DealService;
 import com.ssafy.kkoma.api.member.dto.response.MemberSummaryResponse;
 import com.ssafy.kkoma.api.member.service.MemberService;
-import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
-import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
-import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
+import com.ssafy.kkoma.api.product.dto.*;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
 import com.ssafy.kkoma.api.product.dto.response.ChatProductResponse;
 import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
 import com.ssafy.kkoma.domain.area.entity.Area;
 import com.ssafy.kkoma.domain.chat.entity.ChatRoom;
-import com.ssafy.kkoma.api.product.dto.ProductWishResponse;
 
 import com.ssafy.kkoma.domain.deal.entity.Deal;
 import com.ssafy.kkoma.domain.deal.repository.DealRepository;
@@ -43,7 +40,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.kkoma.api.product.dto.ProductSummary;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.domain.product.repository.ProductRepository;
 import com.ssafy.kkoma.global.util.complete.AutoCompleteUtils;
@@ -294,6 +290,11 @@ public class ProductService {
 
 	public List<Product> findProductForSale() {
 		return productRepository.findFirstByStatus(ProductType.SALE);
+	}
+
+	public List<ProductHourlyViewed> getMostWishedProductsPerHour(int limit, LocalDateTime now, Pageable pageable) {
+		Page<ProductHourlyViewed> pageList = productRepository.getMostViewedProductsPerHour(limit, now, pageable);
+		return pageList.getContent();
 	}
 
 }

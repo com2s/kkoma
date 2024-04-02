@@ -53,9 +53,9 @@ public class ProductController {
     )
     @GetMapping("/search")
     public ResponseEntity<ApiUtils.ApiResult<SearchProductResponse>> searchProducts(
-        @MemberInfo MemberInfoDto memberInfoDto,
-        SearchProductRequest searchProductRequest,
-        Pageable pageable
+            @MemberInfo MemberInfoDto memberInfoDto,
+            SearchProductRequest searchProductRequest,
+            Pageable pageable
     ) {
         SearchProductResponse searchProductResponse = productService.searchProduct(memberInfoDto.getMemberId(), searchProductRequest, pageable);
         return ResponseEntity.ok(ApiUtils.success(searchProductResponse));
@@ -69,8 +69,8 @@ public class ProductController {
     )
     @GetMapping("/{productId}")
     public ResponseEntity<ApiUtils.ApiResult<ProductDetailResponse>> getProduct(
-        @MemberInfo MemberInfoDto memberInfoDto,
-        @PathVariable("productId") Long productId
+            @MemberInfo MemberInfoDto memberInfoDto,
+            @PathVariable("productId") Long productId
     ) {
         ProductDetailResponse productDetailResponse = productService.getProduct(productId, memberInfoDto.getMemberId());
         productService.addViewCount(productId);
@@ -108,7 +108,9 @@ public class ProductController {
         security = { @SecurityRequirement(name = "bearer-key") }
     )
     @GetMapping("/search/complete")
-    public ResponseEntity<ApiUtils.ApiResult<List<String>>> getAutoComplete(@RequestParam("keyword") String keyword) {
+    public ResponseEntity<ApiUtils.ApiResult<List<String>>> getAutoComplete(
+        @RequestParam("keyword"
+    ) String keyword) {
         List<String> response = productService.getAutoCompleteKeyword(keyword);
         return ResponseEntity.ok(ApiUtils.success(response));
     }

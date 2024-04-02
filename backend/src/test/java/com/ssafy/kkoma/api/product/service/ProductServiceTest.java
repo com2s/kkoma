@@ -2,6 +2,7 @@ package com.ssafy.kkoma.api.product.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -10,8 +11,8 @@ import java.util.concurrent.Executors;
 
 import com.ssafy.kkoma.api.common.dto.BasePageResponse;
 import com.ssafy.kkoma.api.location.dto.request.CreateLocationRequest;
-import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
-import com.ssafy.kkoma.api.product.dto.ProductWishResponse;
+import com.ssafy.kkoma.api.member.service.MemberService;
+import com.ssafy.kkoma.api.product.dto.*;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
 import com.ssafy.kkoma.api.product.dto.response.ChatProductResponse;
 import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
@@ -22,7 +23,6 @@ import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.member.repository.MemberRepository;
-import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
 import com.ssafy.kkoma.domain.product.entity.Category;
 import com.ssafy.kkoma.domain.product.entity.WishList;
 import com.ssafy.kkoma.domain.product.repository.CategoryRepository;
@@ -34,6 +34,7 @@ import com.ssafy.kkoma.factory.MemberFactory;
 import com.ssafy.kkoma.factory.ProductFactory;
 import com.ssafy.kkoma.factory.WishListFactory;
 import com.ssafy.kkoma.global.error.exception.BusinessException;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +42,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import com.ssafy.kkoma.api.product.dto.ProductSummary;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.domain.product.repository.ProductRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @SpringBootTest
 class ProductServiceTest {
 
@@ -69,6 +70,9 @@ class ProductServiceTest {
 
 	@Autowired
 	private CategoryFactory categoryFactory;
+
+	@Autowired
+	private MemberService memberService;
 
 	@Autowired
 	private ChatRoomFactory chatRoomFactory;
@@ -307,5 +311,18 @@ class ProductServiceTest {
         assertFalse(unwishResponse.isWish());
 		assertEquals(beforeWish, unwishResponse.getWishCount());
 	}
+
+	@Test
+//	@Transactional
+	void 지난_한_시간_동안_조회수_탑텐_상품글_조회() {
+		Pageable pageable = PageRequest.of(0,100);
+		List<ProductHourlyViewed> result = productService.getMostWishedProductsPerHour(4,
+				LocalDateTime.of(2024, 4, 2, 1, 0, 0),
+				pageable
+		);
+
+		log.info("가져온 글은 {}", result);
+	}
+
 
 }
