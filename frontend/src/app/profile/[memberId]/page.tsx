@@ -26,7 +26,6 @@ export default function ProfilePage() {
   const fetchProfile = async () => {
     const res = await getProfileAPI(Number(params.memberId));
     setProfile(res);
-    console.log("res==", res);
   };
 
   useEffect(() => {

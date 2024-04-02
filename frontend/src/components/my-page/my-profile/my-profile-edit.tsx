@@ -44,8 +44,6 @@ export default function MyProfileEdit() {
     setNickname(data.nickname ?? "");
     setPhone(data.phone ?? "");
     setImage({ url: data.profileImage ?? "" });
-    console.log("myId: ", data.id);
-    console.log(data);
   };
 
   // 이미지 파일 변경 처리
