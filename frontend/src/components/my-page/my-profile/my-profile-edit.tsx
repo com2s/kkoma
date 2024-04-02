@@ -61,7 +61,6 @@ export default function MyProfileEdit() {
     }
   };
 
-
   const handleAccordionChange =
     (panel: boolean) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
@@ -106,7 +105,7 @@ export default function MyProfileEdit() {
     window.location.reload();
   };
   return (
-    <div className="px-4 mx-auto my-8">
+    <div className="mx-auto my-8">
       {success === false && (
         <div className="border-t-yellow-300 border-t-2">
           <h1>내 정보를 불러오는데 실패했습니다.</h1>
@@ -118,7 +117,7 @@ export default function MyProfileEdit() {
             sx={{
               margin: "auto",
               minWidth: "200px",
-              border: "2px solid #d3d3d3",
+              borderBottom: "2px solid #d3d3d3",
               "&.MuiPaper-root": { boxShadow: "none" },
             }}
             expanded={expanded}
@@ -128,7 +127,6 @@ export default function MyProfileEdit() {
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1-content"
               id="panel1-header"
-              sx={{ margin: "auto", paddingX: "2rem" }}
             >
               프로필 수정
             </AccordionSummary>
@@ -149,48 +147,25 @@ export default function MyProfileEdit() {
               </label>
               {/* <Button color="warning" sx={{display:'block'}}>사진 지우기</Button> */}
               <TextField
+                fullWidth
                 id="standard-basic"
                 label="닉네임"
                 variant="standard"
-                sx={{ marginY: 2, width: "80%", marginX: "auto" }}
+                sx={{ marginY: 2, marginX: "auto" }}
                 value={nickname}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                   setNickname(event.target.value);
                 }}
               />
-              {/* <TextField
-                id="standard-basic"
-                label="이름"
-                variant="standard"
-                sx={{ marginY: 2, width: "80%", marginX: "auto" }}
-                value={name}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  setName(event.target.value);
-                }}
-              />
-              <TextField
-                id="standard-basic"
-                label="전화번호"
-                variant="standard"
-                type="number"
-                sx={{ marginY: 2, width: "90%", marginX: "auto" }}
-                value={phone}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  setPhone(event.target.value);
-                }}
-              /> */}
             </AccordionDetails>
             <AccordionActions
               sx={{
                 margin: "12px auto",
                 display: "flex",
-                justifyContent: "space-between",
+                justifyContent: "center",
                 width: "70%",
               }}
             >
-              <Button onClick={handleCloseClick} variant="outlined">
-                취소
-              </Button>
               <Button onClick={handleEditClick} variant="outlined">
                 수정
               </Button>

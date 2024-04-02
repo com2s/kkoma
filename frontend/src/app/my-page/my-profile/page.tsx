@@ -9,15 +9,11 @@ export default async function MyProfileDetail() {
   return (
     <div className={styles.container}>
       <TopBar2 />
-      <Suspense fallback={<div>Loading...</div>}>
-        <MyInfoSummary />
-      </Suspense>
+      <Suspense fallback={<div>Loading...</div>}>{/* <MyInfoSummary /> */}</Suspense>
       <Suspense fallback={<div>Loading...</div>}>
         <MyInfoEditor />
       </Suspense>
-      <Suspense fallback={<div>Loading...</div>}>
-        <MyPosts />
-      </Suspense>
+      <Suspense fallback={<div>Loading...</div>}>{/* <MyPosts /> */}</Suspense>
     </div>
   );
 }

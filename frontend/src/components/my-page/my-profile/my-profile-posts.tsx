@@ -1,47 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { getMyPosts } from "../my-page-ftn";
+import { useState } from "react";
+import Image from "next/image";
 import { ProductCard } from "@/components/common/product-card";
-import {
-  Accordion,
-  AccordionActions,
-  AccordionDetails,
-  AccordionSummary,
-  Avatar,
-  Button,
-} from "@mui/material";
+import { Accordion, AccordionActions, AccordionDetails, AccordionSummary } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Link from "next/link";
+import { ProductSm } from "@/types/product";
+import { NoContents } from "@/components/common/no-contents";
 
-interface Post {
-  id: number;
-  thumbnailImage: string;
-  title: string;
-  dealPlace: string;
-  price: number;
-  status: "SALE" | "SOLD" | "PROGRESS";
-  elapsedMinutes: string;
+interface Posts {
+  posts: Array<ProductSm>;
 }
 
-export default function MyProfilePosts() {
+export default function MyProfilePosts({ posts }: Posts) {
   const [expanded, setExpanded] = useState(false); // 아코디언 확장 상태 관리
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [success, setSuccess] = useState(true);
-
-  const getPosts = async () => {
-    const res = await getMyPosts();
-    setSuccess(res.success);
-    if (res.success) {
-      setPosts(res.data.myProductList);
-    } else {
-      setPosts([]);
-    }
-  };
-
-  useEffect(() => {
-    getPosts();
-  }, []);
 
   const handleAccordionChange =
     (panel: boolean) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -58,7 +30,7 @@ export default function MyProfilePosts() {
         sx={{
           margin: "auto",
           minWidth: "200px",
-          border: "2px solid #d3d3d3",
+          borderBottom: "2px solid #d3d3d3",
           "&.MuiPaper-root": { boxShadow: "none" },
         }}
         expanded={expanded}
@@ -72,12 +44,14 @@ export default function MyProfilePosts() {
         >
           등록한 거래글 {posts.length}개
         </AccordionSummary>
-        {posts.length === 0 && (<p className="m-4 p-2 rounded-lg bg-pink-100">등록한 거래글이 없습니다.</p>)}
+        {posts.length === 0 && (
+          <NoContents>
+            <h4 className="c-text3">작성한 글이 없어요</h4>
+            <Image src={"/images/Empty-BOX.png"} alt="empty" width={100} height={100} />
+          </NoContents>
+        )}
         {posts.map((post, index) => (
-          <AccordionDetails
-            key={index}
-            sx={{ margin: "auto" }}
-          >
+          <AccordionDetails key={index} sx={{ margin: "auto" }}>
             <ProductCard product={post} next={`/lists/${post.id}`} />
           </AccordionDetails>
         ))}
@@ -86,13 +60,8 @@ export default function MyProfilePosts() {
             margin: "15px auto 10px",
             display: "flex",
             justifyContent: "center",
-            // width: "60%",
           }}
-        >
-          <Button onClick={handleCloseClick} variant="outlined">
-            닫기
-          </Button>
-        </AccordionActions>
+        ></AccordionActions>
       </Accordion>
     </div>
   );
