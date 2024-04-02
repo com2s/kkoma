@@ -90,7 +90,7 @@ public class DealService {
 		product.updateStatus(ProductType.SOLD); // 상품 status 변경
 		deal.updateIsCompleted(Boolean.TRUE); // 거래 status 변경
 
-		pointHistoryService.changePoint(seller, PointChangeType.PROFIT, product.getPrice());
+		pointHistoryService.changePoint(seller, PointChangeType.PROFIT, product.getPrice(), product);
 		notificationService.createNotification(seller,
 			NotiDetailBuilder.getInstance().receivePayment(
 				product.getTitle(), product.getPrice(), seller.getPoint().getBalance()

@@ -1,13 +1,11 @@
 package com.ssafy.kkoma.api.point.service;
 
-import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.point.constant.PointChangeType;
 import com.ssafy.kkoma.domain.point.repository.PointHistoryRepository;
 import com.ssafy.kkoma.factory.MemberFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,7 +35,7 @@ class PointHistoryServiceTest {
 
         // when
         for (int i = 1; i <= NUM; i++) {
-            pointHistoryService.changePoint(member, PointChangeType.CHARGE, i * 100);
+            pointHistoryService.changePoint(member, PointChangeType.CHARGE, i * 100, null);
         }
 
         long totalElements = pointHistoryService.getPointHistory(

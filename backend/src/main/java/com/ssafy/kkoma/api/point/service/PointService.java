@@ -47,7 +47,7 @@ public class PointService {
     public PointSummaryResponse transferPoint(Long memberId, TransferPointRequest transferPointRequest) {
         Member member = memberService.findMemberByMemberId(memberId);
         int balance = pointHistoryService.changePoint(
-                member, transferPointRequest.getType(), transferPointRequest.getAmount()
+                member, transferPointRequest.getType(), transferPointRequest.getAmount(), null
         );
         return PointSummaryResponse.builder().balance(balance).build();
     }
