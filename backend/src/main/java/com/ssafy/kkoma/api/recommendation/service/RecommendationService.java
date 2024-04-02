@@ -103,8 +103,10 @@ public class RecommendationService {
         }
 
         if (productSummaries.isEmpty()) {
-            Product product = productService.findProductForSale();
-            productSummaries.add(ProductSummary.fromEntity(product));
+            List<Product> products = productService.findProductForSale();
+            if (!products.isEmpty()) {
+                productSummaries.add(ProductSummary.fromEntity(products.get(0)));
+            }
         }
 
         return productSummaries;
