@@ -2,7 +2,7 @@
 
 import { ButtonContainer, NormalBtn } from "@/components/common/buttons";
 import TopBar2 from "@/components/point/point-bar";
-import { chargePointAPI } from "@/services/point";
+import { chargePointAPI, withDrawPointAPI } from "@/services/point";
 import { Input, InputAdornment } from "@mui/material";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -24,7 +24,7 @@ export default function PointWithdraw() {
       setAmount(balance.toLocaleString());
     } else if (removedCommaValue === 0) {
       setErr(true);
-      setErrMsg("0원 이상 송금할 수 있어요");
+      setErrMsg("0원 이상 출금할 수 있어요");
       setAmount("");
     } else if (removedCommaValue.toLocaleString() === "NaN") {
       setErr(true);
@@ -45,7 +45,7 @@ export default function PointWithdraw() {
       setAmount(balance.toLocaleString());
     } else if (removedCommaValue === 0) {
       setErr(true);
-      setErrMsg("0원 이상 송금할 수 있어요");
+      setErrMsg("0원 이상 출금할 수 있어요");
       setAmount("");
     } else if (removedCommaValue.toLocaleString() === "NaN") {
       setErr(true);
@@ -60,7 +60,7 @@ export default function PointWithdraw() {
 
   const startCharge = async () => {
     const removedCommaValue: number = Number(amount.replaceAll(",", ""));
-    await chargePointAPI(removedCommaValue);
+    await withDrawPointAPI(removedCommaValue);
     alert(`${amount}포인트가 출금 되었어요`);
     router.push("/point");
   };
@@ -78,7 +78,7 @@ export default function PointWithdraw() {
 
   return (
     <div className="flex flex-col justify-center">
-      <TopBar2 title="포인트 송금" />
+      <TopBar2 title="포인트 출금" />
       <Input
         id="standard-adornment-amount"
         endAdornment={<InputAdornment position="end">P</InputAdornment>}
@@ -117,7 +117,7 @@ export default function PointWithdraw() {
       </div>
       <ButtonContainer>
         <NormalBtn next={startCharge} disabled={!amount || amount === "" || err}>
-          송금
+          출금
         </NormalBtn>
       </ButtonContainer>
     </div>

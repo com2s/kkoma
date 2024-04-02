@@ -57,7 +57,7 @@ export default function MyPoints({ next }: Props) {
           className={styles.btn}
           onClick={() => router.push("/point/withdraw")}
         >
-          <span className="text-black font-semibold">송금</span>
+          <span className="text-black font-semibold">출금</span>
         </Button>
         <Button
           startIcon={<AttachMoneyIcon color="error" />}
