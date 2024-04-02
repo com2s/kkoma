@@ -134,7 +134,7 @@ class MemberInfoControllerTest {
                 .myProductList(productSummaryList)
                 .build();
 
-        mockMvc.perform(requestUtil.getRequest("/api/members/profile", member))
+        mockMvc.perform(requestUtil.getRequest("/api/members/{memberId}/profile", member, member.getId()))
                 .andExpectAll(
                         MockMvcResultMatchers.status().isOk(),
                         requestUtil.jsonContent(MyPageMemberProfileResponse.class, memberProfileResponse)

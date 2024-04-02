@@ -12,7 +12,7 @@ spring:
       max-request-size: 100MB
   batch:
     job:
-      enabled: true # false면 jobParameter가 존재하더라도 그 job이 실행되지 않는다
+      enabled: false # false면 jobParameter가 존재하더라도 그 job이 실행되지 않는다
     jdbc:
       initialize-schema: always # spring batch 정보를 저장하는 테이블들을 생성
 

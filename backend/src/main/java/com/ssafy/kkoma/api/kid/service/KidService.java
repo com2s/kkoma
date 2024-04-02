@@ -10,12 +10,15 @@ import com.ssafy.kkoma.global.error.ErrorCode;
 import com.ssafy.kkoma.global.error.exception.BusinessException;
 import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -75,7 +78,9 @@ public class KidService {
 
     public KidSummaryResponse getKid(Long kidId, Long memberId) {
         Kid kid = findKidByKidId(kidId);
-        if (kid.getMember().getId() != memberId) {
+        if (!Objects.equals(kid.getMember().getId(), memberId)) {
+            log.info("expectedMemberId={}", kid.getMember().getId());
+            log.info("actualMemberId={}", memberId);
             throw new BusinessException(ErrorCode.KID_NOT_MATCHED);
         }
         return KidSummaryResponse.fromEntity(kid);
