@@ -52,20 +52,20 @@ export default function MyPoints({ next }: Props) {
       </div>
       <div className="flex justify-between items-center p-4 btn-line">
         <Button
-          startIcon={<TollIcon color="primary" />}
+          // startIcon={<TollIcon color="primary" />}
+          variant="outlined"
+          className={styles.btn}
+          onClick={() => router.push("/point/charge")}
+        >
+          <span className="text-black font-semibold">포인트 충전</span>
+        </Button>
+        <Button
+          // startIcon={<TollIcon color="error" />}
           variant="outlined"
           className={styles.btn}
           onClick={() => router.push("/point/withdraw")}
         >
           <span className="text-black font-semibold">출금</span>
-        </Button>
-        <Button
-          startIcon={<AttachMoneyIcon color="error" />}
-          variant="outlined"
-          className={styles.btn}
-          onClick={() => router.push("/point/charge")}
-        >
-          <span className="text-black font-semibold">충전</span>
         </Button>
       </div>
     </div>
