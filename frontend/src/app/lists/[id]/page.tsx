@@ -23,8 +23,13 @@ import "slick-carousel/slick/slick-theme.css";
 import Link from "next/link";
 import ShareLocationIcon from "@mui/icons-material/ShareLocation";
 import { sendUnWishAPI, sendWishAPI } from "@/services/wish";
-import { ButtonContainer, NormalBtn, SubBtn } from "@/components/common/buttons";
+import {
+  ButtonContainer,
+  NormalBtn,
+  SubBtn,
+} from "@/components/common/buttons";
 import { StaticMap } from "@/components/common/staticmap";
+import { getMyPoints } from "@/components/common/common-ftn";
 
 interface IParams {
   params: { id: string };
@@ -59,11 +64,13 @@ export default function ProductDetail({ params: { id } }: IParams) {
   };
 
   const handleRequest = async (id: string) => {
-    const isBuyable = await getIsBuyable(id);
-    if (isBuyable.success) {
+    const res = await getMyPoints();
+    const myPoints = await res.data.balance;
+    if (product && Number(myPoints) > product?.data.price) {
       router.push(`/lists/${id}/request`);
     } else {
-      alert(isBuyable.error.errorMessage);
+      alert("포인트가 부족합니다. 먼저 포인트를 충전해주세요.");
+      router.push("/point/charge");
     }
   };
 
@@ -110,7 +117,9 @@ export default function ProductDetail({ params: { id } }: IParams) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
             <ShareLocationIcon className="c-text1" />
-            <div className={`min-w-fit text-body2 ${styles.dealPlace}`}>거래 장소</div>
+            <div className={`min-w-fit text-body2 ${styles.dealPlace}`}>
+              거래 장소
+            </div>
           </div>
           <div className="text-body2 c-text2">{product?.data.dealPlace}</div>
         </div>
