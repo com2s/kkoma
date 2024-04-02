@@ -22,3 +22,16 @@ spec:
           envFrom:
             - secretRef:
                 name: api-secret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: recommand-svc
+spec:
+  ports:
+    - name: service
+      port: 80
+      targetPort: 5000
+  selector:
+    app: recommand-api
