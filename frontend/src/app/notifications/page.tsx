@@ -69,7 +69,6 @@ export default function MyNotificationsPage() {
     (id: number, destination: string) => async (e: React.MouseEvent) => {
       e.preventDefault(); // 기본 동작 중단
       await postReadNotification(id); // API 요청
-      // await new Promise((resolve) => setTimeout(resolve, 2000)); // 1초 대기
       router.push(destination); // 페이지 이동
     };
 
