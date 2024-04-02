@@ -128,7 +128,7 @@ public class OfferService {
                         product.getChatRoom().getId(), product.getMember(), offer.getMember());
 
                 // 관리자에 의해 채팅방에 거래 성사 메시지 전송
-                chatMessageService.createChatMessage(product.getChatRoom().getId(), 0L);
+                chatMessageService.createChatMessage(product.getChatRoom().getId());
             }
             // 나머지 offer에 대해서 deny 처리, 선입금한 포인트 반환
             else {
