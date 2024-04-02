@@ -9,7 +9,6 @@ import APIModule from "@/utils/apiModule";
 //   return obj;
 // };
 
-
 export async function getMySummary() {
   const response = await APIModule({
     action: "/members/summary",
@@ -31,13 +30,11 @@ export async function getMyInfo() {
 }
 
 interface MemberInfo {
-  profileImage: string|null;
-  nickname: string|null;
-  name: string|null;
-  phone: string|null;
+  profileImage: string | null;
+  nickname: string | null;
+  name: string | null;
+  phone: string | null;
 }
-
-
 
 export async function putMyInfo(data: MemberInfo) {
   const response = await APIModule({
@@ -53,8 +50,8 @@ export async function putMyInfo(data: MemberInfo) {
 
 export async function getMyWishes(page?: number, size?: number) {
   const queryObject = {
-    page: page?.toString()??'0',
-    size: size?.toString()??'20',
+    page: page?.toString() ?? "0",
+    size: size?.toString() ?? "20",
   };
 
   const query = new URLSearchParams(queryObject).toString();
@@ -68,9 +65,9 @@ export async function getMyWishes(page?: number, size?: number) {
   return response;
 }
 
-export async function getMyPosts() {
+export async function getMyPosts(id: number) {
   const response = await APIModule({
-    action: "/members/profile",
+    action: `/members/${id}/profile`,
     method: "GET",
     data: null,
   });
@@ -78,10 +75,10 @@ export async function getMyPosts() {
   return response;
 }
 
-export async function getRecentList(page?: number, size?:number) {
+export async function getRecentList(page?: number, size?: number) {
   const queryObject = {
-    page: page?.toString()??'0',
-    size: size?.toString()??'20',
+    page: page?.toString() ?? "0",
+    size: size?.toString() ?? "20",
   };
 
   const query = new URLSearchParams(queryObject).toString();

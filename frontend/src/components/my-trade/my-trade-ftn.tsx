@@ -37,11 +37,7 @@ export async function getRequesters(productId: string) {
   return response;
 }
 
-export async function patchOfferAccept(
-  offerId: string,
-  date: string,
-  time: string
-) {
+export async function patchOfferAccept(offerId: string, date: string, time: string) {
   const koreaTime = date + "T" + time + ":00";
   const isoString = new Date(koreaTime).toISOString();
   const queryObject = {
@@ -50,7 +46,7 @@ export async function patchOfferAccept(
   const query = new URLSearchParams(queryObject).toString();
   const response = await APIModule({
     action: `/offers/${offerId}?${query}`,
-    method: "PATCH",
+    method: "PUT",
     data: {
       selectedTime: isoString,
     },
@@ -66,7 +62,7 @@ export async function patchOfferReject(offerId: number) {
   const query = new URLSearchParams(queryObject).toString();
   const response = await APIModule({
     action: `/offers/${offerId}?${query}`,
-    method: "PATCH",
+    method: "PUT",
     data: null,
   });
 

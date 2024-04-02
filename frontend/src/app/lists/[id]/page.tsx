@@ -23,11 +23,8 @@ import "slick-carousel/slick/slick-theme.css";
 import Link from "next/link";
 import ShareLocationIcon from "@mui/icons-material/ShareLocation";
 import { sendUnWishAPI, sendWishAPI } from "@/services/wish";
-import {
-  ButtonContainer,
-  NormalBtn,
-  SubBtn,
-} from "@/components/common/buttons";
+import { ButtonContainer, NormalBtn, SubBtn } from "@/components/common/buttons";
+import { StaticMap } from "@/components/common/staticmap";
 
 interface IParams {
   params: { id: string };
@@ -113,15 +110,14 @@ export default function ProductDetail({ params: { id } }: IParams) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
             <ShareLocationIcon className="c-text1" />
-            <div className={`min-w-fit text-body2 ${styles.dealPlace}`}>
-              거래 장소
-            </div>
+            <div className={`min-w-fit text-body2 ${styles.dealPlace}`}>거래 장소</div>
           </div>
-          <div className="text-body2 c-text2">서울시 강남구 테헤란로 10</div>
+          <div className="text-body2 c-text2">{product?.data.dealPlace}</div>
         </div>
-        {/* <div className="text-caption c-text2">{product?.data.dealPlace}</div> */}
-        {/* <Map /> */}
       </div>
+      {product?.data.x && product.data.y && (
+        <StaticMap lat={product?.data.x} lng={product?.data.y} />
+      )}
       {myId && myId === product?.data.memberSummary.memberId.toString() ? (
         <ButtonContainer>
           <NormalBtn next={`/my-trade/${id}`}>요청 보기</NormalBtn>

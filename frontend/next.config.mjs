@@ -11,21 +11,11 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "chart.apis.google.com",
-        port: "",
-        pathname: "/chart/**",
+        hostname: "**",
       },
       {
-        protocol: "https",
-        hostname: "picsum.photos",
-        port: "",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "lh3.googleusercontent.com",
-        port: "",
-        pathname: "/**",
+        protocol: "http",
+        hostname: "**",
       },
     ],
   },
