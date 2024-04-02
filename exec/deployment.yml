@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recommand-api
+
+spec:
+  selector:
+    matchLabels:
+      app: recommand-api
+
+  template:
+    metadata:
+      labels:
+        app: recommand-api
+
+    spec:
+      containers:
+        - name: recommand-api
+          image: loverduck97/kkoma-backend:latest
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: api-secret

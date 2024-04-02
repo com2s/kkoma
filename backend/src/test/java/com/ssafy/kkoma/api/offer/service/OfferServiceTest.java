@@ -19,7 +19,6 @@ import com.ssafy.kkoma.factory.ProductFactory;
 import com.ssafy.kkoma.global.error.ErrorCode;
 import com.ssafy.kkoma.global.error.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -141,6 +140,8 @@ class OfferServiceTest {
         Member befBuyer2 = memberFactory.createMember();
         Offer befOffer2 = offerFactory.createOffer(product, befBuyer2);
         int befBalance2 = befBuyer2.getPoint().getBalance();
+
+        Member admin = memberFactory.createAdmin();
 
         DecideOfferRequest decideOfferRequest = DecideOfferRequest.builder().selectedTime(LocalDateTime.now()).build();
 
