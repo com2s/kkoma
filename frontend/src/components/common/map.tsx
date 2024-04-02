@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, Dispatch, SetStateAction } from "react";
+import { useEffect, Dispatch, SetStateAction } from "react";
 import FmdGoodIcon from "@mui/icons-material/FmdGood";
 
 declare global {
@@ -56,7 +56,6 @@ export default function Map({ setLocation, setRegionCode, setRegion, setLng, set
     const kakaoMapScript = document.createElement("script");
     kakaoMapScript.async = false;
     kakaoMapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${MAP_API_KEY}&autoload=false&libraries=services`;
-    console.log(kakaoMapScript.src);
     document.head.appendChild(kakaoMapScript);
 
     const onLoadKakaoAPI = () => {

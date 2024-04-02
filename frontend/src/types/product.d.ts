@@ -67,6 +67,8 @@ interface DetailParams {
     wishCount: number;
     offerCount: number;
     viewCount: number;
+    x: number;
+    y: number;
   };
   error: {
     errorCode: string;
@@ -74,11 +76,4 @@ interface DetailParams {
   };
 }
 
-export type {
-  ProductSm,
-  ProductSmCard,
-  ChatProduct,
-  Category,
-  Product,
-  DetailParams,
-};
+export type { ProductSm, ProductSmCard, ChatProduct, Category, Product, DetailParams };
