@@ -50,19 +50,31 @@ export default function Point() {
                 {item.productInfo ? (
                   <div className="flex items-center gap-2">
                     <div
-                      style={{ position: "relative", width: "40px", height: "40px" }}
                       className="bg-gray-200 rounded-lg p-2"
+                      style={{
+                        position: "relative",
+                        width: "56px",
+                        height: "56px",
+                      }}
                     >
-                      <Image src={item.productInfo.thumbnail} alt="thumbnail" fill />
+                      <Image
+                        src={item.productInfo.thumbnail}
+                        alt="thumbnail"
+                        fill
+                        className="rounded-lg"
+                      />
                     </div>
                     <div>
-                      <div className="text-body whitespace-nowrap text-wrap	">
+                      <div className="text-body whitespace-nowrap text-wrap	w-30">
                         {item.productInfo.title}
                       </div>
                       <div className="text-caption c-text3">{`${item.date.substring(
                         0,
                         10
-                      )} ${item.date.substring(11, 16)} | ${PointChangeTypeFormat(
+                      )} ${item.date.substring(
+                        11,
+                        16
+                      )} | ${PointChangeTypeFormat(
                         item.pointChangeType
                       )}`}</div>
                     </div>
@@ -83,13 +95,18 @@ export default function Point() {
                       )}
                     </div>
                     <div>
-                      <div className="text-body truncate">
-                        {item.pointChangeType === "CHARGE" ? "포인트 충전" : "포인트 출금"}
+                      <div className="text-body truncate w-40">
+                        {item.pointChangeType === "CHARGE"
+                          ? "포인트 충전"
+                          : "포인트 출금"}
                       </div>
                       <div className="text-caption c-text3">{`${item.date.substring(
                         0,
                         10
-                      )} ${item.date.substring(11, 16)} | ${PointChangeTypeFormat(
+                      )} ${item.date.substring(
+                        11,
+                        16
+                      )} | ${PointChangeTypeFormat(
                         item.pointChangeType
                       )}`}</div>
                     </div>
@@ -98,18 +115,20 @@ export default function Point() {
                 <div className="min-w-fit">
                   <div
                     style={
-                      item.pointChangeType === "PAY" || item.pointChangeType === "WITHDRAW"
+                      item.pointChangeType === "PAY" ||
+                      item.pointChangeType === "WITHDRAW"
                         ? { color: "#764c32 !important" }
                         : { color: "#ffcf00 !important" }
                     }
                     className="!font-bold text-end text-body"
                   >
-                    {item.pointChangeType === "PAY" || item.pointChangeType === "WITHDRAW"
+                    {item.pointChangeType === "PAY" ||
+                    item.pointChangeType === "WITHDRAW"
                       ? "-"
                       : "+"}
-                    {item.amount.toLocaleString()}원
+                    {item.amount.toLocaleString()}P
                   </div>
-                  <div className="text-end text-caption c-text3">{`잔액 ${item.balanceAfterChange.toLocaleString()}원`}</div>
+                  <div className="text-end text-caption c-text3">{`잔액 ${item.balanceAfterChange.toLocaleString()}P`}</div>
                 </div>
               </div>
             </div>
