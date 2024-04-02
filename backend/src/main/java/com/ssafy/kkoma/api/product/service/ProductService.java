@@ -263,7 +263,7 @@ public class ProductService {
 	}
 	
 	public BasePageResponse<WishList, ProductSummary> getMyWishProducts(Long memberId, Pageable pageable) {
-		Page<WishList> wishLists = wishListRepository.findWishListsByMemberId(memberId, pageable);
+		Page<WishList> wishLists = wishListRepository.findWishListsByMemberIdAndIsValid(memberId, true, pageable);
 		List<ProductSummary> content = new ArrayList<>();
 		for (WishList wishList: wishLists) {
 			String dealPlace = areaService.findAreaById(wishList.getProduct().getLocation().getRegionCode()).getFullArea();
