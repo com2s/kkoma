@@ -21,7 +21,6 @@ import com.ssafy.kkoma.global.error.ErrorCode;
 import com.ssafy.kkoma.global.error.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -97,6 +96,7 @@ class DealServiceTest {
 		Member seller = memberFactory.createMember();
 		Product product = productFactory.createProduct(seller, category, 20000);
 		Member buyer = memberFactory.createMember();
+		Member admin = memberFactory.createAdmin();
 		Offer offer = offerFactory.createOffer(product, buyer);
 		DecideOfferRequest decideOfferRequest = DecideOfferRequest.builder().selectedTime(LocalDateTime.now()).build();
 
@@ -124,6 +124,7 @@ class DealServiceTest {
 		Member seller = memberFactory.createMember();
 		Product product = productFactory.createProduct(seller, category, 20000);
 		Member buyer = memberFactory.createMember();
+		Member admin = memberFactory.createAdmin();
 		Offer offer = offerFactory.createOffer(product, buyer);
 		DecideOfferRequest decideOfferRequest = DecideOfferRequest.builder().selectedTime(LocalDateTime.now()).build();
 
@@ -150,6 +151,8 @@ class DealServiceTest {
 			now.plusHours(1).plusMinutes(1).withSecond(0).withNano(100000000), // 실패
 			now.plusHours(1).withSecond(59) // 성공
 		});
+
+		Member admin = memberFactory.createAdmin();
 
 		for (LocalDateTime dealTime : dealTimeList) {
 			log.info("거래 시간은 {}", dealTime);

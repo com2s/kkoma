@@ -10,7 +10,6 @@ import com.ssafy.kkoma.domain.product.entity.ViewHistory;
 import com.ssafy.kkoma.domain.product.repository.ViewHistoryRepository;
 import com.ssafy.kkoma.factory.MemberFactory;
 import com.ssafy.kkoma.factory.ProductFactory;
-import org.junit.jupiter.api.Disabled;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 

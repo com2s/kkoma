@@ -4,7 +4,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.ssafy.kkoma.api.area.service.AreaService;
 import com.ssafy.kkoma.api.chat.service.ChatRoomService;

@@ -9,9 +9,7 @@ import com.ssafy.kkoma.domain.product.entity.ViewHistory;
 import com.ssafy.kkoma.factory.MemberFactory;
 import com.ssafy.kkoma.factory.ProductFactory;
 import com.ssafy.kkoma.global.util.CustomMockMvcSpringBootTest;
-import com.ssafy.kkoma.global.util.RequestUtil;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import com.ssafy.kkoma.global.util.RequestUtil;import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -19,8 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @CustomMockMvcSpringBootTest
 class ViewHistoryControllerTest {
