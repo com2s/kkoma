@@ -141,6 +141,8 @@ class OfferServiceTest {
         Offer befOffer2 = offerFactory.createOffer(product, befBuyer2);
         int befBalance2 = befBuyer2.getPoint().getBalance();
 
+        Member admin = memberFactory.createAdmin();
+
         DecideOfferRequest decideOfferRequest = DecideOfferRequest.builder().selectedTime(LocalDateTime.now()).build();
 
         // when
