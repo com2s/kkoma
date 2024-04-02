@@ -13,7 +13,7 @@ public class LocationFactory {
 	LocationRepository locationRepository;
 
 	public Location createLocation() {
-		final Long REGIONCODE = 1111111L;
+		final Long REGIONCODE = 12L;
 
 		return locationRepository.save(Location.builder()
 			.regionCode(REGIONCODE)

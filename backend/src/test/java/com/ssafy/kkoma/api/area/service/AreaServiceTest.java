@@ -25,13 +25,13 @@ class AreaServiceTest {
 	public void 올바른_법정_코드로_지역_정보_조회() throws Exception{
 	    // given
 		Area savedArea = areaFactory.createArea();
-		final Long REGIONCODE = 1111111L;
+		final Long REGIONCODE = 12L;
 
 	    // when
 		Area area = areaService.findAreaById(REGIONCODE);
 
 		// then
-		assertEquals("서울특별시", area.getSubName1());
+		assertEquals("테스트12시", area.getSubName1());
 	}
 
 	@Test
@@ -41,7 +41,7 @@ class AreaServiceTest {
 		Area savedArea = areaFactory.createArea();
 
 	    // when & then
-		assertThrows(EntityNotFoundException.class, () -> areaService.findAreaById(00000000000L));
+		assertThrows(EntityNotFoundException.class, () -> areaService.findAreaById(-1000L));
 	}
 
 

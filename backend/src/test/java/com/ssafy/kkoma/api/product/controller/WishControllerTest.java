@@ -193,7 +193,7 @@ class WishControllerTest {
             Product product = productFactory.createProduct(seller);
             WishList wishList = wishListFactory.createWishList(buyer, product);
             ProductSummary productSummary = ProductSummary.fromEntity(wishList.getProduct());
-            productSummary.setDealPlace("서울특별시 종로구 청운동");
+            productSummary.setDealPlace("테스트12시 테스트12구 테스트12동");
             wishProductsList.add(productSummary);
         }
 

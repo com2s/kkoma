@@ -1,5 +1,6 @@
 package com.ssafy.kkoma.api.offer.service;
 
+import com.ssafy.kkoma.api.chat.service.ChatMessageService;
 import com.ssafy.kkoma.api.deal.dto.request.DecideOfferRequest;
 import com.ssafy.kkoma.api.deal.service.DealService;
 import com.ssafy.kkoma.api.member.service.MemberService;
@@ -43,11 +44,13 @@ public class OfferService {
     private final OfferRepository offerRepository;
     private final MemberService memberService;
     private final ProductService productService;
+
     private final DealService dealService;
     private final NotificationService notificationService;
     private final PointHistoryService pointHistoryService;
 
     private final DealReminderScheduler dealReminderJobScheduler;
+    private final ChatMessageService chatMessageService;
 
     public Offer findOfferByOfferId(Long offerId) {
         return offerRepository.findById(offerId)
@@ -67,7 +70,7 @@ public class OfferService {
             throw new BusinessException(ErrorCode.POINT_NOT_ENOUGH);
         }
 
-        pointHistoryService.changePoint(member, PointChangeType.PAY, product.getPrice());
+        pointHistoryService.changePoint(member, PointChangeType.PAY, product.getPrice(), product);
 
         Offer offer = Offer.builder().product(product).build();
         offer.setMember(member);
@@ -123,6 +126,9 @@ public class OfferService {
                 // 판매자/구매자에 거래 리마인더 알림 예약
                 scheduleDealReminderNoti(decideOfferRequest.getSelectedTime(), product.getTitle(),
                         product.getChatRoom().getId(), product.getMember(), offer.getMember());
+
+                // 관리자에 의해 채팅방에 거래 성사 메시지 전송
+                chatMessageService.createChatMessage(product.getChatRoom().getId());
             }
             // 나머지 offer에 대해서 deny 처리, 선입금한 포인트 반환
             else {
@@ -130,7 +136,7 @@ public class OfferService {
                 offer.updateCancelledAt(LocalDateTime.now());
                 Member rejectedBuyer = offer.getMember(); // 거절당한 구매희망자
 
-                pointHistoryService.changePoint(rejectedBuyer, PointChangeType.REFUND, product.getPrice());
+                pointHistoryService.changePoint(rejectedBuyer, PointChangeType.REFUND, product.getPrice(), product);
                 NotiDetailBuilder.getInstance().returnPayment(
                     product.getTitle(), product.getPrice(), rejectedBuyer.getPoint().getBalance()
                 );

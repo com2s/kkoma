@@ -9,6 +9,7 @@ import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.domain.chat.entity.ChatMessage;
 import com.ssafy.kkoma.domain.chat.entity.ChatRoom;
 import com.ssafy.kkoma.domain.chat.repository.ChatMessageRepository;
+import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.domain.member.entity.Member;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,19 @@ public class ChatMessageService {
 		chatMessage.setChatRoom(chatRoom);
 
 		return ChatMessageResponse.fromEntity(chatMessageRepository.save(chatMessage));
+	}
+
+	@Transactional
+	public void createChatMessage(Long chatRoomId) {
+		Member member = memberService.findMemberByRole(Role.ADMIN);
+		ChatRoom chatRoom = chatRoomService.getChatRoom(chatRoomId);
+
+		ChatMessage chatMessage = ChatMessage.builder()
+			.content("거래가 성사되었습니다")
+			.member(member)
+			.build();
+
+		chatMessage.setChatRoom(chatRoom);
 	}
 
 }

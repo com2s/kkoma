@@ -1,6 +1,9 @@
 package com.ssafy.kkoma.api.member.service;
 
+import com.ssafy.kkoma.api.area.service.AreaService;
+import com.ssafy.kkoma.api.member.dto.request.UpdateMemberPreferredPlaceRequest;
 import com.ssafy.kkoma.api.member.dto.response.MemberInfoResponse;
+import com.ssafy.kkoma.api.member.dto.response.MemberPreferredPlaceResponse;
 import com.ssafy.kkoma.api.member.dto.response.MemberSummaryResponse;
 import com.ssafy.kkoma.api.member.dto.response.MyPageMemberProfileResponse;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
@@ -31,6 +34,9 @@ class MemberInfoServiceTest {
 
     @Autowired
     ProductFactory productFactory;
+
+    @Autowired
+    AreaService areaService;
 
     @Test
     @Transactional
@@ -112,4 +118,34 @@ class MemberInfoServiceTest {
         assertEquals(beforeProfile.getMyProductList().size() + COUNT, afterProfile.getMyProductList().size());
     }
 
+    @Test
+    @Transactional
+    public void 회원_선호_거래_지역_정보_수정하기() throws Exception{
+        // given
+        Member member = memberFactory.createMember();
+        final Long REGIONCODE = 10L;
+
+        UpdateMemberPreferredPlaceRequest updateMemberPreferredPlaceRequest = UpdateMemberPreferredPlaceRequest.builder().preferredPlaceRegionCode(REGIONCODE).build();
+
+        // when
+        memberInfoService.updateMemberPreferredPlace(member.getId(), updateMemberPreferredPlaceRequest);
+
+        // then
+        assertEquals(REGIONCODE, memberRepository.findById(member.getId()).get().getPreferredPlaceRegionCode());
+    }
+
+    @Test
+    @Transactional
+    public void 회원_선호_거래_지역_정보_조회하기() throws Exception{
+        // given
+        Member member = memberFactory.createMember();
+        final Long REGIONCODE = 10L;
+        member.setPreferredPlaceRegionCode(REGIONCODE);
+
+        // when
+        MemberPreferredPlaceResponse memberPreferredPlace = memberInfoService.getMemberPreferredPlace(member.getId());
+
+        // then
+        assertEquals(REGIONCODE, memberPreferredPlace.getPreferredPlaceRegionCode());
+    }
 }

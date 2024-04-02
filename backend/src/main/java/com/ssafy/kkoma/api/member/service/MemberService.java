@@ -7,6 +7,7 @@ import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
 import com.ssafy.kkoma.domain.area.entity.Area;
 import com.ssafy.kkoma.domain.deal.entity.Deal;
 import com.ssafy.kkoma.domain.deal.repository.DealRepository;
+import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.domain.point.repository.PointRepository;
 import com.ssafy.kkoma.domain.kid.entity.Kid;
 import com.ssafy.kkoma.domain.kid.repository.KidRepository;
@@ -93,6 +94,11 @@ public class MemberService {
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.MEMBER_NOT_EXISTS));
     }
 
+    public Member findMemberByRole(Role role) {
+        return memberRepository.findByRole(role)
+            .orElseThrow(() -> new EntityNotFoundException(ErrorCode.ROLE_NOT_EXISTS));
+    }
+
     public MemberInfoResponse updateMemberInfo(Long memberId, UpdateMemberRequest updateMemberRequest) {
         Member member = findMemberByMemberId(memberId);
         member.updateMemberInfo(updateMemberRequest);
@@ -151,6 +157,10 @@ public class MemberService {
         Member member = findMemberByMemberId(memberId);
 
         return member.getOffers();
+    }
+
+    public boolean existsMemberByMemberId(Long memberId) {
+        return memberRepository.existsById(memberId);
     }
 
 }

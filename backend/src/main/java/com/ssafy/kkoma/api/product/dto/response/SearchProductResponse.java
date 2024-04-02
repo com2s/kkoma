@@ -12,6 +12,7 @@ import lombok.Getter;
 public class SearchProductResponse {
 
 	private List<ProductSummary> content;
+	private Long preferredPlaceRegionCode;
 	private int size;
 	private int page;
 	private int numberOfElements;

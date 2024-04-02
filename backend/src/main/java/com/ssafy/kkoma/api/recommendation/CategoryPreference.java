@@ -13,6 +13,14 @@ import java.io.Serializable;
 @Builder
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Table(
+        name = "category_preference",
+        indexes = {
+                @Index(name = "category_preference_member_id_idx", columnList = "member_id"),
+                @Index(name = "category_preference_category_id_idx", columnList = "category_id"),
+                @Index(name = "category_preference_preference_idx", columnList = "preference")
+        }
+)
 public class CategoryPreference implements Serializable {
 
         @Id
@@ -33,15 +41,17 @@ public class CategoryPreference implements Serializable {
         public void addPreference(float value) {
                 if (this.preference + value > 1) {
                         preference = 1;
+                } else {
+                        this.preference += value;
                 }
-                this.preference += value;
         }
 
         public void subPreference(float value) {
                 if (this.preference < value) {
                         preference = 0;
+                } else {
+                        this.preference -= value;
                 }
-                this.preference += value;
         }
 
         public CategoryPreference() {

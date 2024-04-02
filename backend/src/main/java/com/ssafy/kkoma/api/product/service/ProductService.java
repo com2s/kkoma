@@ -4,7 +4,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.ssafy.kkoma.api.area.service.AreaService;
 import com.ssafy.kkoma.api.chat.service.ChatRoomService;
@@ -78,25 +77,31 @@ public class ProductService {
 		List<ProductSummary> productSummaries = new ArrayList<>();
 
 		for (Product product : products) {
-			String dealPlace = areaService.findAreaById(product.getLocation().getRegionCode()).getFullArea();
 			ProductSummary productSummary = ProductSummary.fromEntity(product);
-			productSummary.setDealPlace(dealPlace);
+			if(product.getLocation() != null) {
+				String dealPlace = areaService.findAreaById(product.getLocation().getRegionCode()).getFullArea();
+				productSummary.setDealPlace(dealPlace);
+			}
 			productSummaries.add(productSummary);
 		}
 
 		return productSummaries;
 	}
 
-	public SearchProductResponse searchProduct(SearchProductRequest searchProductRequest, Pageable pageable) {
+	public SearchProductResponse searchProduct(Long memberId, SearchProductRequest searchProductRequest, Pageable pageable) {
 		Page<Product> pageList = productRepository.searchProduct(searchProductRequest, pageable);
-		return buildSearchProductResponse(pageList);
+		return buildSearchProductResponse(memberId, pageList);
 	}
 
 	public ProductDetailResponse getProduct(Long productId, Long memberId) {
 		Product product = findProductByProductId(productId);
 		List<String> productImageUrls = productImageService.getProductImageUrls(productId);
 		String categoryName = categoryService.getCategoryName(product.getCategory().getId());
-		boolean isWished = wishListRepository.existsByProductIdAndMemberId(productId, memberId);
+		WishList wishList = wishListRepository.findByProductIdAndMemberId(productId, memberId);
+		boolean isWished = true;
+		if (wishList == null || !wishList.getIsValid())
+			isWished = false;
+
 		Area area = areaService.findAreaById(product.getLocation().getRegionCode());
 
 		return buildProductDetailResponse(product, productImageUrls, categoryName, product.getMember(), isWished, area, product.getLocation().getPlaceDetail());
@@ -176,6 +181,8 @@ public class ProductService {
 			.price(product.getPrice())
 			.status(product.getStatus())
 			.dealPlace(area.getFullArea() + " " + placeDetail)
+			.x(product.getLocation().getX())
+			.y(product.getLocation().getY())
 			.elapsedMinutes(Duration.between(product.getCreatedAt(), LocalDateTime.now()).toMinutes())
 			.memberSummary(sellerSummaryResponse)
 			.chatRoomId(product.getChatRoom().getId())
@@ -186,18 +193,23 @@ public class ProductService {
 			.build();
 	}
 
-	private SearchProductResponse buildSearchProductResponse(Page<Product> page) {
+	private SearchProductResponse buildSearchProductResponse(Long memberId, Page<Product> page) {
 		List<ProductSummary> content = new ArrayList<>();
 
 		for (Product product : page.getContent()) {
-			String dealPlace = areaService.findAreaById(product.getLocation().getRegionCode()).getFullArea();
 			ProductSummary productSummary = ProductSummary.fromEntity(product);
-			productSummary.setDealPlace(dealPlace);
+			if(product.getLocation() != null) {
+				String dealPlace = areaService.findAreaById(product.getLocation().getRegionCode()).getFullArea();
+				productSummary.setDealPlace(dealPlace);
+			}
 			content.add(productSummary);
 		}
 
+		Member member = memberService.findMemberByMemberId(memberId);
+
 		return SearchProductResponse.builder()
 			.content(content)
+			.preferredPlaceRegionCode(member.getPreferredPlaceRegionCode())
 			.size(page.getSize())
 			.page(page.getNumber())
 			.numberOfElements(page.getNumberOfElements())
@@ -250,7 +262,7 @@ public class ProductService {
 	}
 	
 	public BasePageResponse<WishList, ProductSummary> getMyWishProducts(Long memberId, Pageable pageable) {
-		Page<WishList> wishLists = wishListRepository.findWishListsByMemberId(memberId, pageable);
+		Page<WishList> wishLists = wishListRepository.findWishListsByMemberIdAndIsValid(memberId, true, pageable);
 		List<ProductSummary> content = new ArrayList<>();
 		for (WishList wishList: wishLists) {
 			String dealPlace = areaService.findAreaById(wishList.getProduct().getLocation().getRegionCode()).getFullArea();
@@ -278,6 +290,10 @@ public class ProductService {
 		}
 
 		return chatProductResponse;
+	}
+
+	public List<Product> findProductForSale() {
+		return productRepository.findFirstByStatus(ProductType.SALE);
 	}
 
 }

@@ -2,11 +2,9 @@ package com.ssafy.kkoma.api.member.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.kkoma.api.member.dto.request.UpdateMemberRequest;
-import com.ssafy.kkoma.api.member.dto.response.MemberInfoResponse;
-import com.ssafy.kkoma.api.member.dto.response.MemberProfileResponse;
-import com.ssafy.kkoma.api.member.dto.response.MemberSummaryResponse;
-import com.ssafy.kkoma.api.member.dto.response.MyPageMemberProfileResponse;
+import com.ssafy.kkoma.api.member.dto.response.*;
 import com.ssafy.kkoma.api.product.dto.ProductSummary;
+import com.ssafy.kkoma.domain.area.repository.AreaRepository;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.factory.MemberFactory;
@@ -42,6 +40,9 @@ class MemberInfoControllerTest {
 
     @Autowired
     ProductFactory productFactory;
+
+    @Autowired
+    AreaRepository areaRepository;
 
     @Test
     @Transactional
@@ -138,6 +139,24 @@ class MemberInfoControllerTest {
                 .andExpectAll(
                         MockMvcResultMatchers.status().isOk(),
                         requestUtil.jsonContent(MyPageMemberProfileResponse.class, memberProfileResponse)
+                );
+    }
+
+    @Test
+    @Transactional
+    public void 회원_선호_거래_지역_정보_조회하기() throws Exception{
+        Member member = memberFactory.createMember();
+        final Long REGIONCODE = 10L;
+        member.setPreferredPlaceRegionCode(REGIONCODE);
+
+        MemberPreferredPlaceResponse memberPreferredPlaceResponse = MemberPreferredPlaceResponse.builder()
+                .preferredPlaceRegionCode(member.getPreferredPlaceRegionCode())
+                .build();
+
+        mockMvc.perform(requestUtil.getRequest("/api/members/place", member))
+                .andExpectAll(
+                        MockMvcResultMatchers.status().isOk(),
+                        requestUtil.jsonContent(MemberPreferredPlaceResponse.class, memberPreferredPlaceResponse)
                 );
     }
 }

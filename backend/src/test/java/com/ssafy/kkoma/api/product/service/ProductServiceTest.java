@@ -112,6 +112,8 @@ class ProductServiceTest {
 	public void 글_키워드_검색() throws Exception {
 		// given
 		Area area = areaFactory.createArea();
+		Member member = memberFactory.createMember();
+		member.setPreferredPlaceRegionCode(12L);
 
 		for (int i = 0; i < 2; i++) {
 			Location location = locationFactory.createLocation();
@@ -124,7 +126,7 @@ class ProductServiceTest {
 		Pageable pageable = PageRequest.of(0,10);
 
 		// when
-		SearchProductResponse searchProductResponse = productService.searchProduct(searchProductRequest, pageable);
+		SearchProductResponse searchProductResponse = productService.searchProduct(member.getId(), searchProductRequest, pageable);
 
 		// then
 		assertEquals(2, searchProductResponse.getContent().size());
@@ -183,6 +185,7 @@ class ProductServiceTest {
 	@Transactional
     void 거래_글_생성() {
 		// given
+		Area area = areaFactory.createArea();
 		Category category = categoryRepository.save(Category.builder().name("유모차").build());
 		Member member = memberRepository.save(Member.builder().name(NAME).memberType(MemberType.KAKAO).role(Role.USER).build());
 		Location location = locationFactory.createLocation();
@@ -277,6 +280,7 @@ class ProductServiceTest {
 	}
 
 	@Test
+	@Transactional
 	void 찜_하기() {
 		Member member = memberFactory.createMember();
 		Product product = productFactory.createProduct(member);
@@ -289,6 +293,7 @@ class ProductServiceTest {
 	}
 
 	@Test
+	@Transactional
 	void 찜_취소_하기() {
 		Member member = memberFactory.createMember();
 		Product product = productFactory.createProduct(member);

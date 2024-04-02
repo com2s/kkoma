@@ -1,7 +1,6 @@
 package com.ssafy.kkoma.api.product.controller;
 
 import com.ssafy.kkoma.api.product.dto.ProductSummary;
-import com.ssafy.kkoma.api.product.service.ProductService;
 import com.ssafy.kkoma.domain.area.repository.AreaRepository;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.product.entity.Product;
@@ -57,7 +56,7 @@ class ProductControllerTest {
         Product product = productFactory.createProduct(member);
 
         ProductSummary productSummary = ProductSummary.fromEntity(product);
-        productSummary.setDealPlace("서울특별시 종로구 청운동");
+        productSummary.setDealPlace("테스트12시 테스트12구 테스트12동");
 
         productSummaryList.add(productSummary);
 
