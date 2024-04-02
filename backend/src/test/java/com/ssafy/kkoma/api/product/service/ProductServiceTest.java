@@ -46,7 +46,6 @@ import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.domain.product.repository.ProductRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Disabled
 @SpringBootTest
 class ProductServiceTest {
 
@@ -112,8 +111,9 @@ class ProductServiceTest {
 	@Transactional
 	public void 글_키워드_검색() throws Exception {
 		// given
+		Area area = areaFactory.createArea();
 		Member member = memberFactory.createMember();
-		member.setPreferredPlaceRegionCode(10L);
+		member.setPreferredPlaceRegionCode(12L);
 
 		for (int i = 0; i < 2; i++) {
 			Location location = locationFactory.createLocation();
@@ -185,6 +185,7 @@ class ProductServiceTest {
 	@Transactional
     void 거래_글_생성() {
 		// given
+		Area area = areaFactory.createArea();
 		Category category = categoryRepository.save(Category.builder().name("유모차").build());
 		Member member = memberRepository.save(Member.builder().name(NAME).memberType(MemberType.KAKAO).role(Role.USER).build());
 		Location location = locationFactory.createLocation();
@@ -279,6 +280,7 @@ class ProductServiceTest {
 	}
 
 	@Test
+	@Transactional
 	void 찜_하기() {
 		Member member = memberFactory.createMember();
 		Product product = productFactory.createProduct(member);
@@ -291,6 +293,7 @@ class ProductServiceTest {
 	}
 
 	@Test
+	@Transactional
 	void 찜_취소_하기() {
 		Member member = memberFactory.createMember();
 		Product product = productFactory.createProduct(member);

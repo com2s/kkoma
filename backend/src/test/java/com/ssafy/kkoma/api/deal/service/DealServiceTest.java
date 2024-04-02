@@ -34,7 +34,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@Disabled
 @Slf4j
 @SpringBootTest
 class DealServiceTest {

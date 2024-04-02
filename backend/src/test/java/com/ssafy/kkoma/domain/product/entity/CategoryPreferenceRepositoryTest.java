@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-@Disabled
 @Slf4j
 @SpringBootTest
 public class CategoryPreferenceRepositoryTest {
