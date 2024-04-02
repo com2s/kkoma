@@ -11,6 +11,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
 import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.domain.product.entity.Product;
+import com.ssafy.kkoma.global.util.AreaCodeUtils;
+
 import static com.ssafy.kkoma.domain.product.entity.QProduct.product;
 import static com.ssafy.kkoma.domain.location.entity.QLocation.location;
 
@@ -58,7 +60,12 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 	}
 
 	private BooleanExpression locationEq(Long regionCode) {
-		return regionCode == null ? null : product.location.regionCode.eq(regionCode);
+		return regionCode == null ? null : locationRange(regionCode);
+	}
+
+	private BooleanExpression locationRange(Long regionCode) {
+		long nextRegionCode = regionCode + AreaCodeUtils.getDigitByCode(regionCode);
+		return product.location.regionCode.goe(regionCode).and(product.location.regionCode.lt(nextRegionCode));
 	}
 
 	private BooleanExpression memberIdEq(Long memberId) {

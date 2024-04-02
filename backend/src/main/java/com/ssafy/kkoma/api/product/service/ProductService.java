@@ -78,9 +78,11 @@ public class ProductService {
 		List<ProductSummary> productSummaries = new ArrayList<>();
 
 		for (Product product : products) {
-			String dealPlace = areaService.findAreaById(product.getLocation().getRegionCode()).getFullArea();
 			ProductSummary productSummary = ProductSummary.fromEntity(product);
-			productSummary.setDealPlace(dealPlace);
+			if(product.getLocation() != null) {
+				String dealPlace = areaService.findAreaById(product.getLocation().getRegionCode()).getFullArea();
+				productSummary.setDealPlace(dealPlace);
+			}
 			productSummaries.add(productSummary);
 		}
 
@@ -192,9 +194,11 @@ public class ProductService {
 		List<ProductSummary> content = new ArrayList<>();
 
 		for (Product product : page.getContent()) {
-			String dealPlace = areaService.findAreaById(product.getLocation().getRegionCode()).getFullArea();
 			ProductSummary productSummary = ProductSummary.fromEntity(product);
-			productSummary.setDealPlace(dealPlace);
+			if(product.getLocation() != null) {
+				String dealPlace = areaService.findAreaById(product.getLocation().getRegionCode()).getFullArea();
+				productSummary.setDealPlace(dealPlace);
+			}
 			content.add(productSummary);
 		}
 
