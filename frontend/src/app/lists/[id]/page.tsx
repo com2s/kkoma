@@ -64,18 +64,18 @@ export default function ProductDetail({ params: { id } }: IParams) {
   };
 
   const handleRequest = async (id: string) => {
-    const res = await getMyPoints();
-    const myPoints = await res.data.balance;
-    if (product && Number(myPoints) > product?.data.price) {
-      router.push(`/lists/${id}/request`);
+    if (product?.data.status === "SALE") {
+      const res = await getMyPoints();
+      const myPoints = await res.data.balance;
+      if (product && Number(myPoints) > product?.data.price) {
+        router.push(`/lists/${id}/request`);
+      } else {
+        alert("포인트가 부족합니다. 먼저 포인트를 충전해주세요.");
+        router.push("/point/charge");
+      }
     } else {
-      alert("포인트가 부족합니다. 먼저 포인트를 충전해주세요.");
-      router.push("/point/charge");
+      alert("이미 거래중이거나 거래 완료된 상품입니다.");
     }
-  };
-
-  const handleNull = () => {
-    return null;
   };
 
   const settings = {
@@ -134,9 +134,7 @@ export default function ProductDetail({ params: { id } }: IParams) {
         </ButtonContainer>
       ) : (
         <ButtonContainer>
-          <div onClick={() => handleRequest(id)} className="w-full">
-            <NormalBtn next={handleNull}>거래 요청</NormalBtn>
-          </div>
+          <NormalBtn next={() => handleRequest(id)}>거래 요청</NormalBtn>
           <SubBtn next={`/chat/${product?.data.chatRoomId}`}>채팅 문의</SubBtn>
         </ButtonContainer>
       )}
