@@ -95,7 +95,7 @@ public class MemberInfoController {
         summary = "유저 선호 거래 지역 정보 수정",
         security = { @SecurityRequirement(name = "bearer-key") }
     )
-    @PatchMapping("/place")
+    @PutMapping("/place")
     public ResponseEntity<ApiUtils.ApiResult<MemberPreferredPlaceResponse>> updateMemberPreferredPlace(
         @MemberInfo MemberInfoDto memberInfoDto,
         @RequestBody UpdateMemberPreferredPlaceRequest updateMemberPreferredPlaceRequest
