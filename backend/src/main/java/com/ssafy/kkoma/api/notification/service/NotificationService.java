@@ -35,7 +35,7 @@ public class NotificationService {
 
 	public BasePageResponse<Notification, NotificationSummary> getNotifications(Long memberId, Pageable pageable) {
 		Member member = memberService.findMemberByMemberId(memberId);
-		Page<Notification> page = notificationRepository.findByMember(member, pageable);
+		Page<Notification> page = notificationRepository.findByMemberOrderByCreatedAtDesc(member, pageable);
 
 		List<NotificationSummary> content = page.getContent().stream()
 				.map(NotificationSummary::fromEntity)
