@@ -26,7 +26,7 @@ export default function MyNotificationsPage() {
   const [page, setPage] = useState(0);
   const [success, setSuccess] = useState(true);
   const [today, setToday] = useState(new Date());
-  const [isEmptyShow, setIsEmptyShow] = useState<Boolean>(false);
+  const [isEmptyShow, setIsEmptyShow] = useState<Boolean>(true);
   const router = useRouter();
 
   const fetchData = async () => {
