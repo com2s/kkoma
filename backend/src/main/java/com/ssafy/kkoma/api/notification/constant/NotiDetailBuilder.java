@@ -42,7 +42,7 @@ public class NotiDetailBuilder {
         return new NotiDetail(
             sb.append("상품 '").append(productTitle).append("'의 판매 대금 ")
                 .append(price).append("원이 입금되었어요. (잔액: ").append(balance).append("원").toString(),
-            "https://www.google.com"
+            "/point"
         );
     }
 
@@ -52,7 +52,7 @@ public class NotiDetailBuilder {
         return new NotiDetail(
             sb.append("상품 '").append(productTitle).append("'의 구매 예치금 ")
                 .append(price).append("원이 반환되었어요. (잔액: ").append(balance).append("원)").toString(),
-            "https://www.google.com"
+            "/point"
         );
     }
 
@@ -63,7 +63,7 @@ public class NotiDetailBuilder {
             sb.append("포인트 ").append(amount).append("원이 ")
                 .append(pointChangeType == PointChangeType.CHARGE ? "충전" : "차감")
                 .append("되었어요. (잔액: ").append(balance).append("원)").toString(),
-            "https://www.google.com"
+            "/point"
         );
     }
 

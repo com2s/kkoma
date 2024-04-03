@@ -45,6 +45,20 @@ public class NotificationController {
 
 	@Tag(name = "Notification")
 	@Operation(
+		summary = "미확인 알림 존재 여부 확인",
+		description = "[[노션](https://www.notion.so/todays-jiwoo/a17aabe239434e26bba816aebd43f8cb?pvs=4)] ",
+		security = {@SecurityRequirement(name = "bearer-key")}
+	)
+	@GetMapping("/hasUnread")
+	public ResponseEntity<ApiUtils.ApiResult<?>> hasUnreadNotis(
+		@MemberInfo MemberInfoDto memberInfoDto
+	) {
+		Boolean hasUnread = notificationService.hasUnreadNotis(memberInfoDto.getMemberId());
+		return ResponseEntity.ok(ApiUtils.success(hasUnread));
+	}
+
+	@Tag(name = "Notification")
+	@Operation(
 		summary = "알림 읽음 처리",
 		description = "[[노션](https://www.notion.so/todays-jiwoo/bc29cfa76089469193f61073f956e55c?pvs=4)] 유저가 알림을 클릭하면 읽음으로 처리한다.",
 		security = {@SecurityRequirement(name = "bearer-key")}

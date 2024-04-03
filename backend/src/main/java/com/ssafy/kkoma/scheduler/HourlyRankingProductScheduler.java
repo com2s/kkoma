@@ -30,15 +30,17 @@ public class HourlyRankingProductScheduler {
 
     @Scheduled(cron = "0 0 0/1 * * *", zone = "Asia/Seoul")
     public void getMostWishedProducts() {
-        log.info("[scheduler] getMostWishedProducts가 실행됩니다. at {}", LocalDateTime.now());
+        log.info("[scheduler] getMostWishedProducts가 실행됩니다. at {}", LocalDateTime.now().withSecond(1));
         List<ProductHourlyWishedResponse> productList = productService.getHourlyMostWishedProducts(4, LocalDateTime.now());
+        log.info("[wish] result 개수 {}", productList.size());
         redisService.setValues("hourlyWishedProductList", productList);
     }
 
     @Scheduled(cron = "0 0 0/1 * * *", zone = "Asia/Seoul")
     public void getMostViewedProducts() {
-        log.info("[scheduler] getMostViewedProducts가 실행됩니다. at {}", LocalDateTime.now());
+        log.info("[scheduler] getMostViewedProducts가 실행됩니다. at {}", LocalDateTime.now().withSecond(1));
         List<ProductHourlyViewedResponse> productList = productService.getHourlyMostViewedProducts(4, LocalDateTime.now());
+        log.info("[view] result 개수 {}", productList.size());
         redisService.setValues("hourlyViewedProductList", productList);
     }
 }
