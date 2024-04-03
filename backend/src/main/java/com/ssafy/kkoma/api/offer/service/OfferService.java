@@ -83,6 +83,8 @@ public class OfferService {
         offer.setMember(member);
         Long offerId = offerRepository.save(offer).getId();
 
+        product.setOfferCount(product.getOfferCount() + 1);
+
         // 판매자에 거래 요청 수신 알림
         notificationService.createNotification(
             product.getMember(),
@@ -162,7 +164,7 @@ public class OfferService {
             OfferType offerType = offer.getStatus();
             ProductType productType = product.getStatus();
             Area area = areaService.findAreaById(product.getLocation().getRegionCode());
-            if (OfferType.SENT.equals(offerType) || OfferType.CANCELLED.equals(offerType) || (OfferType.ACCEPTED.equals(offerType) && ProductType.SOLD.equals(productType)) ) {
+            if (OfferType.SENT.equals(offerType) || OfferType.CANCELLED.equals(offerType) || OfferType.REJECTED.equals(offerType)|| (OfferType.ACCEPTED.equals(offerType) && ProductType.SOLD.equals(productType)) ) {
                 Deal deal = dealService.findDealByProductId(productId);
                 OfferedProductInfoResponse offeredProductInfoResponse = OfferedProductInfoResponse.fromEntity(product, MyProductType.BUY, offerType,
                         deal != null ? deal.getId() : null,

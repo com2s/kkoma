@@ -6,10 +6,12 @@ import com.ssafy.kkoma.api.member.dto.response.MemberInfoResponse;
 import com.ssafy.kkoma.api.member.dto.response.MemberPreferredPlaceResponse;
 import com.ssafy.kkoma.api.member.dto.response.MemberSummaryResponse;
 import com.ssafy.kkoma.api.member.dto.response.MyPageMemberProfileResponse;
+import com.ssafy.kkoma.domain.area.entity.Area;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
 import com.ssafy.kkoma.domain.member.constant.Role;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.member.repository.MemberRepository;
+import com.ssafy.kkoma.factory.AreaFactory;
 import com.ssafy.kkoma.factory.MemberFactory;
 import com.ssafy.kkoma.factory.ProductFactory;
 import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
@@ -37,6 +39,9 @@ class MemberInfoServiceTest {
 
     @Autowired
     AreaService areaService;
+
+    @Autowired
+    AreaFactory areaFactory;
 
     @Test
     @Transactional
@@ -72,12 +77,15 @@ class MemberInfoServiceTest {
     @Transactional
     void 회원_요약_정보_얻기() {
         // given
+        Area area = areaFactory.createArea();
+
         Member member = Member.builder()
                 .name("kim")
                 .memberType(MemberType.KAKAO)
                 .role(Role.USER)
                 .build();
 
+        member.setPreferredPlaceRegionCode(area.getId());
         Member savedMember = memberRepository.save(member);
 
         // when

@@ -8,11 +8,14 @@ import com.ssafy.kkoma.domain.area.entity.Area;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -29,7 +32,12 @@ public class MemberInfoService {
 
     public MemberSummaryResponse getMemberSummary(Long memberId) {
         Member member = memberService.findMemberByMemberId(memberId);
-        return MemberSummaryResponse.fromEntity(member);
+        Area area = areaService.findAreaById(member.getPreferredPlaceRegionCode());
+        log.info("###" + member.getPreferredPlaceRegionCode() + ": " + area.getId());
+
+        MemberSummaryResponse memberSummaryResponse = MemberSummaryResponse.fromEntity(member);
+        memberSummaryResponse.setPreferredPlace(area.getFullArea());
+        return memberSummaryResponse;
     }
 
     public MyPageMemberProfileResponse getMyPageMemberProfile(Long memberId) {
