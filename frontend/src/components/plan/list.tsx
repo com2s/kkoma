@@ -30,7 +30,7 @@ export function DealCard(deal: PlanCard, key: number, router: AppRouterInstance)
         next={`/chat/${deal.chatRoomId}`}
       />
       <button
-        className="flex bg-slate-50 text-caption w-full rounded-sm py-1 justify-center my-2"
+        className="flex bg-slate-50 text-body2 w-full rounded-sm py-2 justify-center my-2"
         onClick={() => {
           router.push(`/plan/${deal.dealId}/qr?product=${deal.id}`);
         }}

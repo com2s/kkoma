@@ -48,7 +48,7 @@ export async function getRequesters(productId: string) {
 }
 
 export async function patchOfferAccept(offerId: string, date: string, time: string) {
-  const koreaTime = date + "T" + time + ":00";
+  const koreaTime = date + " " + time + ":00";
   const isoString = new Date(koreaTime).toISOString();
   const queryObject = {
     type: "accept",
