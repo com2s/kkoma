@@ -30,7 +30,7 @@ export default function TopBar2() {
           //   sx={{ color: "black", height: "32px" }}
           disabled
         ></Button>
-        <span className={styles.logo}>페이지 타이틀</span>
+        <span className={styles.logo}>거래 요청 목록</span>
         <div className={styles.notifications}>
           <Link href={"/my-trade"} className="flex justify-center">
             <IconButton aria-label="back">
@@ -39,8 +39,7 @@ export default function TopBar2() {
           </Link>
         </div>
       </div>
-      <div className={styles.headerSpacer}></div>{" "}
-      {/* 상단 바 높이만큼의 빈 공간 */}
+      <div className={styles.headerSpacer}></div> {/* 상단 바 높이만큼의 빈 공간 */}
     </>
   );
 }
