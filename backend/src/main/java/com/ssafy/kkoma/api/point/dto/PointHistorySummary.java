@@ -1,8 +1,10 @@
 package com.ssafy.kkoma.api.point.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ssafy.kkoma.domain.point.constant.PointChangeType;
 import com.ssafy.kkoma.domain.point.entity.PointHistory;
 import com.ssafy.kkoma.domain.product.entity.Product;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +20,10 @@ public class PointHistorySummary {
     private int amount;
     private int balanceAfterChange;
     private PointChangeType pointChangeType;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime date;
+
     private ProductInfo productInfo;
 
     @Setter

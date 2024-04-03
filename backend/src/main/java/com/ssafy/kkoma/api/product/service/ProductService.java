@@ -7,8 +7,8 @@ import com.ssafy.kkoma.api.deal.service.DealService;
 import com.ssafy.kkoma.api.member.dto.response.MemberSummaryResponse;
 import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.api.product.dto.*;
+import com.ssafy.kkoma.api.product.dto.hourly.ProductHourlyBase;
 import com.ssafy.kkoma.api.product.dto.hourly.ProductHourlyViewedResponse;
-import com.ssafy.kkoma.api.product.dto.hourly.ProductHourlyWished;
 import com.ssafy.kkoma.api.product.dto.hourly.ProductHourlyWishedResponse;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
 import com.ssafy.kkoma.api.product.dto.response.ChatProductResponse;
@@ -289,36 +289,36 @@ public class ProductService {
 	}
 
 	public List<ProductHourlyWishedResponse> getHourlyMostWishedProducts(int limit, LocalDateTime now) {
-		List<ProductHourlyWished> productList = productRepository.getHourlyMostWishedProducts(limit, now);
+		List<ProductHourlyBase> productList = productRepository.getHourlyMostWishedProducts(limit, now);
 		List<ProductHourlyWishedResponse> result = new ArrayList<>();
 
-		for (ProductHourlyWished productHourlyWished : productList) {
+		for (ProductHourlyBase productHourlyBase : productList) {
 
-			String dealPlace = areaService.findAreaById(productHourlyWished.getRegionCode()).getFullArea();
-			productHourlyWished.setDealPlace(dealPlace);
+			String dealPlace = areaService.findAreaById(productHourlyBase.getRegionCode()).getFullArea();
+			productHourlyBase.setDealPlace(dealPlace);
 
-			Long elapsedMinutes = Duration.between(productHourlyWished.getCreatedAt(), LocalDateTime.now()).toMinutes();
-			productHourlyWished.setElapsedMinutes(elapsedMinutes);
+			Long elapsedMinutes = Duration.between(productHourlyBase.getCreatedAt(), LocalDateTime.now()).toMinutes();
+			productHourlyBase.setElapsedMinutes(elapsedMinutes);
 
-			result.add(new ProductHourlyWishedResponse(productHourlyWished));
+			result.add(new ProductHourlyWishedResponse(productHourlyBase));
 		}
 
 		return result;
 	}
 
 	public List<ProductHourlyViewedResponse> getHourlyMostViewedProducts(int limit, LocalDateTime now) {
-		List<ProductHourlyWished> productList = productRepository.getHourlyMostViewedProducts(limit, now);
+		List<ProductHourlyBase> productList = productRepository.getHourlyMostViewedProducts(limit, now);
 		List<ProductHourlyViewedResponse> result = new ArrayList<>();
 
-		for (ProductHourlyWished productHourlyWished : productList) {
+		for (ProductHourlyBase productHourlyBase : productList) {
 
-			String dealPlace = areaService.findAreaById(productHourlyWished.getRegionCode()).getFullArea();
-			productHourlyWished.setDealPlace(dealPlace);
+			String dealPlace = areaService.findAreaById(productHourlyBase.getRegionCode()).getFullArea();
+			productHourlyBase.setDealPlace(dealPlace);
 
-			Long elapsedMinutes = Duration.between(productHourlyWished.getCreatedAt(), LocalDateTime.now()).toMinutes();
-			productHourlyWished.setElapsedMinutes(elapsedMinutes);
+			Long elapsedMinutes = Duration.between(productHourlyBase.getCreatedAt(), LocalDateTime.now()).toMinutes();
+			productHourlyBase.setElapsedMinutes(elapsedMinutes);
 
-			result.add(new ProductHourlyViewedResponse(productHourlyWished));
+			result.add(new ProductHourlyViewedResponse(productHourlyBase));
 		}
 
 		return result;

@@ -8,8 +8,8 @@ import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.kkoma.api.product.dto.hourly.ProductHourlyWished;
-import com.ssafy.kkoma.api.product.dto.hourly.QProductHourlyWished;
+import com.ssafy.kkoma.api.product.dto.hourly.ProductHourlyBase;
+import com.ssafy.kkoma.api.product.dto.hourly.QProductHourlyBase;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
 import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.domain.product.entity.Product;
@@ -97,7 +97,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 		order by wish_count_on_hour;
 	 */
 	@Override
-	public List<ProductHourlyWished> getHourlyMostWishedProducts(int limit, LocalDateTime now) {
+	public List<ProductHourlyBase> getHourlyMostWishedProducts(int limit, LocalDateTime now) {
 		LocalDateTime endTime = now.withMinute(0).withSecond(0).withNano(0);
 		LocalDateTime startTime = endTime.minusHours(1);
 		endTime = endTime.minusNanos(5000);
@@ -106,9 +106,9 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 
 		NumberPath<Long> aliasWishCount = Expressions.numberPath(Long.class, "hourlyWishCount");
 
-		JPAQuery<ProductHourlyWished> query = queryFactory
+		JPAQuery<ProductHourlyBase> query = queryFactory
 				.select(
-						new QProductHourlyWished(
+						new QProductHourlyBase(
 								product.id,
 								product.thumbnailImage,
 								product.title,
@@ -135,7 +135,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 	}
 
 	@Override
-	public List<ProductHourlyWished> getHourlyMostViewedProducts(int limit, LocalDateTime now) {
+	public List<ProductHourlyBase> getHourlyMostViewedProducts(int limit, LocalDateTime now) {
 		LocalDateTime endTime = now.withMinute(0).withSecond(0).withNano(0);
 		LocalDateTime startTime = endTime.minusHours(1);
 		endTime = endTime.minusNanos(5000);
@@ -144,9 +144,9 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 
 		NumberPath<Long> aliasViewCount = Expressions.numberPath(Long.class, "hourlyViewCount");
 
-		JPAQuery<ProductHourlyWished> query = queryFactory
+		JPAQuery<ProductHourlyBase> query = queryFactory
 				.select(
-						new QProductHourlyWished(
+						new QProductHourlyBase(
 								product.id,
 								product.thumbnailImage,
 								product.title,

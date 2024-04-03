@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Data
 @ToString
 @SuperBuilder
-public class ProductHourlyWished extends ProductSummary {
+public class ProductHourlyBase extends ProductSummary {
 
     @Setter
     private Long hourlyWishCount;
@@ -24,7 +24,7 @@ public class ProductHourlyWished extends ProductSummary {
     private LocalDateTime createdAt;
 
     @QueryProjection
-    public ProductHourlyWished(
+    public ProductHourlyBase(
         Long id, String thumbnailImage, String title, ProductType status,
         int price, Long wishCount, Long viewCount, Long offerCount,
         Long hourlyWishCount, Long regionCode, LocalDateTime createdAt
