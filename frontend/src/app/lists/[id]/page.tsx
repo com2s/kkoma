@@ -78,12 +78,12 @@ export default function ProductDetail({ params: { id } }: IParams) {
     // centerMode: true,
     autoplay: product && product.data.productImages.length > 1 ? true : false,
     // 이동부터 다음 이동까지의 시간
-    autoplaySpeed: 2000,
+    autoplaySpeed: 5000,
     dots: true,
     arrows: false,
     infinite: product && product.data.productImages.length > 1 ? true : false,
     // 이동하는데 걸리는 시간
-    speed: 500,
+    speed: 750,
     slidesToShow: 1,
     slidesToScroll: 1,
   };

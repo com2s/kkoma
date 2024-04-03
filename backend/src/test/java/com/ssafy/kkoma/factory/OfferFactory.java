@@ -1,6 +1,7 @@
 package com.ssafy.kkoma.factory;
 
 import com.ssafy.kkoma.domain.member.entity.Member;
+import com.ssafy.kkoma.domain.offer.constant.OfferType;
 import com.ssafy.kkoma.domain.offer.entity.Offer;
 import com.ssafy.kkoma.domain.offer.repository.OfferRepository;
 import com.ssafy.kkoma.domain.product.entity.Product;
@@ -22,4 +23,12 @@ public class OfferFactory {
         return offerRepository.save(offer);
     }
 
+    public Offer createOffer(Product product, Member buyer, OfferType offerType) {
+        Offer offer = Offer.builder()
+                .product(product)
+                .member(buyer)
+                .build();
+        offer.setStatus(OfferType.ACCEPTED);
+        return offerRepository.save(offer);
+    }
 }

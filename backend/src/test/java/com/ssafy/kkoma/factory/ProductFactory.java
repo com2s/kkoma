@@ -43,6 +43,19 @@ public class ProductFactory {
         return productRepository.save(product);
     }
 
+    public Product createProduct(Member seller, ProductType type, Area area) {
+        Location location = locationFactory.createLocation(area);
+
+        Product product = Product.builder()
+                .title(TITLE)
+                .thumbnailImage(IMAGE_URL)
+                .location(location)
+                .status(type)
+                .build();
+        product.setMember(seller);
+        return productRepository.save(product);
+    }
+
     public Product createProduct(Member seller, Category category, int price) {
         Area area = areaFactory.createArea();
         Location location = locationFactory.createLocation();

@@ -71,6 +71,7 @@ public class Product extends BaseTimeEntity {
 	private Long wishCount = 0L;
 
 	@Builder.Default
+	@Setter
 	private Long offerCount = 0L;
 
 	private LocalDateTime deletedAt;
