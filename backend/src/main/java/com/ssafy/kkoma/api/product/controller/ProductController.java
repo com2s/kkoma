@@ -10,6 +10,7 @@ import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
 import com.ssafy.kkoma.api.product.service.CategoryPreferenceService;
 import com.ssafy.kkoma.api.product.service.ProductService;
 import com.ssafy.kkoma.api.product.service.ViewHistoryService;
+import com.ssafy.kkoma.api.redis.constant.RedisKeyName;
 import com.ssafy.kkoma.api.redis.service.RedisService;
 import com.ssafy.kkoma.domain.product.constant.CategoryPreferenceType;
 import com.ssafy.kkoma.domain.product.entity.Product;
@@ -26,6 +27,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,7 +132,7 @@ public class ProductController {
     )
     @GetMapping("/hourly/wish")
     public ResponseEntity<ApiUtils.ApiResult<?>> getHourlyMostWishedProducts() throws IOException {
-        String data = redisService.getValues("hourlyWishedProductList");
+        String data = redisService.findHourlyData(RedisKeyName.hourlyWishedProductList, LocalDateTime.now());
 
         ObjectMapper mapper = new ObjectMapper();
         ArrayList list = mapper.readValue(data, new ArrayList<ProductHourlyWishedResponse>().getClass());
@@ -146,7 +148,7 @@ public class ProductController {
     )
     @GetMapping("/hourly/view")
     public ResponseEntity<ApiUtils.ApiResult<?>> getHourlyMostViewedProducts() throws IOException {
-        String data = redisService.getValues("hourlyViewedProductList");
+        String data = redisService.findHourlyData(RedisKeyName.hourlyViewedProductList, LocalDateTime.now());
 
         ObjectMapper mapper = new ObjectMapper();
         ArrayList list = mapper.readValue(data, new ArrayList<ProductHourlyViewedResponse>().getClass());
