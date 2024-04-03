@@ -90,7 +90,7 @@ export default function Home() {
         </NoContents>
         {bestWishProducts && bestWishProducts.length > 0 ? (
           <HourlyProductList
-            title={"가지고싶다 이 상품"}
+            title={"💖가지고싶다 이 상품"}
             subtitle={"최근 1시간동안 찜이 많았던 상품 보여드릴게요"}
             products={bestWishProducts}
           />
@@ -99,7 +99,7 @@ export default function Home() {
         )}
         {bestViewProducts && bestViewProducts.length > 0 ? (
           <HourlyProductList
-            title={"자꾸자꾸 눈이 가"}
+            title={"👀자꾸자꾸 눈이 가"}
             subtitle={"최근 1시간동안 조회수가 많았던 상품 보여드릴게요"}
             products={bestViewProducts}
           />

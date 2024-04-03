@@ -12,7 +12,7 @@ export default function HourlyProductList({ title, subtitle, products }: Product
   return (
     <div className={styles.container}>
       <div>
-        <h4>{title}</h4>
+        <h4 className="align-middle">{title}</h4>
         {subtitle && <div className="text-caption c-text3 mt-1">{subtitle}</div>}
       </div>
       <div className={styles.list}>
