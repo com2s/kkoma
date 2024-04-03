@@ -11,15 +11,19 @@ import { NoKids } from "@/components/home/noKids";
 import { KidSummary } from "@/types/kid";
 import { isLogin } from "@/utils/getAccessToken";
 import { useRouter } from "next/navigation";
-import { getHourlyProductAPI, getRecommendAPI } from "@/services/product";
+import { getWishProductAPI, getViewProductAPI, getRecommendAPI } from "@/services/product";
 import { ProductSm } from "@/types/product";
 import HourlyProductList from "@/components/home/hourlyProductList";
+import { NoContents } from "@/components/common/no-contents";
+import Image from "next/image";
+import { SmallBtn } from "@/components/common/buttons";
 
 export default function Home() {
   const [kidList, setKidList] = useState<Array<KidSummary>>([]);
   const [selectedName, setSelectedName] = useState<string | null>(null);
   const [recommend, setRecommend] = useState<Array<ProductSm>>([]);
-  const [hourly, setHourly] = useState<Array<ProductSm>>([]);
+  const [bestWishProducts, setBestWishProducts] = useState<Array<ProductSm>>([]);
+  const [bestViewProducts, setBestViewProducts] = useState<Array<ProductSm>>([]);
   const router = useRouter();
 
   const getKidList = async () => {
@@ -32,9 +36,14 @@ export default function Home() {
     setRecommend(res);
   };
 
-  const getHourlyProducts = async () => {
-    const res = await getHourlyProductAPI();
-    setHourly(res);
+  const getWishProducts = async () => {
+    const res = await getWishProductAPI();
+    setBestWishProducts(res);
+  };
+
+  const getViewProducts = async () => {
+    const res = await getViewProductAPI();
+    setBestViewProducts(res);
   };
 
   const canAccess = async () => {
@@ -46,7 +55,8 @@ export default function Home() {
   useEffect(() => {
     canAccess();
     getKidList();
-    getHourlyProducts();
+    getWishProducts();
+    getViewProducts();
   }, []);
 
   useEffect(() => {
@@ -73,8 +83,26 @@ export default function Home() {
         ) : (
           <NoKids />
         )}
-        {hourly && hourly.length > 0 ? (
-          <HourlyProductList title={"최근 찜이 많았던 상품"} products={hourly} />
+        <NoContents>
+          <h4 className="c-text3">거래 일정을 확인해볼까요?</h4>
+          <Image src="/images/calendar1.svg" alt="kid" width={100} height={100} />
+          <SmallBtn next={"/plan"}>확인하러가기</SmallBtn>
+        </NoContents>
+        {bestWishProducts && bestWishProducts.length > 0 ? (
+          <HourlyProductList
+            title={"가지고싶다 이 상품"}
+            subtitle={"최근 1시간동안 찜이 많았던 상품 보여드릴게요"}
+            products={bestWishProducts}
+          />
+        ) : (
+          <></>
+        )}
+        {bestViewProducts && bestViewProducts.length > 0 ? (
+          <HourlyProductList
+            title={"자꾸자꾸 눈이 가"}
+            subtitle={"최근 1시간동안 조회수가 많았던 상품 보여드릴게요"}
+            products={bestViewProducts}
+          />
         ) : (
           <></>
         )}
