@@ -15,4 +15,6 @@ public interface ProductRepositoryCustom {
 
 	List<ProductHourlyWished> getHourlyMostWishedProducts(int limit, LocalDateTime now);
 
+	List<ProductHourlyWished> getHourlyMostViewedProducts(int limit, LocalDateTime now);
+
 }

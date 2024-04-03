@@ -6,6 +6,7 @@ import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
 import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
 import com.ssafy.kkoma.api.product.dto.ProductSummary;
 import com.ssafy.kkoma.api.product.dto.ProductWishResponse;
+import com.ssafy.kkoma.api.product.dto.hourly.ProductHourlyViewedResponse;
 import com.ssafy.kkoma.api.product.dto.hourly.ProductHourlyWishedResponse;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
 import com.ssafy.kkoma.api.product.dto.response.ChatProductResponse;
@@ -19,9 +20,11 @@ import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.member.repository.MemberRepository;
 import com.ssafy.kkoma.domain.product.entity.Category;
 import com.ssafy.kkoma.domain.product.entity.Product;
+import com.ssafy.kkoma.domain.product.entity.ViewHistory;
 import com.ssafy.kkoma.domain.product.entity.WishList;
 import com.ssafy.kkoma.domain.product.repository.CategoryRepository;
 import com.ssafy.kkoma.domain.product.repository.ProductRepository;
+import com.ssafy.kkoma.domain.product.repository.ViewHistoryRepository;
 import com.ssafy.kkoma.domain.product.repository.WishListRepository;
 import com.ssafy.kkoma.factory.*;
 import com.ssafy.kkoma.global.error.exception.BusinessException;
@@ -59,6 +62,9 @@ class ProductServiceTest {
 
 	@Autowired
 	private WishListRepository wishListRepository;
+
+	@Autowired
+	private ViewHistoryRepository viewHistoryRepository;
 
 	@Autowired
 	private ProductService productService;
@@ -311,8 +317,8 @@ class ProductServiceTest {
 	}
 
 	@Test
-//	@Transactional
-	void 지난_한_시간_동안_찜수_탑텐_상품글_조회() {
+	@Transactional
+	void 지난_한_시간_동안_찜수_탑4_상품글_조회() {
 
 		// 1) given
 		int NUM = 5;
@@ -367,6 +373,70 @@ class ProductServiceTest {
 		}
 
 //		redisService.setValues("hourlyWishedProductList", result);
+
+	}
+
+	@Test
+//	@Transactional
+	void 지난_한_시간_동안_조회수_탑4_상품글_조회() {
+
+		// 1) given
+		int NUM = 5;
+		Member seller = memberFactory.createMember();
+		Member buyer;
+
+		List<Product> productList = new ArrayList<>();
+		List<Member> buyerList = new ArrayList<>();
+
+		LocalDateTime now = LocalDateTime.now().withMinute(30).withSecond(0).withNano(0);
+
+		for (int i = 1; i <= NUM; i++) {
+			Product product = productFactory.createProduct(seller);
+			productList.add(product);
+		}
+
+		for (int i = 1; i <= NUM; i++) {
+			buyer = memberFactory.createMember();
+			buyerList.add(buyer);
+		}
+
+		// 2) when
+
+		// 상품4(0명) / 상품3(4명) / 상품2(3명) / 상품1(2명) / 상품0(1명)
+		for (int m = 0; m < NUM; m++) {
+			buyer = buyerList.get(m);
+			for (int p = NUM - 2; p >= m; p--) {
+				viewHistoryRepository.save(ViewHistory.builder()
+					.member(buyer).product(productList.get(p))
+					.viewedAt(now.minusHours(1))
+					.build()
+				);
+			}
+		}
+
+		// 상품4 => 5명 but createdAt 시간이 1시간 전보다 전 시간
+		for (int m = 0; m < NUM; m++) {
+			buyer = buyerList.get(m);
+			viewHistoryRepository.save(ViewHistory.builder()
+					.member(buyer).product(productList.get(NUM - 1))
+					.viewedAt(now.withMinute(0).withSecond(0).withNano(0))
+					.build()
+			);
+		}
+
+		List<ProductHourlyViewedResponse> result = productService.getHourlyMostViewedProducts(4, now);
+		log.info("result 개수 {}", result.size());
+
+		// 3) then : 최종 순위 => 상품3(4명) / 상품2(3명) / 상품1(2명) / 상품0(1명)
+
+		long answer = NUM - 1;
+		for (ProductHourlyViewedResponse p : result) {
+			log.info("지난 정시~정시 1시간 동안 조회수가 가장 많았던 순서대로: {}개", p.getHourlyViewCount());
+			Assertions.assertThat(p.getHourlyViewCount()).isEqualTo(answer);
+			answer--;
+		}
+
+		redisService.setValues("hourlyViewedProductList", result);
 
 	}
 

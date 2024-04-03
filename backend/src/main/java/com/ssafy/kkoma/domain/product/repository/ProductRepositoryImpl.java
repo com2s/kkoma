@@ -26,6 +26,7 @@ import java.util.List;
 
 import static com.ssafy.kkoma.domain.location.entity.QLocation.location;
 import static com.ssafy.kkoma.domain.product.entity.QProduct.product;
+import static com.ssafy.kkoma.domain.product.entity.QViewHistory.viewHistory;
 import static com.ssafy.kkoma.domain.product.entity.QWishList.wishList;
 
 @Slf4j
@@ -128,6 +129,42 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 				)
 				.groupBy(wishList.product.id)
 				.orderBy(aliasWishCount.desc())
+				.limit(limit);
+
+		return query.fetch();
+	}
+
+	@Override
+	public List<ProductHourlyWished> getHourlyMostViewedProducts(int limit, LocalDateTime now) {
+		LocalDateTime endTime = now.withMinute(0).withSecond(0).withNano(0);
+		LocalDateTime startTime = endTime.minusHours(1);
+		endTime = endTime.minusNanos(5000);
+
+		log.info("계산에 고려되는 createdAt 시간은 {} ~ {}", startTime, endTime);
+
+		NumberPath<Long> aliasViewCount = Expressions.numberPath(Long.class, "hourlyViewCount");
+
+		JPAQuery<ProductHourlyWished> query = queryFactory
+				.select(
+						new QProductHourlyWished(
+								product.id,
+								product.thumbnailImage,
+								product.title,
+								product.status,
+								product.price,
+								product.wishCount,
+								product.viewCount,
+								product.offerCount,
+								viewHistory.id.count().as(aliasViewCount),
+								product.location.regionCode,
+								product.createdAt
+						)
+				)
+				.from(viewHistory)
+				.leftJoin(product).on(viewHistory.product.id.eq(product.id))
+				.where(viewHistory.viewedAt.between(startTime, endTime))
+				.groupBy(viewHistory.product.id)
+				.orderBy(aliasViewCount.desc())
 				.limit(limit);
 
 		return query.fetch();
