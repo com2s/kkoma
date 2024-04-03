@@ -2,8 +2,8 @@ import APIModule from "@/utils/apiModule";
 
 export async function getMyNotifications(page?: number, size?: number) {
   const queryObject = {
-    page: page?.toString()??'0',
-    size: size?.toString()??'20',
+    page: page?.toString() ?? "0",
+    size: size?.toString() ?? "20",
   };
 
   const query = new URLSearchParams(queryObject).toString();
@@ -23,6 +23,6 @@ export async function postReadNotification(notificationId: number) {
     method: "POST",
     data: null,
   });
-  console.log("READ NOTIFICATION")
+  console.log("READ NOTIFICATION");
   return response;
 }

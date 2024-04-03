@@ -15,6 +15,7 @@ export default function MyNotificationsPage() {
   const [notifications, setNotifications] = useState<NotificationList["data"]["content"]>([]);
   const [data, setData] = useState<NotificationList["data"]>();
   const [page, setPage] = useState(0);
+  const [isLast, setIsLast] = useState<boolean>(true);
   const [success, setSuccess] = useState(true);
   const [today, setToday] = useState(new Date());
   const [isEmptyShow, setIsEmptyShow] = useState<Boolean>(true);
@@ -27,6 +28,7 @@ export default function MyNotificationsPage() {
     // 기존 데이터 유지하면서 새로운 데이터 추가
     setNotifications([...notifications, ...sortNotifications(res.data.content)]);
     setData(res.data);
+    setIsLast(res.data.last);
     const date = new Date();
     setToday(date);
   };
@@ -109,65 +111,28 @@ export default function MyNotificationsPage() {
             ))}
           </>
         )}
-        {/* page*10 + 1 횟수만큼 반복(테스트용) */}
-        {/* {Array.from({ length: page * 10 + 1 }, (_, i) => (
-          <a
-            href="/"
-            onClick={handleLinkClick(1, "/")}
-            style={{ textDecoration: "none" }}
-            key={i}
-          >
-            <ListItem sx={{ paddingX: 0, minHeight: "90px" }}>
-              <ListItemAvatar>
-                <Avatar
-                  src="temp-img.svg"
-                  alt="Temp Avatar"
-                  sx={{ width: 48, height: 48, marginRight: 2 }}
-                />
-              </ListItemAvatar>
-              <ListItemText
-                primary="기능 테스트, 향후 지울 것. Browse through the icons below to find the one you need. The search field supports synonyms—for example, try searching for 'hamburger' or 'logout.'"
-                secondary="2024년 1월 1일 09:00"
-              />
-            </ListItem>
-          </a>
-        ))} */}
-        {success === true && data?.empty && isEmptyShow && (
-          <>
-            <ListItem
-              sx={{ paddingX: 0, minHeight: "90px" }}
-              onClick={() => setIsEmptyShow(false)}
-              className="cursor-pointer"
-            >
-              <ListItemAvatar>
-                <Avatar
-                  src="temp-img.svg"
-                  alt="Temp Avatar"
-                  sx={{ width: 48, height: 48, marginRight: 2 }}
-                />
-              </ListItemAvatar>
-              <ListItemText primary="알림이 없습니다." secondary={formattedToday(today)} />
-            </ListItem>
-          </>
-        )}
       </List>
-      <div className="flex justify-around mt-6">
-        <Button
-          onClick={handlePageMore}
-          // disabled={data?.last || data?.empty}
-          style={{
-            // color: "black",
-            fontSize: "1rem",
-            fontWeight: "bold",
-            padding: "0.5rem 1rem",
-            // border: "1px solid black",
-            borderRadius: "0.5rem",
-            cursor: "pointer",
-          }}
-        >
-          더 보기
-        </Button>
-      </div>
+      {isLast ? (
+        <></>
+      ) : (
+        <div className="flex justify-around mt-6">
+          <Button
+            onClick={handlePageMore}
+            // disabled={data?.last || data?.empty}
+            style={{
+              // color: "black",
+              fontSize: "1rem",
+              fontWeight: "bold",
+              padding: "0.5rem 1rem",
+              // border: "1px solid black",
+              borderRadius: "0.5rem",
+              cursor: "pointer",
+            }}
+          >
+            더 보기
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
