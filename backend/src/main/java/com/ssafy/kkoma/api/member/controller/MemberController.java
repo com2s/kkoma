@@ -52,7 +52,7 @@ public class MemberController {
             List<ProductInfoResponse> sellingProductResponses = memberService.getMySellingProducts(memberId, ProductType.PROGRESS);
             productInfoResponses.addAll(buyingProductResponses);
             productInfoResponses.addAll(sellingProductResponses);
-            productInfoResponses.sort(Comparator.comparing(ProductInfoResponse::getSelectedTime).reversed()); // 거래 수락일로 정렬
+            productInfoResponses.sort(Comparator.comparing(ProductInfoResponse::getSelectedTime)); // 거래 수락일 오름차순 정렬
         }
 
         return ResponseEntity.ok().body(ApiUtils.success(productInfoResponses));
