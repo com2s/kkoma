@@ -56,7 +56,7 @@ class ProductControllerTest {
         Product product = productFactory.createProduct(member);
 
         ProductSummary productSummary = ProductSummary.fromEntity(product);
-        productSummary.setDealPlace("테스트12시 테스트12구 테스트12동");
+        productSummary.setDealPlace("서울특별시 종로구 청운동");
 
         productSummaryList.add(productSummary);
 

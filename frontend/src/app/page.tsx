@@ -11,15 +11,30 @@ import { NoKids } from "@/components/home/noKids";
 import { KidSummary } from "@/types/kid";
 import { isLogin } from "@/utils/getAccessToken";
 import { useRouter } from "next/navigation";
+import { getHourlyProductAPI, getRecommendAPI } from "@/services/product";
+import { ProductSm } from "@/types/product";
+import HourlyProductList from "@/components/home/hourlyProductList";
 
 export default function Home() {
   const [kidList, setKidList] = useState<Array<KidSummary>>([]);
   const [selectedName, setSelectedName] = useState<string | null>(null);
+  const [recommend, setRecommend] = useState<Array<ProductSm>>([]);
+  const [hourly, setHourly] = useState<Array<ProductSm>>([]);
   const router = useRouter();
 
   const getKidList = async () => {
     const res = await getKidsSummary();
     setKidList(res.data);
+  };
+
+  const getRecommendProducts = async () => {
+    const res = await getRecommendAPI();
+    setRecommend(res);
+  };
+
+  const getHourlyProducts = async () => {
+    const res = await getHourlyProductAPI();
+    setHourly(res);
   };
 
   const canAccess = async () => {
@@ -31,10 +46,14 @@ export default function Home() {
   useEffect(() => {
     canAccess();
     getKidList();
+    getHourlyProducts();
   }, []);
 
   useEffect(() => {
-    if (kidList && kidList.length > 0) setSelectedName(kidList[0].name);
+    if (kidList && kidList.length > 0) {
+      setSelectedName(kidList[0].name);
+      getRecommendProducts();
+    }
   }, [kidList]);
 
   return (
@@ -45,10 +64,19 @@ export default function Home() {
         {kidList && kidList.length > 0 ? (
           <>
             <KidCardList kidList={kidList} setSelectedName={setSelectedName} />
-            <RecommandProductList name={selectedName} />
+            {recommend && recommend.length > 0 ? (
+              <RecommandProductList name={selectedName} products={recommend} />
+            ) : (
+              <></>
+            )}
           </>
         ) : (
           <NoKids />
+        )}
+        {hourly && hourly.length > 0 ? (
+          <HourlyProductList title={"최근 찜이 많았던 상품"} products={hourly} />
+        ) : (
+          <></>
         )}
       </div>
     </div>

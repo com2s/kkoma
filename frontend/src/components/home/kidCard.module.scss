@@ -6,7 +6,7 @@
   scroll-behavior: smooth;
   .card {
     @include flex(center, flex-start, column);
-    @include pad-v(rem(10), rem(25));
+    @include pad-v(rem(25), rem(25));
     gap: rem(10);
     width: 100%;
     min-width: 90%;

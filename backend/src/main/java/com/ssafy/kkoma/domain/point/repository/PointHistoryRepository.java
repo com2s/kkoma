@@ -16,6 +16,6 @@ import java.util.List;
 public interface PointHistoryRepository extends JpaRepository<PointHistory, Long> {
 
     List<PointHistory> findByPoint(Point point);
-    Page<PointHistory> findByPoint(Point point, Pageable pageable);
+    Page<PointHistory> findByPointOrderByCreatedAtDesc(Point point, Pageable pageable);
 
 }

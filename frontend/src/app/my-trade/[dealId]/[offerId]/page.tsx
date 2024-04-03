@@ -14,6 +14,10 @@ import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Box, Tab, Tabs, useTheme } from "@mui/material";
+import Title from "@/components/common/title";
+import { ButtonContainer, NormalBtn } from "@/components/common/buttons";
+
+import { useRouter } from "next/navigation";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -25,22 +29,19 @@ const Transition = React.forwardRef(function Transition(
 });
 
 interface IParams {
-  params: { 
-    dealId: string,
-    offerId: string
+  params: {
+    dealId: string;
+    offerId: string;
   };
 }
 
-export default function MyTradeCalender({ params:{offerId} }: IParams) {
+export default function MyTradeCalender({ params: { offerId } }: IParams) {
+  const router = useRouter();
+
   const [value, setValue] = useState(0);
   const [open, setOpen] = useState(false);
   const [parentDate0, setParentDate0] = useState("");
   const [parentTime0, setParentTime0] = useState("");
-  // const [parentDate1, setParentDate1] = useState("");
-  // const [parentTime1, setParentTime1] = useState("");
-  // const [parentDate2, setParentDate2] = useState("");
-  // const [parentTime2, setParentTime2] = useState("");
-
 
   const handleDate0 = (data: string) => {
     if (data) {
@@ -50,43 +51,9 @@ export default function MyTradeCalender({ params:{offerId} }: IParams) {
     }
   };
 
-  // const handleDate1 = (data: string) => {
-  //   if (data) {
-  //     const date = new Date(data);
-  //     const formattedDate = new Intl.DateTimeFormat("ko-KR", {
-  //       year: "numeric",
-  //       month: "2-digit",
-  //       day: "2-digit",
-  //     }).format(date);
-  //     setParentDate1(formattedDate);
-  //   } else {
-  //     setParentDate1("");
-  //   }
-  // };
-
-  // const handleDate2 = (data: string) => {
-  //   if (data) {
-  //     const date = new Date(data);
-  //     const formattedDate = new Intl.DateTimeFormat("ko-KR", {
-  //       year: "numeric",
-  //       month: "2-digit",
-  //       day: "2-digit",
-  //     }).format(date);
-  //     setParentDate2(formattedDate);
-  //   } else {
-  //     setParentDate2("");
-  //   }
-  // };
-
   const handleTime0 = (data: string) => {
     setParentTime0(data);
   };
-  // const handleTime1 = (data: string) => {
-  //   setParentTime1(data);
-  // };
-  // const handleTime2 = (data: string) => {
-  //   setParentTime2(data);
-  // };
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -115,21 +82,17 @@ export default function MyTradeCalender({ params:{offerId} }: IParams) {
   return (
     <React.Fragment>
       <TopBar2 />
-      <div className="px-4 my-12 mx-2">
-        <h1>거래하고 싶은 시간을 선택해주세요.</h1>
-        {/* <p className="my-6 text-gray-400">
-          거래 가능 시간은 최대 3개까지 선택할 수 있어요.
-        </p> */}
+      <div>
+        <Title title="거래 일시를 선택해주세요" subtitle="선택하신 날짜로 거래 일정이 확정돼요" />
         <Image
           src="/images/calendar1.svg"
           alt="달력"
-          width={300}
-          height={300}
+          width={180}
+          height={180}
           className="mx-auto my-6"
         />
       </div>
       <Box sx={{ borderBottom: 0, borderColor: "divider" }}>
-        {/* 탭 쓰려했으나 캘린더의 반응 문제로 취소 */}
         <Tabs
           value={value}
           onChange={handleChange}
@@ -142,11 +105,11 @@ export default function MyTradeCalender({ params:{offerId} }: IParams) {
               <div style={{ textAlign: "center" }}>
                 {parentDate0 ? (
                   <div>
-                    <p className="text-[18px] text-pretty">{parentDate0}</p>
-                    <p className="mt-1 text-[20px] text-pretty">{parentTime0}</p>
+                    <p className="text-body">{parentDate0}</p>
+                    <p className="mt-1 text-body">{parentTime0}</p>
                   </div>
                 ) : (
-                  <h4>시간 선택</h4>
+                  <span className="text-caption">시간 선택</span>
                 )}
               </div>
             }
@@ -161,52 +124,6 @@ export default function MyTradeCalender({ params:{offerId} }: IParams) {
               },
             }}
           />
-          {/* <Tab
-            label={
-              <div style={{ textAlign: "center" }}>
-                {parentDate1 ? (
-                  <div>
-                    <p className="text-[15px] text-pretty">{parentDate1}</p>
-                    <p className="mt-1 text-[15px] text-pretty">{parentTime1}</p>
-                  </div>
-                ) : (
-                  <p>추가 시간 선택</p>
-                )}
-              </div>
-            }
-            {...a11yProps(1)}
-            sx={{
-              margin: "8px",
-              borderRadius: "8px",
-              minWidth: "4rem",
-              "&.MuiTab-root": {
-                bgcolor: "#f5f5f5",
-              },
-            }}
-          />
-          <Tab
-            label={
-              <div style={{ textAlign: "center" }}>
-                {parentDate2 ? (
-                  <div>
-                    <p className="text-[15px] text-pretty">{parentDate2}</p>
-                    <p className="mt-1 text-[15px] text-pretty">{parentTime2}</p>
-                  </div>
-                ) : (
-                  <p>추가 시간 선택</p>
-                )}
-              </div>
-            }
-            {...a11yProps(2)}
-            sx={{
-              margin: "8px",
-              borderRadius: "12px",
-              minWidth: "3rem",
-              "&.MuiTab-root": {
-                bgcolor: "#f5f5f5",
-              },
-            }}
-          /> */}
         </Tabs>
       </Box>
       <div>
@@ -217,32 +134,12 @@ export default function MyTradeCalender({ params:{offerId} }: IParams) {
             isAccept
           ></Calendar>
         )}
-
-        {/* {value === 1 && (
-          <Calendar
-            sendDateToParent={handleDate1}
-            sendTimeToParent={handleTime1}
-            isAccept
-          ></Calendar>
-        )}
-
-        {value === 2 && (
-          <Calendar
-            sendDateToParent={handleDate2}
-            sendTimeToParent={handleTime2}
-            isAccept
-          ></Calendar>
-        )} */}
       </div>
-      <div className="flex justify-center">
-        <button
-          className="mt-8 mb-8 w-5/6 h-16 bg-primary rounded-xl
-         bg-yellow-400 text-black"
-          onClick={handleClickOpen}
-        >
-          <h3>거래 수락</h3>
-        </button>
-      </div>
+      <ButtonContainer>
+        <NormalBtn next={handleClickOpen} disabled={parentDate0 === "" || parentTime0 === ""}>
+          거래 수락
+        </NormalBtn>
+      </ButtonContainer>
       <Dialog
         // fullScreen={fullScreen}
         fullScreen
@@ -273,15 +170,9 @@ export default function MyTradeCalender({ params:{offerId} }: IParams) {
         </div>
         <Accept />
         {/* 우선 임시로 닫는 버튼 */}
-        <div className="flex justify-center">
-          <button
-            className="mt-8 mb-8 w-5/6 h-16 bg-primary rounded-xl
-         bg-yellow-400 text-black"
-            onClick={handleClose}
-          >
-            <h3>채팅하러 가기</h3>
-          </button>
-        </div>
+        <ButtonContainer>
+          <NormalBtn next={() => router.push("")}>채팅 하러 가기</NormalBtn>
+        </ButtonContainer>
       </Dialog>
     </React.Fragment>
   );

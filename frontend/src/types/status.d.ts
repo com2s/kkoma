@@ -1,5 +1,5 @@
 export type ProductStatus = "SALE" | "PROGRESS" | "SOLD";
-export type OfferStatus = "CANCELLED" | "SENT" | "ACCEPTED";
+export type OfferStatus = "CANCELLED" | "SENT" | "ACCEPTED" | "REJECTED";
 export type DealStatus = "BUY" | "PROGRESS" | "SELL";
 
 export interface Deal {
@@ -8,6 +8,7 @@ export interface Deal {
   id: number;
   offerCount: number;
   status: ProductType;
+  offerStatus: OfferStatus;
   thumbnailImage: string;
   price: number;
   title: string;

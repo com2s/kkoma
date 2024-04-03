@@ -23,11 +23,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Link from "next/link";
 import ShareLocationIcon from "@mui/icons-material/ShareLocation";
 import { sendUnWishAPI, sendWishAPI } from "@/services/wish";
-import {
-  ButtonContainer,
-  NormalBtn,
-  SubBtn,
-} from "@/components/common/buttons";
+import { ButtonContainer, NormalBtn, SubBtn } from "@/components/common/buttons";
 import { StaticMap } from "@/components/common/staticmap";
 import { getMyPoints } from "@/components/common/common-ftn";
 
@@ -82,12 +78,12 @@ export default function ProductDetail({ params: { id } }: IParams) {
     // centerMode: true,
     autoplay: product && product.data.productImages.length > 1 ? true : false,
     // 이동부터 다음 이동까지의 시간
-    autoplaySpeed: 2000,
+    autoplaySpeed: 5000,
     dots: true,
     arrows: false,
     infinite: product && product.data.productImages.length > 1 ? true : false,
     // 이동하는데 걸리는 시간
-    speed: 500,
+    speed: 750,
     slidesToShow: 1,
     slidesToScroll: 1,
   };
@@ -114,12 +110,10 @@ export default function ProductDetail({ params: { id } }: IParams) {
         </div>
         <Profile propsId={id} memberSummary={product?.data.memberSummary} />
         <Content propsId={id} product={product?.data} />
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1">
+        <div className="flex items-start justify-between gap-2">
+          <div className="flex items-start gap-1 min-w-fit">
             <ShareLocationIcon className="c-text1" />
-            <div className={`min-w-fit text-body2 ${styles.dealPlace}`}>
-              거래 장소
-            </div>
+            <div className={`min-w-fit text-body2 ${styles.dealPlace}`}>거래 장소</div>
           </div>
           <div className="text-body2 c-text2">{product?.data.dealPlace}</div>
         </div>

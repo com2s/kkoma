@@ -84,6 +84,9 @@ dependencies {
 
     // Trie
     implementation 'org.apache.commons:commons-collections4:4.4'
+
+    // Spring Data Redis (Spring에서 Redis 접근)
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
 dependencyManagement {

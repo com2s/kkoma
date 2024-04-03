@@ -50,7 +50,7 @@ public class PointHistoryService {
 
 	public BasePageResponse<PointHistory, PointHistorySummary> getPointHistory(Long memberId, Pageable pageable) {
 		Member member = memberService.findMemberByMemberId(memberId);
-		Page<PointHistory> page = pointHistoryRepository.findByPoint(member.getPoint(), pageable);
+		Page<PointHistory> page = pointHistoryRepository.findByPointOrderByCreatedAtDesc(member.getPoint(), pageable);
 
 		List<PointHistorySummary> content = page.getContent().stream()
 			.map(PointHistorySummary::fromEntity)

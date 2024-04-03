@@ -60,7 +60,8 @@ export default function Point() {
                       <Image
                         src={item.productInfo.thumbnail}
                         alt="thumbnail"
-                        fill
+                        width={56}
+                        height={56}
                         className="rounded-lg"
                       />
                     </div>
@@ -71,10 +72,7 @@ export default function Point() {
                       <div className="text-caption c-text3">{`${item.date.substring(
                         0,
                         10
-                      )} ${item.date.substring(
-                        11,
-                        16
-                      )} | ${PointChangeTypeFormat(
+                      )} ${item.date.substring(11, 16)} | ${PointChangeTypeFormat(
                         item.pointChangeType
                       )}`}</div>
                     </div>
@@ -96,17 +94,12 @@ export default function Point() {
                     </div>
                     <div>
                       <div className="text-body truncate w-40">
-                        {item.pointChangeType === "CHARGE"
-                          ? "포인트 충전"
-                          : "포인트 출금"}
+                        {item.pointChangeType === "CHARGE" ? "포인트 충전" : "포인트 출금"}
                       </div>
                       <div className="text-caption c-text3">{`${item.date.substring(
                         0,
                         10
-                      )} ${item.date.substring(
-                        11,
-                        16
-                      )} | ${PointChangeTypeFormat(
+                      )} ${item.date.substring(11, 16)} | ${PointChangeTypeFormat(
                         item.pointChangeType
                       )}`}</div>
                     </div>
@@ -115,15 +108,13 @@ export default function Point() {
                 <div className="min-w-fit">
                   <div
                     style={
-                      item.pointChangeType === "PAY" ||
-                      item.pointChangeType === "WITHDRAW"
+                      item.pointChangeType === "PAY" || item.pointChangeType === "WITHDRAW"
                         ? { color: "#764c32 !important" }
                         : { color: "#ffcf00 !important" }
                     }
                     className="!font-bold text-end text-body"
                   >
-                    {item.pointChangeType === "PAY" ||
-                    item.pointChangeType === "WITHDRAW"
+                    {item.pointChangeType === "PAY" || item.pointChangeType === "WITHDRAW"
                       ? "-"
                       : "+"}
                     {item.amount.toLocaleString()}P

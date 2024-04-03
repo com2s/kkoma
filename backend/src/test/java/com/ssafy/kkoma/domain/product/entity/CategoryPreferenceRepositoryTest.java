@@ -2,6 +2,7 @@ package com.ssafy.kkoma.domain.product.entity;
 
 import com.ssafy.kkoma.api.recommendation.CategoryPreference;
 import com.ssafy.kkoma.domain.member.entity.Member;
+import com.ssafy.kkoma.domain.product.repository.CategoryPreferenceRepository;
 import com.ssafy.kkoma.factory.CategoryFactory;
 import com.ssafy.kkoma.factory.CategoryPreferenceFactory;
 import com.ssafy.kkoma.factory.MemberFactory;

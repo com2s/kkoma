@@ -19,21 +19,26 @@ import lombok.ToString;
 public class ProductInfoResponse {
 
 	private Long id;
+
 	private String thumbnailImage;
+
 	private String title;
-	private String dealPlace;
-	private ProductType status;
 	private int price;
 	private Long elapsedMinutes;
+
+	private Long chatRoomId;
+
+	private ProductType status;
+
+	private Long dealId;
+	private LocalDateTime selectedTime;
+	private String dealPlace;
+
 	private Long wishCount;
 	private Long viewCount;
 	private Long offerCount;
-	private MyProductType type;
-	private Long chatRoomId;
 
-	// 거래 관련
-	private Long dealId;
-	private LocalDateTime selectedTime;
+	private MyProductType type;
 
 	public static ProductInfoResponse fromEntity(
 		Product product, MyProductType type, Long dealId, LocalDateTime dealTime, Area area

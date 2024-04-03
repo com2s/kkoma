@@ -12,7 +12,7 @@ export default function TopBar() {
           <span className="text-logo">KKOMA</span>
         </Link>
         <Link href="/notifications">
-        <NotificationsIcon className={styles.notifications} fontSize="large" />
+          <NotificationsIcon className={styles.notifications} fontSize="large" />
         </Link>
       </div>
       <div className={styles.headerSpacer}></div>

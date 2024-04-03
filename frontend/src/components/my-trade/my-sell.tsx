@@ -30,7 +30,6 @@ export default function MySell() {
   useEffect(() => {
     const fetchSelling = async () => {
       const myProducts = await getMyProducts("sell");
-      console.log("MySell: ", myProducts);
       setDeals(myProducts.data);
       setSuccess(myProducts.success);
     };
@@ -42,10 +41,7 @@ export default function MySell() {
     setSelectedChip(chip);
   };
 
-  const handleMenuClick = (
-    event: React.MouseEvent<HTMLElement>,
-    dealId: number
-  ) => {
+  const handleMenuClick = (event: React.MouseEvent<HTMLElement>, dealId: number) => {
     setAnchorEl(event.currentTarget);
     setOpenMenuId(dealId); // 메뉴가 열린 카드의 ID 저장
   };
@@ -55,20 +51,11 @@ export default function MySell() {
     setOpenMenuId(null); // 메뉴 닫을 때 ID 초기화
   };
 
-  const [isTradeRequestDialogOpen, setIsTradeRequestDialogOpen] =
-    useState(false);
+  const [isTradeRequestDialogOpen, setIsTradeRequestDialogOpen] = useState(false);
 
   const handleRequestOpen = () => {
     setIsTradeRequestDialogOpen(true); // 다이얼로그를 여는 함수
     handleMenuClose(); // 메뉴를 닫음
-  };
-
-  const handleMenuCloseAndDelete = () => {
-    if (window.confirm("이 판매글을 삭제하시겠습니까?")) {
-      // 여기에 판매글 삭제 API 호출 코드 추가
-      handleMenuClose();
-      console.log("판매글 삭제");
-    }
   };
 
   const filteredDeals = deals
@@ -122,22 +109,13 @@ export default function MySell() {
               <Link href={`/my-trade/${deal.id}`}>
                 <MenuItem onClick={handleRequestOpen}>거래요청목록</MenuItem>
               </Link>
-
-              <MenuItem onClick={handleMenuCloseAndDelete}>
-                판매글 삭제
-              </MenuItem>
             </Menu>
           </div>
         ))}
         {filteredDeals.length === 0 && (
           <NoContents>
             <h4 className="c-text3">판매한 상품이 없어요</h4>
-            <Image
-              src={"/images/Empty-BOX.png"}
-              alt="empty"
-              width={100}
-              height={100}
-            />
+            <Image src={"/images/Empty-BOX.png"} alt="empty" width={100} height={100} />
             <SmallBtn next={"/lists/create"}>상품 판매하러 가기</SmallBtn>
           </NoContents>
         )}

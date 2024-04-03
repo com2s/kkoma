@@ -27,6 +27,16 @@ export async function getMyProducts(type: TypeData["type"]) {
   return response;
 }
 
+export async function getBuyProducts() {
+  const response = await APIModule({
+    action: `/members/products/buy`,
+    method: "GET",
+    data: null,
+  });
+
+  return response;
+}
+
 export async function getRequesters(productId: string) {
   const response = await APIModule({
     action: `/offers/products/${productId}`,

@@ -7,13 +7,7 @@ import { Requester } from "@/types/offer";
 import { getRequesters } from "@/components/my-trade/my-trade-ftn";
 import { offerTimeState } from "@/store/offer";
 import { patchOfferReject } from "@/components/my-trade/my-trade-ftn";
-import {
-  Card,
-  CardContent,
-  Typography,
-  Avatar,
-  IconButton,
-} from "@mui/material";
+import { Card, CardContent, Typography, Avatar, IconButton } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import Slide from "@mui/material/Slide";
@@ -42,10 +36,10 @@ export default function MyRequest({ params: { dealId } }: IParams) {
   const [success, setSuccess] = useState(true);
   const [offerTime, setOfferTime] = useRecoilState(offerTimeState);
   const router = useRouter();
+
   useEffect(() => {
     const fetchData = async () => {
       const res = await getRequesters(dealId);
-      console.log(res);
       setRequesters(res.data);
       setSuccess(res.success);
     };
@@ -56,7 +50,6 @@ export default function MyRequest({ params: { dealId } }: IParams) {
     if (window.confirm("거래 요청을 취소하시겠습니까?")) {
       await patchOfferReject(requestId);
       alert("거래 요청이 취소되었습니다.");
-      console.log(requestId);
     }
   };
 
@@ -88,16 +81,13 @@ export default function MyRequest({ params: { dealId } }: IParams) {
                 {requester.offerTimes?.map((time, key) => (
                   <Typography key={key} variant="body2">
                     {time.offerDate}
-                    <br />• {time.startTime
-                      .split(":")
-                      .slice(0, 2)
-                      .join(":")} ~{" "}
+                    <br />
+                    {time.startTime.split(":").slice(0, 2).join(":")} ~{" "}
                     {time.endTime.split(":").slice(0, 2).join(":")}
                   </Typography>
                 ))}
               </CardContent>
               <CardContent className={styles.btns} sx={{ padding: 0 }}>
-                {/* <Link href={`/my-trade/${dealId}/${requester.memberProfile.id}`}> */}
                 <IconButton
                   size="small"
                   sx={{
@@ -106,15 +96,13 @@ export default function MyRequest({ params: { dealId } }: IParams) {
                     },
                     margin: 1,
                   }}
-                  onClick={() =>
-                    clickRequest(requester.offerTimes, requester.id)
-                  }
+                  onClick={() => clickRequest(requester.offerTimes, requester.offerId)}
                 >
                   <CheckIcon sx={{ color: "white" }} />
                 </IconButton>
                 {/* </Link> */}
                 <IconButton
-                  onClick={() => handleDelete(requester.id)}
+                  onClick={() => handleDelete(requester.offerId)}
                   size="small"
                   sx={{
                     "&.MuiIconButton-root": {
@@ -133,12 +121,7 @@ export default function MyRequest({ params: { dealId } }: IParams) {
       {requesters.length === 0 && (
         <NoContents>
           <h4 className="c-text3">아직 거래 요청이 없어요</h4>
-          <Image
-            src={"/images/Empty-BOX.png"}
-            alt="empty"
-            width={100}
-            height={100}
-          />
+          <Image src={"/images/Empty-BOX.png"} alt="empty" width={100} height={100} />
         </NoContents>
       )}
     </React.Fragment>

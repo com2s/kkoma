@@ -53,7 +53,6 @@ export default function MyPoints({ next }: Props) {
       <div className="flex justify-between items-center p-4 btn-line">
         <Button
           // startIcon={<TollIcon color="primary" />}
-          variant="outlined"
           className={styles.btn}
           onClick={() => router.push("/point/charge")}
         >
@@ -61,7 +60,6 @@ export default function MyPoints({ next }: Props) {
         </Button>
         <Button
           // startIcon={<TollIcon color="error" />}
-          variant="outlined"
           className={styles.btn}
           onClick={() => router.push("/point/withdraw")}
         >
