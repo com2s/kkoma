@@ -112,7 +112,11 @@ export default function MyNotificationsPage() {
                 )}
                 style={{ textDecoration: "none" }}
               >
-                <ListItem sx={{ paddingX: 0, minHeight: "90px" }}>
+                <ListItem
+                  sx={{ paddingX: 0, minHeight: "90px" }}
+                  disabled={notification.readAt}
+                >
+                  {/* readAt의 값이 null 이면 disabled = false, 값이 있으면 disabled = true */}
                   <ListItemAvatar>
                     <Avatar
                       src={"temp-img.svg"}
