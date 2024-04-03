@@ -10,9 +10,11 @@ import com.ssafy.kkoma.api.notification.service.NotificationService;
 import com.ssafy.kkoma.api.offer.dto.response.DecideOfferResponse;
 import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
 import com.ssafy.kkoma.api.point.service.PointHistoryService;
+import com.ssafy.kkoma.api.product.dto.OfferedProductInfoResponse;
 import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
 import com.ssafy.kkoma.api.product.service.ProductService;
 import com.ssafy.kkoma.domain.deal.entity.Deal;
+import com.ssafy.kkoma.domain.deal.repository.DealRepository;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.notification.entity.Notification;
 import com.ssafy.kkoma.domain.offer.constant.OfferType;
@@ -48,6 +50,7 @@ public class OfferService {
     private final DealService dealService;
     private final NotificationService notificationService;
     private final PointHistoryService pointHistoryService;
+    private final DealRepository dealRepository;
 
     private final DealReminderScheduler dealReminderJobScheduler;
     private final ChatMessageService chatMessageService;
@@ -146,16 +149,23 @@ public class OfferService {
         return DecideOfferResponse.fromEntity(acceptedOffer, acceptedDeal);
     }
 
-    public List<ProductInfoResponse> getNotProgressOfferingProducts(Long memberId) {
+    public List<OfferedProductInfoResponse> getNotProgressOfferingProducts(Long memberId) {
         List<Offer> offers = memberService.getMyOffers(memberId);
-
-        List<ProductInfoResponse> productInfoResponses = new ArrayList<>();
+        List<OfferedProductInfoResponse> productInfoResponses = new ArrayList<>();
         for (Offer offer : offers) {
-            if (OfferType.SENT.equals(offer.getStatus()) || OfferType.CANCELLED.equals(offer.getStatus())) {
-                productInfoResponses.add(productService.getProductInfoResponse(offer.getProduct().getId()));
-            }
-            else if (OfferType.ACCEPTED.equals(offer.getStatus()) && ProductType.SOLD.equals(offer.getProduct().getStatus())) {
-                productInfoResponses.add(productService.getProductInfoResponse(offer.getProduct().getId()));
+            Long productId = offer.getProduct().getId();
+            Product product = productService.findProductByProductId(productId);
+            OfferType offerType = offer.getStatus();
+            ProductType productType = product.getStatus();
+            if (
+                    OfferType.SENT.equals(offerType) ||
+                    OfferType.CANCELLED.equals(offerType) ||
+                    (OfferType.ACCEPTED.equals(offerType) && ProductType.SOLD.equals(productType))) {
+                Deal deal = dealRepository.findByProduct(product);
+                OfferedProductInfoResponse offeredProductInfoResponse = OfferedProductInfoResponse.fromEntity(product, MyProductType.BUY, offerType,
+                        deal != null ? deal.getId() : null,
+                        deal != null ? deal.getSelectedTime() : null);
+                productInfoResponses.add(offeredProductInfoResponse);
             }
         }
 
