@@ -55,14 +55,15 @@ export default function Point() {
                         position: "relative",
                         width: "56px",
                         height: "56px",
+                        minWidth: "56px",
                       }}
                     >
                       <Image
                         src={item.productInfo.thumbnail}
                         alt="thumbnail"
-                        width={56}
-                        height={56}
+                        fill
                         className="rounded-lg"
+                        objectFit="cover"
                       />
                     </div>
                     <div>
