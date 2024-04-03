@@ -26,6 +26,7 @@ export default function MyNotificationsPage() {
   const [page, setPage] = useState(0);
   const [success, setSuccess] = useState(true);
   const [today, setToday] = useState(new Date());
+  const [isEmptyShow, setIsEmptyShow] = useState<Boolean>(false);
   const router = useRouter();
 
   const fetchData = async () => {
@@ -33,7 +34,10 @@ export default function MyNotificationsPage() {
     setSuccess(res.success);
     // setNotifications(res.data.content);
     // 기존 데이터 유지하면서 새로운 데이터 추가
-    setNotifications([...notifications, ...res.data.content]);
+    setNotifications([
+      ...notifications,
+      ...sortNotifications(res.data.content),
+    ]);
     setData(res.data);
     const date = new Date();
     setToday(date);
@@ -65,6 +69,14 @@ export default function MyNotificationsPage() {
     }
   };
 
+  const sortNotifications = (
+    notifications: NotificationList["data"]["content"]
+  ) => {
+    return notifications.sort((a: any, b: any) => {
+      return new Date(b.sentAt).getTime() - new Date(a.sentAt).getTime();
+    });
+  };
+
   const handleLinkClick =
     (id: number, destination: string) => async (e: React.MouseEvent) => {
       e.preventDefault(); // 기본 동작 중단
@@ -77,31 +89,17 @@ export default function MyNotificationsPage() {
   }, [page]);
 
   const handlePageMore = () => {
+    setIsEmptyShow(true);
     setPage(page + 1);
   };
 
   return (
     <div>
       <TopBar2 />
-      {success === false && <h3>알림을 불러오는 데 실패했습니다.</h3>}
+      {success === false && (
+        <h4 className="p-4">알림을 불러오는 데 실패했습니다.</h4>
+      )}
       <List sx={{ width: "100%", minWidth: 260, bgcolor: "background.paper" }}>
-        {success === true && data?.empty && (
-          <>
-            <ListItem sx={{ paddingX: 0, minHeight: "90px" }}>
-              <ListItemAvatar>
-                <Avatar
-                  src="temp-img.svg"
-                  alt="Temp Avatar"
-                  sx={{ width: 48, height: 48, marginRight: 2 }}
-                />
-              </ListItemAvatar>
-              <ListItemText
-                primary="알림이 없습니다."
-                secondary={formattedToday(today)}
-              />
-            </ListItem>
-          </>
-        )}
         {success === true && notifications.length > 0 && (
           <>
             {notifications.map((notification: any) => (
@@ -132,7 +130,7 @@ export default function MyNotificationsPage() {
           </>
         )}
         {/* page*10 + 1 횟수만큼 반복(테스트용) */}
-        {Array.from({ length: page * 10 + 1 }, (_, i) => (
+        {/* {Array.from({ length: page * 10 + 1 }, (_, i) => (
           <a
             href="/"
             onClick={handleLinkClick(1, "/")}
@@ -153,7 +151,28 @@ export default function MyNotificationsPage() {
               />
             </ListItem>
           </a>
-        ))}
+        ))} */}
+        {success === true && data?.empty && isEmptyShow && (
+          <>
+            <ListItem
+              sx={{ paddingX: 0, minHeight: "90px" }}
+              onClick={() => setIsEmptyShow(false)}
+              className="cursor-pointer"
+            >
+              <ListItemAvatar>
+                <Avatar
+                  src="temp-img.svg"
+                  alt="Temp Avatar"
+                  sx={{ width: 48, height: 48, marginRight: 2 }}
+                />
+              </ListItemAvatar>
+              <ListItemText
+                primary="알림이 없습니다."
+                secondary={formattedToday(today)}
+              />
+            </ListItem>
+          </>
+        )}
       </List>
       <div className="flex justify-around mt-6">
         <Button
