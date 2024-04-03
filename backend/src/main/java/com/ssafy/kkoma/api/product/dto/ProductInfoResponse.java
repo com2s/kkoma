@@ -1,17 +1,16 @@
 package com.ssafy.kkoma.api.product.dto;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ssafy.kkoma.domain.area.entity.Area;
-import com.ssafy.kkoma.domain.deal.entity.Deal;
 import com.ssafy.kkoma.domain.product.constant.MyProductType;
 import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.domain.product.entity.Product;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 @Getter
 @Builder
@@ -31,6 +30,7 @@ public class ProductInfoResponse {
 	private ProductType status;
 
 	private Long dealId;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	private LocalDateTime selectedTime;
 	private String dealPlace;
 
