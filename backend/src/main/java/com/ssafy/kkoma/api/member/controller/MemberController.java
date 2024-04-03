@@ -62,7 +62,7 @@ public class MemberController {
     @Operation(
             security = { @SecurityRequirement(name = "bearer-key") }
     )
-    @GetMapping("/products-buy")
+    @GetMapping("/products/buy")
     ResponseEntity<ApiUtils.ApiResult<List<OfferedProductInfoResponse>>> getMyProducts(
             @MemberInfo MemberInfoDto memberInfoDto
     ) {
