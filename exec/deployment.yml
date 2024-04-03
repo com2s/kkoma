@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: recommand-api
+  labels:
+    app: recommand
 
 spec:
   selector:
@@ -31,7 +33,8 @@ metadata:
 spec:
   ports:
     - name: service
-      port: 80
+      nodePort: 5000
+      port: 5000
       targetPort: 5000
   selector:
-    app: recommand-api
+    app: recommand
