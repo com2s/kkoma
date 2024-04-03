@@ -1,7 +1,7 @@
 "use client";
 
-import { useParams } from "next/navigation";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 
 interface Code {
   code: string;
