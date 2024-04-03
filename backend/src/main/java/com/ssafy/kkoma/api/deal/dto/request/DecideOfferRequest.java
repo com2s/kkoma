@@ -15,7 +15,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class DecideOfferRequest {
-	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime selectedTime;
 
 }
