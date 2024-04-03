@@ -22,7 +22,7 @@ public class ChatMessageResponse {
 			.id(chatMessage.getId())
 			.memberProfile(MemberProfileResponse.fromEntity(chatMessage.getMember()))
 			.content(chatMessage.getContent())
-			.sentTime(chatMessage.getCreatedAt().format(DateTimeFormatter.ofPattern("MM/dd hh:mm")))
+			.sentTime(chatMessage.getCreatedAt().format(DateTimeFormatter.ofPattern("MM/dd HH:mm")))
 			.build();
 	}
 
