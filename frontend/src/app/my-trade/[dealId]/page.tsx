@@ -53,8 +53,8 @@ export default function MyRequest({ params: { dealId } }: IParams) {
     }
   };
 
-  const clickRequest = async (times: Requester["offerTimes"], id: number) => {
-    await setOfferTime(times);
+  const clickRequest = (times: Requester["offerTimes"], id: number) => {
+    setOfferTime(times);
     router.push(`/my-trade/${dealId}/${id}`);
   };
 
