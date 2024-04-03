@@ -1,5 +1,6 @@
 package com.ssafy.kkoma.api.redis.service;
 
+import com.ssafy.kkoma.api.redis.constant.RedisKeyName;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -20,20 +22,6 @@ public class RedisService {
     private final RedisTemplate<String, Object> redisTemplate;
 
     private static ObjectMapper mapper = new ObjectMapper();
-
-    private String castToString(Object data) {
-        if (data instanceof String) {
-            return data.toString();
-        }
-
-        try {
-            return mapper.writeValueAsString(data);
-        } catch (IOException e) {
-            log.warn("IOException 발생");
-        }
-
-        return "오류 발생";
-    }
 
     public void setValues(String key, Object data) {
         ValueOperations<String, Object> values = redisTemplate.opsForValue();
@@ -63,7 +51,39 @@ public class RedisService {
     }
 
     public boolean checkExistsValue(String value) {
-        return !value.equals("redis 내 존재하지 않습니다.");
+        return !value.equals("false");
+    }
+
+    /*-------------------------------------------------------------------*/
+
+    private String castToString(Object data) {
+        if (data instanceof String) {
+            return data.toString();
+        }
+
+        try {
+            return mapper.writeValueAsString(data);
+        } catch (IOException e) {
+            log.warn("IOException 발생");
+        }
+
+        return "오류 발생";
+    }
+
+    public void saveHourlyData(RedisKeyName redisKeyName, Object data) {
+        LocalDateTime now = LocalDateTime.now();
+        int prevHour = now.minusHours(1).getHour();
+        int prevprevHour = now.minusHours(2).getHour();
+
+        if (getValues(redisKeyName.toString() + prevHour).equals("false")) {
+            setValues(redisKeyName.toString() + prevHour, data);
+            deleteValues(redisKeyName.toString() + prevprevHour);
+        }
+    }
+
+    public String findHourlyData(RedisKeyName redisKeyName, LocalDateTime now) {
+        int prevHour = now.minusHours(1).getHour();
+        return getValues(redisKeyName.toString() + prevHour);
     }
 
 }

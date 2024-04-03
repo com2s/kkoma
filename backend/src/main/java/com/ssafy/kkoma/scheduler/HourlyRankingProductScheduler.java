@@ -33,23 +33,14 @@ public class HourlyRankingProductScheduler {
     @Autowired
     private RedisService redisService;
 
-    private void saveValue(RedisKeyName redisKeyName, Object data) {
-        LocalDateTime now = LocalDateTime.now();
-        int prevHour = now.minusHours(1).getHour();
-        int prevprevHour = now.minusHours(2).getHour();
-
-        if (redisService.getValues(redisKeyName.toString() + prevHour).equals("false")) {
-            redisService.setValues(redisKeyName.toString() + prevHour, data);
-            redisService.deleteValues(redisKeyName.toString() + prevprevHour);
-        }
-    }
-
     @Scheduled(cron = "0 0 0/1 * * *", zone = "Asia/Seoul")
     public void getMostWishedProducts() {
         log.info("[스케쥴러] 지난 1시간 찜수 기반 상품글 조회를 시작합니다 at {}", LocalDateTime.now().withSecond(1));
         List<ProductHourlyWishedResponse> productList = productService.getHourlyMostWishedProducts(4, LocalDateTime.now());
 
-        if (!productList.isEmpty()) saveValue(RedisKeyName.hourlyWishedProductList, productList);
+        if (!productList.isEmpty()) {
+            redisService.saveHourlyData(RedisKeyName.hourlyWishedProductList, productList);
+        }
     }
 
     @Scheduled(cron = "0 0 0/1 * * *", zone = "Asia/Seoul")
@@ -57,6 +48,8 @@ public class HourlyRankingProductScheduler {
         log.info("[스케쥴러] 지난 1시간 조회수 기반 상품글 조회를 시작합니다 at {}", LocalDateTime.now().withSecond(1));
         List<ProductHourlyViewedResponse> productList = productService.getHourlyMostViewedProducts(4, LocalDateTime.now());
 
-        if (!productList.isEmpty()) saveValue(RedisKeyName.hourlyViewedProductList, productList);
+        if (!productList.isEmpty()) {
+            redisService.saveHourlyData(RedisKeyName.hourlyViewedProductList, productList);
+        }
     }
 }
