@@ -47,12 +47,12 @@
 
 <br>
 
-### ...
+### 🦜 설계
 
-아키텍쳐
-ERD 다이어그램
-API 명세서
-와이어프레임
+- 아키텍쳐
+- ERD 다이어그램
+- API 명세서
+- 와이어프레임
 
 <br>
 
@@ -74,7 +74,7 @@ API 명세서
 
 ### 🕊 실행방법
 
-[포팅 메뉴얼 바로가기](https://github.com/Isanghada/ModooStock/blob/main/exec/porting_manual.md)
+[포팅 메뉴얼 바로가기](#)
 
 exec 폴더 내 포팅 메뉴얼 참조
 
