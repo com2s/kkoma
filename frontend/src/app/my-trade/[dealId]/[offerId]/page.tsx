@@ -110,11 +110,11 @@ export default function MyTradeCalender({ params: { offerId } }: IParams) {
               <div style={{ textAlign: "center" }}>
                 {parentDate0 ? (
                   <div>
-                    <p className="text-body">{parentDate0}</p>
-                    <p className="mt-1 text-body">{parentTime0}</p>
+                    <p>{parentDate0}</p>
+                    <p>{parentTime0}</p>
                   </div>
                 ) : (
-                  <span className="text-caption">시간 선택</span>
+                  <span>시간 선택</span>
                 )}
               </div>
             }
