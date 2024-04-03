@@ -350,8 +350,8 @@ class ProductServiceTest {
 			wish = wishListRepository.save(wish);
 		}
 
-		Pageable pageable = PageRequest.of(0,4);
-		List<ProductHourlyWished> result = productService.getHourlyMostWishedProducts(4, now, pageable);
+		List<ProductHourlyWished> result = productService.getHourlyMostWishedProducts(4, now);
+		log.info("result 개수 {}", result.size());
 
 		// 3) then : 최종 순위 => 상품3(4명) / 상품2(3명) / 상품1(2명) / 상품0(1명)
 
@@ -361,6 +361,7 @@ class ProductServiceTest {
 			Assertions.assertThat(p.getHourlyWishCount()).isEqualTo(answer);
 			answer--;
 		}
+
 	}
 
 }
