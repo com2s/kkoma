@@ -10,13 +10,7 @@ import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import {
-  TextField,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Dialog,
-} from "@mui/material";
+import { TextField, FormControl, InputLabel, MenuItem, Dialog } from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import PhotoCameraOutlinedIcon from "@mui/icons-material/PhotoCameraOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
@@ -48,7 +42,7 @@ export default function CreatePost() {
   const [price, setPrice] = useState<number | null>();
   const [content, setContent] = useState("");
   const [images, setImages] = useState<{ url: string; file: File }[]>([]);
-  const [location, setLocation] = useState(""); // TODO: 위치 정보 입력 받기
+  const [location, setLocation] = useState("");
   const [regionCode, setRegionCode] = useState("");
   const [lng, setLng] = useState(0);
   const [lat, setLat] = useState(0);
@@ -222,9 +216,7 @@ export default function CreatePost() {
                 multiple
                 disabled={images.length >= 10}
               />
-              <span className="c-text2">{`${
-                images ? images.length : 0
-              }/10`}</span>
+              <span className="c-text2">{`${images ? images.length : 0}/10`}</span>
             </label>
           </div>
           <div className="flex gap-4">
@@ -316,12 +308,7 @@ export default function CreatePost() {
                 title="거래하고 싶은 장소를 선택해주세요"
                 subtitle="누구나 찾기 쉬운 공공장소가 좋아요"
               />
-              <Image
-                src={"/images/Pin.png"}
-                alt="pin"
-                width={100}
-                height={100}
-              />
+              <Image src={"/images/Pin.png"} alt="pin" width={100} height={100} />
               {location ? (
                 <div className="text-caption !text-white bg-gray-500 py-1 px-2 rounded-xl w-fit	text-center">
                   {location}

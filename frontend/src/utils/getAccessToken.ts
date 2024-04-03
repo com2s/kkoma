@@ -23,6 +23,8 @@ export const isLogin = async () => {
     const obj = await res.json();
     if (res.status !== 200) {
       LocalStorage.removeItem("refreshToken");
+      LocalStorage.removeItem("memberId");
+      LocalStorage.removeItem("memberInfoCompleted");
       return null;
     }
     setItemWithExpireTime("accessToken", obj.data.accessToken, obj.data.accessTokenExpireTime);

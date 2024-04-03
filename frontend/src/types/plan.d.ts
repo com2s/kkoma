@@ -6,4 +6,7 @@ export interface PlanCard {
   dealPlace: string;
   dealId: number;
   selectedTime: string;
+  wishCount?: number | null;
+  offerCount?: number | null;
+  viewCount?: number | null;
 }

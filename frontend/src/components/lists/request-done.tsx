@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import ScheduleIcon from "@mui/icons-material/Schedule";
@@ -6,8 +8,10 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { Avatar, IconButton } from "@mui/material";
 import { usePathname } from "next/navigation";
 import { getProductDetail } from "./lists-ftn";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MemberSummary } from "@/types/member";
+import Profile from "@/components/lists/lists-detail-profile";
+import Title from "../common/title";
 
 interface TimeEntry {
   date: string;
@@ -21,46 +25,33 @@ interface ChildProps {
   location?: string;
 }
 
-
-export default async function RequestDone({
-  sellerId,
-  selectedTimes,
-  location,
-}: ChildProps,
-  ) {
-    const [member, setMember] = useState<MemberSummary>();
+export default function RequestDone({ sellerId, selectedTimes, location }: ChildProps) {
+  const [member, setMember] = useState<MemberSummary>();
   const path = usePathname();
   const id = path.split("/")[2];
-  const detail = await getProductDetail(id)
-  if (detail.success === true) {
-    setMember(detail.data.memberSummary);
-  }
+
+  const fetchData = async () => {
+    const detail = await getProductDetail(id);
+    if (detail.success === true) {
+      setMember(detail.data.memberSummary);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <div className="px-4">
-      <h2 className="text-pretty">거래 요청이 완료 되었어요!</h2>
-      <p className="my-2 text-gray-400">거래가 확정되면 알려드릴게요.</p>
+      <Title title="거래 요청이 완료되었어요!" subtitle="거래가 확정되면 알림을 보내드릴게요" />
       <Image
         src={"/images/message2.svg"}
         alt="요청 완료"
-        width={300}
-        height={300}
+        width={180}
+        height={180}
         className="mx-auto my-4"
       />
-      <div className="flex my-8 w-full justify-between content-center">
-        <Avatar
-          src={member?.profileImage}
-          alt="판매자 프로필"
-          className="mr-2 my-auto"
-        />
-        <div className="w-full">
-          <h4>{member?.nickname}</h4>
-          <p className="text-caption">평균 거래 확정시간 : 3시간</p>
-        </div>
-        <IconButton onClick={()=>alert("판매자 프로필 페이지")}>
-          <ArrowForwardIosIcon />
-        </IconButton>
-      </div>
+      <Profile propsId={id} memberSummary={member} />
       {selectedTimes?.map((timeEntry, index) => (
         <div key={index} className="mb-2">
           <CalendarMonthIcon />
@@ -70,7 +61,7 @@ export default async function RequestDone({
         </div>
       ))}
       <LocationOnOutlinedIcon />
-      <span className="text-body">강남역 5번 출구 앞</span>
+      <span className="text-body">{location}</span>
     </div>
   );
 }

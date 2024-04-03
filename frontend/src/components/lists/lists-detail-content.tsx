@@ -9,7 +9,7 @@ interface DetailTypes {
   product: DetailParams["data"] | undefined;
 }
 
-export default async function DetailContent({ propsId, product }: DetailTypes) {
+export default function DetailContent({ propsId, product }: DetailTypes) {
   return (
     <div className={`divide-y ${styles.container}`}>
       {product === undefined ? (
@@ -23,14 +23,11 @@ export default async function DetailContent({ propsId, product }: DetailTypes) {
           </p>
           <div className="flex justify-between mb-2">
             <h3 className={styles.title}>{product.title}</h3>
-            <div className="min-w-fit">
-              {ProductStatusFormat(product.status)}
-            </div>
+            <div className="min-w-fit">{ProductStatusFormat(product.status)}</div>
           </div>
           <div className="views">
             <p className="text-caption c-text3">
-              조회 {product.viewCount.toLocaleString()} &#183; 거래 요청{" "}
-              {product.offerCount}
+              조회 {product.viewCount.toLocaleString()} &#183; 거래 요청 {product.offerCount}
               &#183; 찜 {product.wishCount}
             </p>
           </div>
