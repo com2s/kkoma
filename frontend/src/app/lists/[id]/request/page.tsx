@@ -16,6 +16,7 @@ import { Box, Tab, Tabs, useTheme } from "@mui/material";
 import { useRouter } from "next/navigation";
 import Title from "@/components/common/title";
 import TopBar3 from "@/components/common/top-bar3";
+import { ButtonContainer, NormalBtn } from "@/components/common/buttons";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -81,6 +82,7 @@ export default function RequestDeal({ params: { id } }: IParams) {
       [parentDate0, parentTime0],
       [parentDate1, parentTime1],
     ];
+    handleSelectedTimes();
 
     const res = await postOffer(id, selectedTimes);
     if (res.success) {
@@ -96,8 +98,6 @@ export default function RequestDeal({ params: { id } }: IParams) {
   };
 
   const handleSelectedTimes = () => {
-    // 임시 배열을 생성하여 선택된 시간들을 추가합니다.
-    // const newSelectedTimes = [...selectedTimes]; // 기존 상태 복사
     const newSelectedTimes = []; // 빈 배열 생성
 
     if (parentDate0 && parentTime0) {
@@ -108,9 +108,6 @@ export default function RequestDeal({ params: { id } }: IParams) {
     }
 
     setSelectedTimes(newSelectedTimes); // 새로운 상태 설정
-
-    // 여기서 특정 함수를 실행시키고 싶다면, 아래와 같이 호출할 수 있습니다.
-    // someFunction();
   };
 
   function a11yProps(index: number) {
@@ -124,10 +121,7 @@ export default function RequestDeal({ params: { id } }: IParams) {
     <React.Fragment>
       <TopBar3 />
       <div className="mt-5"></div>
-      <Title
-        title="거래 희망 일시를 선택해주세요."
-        subtitle="최대 2개까지 선택할 수 있어요"
-      />
+      <Title title="거래 희망 일시를 선택해주세요." subtitle="최대 2개까지 선택할 수 있어요" />
       <Image
         src="/images/calendar1.svg"
         alt="달력"
@@ -229,10 +223,7 @@ export default function RequestDeal({ params: { id } }: IParams) {
         <button
           className="mt-8 mb-8 w-full h-16 bg-primary rounded-xl
          bg-yellow-400 text-black"
-          onClick={() => {
-            handleClickOpen();
-            handleSelectedTimes();
-          }}
+          onClick={handleClickOpen}
         >
           <h3>선택</h3>
         </button>
@@ -255,7 +246,7 @@ export default function RequestDeal({ params: { id } }: IParams) {
         <div className="flex justify-end">
           <IconButton
             color="inherit"
-            onClick={handleClose}
+            onClick={() => router.push("/my-trade")}
             aria-label="close"
             sx={{
               aspectRatio: "1",
@@ -267,17 +258,10 @@ export default function RequestDeal({ params: { id } }: IParams) {
             <CloseIcon fontSize="large" />
           </IconButton>
         </div>
-        <RequestDone selectedTimes={selectedTimes} />
-        {/* 우선 임시로 닫는 버튼 */}
-        <div className="flex justify-center">
-          <button
-            className="mt-8 mb-8 w-full h-16 bg-primary rounded-xl
-         bg-yellow-400 text-black"
-            onClick={() => router.back()}
-          >
-            <h3>돌아가기</h3>
-          </button>
-        </div>
+        <RequestDone selectedTimes={selectedTimes} location="" />
+        <ButtonContainer>
+          <NormalBtn next={() => router.push("/my-trade")}>확인</NormalBtn>
+        </ButtonContainer>
       </Dialog>
     </React.Fragment>
   );
