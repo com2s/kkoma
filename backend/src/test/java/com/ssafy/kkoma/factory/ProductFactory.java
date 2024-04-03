@@ -33,6 +33,16 @@ public class ProductFactory {
         return productRepository.save(product);
     }
 
+    public Product createProduct(Member seller, ProductType type) {
+        Product product = Product.builder()
+                .title(TITLE)
+                .thumbnailImage(IMAGE_URL)
+                .status(type)
+                .build();
+        product.setMember(seller);
+        return productRepository.save(product);
+    }
+
     public Product createProduct(Member seller, Category category, int price) {
         Product product = Product.builder()
                 .title(TITLE)

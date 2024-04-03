@@ -1,11 +1,21 @@
 package com.ssafy.kkoma.api.member.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.kkoma.api.member.dto.request.UpdateMemberRequest;
 import com.ssafy.kkoma.api.member.dto.response.MemberInfoResponse;
 import com.ssafy.kkoma.api.member.dto.response.MemberSummaryResponse;
+import com.ssafy.kkoma.api.product.dto.OfferedProductInfoResponse;
+import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
 import com.ssafy.kkoma.domain.member.entity.Member;
+import com.ssafy.kkoma.domain.offer.constant.OfferType;
+import com.ssafy.kkoma.domain.offer.entity.Offer;
+import com.ssafy.kkoma.domain.product.constant.MyProductType;
+import com.ssafy.kkoma.domain.product.constant.ProductType;
+import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.factory.MemberFactory;
+import com.ssafy.kkoma.factory.OfferFactory;
+import com.ssafy.kkoma.factory.ProductFactory;
 import com.ssafy.kkoma.global.util.CustomMockMvcSpringBootTest;
 import com.ssafy.kkoma.global.util.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.util.List;
 
 @Slf4j
 @CustomMockMvcSpringBootTest
@@ -30,6 +42,12 @@ class MemberInfoControllerTest {
 
     @Autowired
     MemberFactory memberFactory;
+
+    @Autowired
+    ProductFactory productFactory;
+
+    @Autowired
+    OfferFactory offerFactory;
 
     @Test
     void getMemberInfo() throws Exception {
@@ -100,4 +118,25 @@ class MemberInfoControllerTest {
 
         log.info(expectedResponse.toString());
     }
+
+    @Test
+    public void 구매글_목록_조회하기() throws Exception {
+
+        // 인스턴스 생성
+        Member member = memberFactory.createMember();
+        Product soldProduct = productFactory.createProduct(member, ProductType.SOLD);
+        Offer acceptedOffer = offerFactory.createOffer(soldProduct, member, OfferType.ACCEPTED);
+
+        // 예상 응답
+        OfferedProductInfoResponse expectedResponse = OfferedProductInfoResponse.fromEntity(soldProduct, MyProductType.BUY, acceptedOffer.getStatus(), null, null);
+
+        mockMvc.perform(
+                        requestUtil.getRequest("/api/members/products/buy", member)
+                )
+                .andExpectAll(
+                        MockMvcResultMatchers.status().isOk(),
+                        requestUtil.jsonListContent(OfferedProductInfoResponse.class, List.of(expectedResponse))
+                );
+    }
+
 }
