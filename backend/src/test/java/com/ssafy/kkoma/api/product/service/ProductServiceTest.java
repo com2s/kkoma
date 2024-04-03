@@ -11,6 +11,7 @@ import com.ssafy.kkoma.api.product.dto.hourly.ProductHourlyWishedResponse;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
 import com.ssafy.kkoma.api.product.dto.response.ChatProductResponse;
 import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
+import com.ssafy.kkoma.api.redis.constant.RedisKeyName;
 import com.ssafy.kkoma.api.redis.service.RedisService;
 import com.ssafy.kkoma.domain.area.entity.Area;
 import com.ssafy.kkoma.domain.location.entity.Location;
@@ -444,20 +445,31 @@ class ProductServiceTest {
 	@Disabled
 	void 조회수와_찜수_상위_4개_조회_임시() {
 		List<ProductHourlyViewedResponse> result1 = productService.getHourlyMostViewedProducts(4, LocalDateTime.now());
-		log.info("result 개수 {}", result1.size());
+		log.info("[조회수] result 개수 {}", result1.size());
 
 		for (ProductHourlyViewedResponse p : result1) {
 			log.info("지난 정시~정시 1시간 동안 조회수가 가장 많았던 순서대로: {}개", p.getHourlyViewCount());
 		}
-		redisService.setValues("hourlyViewedProductList", result1);
+		if (!result1.isEmpty()) saveRedisValue(RedisKeyName.hourlyViewedProductList, result1);
 
 		List<ProductHourlyWishedResponse> result2 = productService.getHourlyMostWishedProducts(4, LocalDateTime.now());
-		log.info("result 개수 {}", result2.size());
+		log.info("[찜 수] result 개수 {}", result2.size());
 
 		for (ProductHourlyWishedResponse p : result2) {
 			log.info("지난 정시~정시 1시간 동안 찜이 가장 많았던 순서대로: {}개", p.getHourlyWishCount());
 		}
-		redisService.setValues("hourlyWishedProductList", result2);
+		if (!result2.isEmpty()) saveRedisValue(RedisKeyName.hourlyWishedProductList, result2);
+	}
+
+	private void saveRedisValue(RedisKeyName redisKeyName, Object data) {
+		LocalDateTime now = LocalDateTime.now();
+		int prevHour = now.minusHours(1).getHour();
+		int prevprevHour = now.minusHours(2).getHour();
+
+		if (redisService.getValues(redisKeyName.toString() + prevHour).equals("false")) {
+			redisService.setValues(redisKeyName.toString() + prevHour, data);
+			redisService.deleteValues(redisKeyName.toString() + prevprevHour);
+		}
 	}
 
 }

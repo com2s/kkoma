@@ -32,7 +32,7 @@ public class RedisService {
             log.warn("IOException 발생");
         }
 
-        return "오류발생";
+        return "오류 발생";
     }
 
     public void setValues(String key, Object data) {

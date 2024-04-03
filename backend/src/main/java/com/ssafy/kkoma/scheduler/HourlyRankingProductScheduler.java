@@ -3,6 +3,7 @@ package com.ssafy.kkoma.scheduler;
 import com.ssafy.kkoma.api.product.dto.hourly.ProductHourlyViewedResponse;
 import com.ssafy.kkoma.api.product.dto.hourly.ProductHourlyWishedResponse;
 import com.ssafy.kkoma.api.product.service.ProductService;
+import com.ssafy.kkoma.api.redis.constant.RedisKeyName;
 import com.ssafy.kkoma.api.redis.service.RedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,25 +23,40 @@ public class HourlyRankingProductScheduler {
     // 3) 거래 요청이 가장 많은 상품글 4개
     // 를 조사한다.
 
+    // hourlyWishedProductList13 = 13:00 ~ 13:59 기반 데이터
+
+    // 0개라면 갱신하지 않는다..
+
     @Autowired
     private ProductService productService;
 
     @Autowired
     private RedisService redisService;
 
+    private void saveValue(RedisKeyName redisKeyName, Object data) {
+        LocalDateTime now = LocalDateTime.now();
+        int prevHour = now.minusHours(1).getHour();
+        int prevprevHour = now.minusHours(2).getHour();
+
+        if (redisService.getValues(redisKeyName.toString() + prevHour).equals("false")) {
+            redisService.setValues(redisKeyName.toString() + prevHour, data);
+            redisService.deleteValues(redisKeyName.toString() + prevprevHour);
+        }
+    }
+
     @Scheduled(cron = "0 0 0/1 * * *", zone = "Asia/Seoul")
     public void getMostWishedProducts() {
-        log.info("[scheduler] getMostWishedProducts가 실행됩니다. at {}", LocalDateTime.now().withSecond(1));
+        log.info("[스케쥴러] 지난 1시간 찜수 기반 상품글 조회를 시작합니다 at {}", LocalDateTime.now().withSecond(1));
         List<ProductHourlyWishedResponse> productList = productService.getHourlyMostWishedProducts(4, LocalDateTime.now());
-        log.info("[wish] result 개수 {}", productList.size());
-        redisService.setValues("hourlyWishedProductList", productList);
+
+        if (!productList.isEmpty()) saveValue(RedisKeyName.hourlyWishedProductList, productList);
     }
 
     @Scheduled(cron = "0 0 0/1 * * *", zone = "Asia/Seoul")
     public void getMostViewedProducts() {
-        log.info("[scheduler] getMostViewedProducts가 실행됩니다. at {}", LocalDateTime.now().withSecond(1));
+        log.info("[스케쥴러] 지난 1시간 조회수 기반 상품글 조회를 시작합니다 at {}", LocalDateTime.now().withSecond(1));
         List<ProductHourlyViewedResponse> productList = productService.getHourlyMostViewedProducts(4, LocalDateTime.now());
-        log.info("[view] result 개수 {}", productList.size());
-        redisService.setValues("hourlyViewedProductList", productList);
+
+        if (!productList.isEmpty()) saveValue(RedisKeyName.hourlyViewedProductList, productList);
     }
 }
