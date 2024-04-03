@@ -32,12 +32,14 @@ public class MemberInfoService {
 
     public MemberSummaryResponse getMemberSummary(Long memberId) {
         Member member = memberService.findMemberByMemberId(memberId);
-        Area area = areaService.findAreaById(member.getPreferredPlaceRegionCode());
-        log.info("###" + member.getPreferredPlaceRegionCode() + ": " + area.getId());
-
-        MemberSummaryResponse memberSummaryResponse = MemberSummaryResponse.fromEntity(member);
-        memberSummaryResponse.setPreferredPlace(area.getFullArea());
-        return memberSummaryResponse;
+        if (member.getPreferredPlaceRegionCode() == null) {
+            return MemberSummaryResponse.fromEntity(member);
+        } else {
+            Area area = areaService.findAreaById(member.getPreferredPlaceRegionCode());
+            MemberSummaryResponse memberSummaryResponse = MemberSummaryResponse.fromEntity(member);
+            memberSummaryResponse.setPreferredPlace(area.getFullArea());
+            return memberSummaryResponse;
+        }
     }
 
     public MyPageMemberProfileResponse getMyPageMemberProfile(Long memberId) {
