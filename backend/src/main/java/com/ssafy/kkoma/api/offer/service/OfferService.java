@@ -81,6 +81,8 @@ public class OfferService {
         offer.setMember(member);
         Long offerId = offerRepository.save(offer).getId();
 
+        product.setOfferCount(product.getOfferCount() + 1);
+
         // 판매자에 거래 요청 수신 알림
         notificationService.createNotification(
             product.getMember(),
@@ -139,7 +141,7 @@ public class OfferService {
             // 나머지 offer에 대해서 deny 처리, 선입금한 포인트 반환
             else {
                 offer.updateStatus(OfferType.REJECTED);
-                offer.updateCancelledAt(LocalDateTime.now());
+                offer.updateRepliedAt(LocalDateTime.now());
                 Member rejectedBuyer = offer.getMember(); // 거절당한 구매희망자
 
                 pointHistoryService.changePoint(rejectedBuyer, PointChangeType.REFUND, product.getPrice(), product);
@@ -149,7 +151,7 @@ public class OfferService {
             }
         }
 
-        return DecideOfferResponse.fromEntity(acceptedOffer, acceptedDeal);
+        return DecideOfferResponse.fromEntity(acceptedOffer, acceptedDeal, product.getChatRoom().getId());
     }
 
     public List<OfferedProductInfoResponse> getNotProgressOfferingProducts(Long memberId) {

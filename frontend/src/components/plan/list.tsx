@@ -10,24 +10,24 @@ import { ProductCard } from "../common/product-card";
 import { NoContents } from "../common/no-contents";
 import { NormalBtn, SmallBtn } from "../common/buttons";
 
-export function DealCard(
-  deal: PlanCard,
-  key: number,
-  router: AppRouterInstance
-) {
+export function DealCard(deal: PlanCard, key: number, router: AppRouterInstance) {
   return (
     <div key={key} className="w-full">
       <ProductCard
         product={{
           id: deal.id,
           thumbnailImage: deal.thumbnailImage,
+          chatRoomId: deal.chatRoomId,
           dealPlace: deal.dealPlace,
           title: deal.title,
           price: deal.price,
           status: "PROGRESS",
-          elapsedMinutes: Number(deal.selectedTime),
+          elapsedMinutes: deal.selectedTime,
+          wishCount: deal.wishCount,
+          offerCount: deal.offerCount,
+          viewCount: deal.viewCount,
         }}
-        next={`/chat/${deal.id}`}
+        next={`/chat/${deal.chatRoomId}`}
       />
       <button
         className="flex bg-slate-50 text-caption w-full rounded-sm py-1 justify-center my-2"
@@ -60,14 +60,11 @@ export function DealList() {
         list.map((i, k) => {
           if (
             k !== list.length &&
-            i?.selectedTime.substring(0, 10) !==
-              list[k + 1]?.selectedTime.substring(0, 10)
+            i?.selectedTime.substring(0, 10) !== list[k + 1]?.selectedTime.substring(0, 10)
           ) {
             return (
-              <div key={k}>
-                <div className="text-body2">
-                  {i.selectedTime.substring(0, 10)}
-                </div>
+              <div key={k} className="w-full">
+                <div className="text-body2">{i.selectedTime.substring(0, 10)}</div>
                 {DealCard(i, k, router)}
               </div>
             );
@@ -77,12 +74,7 @@ export function DealList() {
       ) : (
         <NoContents>
           <h4 className="c-text3">거래중인 상품이 없어요</h4>
-          <Image
-            src={"/images/Empty-BOX.png"}
-            alt="empty"
-            width={100}
-            height={100}
-          />
+          <Image src={"/images/Empty-BOX.png"} alt="empty" width={100} height={100} />
           <SmallBtn next={"/lists"}>상품 찾으러 가기</SmallBtn>
         </NoContents>
       )}

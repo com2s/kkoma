@@ -48,6 +48,7 @@ public class ChatMessageService {
 			.build();
 
 		chatMessage.setChatRoom(chatRoom);
+		chatMessageRepository.save(chatMessage);
 	}
 
 }

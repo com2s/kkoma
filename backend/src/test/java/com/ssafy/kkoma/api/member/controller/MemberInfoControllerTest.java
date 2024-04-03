@@ -95,8 +95,12 @@ class MemberInfoControllerTest {
     @Transactional
     void getMemberSummary() throws Exception {
 
+        Area area = areaFactory.createArea();
         Member savedMember = memberFactory.createMember();
+        savedMember.setPreferredPlaceRegionCode(area.getId());
+
         MemberSummaryResponse expectedResponse = MemberSummaryResponse.fromEntity(savedMember);
+        expectedResponse.setPreferredPlace(area.getFullArea());
 
         mockMvc.perform(
                         requestUtil.getRequest("/api/members/summary", savedMember)

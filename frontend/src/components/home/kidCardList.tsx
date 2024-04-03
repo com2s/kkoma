@@ -10,9 +10,9 @@ export default function KidCardList(props: {
   return (
     <div className={styles.list}>
       {props.kidList.map((item, k) => (
-        <div key={k} onClick={() => props.setSelectedName(item.name)} className={styles.card}>
+        <>
           <KidCard {...item} />
-        </div>
+        </>
       ))}
     </div>
   );

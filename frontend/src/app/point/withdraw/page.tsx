@@ -40,7 +40,7 @@ export default function PointWithdraw() {
   const handleBtn = (num: number) => {
     const removedCommaValue: number = Number(amount.replaceAll(",", "")) + num;
     if (removedCommaValue > balance) {
-      setErr(true);
+      // setErr(true);
       setErrMsg(`최대 출금 가능 포인트: ${balance.toLocaleString()}포인트`);
       setAmount(balance.toLocaleString());
     } else if (removedCommaValue === 0) {
@@ -62,7 +62,7 @@ export default function PointWithdraw() {
     const removedCommaValue: number = Number(amount.replaceAll(",", ""));
     await withDrawPointAPI(removedCommaValue);
     alert(`${amount}포인트가 출금 되었어요`);
-    router.push("/point");
+    router.push("/my-page");
   };
 
   const fetchData = async () => {
@@ -88,9 +88,9 @@ export default function PointWithdraw() {
         value={amount}
         onChange={changeEnteredNum}
         inputMode="numeric"
-        error={err}
+        error={errMsg !== ""}
       />
-      {err ? (
+      {errMsg ? (
         <div className="!text-red-500 text-caption mt-1">{errMsg}</div>
       ) : (
         <div className="text-caption c-text2 mt-1">{`포인트 잔액: ${balance.toLocaleString()}포인트`}</div>

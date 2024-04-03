@@ -43,6 +43,7 @@ public class Product extends BaseTimeEntity {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "location_id")
 	private Location location;
+
 	private String thumbnailImage;
 
 	@OneToOne(fetch = FetchType.LAZY)
@@ -71,6 +72,7 @@ public class Product extends BaseTimeEntity {
 	private Long wishCount = 0L;
 
 	@Builder.Default
+	@Setter
 	private Long offerCount = 0L;
 
 	private LocalDateTime deletedAt;

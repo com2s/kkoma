@@ -5,7 +5,7 @@ export interface OfferTime {
 }
 
 export interface Requester {
-  id: number;
+  offerId: number;
   memberProfile: {
     id: number;
     nickname: string;

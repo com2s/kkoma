@@ -94,3 +94,8 @@ body {
 .c-main {
   color: $color-red;
 }
+
+.react-calendar__tile {
+  padding: 0;
+  aspect-ratio: 1/1;
+}

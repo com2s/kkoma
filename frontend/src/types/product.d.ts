@@ -3,6 +3,7 @@ import { ProductStatus } from "./status";
 interface ProductSm {
   id: number;
   thumbnailImage: string;
+  chatRoomId?: number;
   title: string;
   dealPlace: string;
   price: number;

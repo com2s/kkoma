@@ -45,3 +45,31 @@ export const getCategoryAPI = async () => {
     //TODO: error 페이지로 이동
   }
 };
+
+export const getRecommendAPI = async () => {
+  try {
+    const res = await APIModule({
+      action: `/products/recommend?num=4`,
+      method: "GET",
+    });
+    if (res.success) {
+      return res.data;
+    } else {
+      new Error(res.error.errorMessage);
+    }
+  } catch (e: any) {}
+};
+
+export const getHourlyProductAPI = async () => {
+  try {
+    const res = await APIModule({
+      action: `/products/hourly/wish`,
+      method: "GET",
+    });
+    if (res.success) {
+      return res.data;
+    } else {
+      new Error(res.error.errorMessage);
+    }
+  } catch (e: any) {}
+};

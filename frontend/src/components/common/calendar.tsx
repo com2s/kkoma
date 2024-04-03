@@ -12,34 +12,9 @@ import {
   StyledDot,
   StyledUnderLine,
 } from "@/components/common/calendar-style";
-// import ViewCallbackProperties from "react-calendar";
 import { Slider, Typography, Box, Button, IconButton } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-// 부모 컴포넌트 (ParentComponent.tsx)
-// import React, { useState } from 'react';
-// import ChildComponent from './ChildComponent';
 
-// export default function ParentComponent() {
-//   const [parentDate0, setParentDate0] = useState("");
-
-//   const handleDate0 = (data: string) => {
-//     setParentDate0(data);
-//   };
-//   ......
-
-//   return (
-//     <div>
-//       <h1>부모 컴포넌트</h1>
-//                 <Calendar
-//                    sendDateToParent={handleDate0}
-//                    sendTimeToParent={handleTime0}
-//                    isAccept
-//                  >
-//                  </Calendar>
-//       <p>자식 컴포넌트에서 받은 데이터: {parentDate0}</p>
-//     </div>
-//   );
-// }
 interface ChildProps {
   sendDateToParent: (data: string) => void;
   sendTimeToParent: (data: string) => void;
@@ -58,17 +33,13 @@ export default function ChildComponent({
   isAccept = false,
 }: ChildProps) {
   const [offerTime, setOfferTime] = useRecoilState(offerTimeState); // 거래 시간
-  const [value, setValue] = useState<Value>(new Date());
+  const [value, setValue] = useState<Value>(new Date(offerTime[0].offerDate));
   const [date, setDate] = useState(""); // 날짜
   const [time, setTime] = useState(""); // 시간
-  // 조건부 useState
-  const [minute, setMinute] = useState<number | number[]>(
-    isAccept ? 0 : [0, 1440]
-  );
+  const [minute, setMinute] = useState<number | number[]>(isAccept ? 0 : [0, 1440]);
   const [activeStartDate, setActiveStartDate] = useState<Date | null>(
-    new Date()
+    new Date(offerTime[0].offerDate)
   );
-  // console.log("isAccept : ", isAccept);
   const today = new Date();
 
   const handleTodayClick = () => {
@@ -76,13 +47,11 @@ export default function ChildComponent({
     setActiveStartDate(today);
     setValue(today);
     if (value) {
-      // console.log("value : ", value);
       setDate(value.toString());
       // sendDateToParent(value.toString());
     }
   };
 
-  // console.log(offerTime)
   const requestDays = isAccept ? offerTime : []; // 거래 요청 받은 날짜 예시
 
   function formatDate(date: Date) {
@@ -95,14 +64,11 @@ export default function ChildComponent({
 
   const handleDateChange = (value: Value) => {
     if (value) {
-      // console.log("value : ", value);
       setDate(formatDate(value as Date));
-      // console.log(formatDate(value as Date));
     }
   };
 
   function onChange(nextValue: Value) {
-    // console.log("달력클릭");
     setValue(nextValue);
     // console.log("nextValue : ", nextValue);
     // console.log("value : ", value);
@@ -122,20 +88,14 @@ export default function ChildComponent({
   //   }
   // };
 
-  const handleMinuteChange = (
-    event: Event,
-    newValue: number | number[],
-    activeThumb: number
-  ) => {
+  const handleMinuteChange = (event: Event, newValue: number | number[], activeThumb: number) => {
     sendDateToParent(date);
     if (isAccept) {
       setMinute(newValue as number);
       // console.log("minute: ", newValue);
       const selectedTime = `${Math.floor((newValue as number) / 60)
         .toString()
-        .padStart(2, "0")}:${((newValue as number) % 60)
-        .toString()
-        .padStart(2, "0")}`;
+        .padStart(2, "0")}:${((newValue as number) % 60).toString().padStart(2, "0")}`;
       setTime(selectedTime);
       // console.log("selectedTime : ", time);
       sendTimeToParent(selectedTime);
@@ -146,9 +106,11 @@ export default function ChildComponent({
       //   setMinute([minute[0], Math.max(newValue[1], minute[0] + minDistance)]);
       // }
       setMinute(newValue as number[]);
-      const selectedTimeStart = `${Math.floor(
-        (newValue as number[])[0] / 60
-      )}:${((newValue as number[])[0] % 60).toString().padStart(2, "0")}`;
+      const selectedTimeStart = `${Math.floor((newValue as number[])[0] / 60)}:${(
+        (newValue as number[])[0] % 60
+      )
+        .toString()
+        .padStart(2, "0")}`;
 
       const selectedTimeEnd = `${Math.floor((newValue as number[])[1] / 60)}:${(
         (newValue as number[])[1] % 60
@@ -173,13 +135,7 @@ export default function ChildComponent({
   };
 
   // 각 날짜에 적용할 클래스를 반환하는 함수
-  const tileClassName = ({
-    date,
-    view,
-  }: {
-    date: Date;
-    view: string;
-  }): string | null => {
+  const tileClassName = ({ date, view }: { date: Date; view: string }): string | null => {
     // console.log("date : ", formatDate(date));
 
     // view가 'month'인 경우에만 스타일을 적용
@@ -198,10 +154,8 @@ export default function ChildComponent({
   const endTime = isAccept ? "18:00" : "24:00";
 
   // 위 시간을 분 단위로 변경
-  const MAX =
-    60 * parseInt(endTime.split(":")[0]) + parseInt(endTime.split(":")[1]);
-  const MIN =
-    60 * parseInt(startTime.split(":")[0]) + parseInt(startTime.split(":")[1]);
+  const MAX = 60 * parseInt(endTime.split(":")[0]) + parseInt(endTime.split(":")[1]);
+  const MIN = 60 * parseInt(startTime.split(":")[0]) + parseInt(startTime.split(":")[1]);
 
   const formatTime = (time: string) => {
     const hour = parseInt(time.split(":")[0]);
@@ -231,36 +185,13 @@ export default function ChildComponent({
             return date < new Date();
           }}
           // 오늘 날짜로 돌아오는 기능을 위해 필요한 옵션 설정
-          activeStartDate={
-            activeStartDate === null ? undefined : activeStartDate
-          }
-          onActiveStartDateChange={({ activeStartDate }) =>
-            setActiveStartDate(activeStartDate)
-          }
-          // 오늘 날짜에 '오늘' 텍스트 삽입하고...
-          tileContent={({ date, view }) => {
-            let html = [];
-            if (
-              view === "month" &&
-              date.getFullYear() === today.getFullYear() &&
-              date.getMonth() === today.getMonth() &&
-              date.getDate() === today.getDate()
-            ) {
-              html.push(<StyledToday key={"today"}>오늘</StyledToday>);
-            }
-            // 특정 날짜와 일치하는 날에 밑 점 표시
-            if (requestDays.find((x) => x.offerDate === formatDate(date))) {
-              html.push(<StyledDot key={formatDate(date)} />);
-            }
-            return <>{html}</>;
-          }}
+          activeStartDate={activeStartDate === null ? undefined : activeStartDate}
+          onActiveStartDateChange={({ activeStartDate }) => setActiveStartDate(activeStartDate)}
         />
         {/* // 초기화 버튼 추가 */}
         <StyledDelete onClick={resetValues}>
           <DeleteForeverIcon fontSize="small" />
         </StyledDelete>
-        {/* // 오늘 버튼 추가 */}
-        <StyledDate onClick={handleTodayClick}>오늘</StyledDate>
         <Box
           sx={{
             marginY: 6,
@@ -289,9 +220,7 @@ export default function ChildComponent({
                   valueLabelDisplay="on"
                   valueLabelFormat={(value) =>
                     // `${value.toString().padStart(2, "0")}분`
-                    `${Math.floor(value / 60)}시 ${(value % 60)
-                      .toString()
-                      .padStart(2, "0")}분`
+                    `${Math.floor(value / 60)}시 ${(value % 60).toString().padStart(2, "0")}분`
                   }
                   className="text-yellow-400"
                 />
@@ -301,10 +230,7 @@ export default function ChildComponent({
                     onClick={() => setMinute(MIN)}
                     sx={{ cursor: "pointer" }}
                   >
-                    {offer.startTime.substring(
-                      0,
-                      offer.startTime.lastIndexOf(":")
-                    )}
+                    {offer.startTime.substring(0, offer.startTime.lastIndexOf(":"))}
                   </Typography>
                   <Typography
                     variant="body2"

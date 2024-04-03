@@ -2,9 +2,8 @@ package com.ssafy.kkoma.api.product.service;
 
 import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.api.recommendation.CategoryPreference;
-import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.product.constant.CategoryPreferenceType;
-import com.ssafy.kkoma.domain.product.entity.CategoryPreferenceRepository;
+import com.ssafy.kkoma.domain.product.repository.CategoryPreferenceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
