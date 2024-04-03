@@ -46,9 +46,9 @@ export default function Point() {
         {history && history.length > 0 ? (
           history.map((item, k) => (
             <div key={k}>
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-start">
                 {item.productInfo ? (
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-start gap-2">
                     <div
                       className="bg-gray-200 rounded-lg p-2"
                       style={{
