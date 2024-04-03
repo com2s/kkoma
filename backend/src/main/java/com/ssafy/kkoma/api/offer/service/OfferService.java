@@ -1,5 +1,6 @@
 package com.ssafy.kkoma.api.offer.service;
 
+import com.ssafy.kkoma.api.area.service.AreaService;
 import com.ssafy.kkoma.api.chat.service.ChatMessageService;
 import com.ssafy.kkoma.api.deal.dto.request.DecideOfferRequest;
 import com.ssafy.kkoma.api.deal.service.DealService;
@@ -13,6 +14,7 @@ import com.ssafy.kkoma.api.point.service.PointHistoryService;
 import com.ssafy.kkoma.api.product.dto.OfferedProductInfoResponse;
 import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
 import com.ssafy.kkoma.api.product.service.ProductService;
+import com.ssafy.kkoma.domain.area.entity.Area;
 import com.ssafy.kkoma.domain.deal.entity.Deal;
 import com.ssafy.kkoma.domain.deal.repository.DealRepository;
 import com.ssafy.kkoma.domain.member.entity.Member;
@@ -37,6 +39,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -54,6 +57,7 @@ public class OfferService {
 
     private final DealReminderScheduler dealReminderJobScheduler;
     private final ChatMessageService chatMessageService;
+    private final AreaService areaService;
 
     public Offer findOfferByOfferId(Long offerId) {
         return offerRepository.findById(offerId)
@@ -157,14 +161,13 @@ public class OfferService {
             Product product = productService.findProductByProductId(productId);
             OfferType offerType = offer.getStatus();
             ProductType productType = product.getStatus();
-            if (
-                    OfferType.SENT.equals(offerType) ||
-                    OfferType.CANCELLED.equals(offerType) ||
-                    (OfferType.ACCEPTED.equals(offerType) && ProductType.SOLD.equals(productType))) {
-                Deal deal = dealRepository.findByProduct(product);
+            Area area = areaService.findAreaById(product.getLocation().getRegionCode());
+            if (OfferType.SENT.equals(offerType) || OfferType.CANCELLED.equals(offerType) || (OfferType.ACCEPTED.equals(offerType) && ProductType.SOLD.equals(productType)) ) {
+                Deal deal = dealService.findDealByProductId(productId);
                 OfferedProductInfoResponse offeredProductInfoResponse = OfferedProductInfoResponse.fromEntity(product, MyProductType.BUY, offerType,
                         deal != null ? deal.getId() : null,
-                        deal != null ? deal.getSelectedTime() : null);
+                        deal != null ? deal.getSelectedTime() : null,
+                        area);
                 productInfoResponses.add(offeredProductInfoResponse);
             }
         }
