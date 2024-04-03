@@ -82,13 +82,18 @@ export default function MyBuy() {
     <React.Fragment>
       <Stack direction="row" spacing={1.5} className={styles.chips}>
         {["모두", "요청 중", "요청 거절", "거래 완료"].map((chip) => (
-          <Chip
+          <div
             key={chip}
-            label={chip}
+            className="flex items-center rounded-full py-1 px-2 text-body2 min-w-fit"
             onClick={() => handleChipClick(chip)}
-            color={selectedChip === chip ? "primary" : "default"}
-            variant={selectedChip === chip ? "filled" : "outlined"}
-          />
+            style={
+              selectedChip === chip
+                ? { background: "#ffcf00", border: "1px solid #ffcf00" }
+                : { border: "1px solid #bdbdbd" }
+            }
+          >
+            {chip}
+          </div>
         ))}
       </Stack>
       <div className="flex flex-col gap-5">
