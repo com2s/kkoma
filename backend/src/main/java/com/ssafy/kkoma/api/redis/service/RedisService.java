@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -70,15 +71,22 @@ public class RedisService {
         return "오류 발생";
     }
 
-    public void saveHourlyData(RedisKeyName redisKeyName, Object data) {
+    public void saveHourlyData(RedisKeyName redisKeyName, List<?> data) {
         LocalDateTime now = LocalDateTime.now();
         int prevHour = now.minusHours(1).getHour();
-        int prevprevHour = now.minusHours(2).getHour();
+        int prevPrevHour = now.minusHours(2).getHour();
+        log.info("prevHour {}, prevPrevHour {}", prevHour, prevPrevHour);
 
-        if (getValues(redisKeyName.toString() + prevHour).equals("false")) {
+        if (data.isEmpty()) { // 전 시간 데이터 복사해서 추가
+            String prevPrevData = getValues(redisKeyName.toString() + prevPrevHour);
+            setValues(redisKeyName.toString() + prevHour, prevPrevData);
+            log.info("전 시간 데이터 복사해서 추가");
+        } else {
             setValues(redisKeyName.toString() + prevHour, data);
-            deleteValues(redisKeyName.toString() + prevprevHour);
+            log.info("집계 데이터 추가");
         }
+
+        deleteValues(redisKeyName.toString() + prevPrevHour);
     }
 
     public String findHourlyData(RedisKeyName redisKeyName, LocalDateTime now) {

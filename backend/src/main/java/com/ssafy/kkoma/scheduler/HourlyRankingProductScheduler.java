@@ -38,9 +38,7 @@ public class HourlyRankingProductScheduler {
         log.info("[스케쥴러] 지난 1시간 찜수 기반 상품글 조회를 시작합니다 at {}", LocalDateTime.now().withSecond(1));
         List<ProductHourlyWishedResponse> productList = productService.getHourlyMostWishedProducts(4, LocalDateTime.now());
 
-        if (!productList.isEmpty()) {
-            redisService.saveHourlyData(RedisKeyName.hourlyWishedProductList, productList);
-        }
+        redisService.saveHourlyData(RedisKeyName.hourlyWishedProductList, productList);
     }
 
     @Scheduled(cron = "0 0 0/1 * * *", zone = "Asia/Seoul")
@@ -48,8 +46,6 @@ public class HourlyRankingProductScheduler {
         log.info("[스케쥴러] 지난 1시간 조회수 기반 상품글 조회를 시작합니다 at {}", LocalDateTime.now().withSecond(1));
         List<ProductHourlyViewedResponse> productList = productService.getHourlyMostViewedProducts(4, LocalDateTime.now());
 
-        if (!productList.isEmpty()) {
-            redisService.saveHourlyData(RedisKeyName.hourlyViewedProductList, productList);
-        }
+        redisService.saveHourlyData(RedisKeyName.hourlyViewedProductList, productList);
     }
 }
