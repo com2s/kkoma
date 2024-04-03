@@ -22,6 +22,7 @@ import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 import org.apache.mahout.cf.taste.impl.similarity.PearsonCorrelationSimilarity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -65,6 +66,7 @@ public class RecommendationService {
         return src;
     }
 
+    @Transactional
     public List<ProductSummary> recommendProduct(Long memberId, Integer num) throws SQLException, TasteException {
 
         Random random = new Random();
@@ -104,6 +106,9 @@ public class RecommendationService {
             for (int i = 0; i < products.size() && productSummaries.size() < num; i++) {
                 Product product = products.get(i);
                 log.info("[User based recommendation] product={}", product.toString());
+                log.info("[User based recommendation] product.lo={}", product.getLocation());
+                log.info("[User based recommendation] product.re={}", product.getLocation().getRegionCode());
+
                 Area area = areaService.findAreaById(product.getLocation().getRegionCode());
                 productSummaries.add(ProductSummary.fromEntity(product, area));
             }

@@ -32,9 +32,6 @@ public class ProductSummary {
 	private Long viewCount;
 	private Long offerCount;
 
-	@Autowired
-	private AreaRepository areaRepository;
-
 	public static ProductSummary fromEntity(Product product){
 		LocalDateTime createdAt = product.getCreatedAt();
 		Duration elapsedDuration = (createdAt != null) ? Duration.between(createdAt, LocalDateTime.now()) : null;
