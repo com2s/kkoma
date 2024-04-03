@@ -39,8 +39,6 @@ public class Offer extends BaseTimeEntity {
 
 	private LocalDateTime repliedAt;
 
-	private LocalDateTime cancelledAt;
-
 	@Builder
 	public Offer(Member member, Product product) {
 		this.member = member;
@@ -48,7 +46,6 @@ public class Offer extends BaseTimeEntity {
 		this.offerDetails = new ArrayList<>();
 		this.status = OfferType.SENT;
 		this.repliedAt = null;
-		this.cancelledAt = null;
 	}
 
 	public void setStatus(OfferType status) {
@@ -66,10 +63,6 @@ public class Offer extends BaseTimeEntity {
 
 	public void updateRepliedAt(LocalDateTime time) {
 		this.repliedAt = time;
-	}
-
-	public void updateCancelledAt(LocalDateTime time) {
-		this.cancelledAt = time;
 	}
 
 }

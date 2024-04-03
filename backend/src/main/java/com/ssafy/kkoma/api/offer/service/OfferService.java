@@ -141,7 +141,7 @@ public class OfferService {
             // 나머지 offer에 대해서 deny 처리, 선입금한 포인트 반환
             else {
                 offer.updateStatus(OfferType.REJECTED);
-                offer.updateCancelledAt(LocalDateTime.now());
+                offer.updateRepliedAt(LocalDateTime.now());
                 Member rejectedBuyer = offer.getMember(); // 거절당한 구매희망자
 
                 pointHistoryService.changePoint(rejectedBuyer, PointChangeType.REFUND, product.getPrice(), product);
