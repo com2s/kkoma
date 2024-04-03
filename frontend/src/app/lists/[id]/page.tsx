@@ -110,6 +110,13 @@ export default function ProductDetail({ params: { id } }: IParams) {
         </div>
         <Profile propsId={id} memberSummary={product?.data.memberSummary} />
         <Content propsId={id} product={product?.data} />
+        <div className="flex items-start justify-between gap-2">
+          <div className="flex items-start gap-1 min-w-fit">
+            <ShareLocationIcon className="c-text1" />
+            <div className={`min-w-fit text-body2 ${styles.dealPlace}`}>거래 장소</div>
+          </div>
+          <div className="text-body2 c-text2">{product?.data.dealPlace}</div>
+        </div>
       </div>
       {product?.data.x && product.data.y && (
         <StaticMap lat={product?.data.x} lng={product?.data.y} />
