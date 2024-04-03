@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { offerTimeState } from "@/store/offer";
 import { useRecoilState } from "recoil";
 import {
@@ -18,8 +18,6 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 interface ChildProps {
   sendDateToParent: (data: string) => void;
   sendTimeToParent: (data: string) => void;
-  // ? 를 붙이면 선택적 props가 된다.
-  // 거래 요청 수락이면 true, 거래 요청이면 false
   isAccept?: boolean;
 }
 
@@ -88,8 +86,11 @@ export default function ChildComponent({
   //   }
   // };
 
-  const handleMinuteChange = (event: Event, newValue: number | number[], activeThumb: number) => {
+  useEffect(() => {
     sendDateToParent(date);
+  }, [date]);
+
+  const handleMinuteChange = (event: Event, newValue: number | number[], activeThumb: number) => {
     if (isAccept) {
       setMinute(newValue as number);
       // console.log("minute: ", newValue);
@@ -149,6 +150,11 @@ export default function ChildComponent({
     return null;
   };
 
+  useEffect(() => {
+    sendDateToParent(offerTime[0].offerDate);
+    sendTimeToParent(offerTime[0].startTime.substring(0, 5));
+  }, []);
+
   // 분 슬라이더를 위한 값
   const startTime = isAccept ? "11:00" : "00:00";
   const endTime = isAccept ? "18:00" : "24:00";
@@ -182,7 +188,19 @@ export default function ChildComponent({
           className={`mx-auto`} // 가운데 정렬
           tileDisabled={({ date }) => {
             // 오늘 이전 날짜는 비활성화
-            return date < new Date();
+            let temp =
+              today.getFullYear() +
+              "-" +
+              ("0" + (today.getMonth() + 1)).slice(-2) +
+              "-" +
+              ("0" + today.getDate()).slice(-2);
+            let temp2 =
+              date.getFullYear() +
+              "-" +
+              ("0" + (date.getMonth() + 1)).slice(-2) +
+              "-" +
+              ("0" + date.getDate()).slice(-2);
+            return new Date(temp2) < new Date(temp);
           }}
           // 오늘 날짜로 돌아오는 기능을 위해 필요한 옵션 설정
           activeStartDate={activeStartDate === null ? undefined : activeStartDate}

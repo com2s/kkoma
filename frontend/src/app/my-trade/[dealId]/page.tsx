@@ -115,56 +115,6 @@ export default function MyRequest({ params: { dealId } }: IParams) {
                 <RemoveIcon sx={{ color: "white" }} />
               </IconButton>
             </div>
-            // <div key={key} className={styles.card}>
-            //   <Avatar
-            //     alt="Product Image"
-            //     src={requester.memberProfile.profileImage}
-            //     sx={{ width: 80, height: 80, background: "gray" }}
-            //     className={styles.avatar}
-            //     variant="square"
-            //   />
-            //   <CardContent sx={{ padding: 1 }} className={styles.cardMiddle}>
-            //     <Typography variant="h6" component="div">
-            //       {requester.memberProfile.nickname}
-            //     </Typography>
-            //     {/* <Typography color="text.secondary">{requester.productName}</Typography> */}
-            //     {requester.offerTimes?.map((time, key) => (
-            //       <Typography key={key} variant="body2">
-            //         {time.offerDate}
-            //         <br />
-            //         {time.startTime.split(":").slice(0, 2).join(":")} ~{" "}
-            //         {time.endTime.split(":").slice(0, 2).join(":")}
-            //       </Typography>
-            //     ))}
-            //   </CardContent>
-            //   <CardContent className={styles.btns} sx={{ padding: 0 }}>
-            //     <IconButton
-            //       size="small"
-            //       sx={{
-            //         "&.MuiIconButton-root": {
-            //           bgcolor: "#ffcf00",
-            //         },
-            //         margin: 1,
-            //       }}
-            //       onClick={() => clickRequest(requester.offerTimes, requester.offerId)}
-            //     >
-            //       <CheckIcon sx={{ color: "white" }} />
-            //     </IconButton>
-            //     {/* </Link> */}
-            //     <IconButton
-            //       onClick={() => handleDelete(requester.offerId)}
-            //       size="small"
-            //       sx={{
-            //         "&.MuiIconButton-root": {
-            //           bgcolor: "#764c32",
-            //         },
-            //         margin: 1,
-            //       }}
-            //     >
-            //       <RemoveIcon sx={{ color: "white" }} />
-            //     </IconButton>
-            //   </CardContent>
-            // </div>
           ))}
         </>
       )}
