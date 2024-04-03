@@ -59,4 +59,10 @@ public class NotificationService {
 		 noti.setReadAt();
 		 return noti;
 	}
+
+	public Boolean hasUnreadNotis(Long memberId) {
+		Member member = memberService.findMemberByMemberId(memberId);
+		List<Notification> notiList = notificationRepository.findByMemberAndReadAt(member, null);
+		return !notiList.isEmpty();
+	}
 }
