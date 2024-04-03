@@ -3,7 +3,7 @@
 import TopBar3 from "@/components/common/top-bar3";
 import Title from "@/components/common/title";
 import styles from "./qr.module.scss";
-import { ProductCard } from "@/components/common/product-card";
+import { ProductSmCard } from "@/components/common/product-card";
 import QRCode from "@/components/plan/qr-img";
 import { DetailParams, ProductSm } from "@/types/product";
 import { useEffect, useState } from "react";
@@ -35,7 +35,7 @@ export default function DealPay() {
       <TopBar3 />
       <Title title="거래를 확정해주세요" subtitle="QR코드를 스캔해주세요" />
       {product ? (
-        <ProductCard
+        <ProductSmCard
           product={{
             id: product.data.id,
             thumbnailImage: product.data.productImages[0],
@@ -46,7 +46,9 @@ export default function DealPay() {
       ) : (
         <></>
       )}
-      <div className="flex justify-center w-full">{code ? <QRCode code={code} /> : <></>}</div>
+      <div className="flex justify-center w-full">
+        {code ? <QRCode code={code} /> : <></>}
+      </div>
     </div>
   );
 }

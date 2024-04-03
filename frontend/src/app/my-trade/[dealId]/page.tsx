@@ -6,6 +6,7 @@ import styles from "@/components/my-trade/my-request.module.scss";
 import { Requester } from "@/types/offer";
 import { getRequesters } from "@/components/my-trade/my-trade-ftn";
 import { offerTimeState } from "@/store/offer";
+import { patchOfferReject } from "@/components/my-trade/my-trade-ftn";
 import {
   Card,
   CardContent,
@@ -19,8 +20,9 @@ import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import CheckIcon from "@mui/icons-material/Check";
 import RemoveIcon from "@mui/icons-material/Remove";
-import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { NoContents } from "@/components/common/no-contents";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -50,8 +52,9 @@ export default function MyRequest({ params: { dealId } }: IParams) {
     fetchData();
   }, [dealId]);
 
-  const handleDelete = (requestId: number) => {
+  const handleDelete = async (requestId: number) => {
     if (window.confirm("거래 요청을 취소하시겠습니까?")) {
+      await patchOfferReject(requestId);
       alert("거래 요청이 취소되었습니다.");
       console.log(requestId);
     }
@@ -128,7 +131,15 @@ export default function MyRequest({ params: { dealId } }: IParams) {
         </>
       )}
       {requesters.length === 0 && (
-        <h2 className="p-4">아직 요청이 없습니다.</h2>
+        <NoContents>
+          <h4 className="c-text3">아직 거래 요청이 없어요</h4>
+          <Image
+            src={"/images/Empty-BOX.png"}
+            alt="empty"
+            width={100}
+            height={100}
+          />
+        </NoContents>
       )}
     </React.Fragment>
   );

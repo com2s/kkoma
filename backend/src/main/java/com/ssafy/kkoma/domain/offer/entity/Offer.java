@@ -64,4 +64,12 @@ public class Offer extends BaseTimeEntity {
 		this.status = status;
 	}
 
+	public void updateRepliedAt(LocalDateTime time) {
+		this.repliedAt = time;
+	}
+
+	public void updateCancelledAt(LocalDateTime time) {
+		this.cancelledAt = time;
+	}
+
 }

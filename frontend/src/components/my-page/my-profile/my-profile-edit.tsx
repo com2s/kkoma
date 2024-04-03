@@ -2,7 +2,9 @@
 
 import styles from "@/components/my-page/my-detail.module.scss";
 import React, { ChangeEvent, useEffect, useState, useRef } from "react";
-import { getMyInfo, putMyInfo, MyInfo } from "@/components/my-page/my-page-ftn";
+import { getMyInfo, putMyInfo } from "@/components/my-page/my-page-ftn";
+import { MyInfo } from "@/types/member";
+
 import { uploadImagesAPI } from "@/services/upload";
 
 import Avatar from "@mui/material/Avatar";
@@ -57,9 +59,6 @@ export default function MyProfileEdit() {
     }
   };
 
-  console.log("myId: ", myDetail?.data.id);
-  console.log(myDetail?.data);
-
   const handleAccordionChange =
     (panel: boolean) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
@@ -81,7 +80,9 @@ export default function MyProfileEdit() {
   const handleEditClick = async () => {
     const formData = new FormData();
     let profileImage = null;
+    let isUpload = false;
     if (image?.file) {
+      isUpload = true;
       formData.append("images", image.file);
       // console.log("image: ", image);
       profileImage = await uploadImagesAPI(formData);
@@ -89,19 +90,20 @@ export default function MyProfileEdit() {
     }
 
     const data = {
-      profileImage: profileImage[0] ?? null,
+      // profileImage: profileImage ? profileImage[0] : null,
+      profileImage: isUpload ? profileImage[0] : myDetail?.data.profileImage,
       nickname: nickname === "" ? null : nickname,
       name: name === "" ? null : name,
       phone: phone === "" ? null : phone,
     };
-    // console.log("data: ", data);
+    console.log("data: ", data);
     const res = await putMyInfo(data);
     await alert("수정되었습니다.");
     setExpanded(false); // 아코디언 닫기
     window.location.reload();
   };
   return (
-    <div className="px-4 mx-auto my-8">
+    <div className="mx-auto my-8">
       {success === false && (
         <div className="border-t-yellow-300 border-t-2">
           <h1>내 정보를 불러오는데 실패했습니다.</h1>
@@ -113,7 +115,7 @@ export default function MyProfileEdit() {
             sx={{
               margin: "auto",
               minWidth: "200px",
-              border: "1px solid #999999",
+              borderBottom: "2px solid #d3d3d3",
               "&.MuiPaper-root": { boxShadow: "none" },
             }}
             expanded={expanded}
@@ -123,11 +125,10 @@ export default function MyProfileEdit() {
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1-content"
               id="panel1-header"
-              sx={{ margin: "auto", paddingX: "2rem" }}
             >
               프로필 수정
             </AccordionSummary>
-            <AccordionDetails sx={{ margin: "auto", paddingLeft: "2rem" }}>
+            <AccordionDetails sx={{ margin: "auto", paddingX: "2rem" }}>
               <label className="min-w-36 h-36 flex flex-col justify-center items-center bg-slate-50 rounded-md">
                 <Avatar
                   src={image?.url ?? ""}
@@ -142,35 +143,16 @@ export default function MyProfileEdit() {
                   onChange={handleImageChange}
                 />
               </label>
+              {/* <Button color="warning" sx={{display:'block'}}>사진 지우기</Button> */}
               <TextField
+                fullWidth
                 id="standard-basic"
                 label="닉네임"
                 variant="standard"
-                sx={{ marginY: 2, width: "80%", marginX: "auto" }}
+                sx={{ marginY: 2, marginX: "auto" }}
                 value={nickname}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                   setNickname(event.target.value);
-                }}
-              />
-              <TextField
-                id="standard-basic"
-                label="이름"
-                variant="standard"
-                sx={{ marginY: 2, width: "80%", marginX: "auto" }}
-                value={name}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  setName(event.target.value);
-                }}
-              />
-              <TextField
-                id="standard-basic"
-                label="전화번호"
-                variant="standard"
-                type="number"
-                sx={{ marginY: 2, width: "90%", marginX: "auto" }}
-                value={phone}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  setPhone(event.target.value);
                 }}
               />
             </AccordionDetails>
@@ -178,13 +160,10 @@ export default function MyProfileEdit() {
               sx={{
                 margin: "12px auto",
                 display: "flex",
-                justifyContent: "space-between",
-                width: "60%",
+                justifyContent: "center",
+                width: "70%",
               }}
             >
-              <Button onClick={handleCloseClick} variant="outlined">
-                취소
-              </Button>
               <Button onClick={handleEditClick} variant="outlined">
                 수정
               </Button>

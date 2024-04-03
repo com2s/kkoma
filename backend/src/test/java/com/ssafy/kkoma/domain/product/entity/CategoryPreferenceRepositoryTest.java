@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @SpringBootTest
@@ -28,6 +29,7 @@ public class CategoryPreferenceRepositoryTest {
     CategoryPreferenceFactory categoryPreferenceFactory;
 
     @Test
+    @Transactional
     public void 카테고리_선호도_조회하기() {
         Member member = memberFactory.createMember();
         Category category = categoryFactory.createCategory();

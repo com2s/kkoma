@@ -1,18 +1,17 @@
 .container {
-    // height: calc(100vh - 80px);
-    // @include flex(flex-start, flex-start, column);
-    overflow: auto;
-    margin: rem(10) rem(16) // padding-bottom: rem(100);
+  // height: calc(100vh - 80px);
+  // @include flex(flex-start, flex-start, column);
+  overflow: auto;
 }
 
 .carousel {
-    // max-width: rem(480);
-    // min-width: rem(320);
-    // min-width: rem(280);
-    max-height: rem(300);
-    // margin: rem(20) auto;
-    // background-color: gray;
-    // padding: 0;
+  // max-width: rem(480);
+  // min-width: rem(320);
+  // min-width: rem(280);
+  max-height: rem(300);
+  // margin: rem(20) auto;
+  // background-color: gray;
+  // padding: 0;
 }
 
 // .slick-slide {
@@ -20,23 +19,28 @@
 // }
 
 .image {
-    // margin: rem(10) rem(20);
-    // padding: rem(5) rem(60);
-    padding: rem(5) auto;
+  // margin: rem(10) rem(20);
+  // padding: rem(5) rem(60);
+  padding: rem(5) auto;
 }
 
 .btn {
-    @include flex();
-    background-color: $color-yellow;
-    border-radius: rem(10);
-    width: 100%;
+  @include flex();
+  background-color: $color-yellow;
+  border-radius: rem(10);
+  width: 100%;
 }
 
 .normal {
-    @include text-body;
-    height: rem(48);
+  @include text-body;
+  height: rem(48);
 }
 
 .gray {
-    background-color: $color-text5;
+  background-color: $color-text5;
+}
+
+.dealPlace {
+  font-weight: $fw-bold;
+  color: $color-text1;
 }

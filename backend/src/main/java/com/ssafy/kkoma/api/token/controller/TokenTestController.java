@@ -14,8 +14,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Random;
-
 @Tag(name = "Token")
 @Slf4j
 @RestController
@@ -45,7 +43,7 @@ public class TokenTestController {
     @Tag(name = "Token")
     @Operation(summary = "to create a JWT")
     @GetMapping("/create/{memberId}")
-    public JwtTokenDto getJwtTokenDto(@PathVariable Long memberId) {
+    public JwtTokenDto getJwtTokenDto(@PathVariable("memberId") Long memberId) {
         Member member = memberService.findMemberByMemberId(memberId);
         return tokenManager.createJwtTokenDto(member.getId(), member.getRole());
     }
@@ -53,7 +51,7 @@ public class TokenTestController {
     @Tag(name = "Token")
     @Operation(summary = "to validate a JWT")
     @GetMapping("/valid")
-    public String validJwtToken(@RequestParam String token) {
+    public String validJwtToken(@RequestParam("token") String token) {
         tokenManager.validateToken(token);
         Claims claims = tokenManager.getTokenClaims(token);
         Long memberId = Long.valueOf((Integer) claims.get("memberId"));

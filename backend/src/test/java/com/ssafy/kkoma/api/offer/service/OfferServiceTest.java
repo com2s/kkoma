@@ -92,7 +92,7 @@ class OfferServiceTest {
         // 2) 존재하지 않는 상품글에 거래 요청
         buyer.getPoint().addBalance(20000);
         BusinessException invalidProductException = assertThrows(BusinessException.class, () -> {
-            offerService.createOffer(buyer.getId(), 2L);
+            offerService.createOffer(buyer.getId(), -1000L);
         });
         assertEquals(invalidProductException.getErrorCode(), ErrorCode.PRODUCT_NOT_EXISTS);
     }
@@ -140,6 +140,8 @@ class OfferServiceTest {
         Member befBuyer2 = memberFactory.createMember();
         Offer befOffer2 = offerFactory.createOffer(product, befBuyer2);
         int befBalance2 = befBuyer2.getPoint().getBalance();
+
+        Member admin = memberFactory.createAdmin();
 
         DecideOfferRequest decideOfferRequest = DecideOfferRequest.builder().selectedTime(LocalDateTime.now()).build();
 

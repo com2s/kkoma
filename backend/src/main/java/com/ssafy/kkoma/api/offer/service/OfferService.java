@@ -1,9 +1,11 @@
 package com.ssafy.kkoma.api.offer.service;
 
+import com.ssafy.kkoma.api.chat.service.ChatMessageService;
 import com.ssafy.kkoma.api.deal.dto.request.DecideOfferRequest;
 import com.ssafy.kkoma.api.deal.service.DealService;
 import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.api.notification.constant.NotiDetailBuilder;
+import com.ssafy.kkoma.api.notification.dto.response.NotiDetail;
 import com.ssafy.kkoma.api.notification.service.NotificationService;
 import com.ssafy.kkoma.api.offer.dto.response.DecideOfferResponse;
 import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
@@ -14,6 +16,7 @@ import com.ssafy.kkoma.api.product.service.ProductService;
 import com.ssafy.kkoma.domain.deal.entity.Deal;
 import com.ssafy.kkoma.domain.deal.repository.DealRepository;
 import com.ssafy.kkoma.domain.member.entity.Member;
+import com.ssafy.kkoma.domain.notification.entity.Notification;
 import com.ssafy.kkoma.domain.offer.constant.OfferType;
 import com.ssafy.kkoma.domain.offer.entity.Offer;
 import com.ssafy.kkoma.domain.offer.repository.OfferRepository;
@@ -24,10 +27,14 @@ import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.global.error.ErrorCode;
 import com.ssafy.kkoma.global.error.exception.BusinessException;
 import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
+import com.ssafy.kkoma.scheduler.DealReminderScheduler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,10 +46,14 @@ public class OfferService {
     private final OfferRepository offerRepository;
     private final MemberService memberService;
     private final ProductService productService;
+
     private final DealService dealService;
     private final NotificationService notificationService;
     private final PointHistoryService pointHistoryService;
     private final DealRepository dealRepository;
+
+    private final DealReminderScheduler dealReminderJobScheduler;
+    private final ChatMessageService chatMessageService;
 
     public Offer findOfferByOfferId(Long offerId) {
         return offerRepository.findById(offerId)
@@ -62,7 +73,7 @@ public class OfferService {
             throw new BusinessException(ErrorCode.POINT_NOT_ENOUGH);
         }
 
-        pointHistoryService.changePoint(member, PointChangeType.PAY, product.getPrice());
+        pointHistoryService.changePoint(member, PointChangeType.PAY, product.getPrice(), product);
 
         Offer offer = Offer.builder().product(product).build();
         offer.setMember(member);
@@ -109,15 +120,26 @@ public class OfferService {
             // 수락한 offer에 대해서 accept 처리
             if (offer.getId() == offerId) {
                 offer.updateStatus(OfferType.ACCEPTED);
-                offer.getProduct().updateStatus(ProductType.PROGRESS);
+                offer.updateRepliedAt(LocalDateTime.now());
+
+                product = offer.getProduct(); // 사실 위의 product랑 같음
+                product.updateStatus(ProductType.PROGRESS);
                 acceptedDeal = dealService.createDeal(offer, decideOfferRequest);
+
+                // 판매자/구매자에 거래 리마인더 알림 예약
+                scheduleDealReminderNoti(decideOfferRequest.getSelectedTime(), product.getTitle(),
+                        product.getChatRoom().getId(), product.getMember(), offer.getMember());
+
+                // 관리자에 의해 채팅방에 거래 성사 메시지 전송
+                chatMessageService.createChatMessage(product.getChatRoom().getId());
             }
             // 나머지 offer에 대해서 deny 처리, 선입금한 포인트 반환
             else {
                 offer.updateStatus(OfferType.REJECTED);
+                offer.updateCancelledAt(LocalDateTime.now());
                 Member rejectedBuyer = offer.getMember(); // 거절당한 구매희망자
 
-                pointHistoryService.changePoint(rejectedBuyer, PointChangeType.REFUND, product.getPrice());
+                pointHistoryService.changePoint(rejectedBuyer, PointChangeType.REFUND, product.getPrice(), product);
                 NotiDetailBuilder.getInstance().returnPayment(
                     product.getTitle(), product.getPrice(), rejectedBuyer.getPoint().getBalance()
                 );
@@ -161,6 +183,28 @@ public class OfferService {
         }
 
         return productInfoResponses;
+    }
+
+    public void scheduleDealReminderNoti(LocalDateTime dealTime, String productTitle, Long chatRoomId, Member seller, Member buyer) {
+        LocalDateTime remindTime = dealTime.minusHours(1);
+
+        if (remindTime.isBefore(LocalDateTime.now())) return; // 알림 시간이 이미 지나버렸다
+
+        Instant instant = remindTime.atZone(ZoneId.of("Asia/Seoul")).toInstant();
+
+        // 판매자에 거래 알림 예약
+        NotiDetail detailSeller = NotiDetailBuilder.getInstance().scheduledDeal(productTitle, MyProductType.SELL, chatRoomId);
+        Notification notiSeller = Notification.builder().member(seller)
+                .message(detailSeller.getMessage()).destination(detailSeller.getDestination())
+                .sentAt(remindTime).build();
+        dealReminderJobScheduler.scheduling(notiSeller, instant);
+
+        // 구매자에 거래 알림 예약
+        NotiDetail detailBuyer = NotiDetailBuilder.getInstance().scheduledDeal(productTitle, MyProductType.BUY, chatRoomId);
+        Notification notiBuyer = Notification.builder().member(buyer)
+                .message(detailBuyer.getMessage()).destination(detailBuyer.getDestination())
+                .sentAt(remindTime).build();
+        dealReminderJobScheduler.scheduling(notiBuyer, instant);
     }
 
 }

@@ -89,7 +89,6 @@ export default function ChildComponent({
   const [activeStartDate, setActiveStartDate] = useState<Date | null>(
     new Date()
   );
-  // console.log("isAccept : ", isAccept);
   const today = new Date();
   // 어제 날짜
   const yesterday = new Date();
@@ -99,17 +98,23 @@ export default function ChildComponent({
     const today = new Date();
     setActiveStartDate(today);
     setValue(today);
-    if (value) {
-      // console.log("value : ", value);
-      setDate(value.toString());
-      sendDateToParent(value.toString());
-      console.log(value.toString());
-    }
+    setDate(
+      today.getFullYear() +
+        "-" +
+        ("0" + (today.getMonth() + 1)).slice(-2) +
+        "-" +
+        ("0" + today.getDate()).slice(-2)
+    );
+    sendDateToParent(
+      today.getFullYear() +
+        "-" +
+        ("0" + (today.getMonth() + 1)).slice(-2) +
+        "-" +
+        ("0" + today.getDate()).slice(-2)
+    );
   };
 
-  // console.log(offerTime)
   const requestDays = selectedTimes.map((x) => x[0]);
-  console.log("requestDays : ", requestDays);
 
   function formatDate(date: Date) {
     const year = date.getFullYear(); // 연도를 가져옵니다.
@@ -121,11 +126,8 @@ export default function ChildComponent({
 
   const handleDateChange = (value: Value) => {
     if (value) {
-      // console.log("value : ", value);
       setDate(formatDate(value as Date));
-      console.log(formatDate(value as Date));
       sendDateToParent(formatDate(value as Date));
-
       sendTimeToParent(time);
     }
   };
@@ -142,14 +144,12 @@ export default function ChildComponent({
     sendDateToParent(date);
     if (isAccept) {
       setMinute(newValue as number);
-      // console.log("minute: ", newValue);
       const selectedTime = `${Math.floor((newValue as number) / 60)
         .toString()
         .padStart(2, "0")}:${((newValue as number) % 60)
         .toString()
         .padStart(2, "0")}`;
       setTime(selectedTime);
-      // console.log("selectedTime : ", time);
       sendTimeToParent(selectedTime);
     } else {
       // if (activeThumb === 0) {
@@ -172,7 +172,6 @@ export default function ChildComponent({
 
       const selectedTime = `${selectedTimeStart} ~ ${selectedTimeEnd}`;
       setTime(selectedTime);
-      // console.log("selectedTime : ", time);
       sendTimeToParent(selectedTime);
     }
   };
@@ -194,8 +193,6 @@ export default function ChildComponent({
     date: Date;
     view: string;
   }): string | null => {
-    // console.log("date : ", formatDate(date));
-
     // view가 'month'인 경우에만 스타일을 적용
     if (view === "month") {
       // 특정 날짜들과 같은지 확인
@@ -252,21 +249,6 @@ export default function ChildComponent({
             setActiveStartDate(activeStartDate)
           }
           // 오늘 날짜에 '오늘' 텍스트 삽입하고...
-          tileContent={({ date, view }) => {
-            let html = [];
-            // 특정 날짜와 일치하는 날에 밑 점 표시
-            if (requestDays.find((x) => x === formatDate(date))) {
-              html.push(<StyledDot key={formatDate(date)} />);
-            } else if (
-              view === "month" &&
-              date.getFullYear() === today.getFullYear() &&
-              date.getMonth() === today.getMonth() &&
-              date.getDate() === today.getDate()
-            ) {
-              html.push(<StyledToday key={"today"}>오늘</StyledToday>);
-            }
-            return <>{html}</>;
-          }}
         />
         {/* // 초기화 버튼 추가 */}
         <StyledDelete onClick={resetValues}>

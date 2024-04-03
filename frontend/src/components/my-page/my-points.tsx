@@ -6,13 +6,20 @@ import { Button } from "@mui/material";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import TollIcon from "@mui/icons-material/Toll";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
-export default function MyPoints() {
+interface Props {
+  next?: string;
+}
+
+export default function MyPoints({ next }: Props) {
   {
     /* '내 포인트'에 천의 자리를 표시하는 ',' 표시와 끝에 P 를 붙인다. */
   }
   const [point, setPoint] = useState(0);
   const [success, setSuccess] = useState(true);
+
+  const router = useRouter();
 
   const getPoint = async () => {
     const res = await getMyPoints();
@@ -34,28 +41,31 @@ export default function MyPoints() {
   };
   return (
     <div className={styles.container}>
-      <div className="flex justify-between items-center p-4">
+      <div
+        className="flex justify-between items-center p-4"
+        onClick={() => (next ? router.push(next) : "")}
+      >
         <span className="text-lg px-4 font-semibold">내 포인트</span>
         <span className="text-xl px-4 font-bold text-red-500">
-          {success? `${formattedPoints(point)}P` : `포인트 조회 실패`}
-          </span>
+          {success ? `${formattedPoints(point)}P` : `포인트 조회 실패`}
+        </span>
       </div>
       <div className="flex justify-between items-center p-4 btn-line">
         <Button
-          startIcon={<TollIcon color="primary" />}
+          // startIcon={<TollIcon color="primary" />}
           variant="outlined"
           className={styles.btn}
-          onClick={() => alert("포인트 송금 페이지로 이동합니다.")}
+          onClick={() => router.push("/point/charge")}
         >
-          <span className="text-black font-semibold">송금</span>
+          <span className="text-black font-semibold">포인트 충전</span>
         </Button>
         <Button
-          startIcon={<AttachMoneyIcon color="error" />}
+          // startIcon={<TollIcon color="error" />}
           variant="outlined"
           className={styles.btn}
-          onClick={() => alert("포인트 충전 페이지로 이동합니다.")}
+          onClick={() => router.push("/point/withdraw")}
         >
-          <span className="text-black font-semibold">충전</span>
+          <span className="text-black font-semibold">출금</span>
         </Button>
       </div>
     </div>

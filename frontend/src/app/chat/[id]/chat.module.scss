@@ -15,6 +15,7 @@
   .chatBody {
     overflow-y: auto;
     padding: rem(58) 0 rem(58);
+    width: 100%;
     .profile {
       border-radius: 50%;
     }
@@ -41,6 +42,7 @@
           background-color: $color-light-yellow;
           padding: rem(5) rem(10);
           border-radius: rem(10);
+          word-break: break-all;
         }
       }
     }
@@ -54,7 +56,7 @@
         width: 100%;
         .content {
           display: block;
-          background-color: $color-pink;
+          background-color: $color-light-yellow;
           padding: rem(5) rem(10);
           border-radius: rem(10);
         }
@@ -87,4 +89,12 @@
       padding: rem(10);
     }
   }
+}
+
+.seller {
+  display: block;
+  background-color: $color-pink;
+  padding: rem(5) rem(10);
+  border-radius: rem(10);
+  word-break: break-all;
 }

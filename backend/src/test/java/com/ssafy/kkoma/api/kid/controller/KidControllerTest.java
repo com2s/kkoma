@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -36,7 +37,9 @@ class KidControllerTest {
     @Autowired
     KidFactory kidFactory;
 
+    // todo: 아이가 이미 있는 경우 에러 발생 가능
     @Test
+    @Transactional
     void 로그인한_회원의_모든_아이에_대한_요약_정보를_얻기() throws Exception {
 
         Member savedMember = memberFactory.createMember();
@@ -54,6 +57,7 @@ class KidControllerTest {
     }
 
     @Test
+    @Transactional
     void 아이_요약_정보를_아이디로_얻기() throws Exception {
 
         Member savedMember = memberFactory.createMember();

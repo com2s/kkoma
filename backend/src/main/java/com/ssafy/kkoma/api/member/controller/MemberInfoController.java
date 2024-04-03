@@ -1,8 +1,11 @@
 package com.ssafy.kkoma.api.member.controller;
 
+import com.ssafy.kkoma.api.member.dto.request.UpdateMemberPreferredPlaceRequest;
 import com.ssafy.kkoma.api.member.dto.request.UpdateMemberRequest;
 import com.ssafy.kkoma.api.member.dto.response.MemberInfoResponse;
+import com.ssafy.kkoma.api.member.dto.response.MemberPreferredPlaceResponse;
 import com.ssafy.kkoma.api.member.dto.response.MemberSummaryResponse;
+import com.ssafy.kkoma.api.member.dto.response.MyPageMemberProfileResponse;
 import com.ssafy.kkoma.api.member.service.MemberInfoService;
 import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.global.jwt.service.TokenManager;
@@ -73,4 +76,44 @@ public class MemberInfoController {
         return ResponseEntity.ok(ApiUtils.success(memberInfoResponse));
     }
 
+    @Tag(name = "Member")
+    @Operation(
+        summary = "마이페이지 프로필 정보 조회",
+        security = { @SecurityRequirement(name = "bearer-key") }
+    )
+    @GetMapping("/{memberId}/profile")
+    public ResponseEntity<ApiUtils.ApiResult<MyPageMemberProfileResponse>> getMyPageMemberProfile(
+        @PathVariable("memberId") Long memberId
+    ) {
+        MyPageMemberProfileResponse memberProfileResponse = memberInfoService.getMyPageMemberProfile(memberId);
+
+        return ResponseEntity.ok(ApiUtils.success(memberProfileResponse));
+    }
+
+    @Tag(name = "Member")
+    @Operation(
+        summary = "유저 선호 거래 지역 정보 수정",
+        security = { @SecurityRequirement(name = "bearer-key") }
+    )
+    @PutMapping("/place")
+    public ResponseEntity<ApiUtils.ApiResult<MemberPreferredPlaceResponse>> updateMemberPreferredPlace(
+        @MemberInfo MemberInfoDto memberInfoDto,
+        @RequestBody UpdateMemberPreferredPlaceRequest updateMemberPreferredPlaceRequest
+    ) {
+        MemberPreferredPlaceResponse memberPreferredPlaceResponse = memberInfoService.updateMemberPreferredPlace(memberInfoDto.getMemberId(), updateMemberPreferredPlaceRequest);
+        return ResponseEntity.ok(ApiUtils.success(memberPreferredPlaceResponse));
+    }
+
+    @Tag(name = "Member")
+    @Operation(
+        summary = "유저 선호 거래 지역 정보 조회",
+        security = { @SecurityRequirement(name = "bearer-key") }
+    )
+    @GetMapping("/place")
+    public ResponseEntity<ApiUtils.ApiResult<MemberPreferredPlaceResponse>> getMemberPreferredPlace(
+            @MemberInfo MemberInfoDto memberInfoDto
+    ) {
+        MemberPreferredPlaceResponse memberPreferredPlaceResponse = memberInfoService.getMemberPreferredPlace(memberInfoDto.getMemberId());
+        return ResponseEntity.ok(ApiUtils.success(memberPreferredPlaceResponse));
+    }
 }

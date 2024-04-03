@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -49,9 +50,9 @@ public class MemberController {
         } else if ("progress".equals(type)) {
             List<ProductInfoResponse> buyingProductResponses = offerService.getProgressOfferingProducts(memberId);
             List<ProductInfoResponse> sellingProductResponses = memberService.getMySellingProducts(memberId, ProductType.PROGRESS);
-            // todo 거래 수락일로 정렬된 결과 반환
             productInfoResponses.addAll(buyingProductResponses);
             productInfoResponses.addAll(sellingProductResponses);
+            productInfoResponses.sort(Comparator.comparing(ProductInfoResponse::getSelectedTime).reversed()); // 거래 수락일로 정렬
         }
 
         return ResponseEntity.ok().body(ApiUtils.success(productInfoResponses));

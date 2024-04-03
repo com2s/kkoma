@@ -1,0 +1,4 @@
+.locate {
+  @include flex(center, flex-start, column);
+  gap: rem(12);
+}

@@ -2,21 +2,32 @@
 
 import Title from "@/components/common/title";
 import TextField from "@mui/material/TextField";
-import { ButtonContainer, SubBtn, NormalBtn } from "@/components/common/buttons";
+import {
+  ButtonContainer,
+  SubBtn,
+  NormalBtn,
+} from "@/components/common/buttons";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import dayjs from "dayjs";
+import "dayjs/locale/ko";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { MobileDatePicker } from "@mui/x-date-pickers";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { koKR } from "@mui/x-date-pickers/locales";
+
 import { ChangeEvent, useState } from "react";
-import { BirthdaySelecter } from "@/components/kid/birthday-selecter";
 import { useRecoilState } from "recoil";
-import { kidYearState, kidMonthState, kidDateState } from "@/store/kid";
+import { kidBirthDateState } from "@/store/kid";
+import { useRouter } from "next/navigation";
 
 export default function KidBirth() {
-  const [year, setYear] = useRecoilState(kidYearState);
-  const [month, setMonth] = useRecoilState(kidMonthState);
-  const [date, setDate] = useRecoilState(kidDateState);
-
+  const [birthDate, setBirthDate] = useRecoilState(kidBirthDateState);
   const [isBirthYet, setIsBirthYet] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [disable, setDisable] = useState(false);
+  const [errmsg, setErrMsg] = useState<string | null>(null);
+
+  const router = useRouter();
 
   const handelChange = (e: ChangeEvent<HTMLInputElement>) => {
     setIsBirthYet(e.target.checked);
@@ -24,27 +35,63 @@ export default function KidBirth() {
 
   return (
     <>
-      <Title title={`아이의\n생년월일을 알려주세요`} subtitle="제품 추천에 도움을 줄게요" />
-      <FormControlLabel
-        control={<Checkbox checked={isBirthYet} onChange={handelChange} />}
-        label="아직 출산 전이에요"
+      <Title
+        title={`아이의\n생년월일을 알려주세요`}
+        subtitle="제품 추천에 도움을 줄게요"
       />
-      <TextField
-        id="standard-basic"
-        label={isBirthYet ? "출산예정일" : "생년월일"}
-        variant="standard"
-        sx={{ width: "100%", fontWeight: "bold" }}
-        value={year + "년 " + month + "월 " + date + "일"}
-        onClick={() => setOpen(true)}
-      />
-      <BirthdaySelecter
-        title={isBirthYet ? "출산예정일" : "생년월일"}
-        open={open}
-        setOpen={setOpen}
-      />
+      <div>
+        <FormControlLabel
+          control={<Checkbox checked={isBirthYet} onChange={handelChange} />}
+          label="아직 출산 전이에요"
+        />
+        {errmsg ? (
+          <div className="text-caption c-main">{`${errmsg}`}</div>
+        ) : (
+          <></>
+        )}
+      </div>
+      <LocalizationProvider
+        dateAdapter={AdapterDayjs}
+        adapterLocale={"ko"}
+        localeText={
+          koKR.components.MuiLocalizationProvider.defaultProps.localeText
+        }
+      >
+        <MobileDatePicker
+          label="생년월일"
+          className="w-full"
+          disableFuture={!isBirthYet}
+          disablePast={isBirthYet}
+          format="YYYY-MM-DD"
+          defaultValue={dayjs(birthDate)}
+          onError={(e) => {
+            if (e) {
+              setDisable(true);
+              if (e === "disablePast") {
+                setErrMsg("현재보다 이전 날짜는 선택할 수 없어요");
+              } else {
+                setErrMsg("현재보다 이후 날짜는 선택할 수 없어요");
+              }
+            } else {
+              setDisable(false);
+              setErrMsg(null);
+            }
+          }}
+          onChange={(e) => setBirthDate(e?.format("YYYY-MM-DD")!)}
+        />
+      </LocalizationProvider>
       <ButtonContainer>
-        <SubBtn next={"/kid/gender"}>건너뛰기</SubBtn>
-        <NormalBtn next={"/kid/gender"}>완료</NormalBtn>
+        <SubBtn
+          next={() => {
+            setBirthDate(null);
+            router.push("/kid/gender");
+          }}
+        >
+          건너뛰기
+        </SubBtn>
+        <NormalBtn next={"/kid/gender"} disabled={disable}>
+          완료
+        </NormalBtn>
       </ButtonContainer>
     </>
   );

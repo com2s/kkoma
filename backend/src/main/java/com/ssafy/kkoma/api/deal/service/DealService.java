@@ -90,7 +90,7 @@ public class DealService {
 		product.updateStatus(ProductType.SOLD); // 상품 status 변경
 		deal.updateIsCompleted(Boolean.TRUE); // 거래 status 변경
 
-		pointHistoryService.changePoint(seller, PointChangeType.PROFIT, product.getPrice());
+		pointHistoryService.changePoint(seller, PointChangeType.PROFIT, product.getPrice(), product);
 		notificationService.createNotification(seller,
 			NotiDetailBuilder.getInstance().receivePayment(
 				product.getTitle(), product.getPrice(), seller.getPoint().getBalance()
@@ -103,8 +103,8 @@ public class DealService {
 		return deal;
 	}
 
-	public List<Deal> findScheduledDeal(LocalDateTime now, Pageable pageable) {
-		Page<Deal> pageList = dealRepository.findScheduledDeal(now, pageable);
+	public List<Deal> findScheduledDealAfterLastRun(LocalDateTime lastRun, LocalDateTime curRun, Pageable pageable) {
+		Page<Deal> pageList = dealRepository.findScheduledDealAfterLastRun(lastRun, curRun, pageable);
 		return pageList.getContent();
 	}
 

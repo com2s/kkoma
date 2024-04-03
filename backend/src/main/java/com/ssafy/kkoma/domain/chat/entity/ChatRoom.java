@@ -1,20 +1,16 @@
 package com.ssafy.kkoma.domain.chat.entity;
 
+import com.ssafy.kkoma.domain.common.entity.BaseTimeEntity;
+import com.ssafy.kkoma.domain.product.entity.Product;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ssafy.kkoma.domain.common.entity.BaseTimeEntity;
-import com.ssafy.kkoma.domain.product.entity.Product;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import lombok.Getter;
-import lombok.Setter;
-
+@ToString
 @Entity
 @Getter
 public class ChatRoom extends BaseTimeEntity {

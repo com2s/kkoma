@@ -4,8 +4,8 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import com.ssafy.kkoma.api.area.service.AreaService;
 import com.ssafy.kkoma.api.chat.service.ChatRoomService;
 import com.ssafy.kkoma.api.common.dto.BasePageResponse;
 import com.ssafy.kkoma.api.deal.service.DealService;
@@ -17,11 +17,14 @@ import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
 import com.ssafy.kkoma.api.product.dto.response.ChatProductResponse;
 import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
+import com.ssafy.kkoma.domain.area.entity.Area;
 import com.ssafy.kkoma.domain.chat.entity.ChatRoom;
 import com.ssafy.kkoma.api.product.dto.ProductWishResponse;
 
 import com.ssafy.kkoma.domain.deal.entity.Deal;
 import com.ssafy.kkoma.domain.deal.repository.DealRepository;
+import com.ssafy.kkoma.domain.location.entity.Location;
+import com.ssafy.kkoma.domain.location.repository.LocationRepository;
 import com.ssafy.kkoma.domain.member.entity.Member;
 
 import com.ssafy.kkoma.domain.product.constant.MyProductType;
@@ -61,6 +64,8 @@ public class ProductService {
 	private final WishListRepository wishListRepository;
 	private final DealRepository dealRepository;
 	private final DealService dealService;
+	private final LocationRepository locationRepository;
+	private final AreaService areaService;
 
 	public Product findProductByProductId(Long productId){
 		return productRepository.findById(productId)
@@ -69,24 +74,37 @@ public class ProductService {
 
 	public List<ProductSummary> getProducts(){
 		List<Product> products = productRepository.findAll();
+		List<ProductSummary> productSummaries = new ArrayList<>();
 
-		return products.stream()
-			.map(ProductSummary::fromEntity)
-			.collect(Collectors.toList());
+		for (Product product : products) {
+			ProductSummary productSummary = ProductSummary.fromEntity(product);
+			if(product.getLocation() != null) {
+				String dealPlace = areaService.findAreaById(product.getLocation().getRegionCode()).getFullArea();
+				productSummary.setDealPlace(dealPlace);
+			}
+			productSummaries.add(productSummary);
+		}
+
+		return productSummaries;
 	}
 
-	public SearchProductResponse searchProduct(SearchProductRequest searchProductRequest, Pageable pageable) {
+	public SearchProductResponse searchProduct(Long memberId, SearchProductRequest searchProductRequest, Pageable pageable) {
 		Page<Product> pageList = productRepository.searchProduct(searchProductRequest, pageable);
-		return buildSearchProductResponse(pageList);
+		return buildSearchProductResponse(memberId, pageList);
 	}
 
 	public ProductDetailResponse getProduct(Long productId, Long memberId) {
 		Product product = findProductByProductId(productId);
 		List<String> productImageUrls = productImageService.getProductImageUrls(productId);
 		String categoryName = categoryService.getCategoryName(product.getCategory().getId());
-		boolean isWished = wishListRepository.existsByProductIdAndMemberId(productId, memberId);
+		WishList wishList = wishListRepository.findByProductIdAndMemberId(productId, memberId);
+		boolean isWished = true;
+		if (wishList == null || !wishList.getIsValid())
+			isWished = false;
 
-		return buildProductDetailResponse(product, productImageUrls, categoryName, product.getMember(), isWished);
+		Area area = areaService.findAreaById(product.getLocation().getRegionCode());
+
+		return buildProductDetailResponse(product, productImageUrls, categoryName, product.getMember(), isWished, area, product.getLocation().getPlaceDetail());
 	}
 
 	public void addViewCount(Long productId) {
@@ -98,12 +116,15 @@ public class ProductService {
 	public ProductInfoResponse getProductInfoResponse(Long productId) {
 
 		Product product = findProductByProductId(productId);
-		Deal deal = dealRepository.findByProduct(product);
+		Deal deal = dealRepository.findByProductOrderBySelectedTimeDesc(product);
+		Area area = areaService.findAreaById(product.getLocation().getRegionCode());
+
 		return ProductInfoResponse.fromEntity(
 			product,
 			MyProductType.BUY,
 			deal != null ? deal.getId() : null,
-			deal != null ? deal.getSelectedTime() : null
+			deal != null ? deal.getSelectedTime() : null,
+			area
 		);
 	}
 
@@ -112,20 +133,23 @@ public class ProductService {
 		Member seller = memberService.findMemberByMemberId(memberId);
 		Category category = categoryService.findCategoryById(productCreateRequest.getCategoryId());
 		ChatRoom chatRoom = chatRoomService.createChatRoom();
+		Location location = locationRepository.save(productCreateRequest.getCreateLocationRequest().toEntity());
 
 		Product product = Product.builder()
 				.member(seller)
 				.thumbnailImage(productImageUrls.isEmpty() ? null : productImageUrls.get(0))
-				.placeDetail("TODO: MVP 개발 이후 location과 placeDetail 저장하는 로직 짜야돼")
+				.location(location)
 				.title(productCreateRequest.getTitle())
 				.description(productCreateRequest.getDescription())
 				.price(productCreateRequest.getPrice())
 				.build();
 
+		//product.setMember(seller);
 		product.setCategory(category);
 		product.setChatRoom(chatRoom);
 
 		Product savedProduct = productRepository.save(product);
+		Area area = areaService.findAreaById(savedProduct.getLocation().getRegionCode());
 
 		List<ProductImage> productImages = productImageService.createProductImages(productImageUrls, product);
 		List<String> savedProductImageUrls = new ArrayList<>();
@@ -133,7 +157,7 @@ public class ProductService {
 			savedProductImageUrls.add(productImage.getProductImage());
 		}
 
-		return buildProductDetailResponse(savedProduct, savedProductImageUrls, category.getName(), seller, false);
+		return buildProductDetailResponse(savedProduct, savedProductImageUrls, category.getName(), seller, false,  area, product.getLocation().getPlaceDetail());
 	}
 
 
@@ -142,7 +166,9 @@ public class ProductService {
 		List<String> productImageUrls,
 		String categoryName,
 		Member seller,
-		boolean wish
+		boolean wish,
+		Area area,
+		String placeDetail
 	) {
 		MemberSummaryResponse sellerSummaryResponse = MemberSummaryResponse.fromEntity(seller);
 
@@ -154,7 +180,9 @@ public class ProductService {
 			.categoryName(categoryName)
 			.price(product.getPrice())
 			.status(product.getStatus())
-			.dealPlace(product.getPlaceDetail())
+			.dealPlace(area.getFullArea() + " " + placeDetail)
+			.x(product.getLocation().getX())
+			.y(product.getLocation().getY())
 			.elapsedMinutes(Duration.between(product.getCreatedAt(), LocalDateTime.now()).toMinutes())
 			.memberSummary(sellerSummaryResponse)
 			.chatRoomId(product.getChatRoom().getId())
@@ -165,13 +193,23 @@ public class ProductService {
 			.build();
 	}
 
-	private SearchProductResponse buildSearchProductResponse(Page<Product> page) {
-		List<ProductSummary> content = page.getContent().stream()
-			.map(ProductSummary::fromEntity)
-			.collect(Collectors.toList());
+	private SearchProductResponse buildSearchProductResponse(Long memberId, Page<Product> page) {
+		List<ProductSummary> content = new ArrayList<>();
+
+		for (Product product : page.getContent()) {
+			ProductSummary productSummary = ProductSummary.fromEntity(product);
+			if(product.getLocation() != null) {
+				String dealPlace = areaService.findAreaById(product.getLocation().getRegionCode()).getFullArea();
+				productSummary.setDealPlace(dealPlace);
+			}
+			content.add(productSummary);
+		}
+
+		Member member = memberService.findMemberByMemberId(memberId);
 
 		return SearchProductResponse.builder()
 			.content(content)
+			.preferredPlaceRegionCode(member.getPreferredPlaceRegionCode())
 			.size(page.getSize())
 			.page(page.getNumber())
 			.numberOfElements(page.getNumberOfElements())
@@ -224,10 +262,14 @@ public class ProductService {
 	}
 	
 	public BasePageResponse<WishList, ProductSummary> getMyWishProducts(Long memberId, Pageable pageable) {
-		Page<WishList> wishLists = wishListRepository.findWishListsByMemberId(memberId, pageable);
-		List<ProductSummary> content = wishLists.getContent().stream()
-				.map(wishList -> ProductSummary.fromEntity(wishList.getProduct()))
-				.toList();
+		Page<WishList> wishLists = wishListRepository.findWishListsByMemberIdAndIsValid(memberId, true, pageable);
+		List<ProductSummary> content = new ArrayList<>();
+		for (WishList wishList: wishLists) {
+			String dealPlace = areaService.findAreaById(wishList.getProduct().getLocation().getRegionCode()).getFullArea();
+			ProductSummary productSummary = ProductSummary.fromEntity(wishList.getProduct());
+			productSummary.setDealPlace(dealPlace);
+			content.add(productSummary);
+		}
 		return new BasePageResponse<>(content, wishLists);
 	}
 

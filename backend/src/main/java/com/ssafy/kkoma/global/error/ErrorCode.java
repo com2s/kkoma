@@ -22,6 +22,7 @@ public enum ErrorCode {
     INVALID_MEMBER_TYPE(HttpStatus.BAD_REQUEST, "M-001", "잘못된 회원 타입 입니다.(memberType : KAKAO)"),
     ALREADY_REGISTERED_MEMBER(HttpStatus.BAD_REQUEST, "M-002", "이미 가입된 회원 입니다."),
     MEMBER_NOT_EXISTS(HttpStatus.BAD_REQUEST, "M-003", "해당 회원은 존재하지 않습니다."),
+    ROLE_NOT_EXISTS(HttpStatus.BAD_REQUEST, "M-004", "해당 권한은 존재하지 않습니다."),
 
     // Kid
     KID_NOT_EXIST(HttpStatus.BAD_REQUEST, "K-001", "해당 아이는 존재하지 않습니다."),
@@ -57,6 +58,11 @@ public enum ErrorCode {
 
     // Temporary,
     UPDATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "T-004", "회원 정보를 수정에 실패하였습니다."),
+
+    // Area
+    AREA_LEVEL_RANGE_VALID(HttpStatus.BAD_REQUEST, "AR-001", "유효하지 않은 지역 레벨입니다."),
+    SUB_AREA_NOT_EXISTS(HttpStatus.BAD_REQUEST, "AR-002", "하위 지역코드가 존재하지 않습니다."),
+    AREA_NOT_EXISTS(HttpStatus.BAD_REQUEST, "AR-003", "해당 법정코드에 대한 지역 정보가 존재하지 않습니다"),
 
     // Util
     IMAGE_NOT_EXISTS(HttpStatus.BAD_REQUEST, "U-001", "업로드 한 이미지가 비어있습니다."),
