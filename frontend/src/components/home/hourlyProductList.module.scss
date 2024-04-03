@@ -1,0 +1,11 @@
+.container {
+  @include flex(flex-start, space-between, column);
+  gap: rem(14);
+  width: 100%;
+  .list {
+    @include flex(flex-start, space-between, row);
+    flex-wrap: wrap;
+    gap: rem(16);
+    width: 100%;
+  }
+}

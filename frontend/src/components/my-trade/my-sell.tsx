@@ -58,14 +58,6 @@ export default function MySell() {
     handleMenuClose(); // 메뉴를 닫음
   };
 
-  const handleMenuCloseAndDelete = () => {
-    if (window.confirm("이 판매글을 삭제하시겠습니까?")) {
-      // 여기에 판매글 삭제 API 호출 코드 추가
-      handleMenuClose();
-      console.log("판매글 삭제");
-    }
-  };
-
   const filteredDeals = deals
     ?.filter((deal) =>
       selectedChip === "모두"
@@ -117,8 +109,6 @@ export default function MySell() {
               <Link href={`/my-trade/${deal.id}`}>
                 <MenuItem onClick={handleRequestOpen}>거래요청목록</MenuItem>
               </Link>
-
-              <MenuItem onClick={handleMenuCloseAndDelete}>판매글 삭제</MenuItem>
             </Menu>
           </div>
         ))}

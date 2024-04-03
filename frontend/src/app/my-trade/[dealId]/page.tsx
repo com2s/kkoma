@@ -36,6 +36,7 @@ export default function MyRequest({ params: { dealId } }: IParams) {
   const [success, setSuccess] = useState(true);
   const [offerTime, setOfferTime] = useRecoilState(offerTimeState);
   const router = useRouter();
+
   useEffect(() => {
     const fetchData = async () => {
       const res = await getRequesters(dealId);
@@ -80,13 +81,13 @@ export default function MyRequest({ params: { dealId } }: IParams) {
                 {requester.offerTimes?.map((time, key) => (
                   <Typography key={key} variant="body2">
                     {time.offerDate}
-                    <br />• {time.startTime.split(":").slice(0, 2).join(":")} ~{" "}
+                    <br />
+                    {time.startTime.split(":").slice(0, 2).join(":")} ~{" "}
                     {time.endTime.split(":").slice(0, 2).join(":")}
                   </Typography>
                 ))}
               </CardContent>
               <CardContent className={styles.btns} sx={{ padding: 0 }}>
-                {/* <Link href={`/my-trade/${dealId}/${requester.memberProfile.id}`}> */}
                 <IconButton
                   size="small"
                   sx={{
@@ -95,13 +96,13 @@ export default function MyRequest({ params: { dealId } }: IParams) {
                     },
                     margin: 1,
                   }}
-                  onClick={() => clickRequest(requester.offerTimes, requester.id)}
+                  onClick={() => clickRequest(requester.offerTimes, requester.offerId)}
                 >
                   <CheckIcon sx={{ color: "white" }} />
                 </IconButton>
                 {/* </Link> */}
                 <IconButton
-                  onClick={() => handleDelete(requester.id)}
+                  onClick={() => handleDelete(requester.offerId)}
                   size="small"
                   sx={{
                     "&.MuiIconButton-root": {
