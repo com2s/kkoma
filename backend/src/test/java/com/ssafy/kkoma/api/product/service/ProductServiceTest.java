@@ -440,4 +440,24 @@ class ProductServiceTest {
 
 	}
 
+	@Test
+	@Disabled
+	void 조회수와_찜수_상위_4개_조회_임시() {
+		List<ProductHourlyViewedResponse> result1 = productService.getHourlyMostViewedProducts(4, LocalDateTime.now());
+		log.info("result 개수 {}", result1.size());
+
+		for (ProductHourlyViewedResponse p : result1) {
+			log.info("지난 정시~정시 1시간 동안 조회수가 가장 많았던 순서대로: {}개", p.getHourlyViewCount());
+		}
+		redisService.setValues("hourlyViewedProductList", result1);
+
+		List<ProductHourlyWishedResponse> result2 = productService.getHourlyMostWishedProducts(4, LocalDateTime.now());
+		log.info("result 개수 {}", result2.size());
+
+		for (ProductHourlyWishedResponse p : result2) {
+			log.info("지난 정시~정시 1시간 동안 찜이 가장 많았던 순서대로: {}개", p.getHourlyWishCount());
+		}
+		redisService.setValues("hourlyWishedProductList", result2);
+	}
+
 }
