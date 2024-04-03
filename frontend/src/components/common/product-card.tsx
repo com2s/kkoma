@@ -37,7 +37,15 @@ export function ProductCard(props: { product: ProductSm; next: string }) {
   const router = useRouter();
   return (
     <div className="flex gap-3 w-full my-2 items-start" onClick={() => router.push(props.next)}>
-      <Image src={thumbnailImage} alt="thumb" width="90" height="90" className="rounded-xl" />
+      <div style={{ position: "relative", width: "90px", aspectRatio: 1 / 1 }}>
+        <Image
+          src={thumbnailImage}
+          alt="thumb"
+          fill
+          className="rounded-xl"
+          style={{ objectFit: "cover" }}
+        />
+      </div>
       <div className="w-full">
         <div className="flex justify-between">
           <h4>{price.toLocaleString("kr-KR") + "원"}</h4>

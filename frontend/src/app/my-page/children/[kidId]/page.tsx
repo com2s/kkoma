@@ -54,7 +54,6 @@ export default function ChildDetailPage({ params: { kidId } }: IParams) {
     };
     const res = await editKidDetail(data);
     if (res.success) {
-      console.log("success");
       updateData(res.data);
       alert("아이 정보가 수정되었습니다.");
     } else {

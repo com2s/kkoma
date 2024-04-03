@@ -21,9 +21,6 @@
 }
 
 .responsiveImg {
-  width: 10%; /* 화면 너비의 10% */
-  min-width: rem(60); /* 최소 너비는 60px */
-  max-width: rem(80); /* 최대 너비는 80px */
-  height: auto;
+  width: rem(48);
   aspect-ratio: 1/1; /* 가로 세로 비율은 1:1 */
 }

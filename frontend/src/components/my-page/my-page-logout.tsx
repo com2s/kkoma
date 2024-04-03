@@ -28,7 +28,6 @@ export default function MyPageLogout() {
       } catch (err) {
         console.error("로그아웃 실패");
       }
-
     } else {
       console.log("로그아웃 취소");
     }
@@ -39,6 +38,7 @@ export default function MyPageLogout() {
       button
       onClick={clickLogOut}
       sx={{ marginTop: "1rem", width: "160px" }}
+      className="px-2"
     >
       <ListItemIcon>
         <LogoutIcon color="warning" />
