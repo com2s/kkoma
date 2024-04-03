@@ -1,14 +1,10 @@
 package com.ssafy.kkoma.api.deal.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.*;
+
 import java.time.LocalDateTime;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
@@ -16,7 +12,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class DecideOfferRequest {
 
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@Schema(type = "string", pattern = "yyyy-MM-dd HH:mm:ss", example = "2024-04-03 23:40:00")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	private LocalDateTime selectedTime;
 
 }
