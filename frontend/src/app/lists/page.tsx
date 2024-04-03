@@ -53,7 +53,7 @@ export default function ListPage() {
     keyword: "",
     status: null,
     page: 0,
-    size: 10,
+    size: 400,
     sort: "createdAt,desc",
   });
 
