@@ -2,11 +2,7 @@
 
 import Title from "@/components/common/title";
 import TextField from "@mui/material/TextField";
-import {
-  ButtonContainer,
-  SubBtn,
-  NormalBtn,
-} from "@/components/common/buttons";
+import { ButtonContainer, SubBtn, NormalBtn } from "@/components/common/buttons";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import dayjs from "dayjs";
@@ -35,27 +31,18 @@ export default function KidBirth() {
 
   return (
     <>
-      <Title
-        title={`아이의\n생년월일을 알려주세요`}
-        subtitle="제품 추천에 도움을 줄게요"
-      />
+      <Title title={`아이의\n생년월일을 알려주세요`} subtitle="제품 추천에 도움을 줄게요" />
       <div>
         <FormControlLabel
           control={<Checkbox checked={isBirthYet} onChange={handelChange} />}
           label="아직 출산 전이에요"
         />
-        {errmsg ? (
-          <div className="text-caption c-main">{`${errmsg}`}</div>
-        ) : (
-          <></>
-        )}
+        {errmsg ? <div className="text-caption c-main">{`${errmsg}`}</div> : <></>}
       </div>
       <LocalizationProvider
         dateAdapter={AdapterDayjs}
         adapterLocale={"ko"}
-        localeText={
-          koKR.components.MuiLocalizationProvider.defaultProps.localeText
-        }
+        localeText={koKR.components.MuiLocalizationProvider.defaultProps.localeText}
       >
         <MobileDatePicker
           label="생년월일"

@@ -35,15 +35,14 @@ export default function TopBar2() {
           //   sx={{ color: "black", height: "32px" }}
           disabled
         ></Button>
-        <span className={styles.logo}>페이지 타이틀</span>
+        <span className={styles.logo}>거래 일시 선택</span>
         <div className={styles.notifications}>
-            <IconButton aria-label="back" onClick={() => router.back()} className="aspect-square">
-              <ClearIcon />
-            </IconButton>
+          <IconButton aria-label="back" onClick={() => router.back()} className="aspect-square">
+            <ClearIcon />
+          </IconButton>
         </div>
       </div>
-      <div className={styles.headerSpacer}></div>{" "}
-      {/* 상단 바 높이만큼의 빈 공간 */}
+      <div className={styles.headerSpacer}></div> {/* 상단 바 높이만큼의 빈 공간 */}
     </>
   );
 }
