@@ -6,8 +6,6 @@ const __dirname = path.resolve();
 
 const nextConfig = {
   images: {
-    // domains: ['sitem.ssgcdn.com','kkoma.s3.ap-northeast-2.amazonaws.com'],
-    domains: ["kkoma.s3.ap-northeast-2.amazonaws.com"],
     remotePatterns: [
       {
         protocol: "https",
