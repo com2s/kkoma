@@ -5,7 +5,7 @@ server:
 
 spring:
   profiles:
-    default: svProdSql
+    default: local
   servlet:
     multipart:
       max-file-size: 10MB
