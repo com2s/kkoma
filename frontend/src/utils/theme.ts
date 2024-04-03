@@ -10,6 +10,14 @@ const theme = createTheme({
   typography: {
     fontFamily: notoSansKr.style.fontFamily,
   },
+  palette: {
+    primary: {
+      main: "#ffcf00",
+    },
+    // secondary: {
+    //   // main: green[500],
+    // },
+  },
 });
 
 export default theme;

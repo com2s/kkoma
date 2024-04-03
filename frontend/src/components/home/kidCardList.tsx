@@ -10,9 +10,7 @@ export default function KidCardList(props: {
   return (
     <div className={styles.list}>
       {props.kidList.map((item, k) => (
-        <>
-          <KidCard {...item} />
-        </>
+        <KidCard {...item} key={k} />
       ))}
     </div>
   );
