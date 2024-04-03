@@ -12,34 +12,9 @@ import {
   StyledDot,
   StyledUnderLine,
 } from "@/components/common/calendar-style";
-// import ViewCallbackProperties from "react-calendar";
 import { Slider, Typography, Box, Button, IconButton } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-// 부모 컴포넌트 (ParentComponent.tsx)
-// import React, { useState } from 'react';
-// import ChildComponent from './ChildComponent';
 
-// export default function ParentComponent() {
-//   const [parentDate0, setParentDate0] = useState("");
-
-//   const handleDate0 = (data: string) => {
-//     setParentDate0(data);
-//   };
-//   ......
-
-//   return (
-//     <div>
-//       <h1>부모 컴포넌트</h1>
-//                 <Calendar
-//                    sendDateToParent={handleDate0}
-//                    sendTimeToParent={handleTime0}
-//                    isAccept
-//                  >
-//                  </Calendar>
-//       <p>자식 컴포넌트에서 받은 데이터: {parentDate0}</p>
-//     </div>
-//   );
-// }
 interface ChildProps {
   sendDateToParent: (data: string) => void;
   sendTimeToParent: (data: string) => void;
@@ -58,12 +33,13 @@ export default function ChildComponent({
   isAccept = false,
 }: ChildProps) {
   const [offerTime, setOfferTime] = useRecoilState(offerTimeState); // 거래 시간
-  const [value, setValue] = useState<Value>(new Date());
+  const [value, setValue] = useState<Value>(new Date(offerTime[0].offerDate));
   const [date, setDate] = useState(""); // 날짜
   const [time, setTime] = useState(""); // 시간
-  // 조건부 useState
   const [minute, setMinute] = useState<number | number[]>(isAccept ? 0 : [0, 1440]);
-  const [activeStartDate, setActiveStartDate] = useState<Date | null>(new Date());
+  const [activeStartDate, setActiveStartDate] = useState<Date | null>(
+    new Date(offerTime[0].offerDate)
+  );
   const today = new Date();
 
   const handleTodayClick = () => {
@@ -211,30 +187,11 @@ export default function ChildComponent({
           // 오늘 날짜로 돌아오는 기능을 위해 필요한 옵션 설정
           activeStartDate={activeStartDate === null ? undefined : activeStartDate}
           onActiveStartDateChange={({ activeStartDate }) => setActiveStartDate(activeStartDate)}
-          // 오늘 날짜에 '오늘' 텍스트 삽입하고...
-          tileContent={({ date, view }) => {
-            let html = [];
-            if (
-              view === "month" &&
-              date.getFullYear() === today.getFullYear() &&
-              date.getMonth() === today.getMonth() &&
-              date.getDate() === today.getDate()
-            ) {
-              html.push(<StyledToday key={"today"}>오늘</StyledToday>);
-            }
-            // 특정 날짜와 일치하는 날에 밑 점 표시
-            if (requestDays.find((x) => x.offerDate === formatDate(date))) {
-              html.push(<StyledDot key={formatDate(date)} />);
-            }
-            return <>{html}</>;
-          }}
         />
         {/* // 초기화 버튼 추가 */}
         <StyledDelete onClick={resetValues}>
           <DeleteForeverIcon fontSize="small" />
         </StyledDelete>
-        {/* // 오늘 버튼 추가 */}
-        <StyledDate onClick={handleTodayClick}>오늘</StyledDate>
         <Box
           sx={{
             marginY: 6,

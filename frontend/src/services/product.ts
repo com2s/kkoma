@@ -49,7 +49,21 @@ export const getCategoryAPI = async () => {
 export const getRecommendAPI = async () => {
   try {
     const res = await APIModule({
-      action: `/products/recommend`,
+      action: `/products/recommend?num=4`,
+      method: "GET",
+    });
+    if (res.success) {
+      return res.data;
+    } else {
+      new Error(res.error.errorMessage);
+    }
+  } catch (e: any) {}
+};
+
+export const getHourlyProductAPI = async () => {
+  try {
+    const res = await APIModule({
+      action: `/products/hourly/wish`,
       method: "GET",
     });
     if (res.success) {

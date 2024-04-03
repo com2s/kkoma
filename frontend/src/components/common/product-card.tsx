@@ -58,13 +58,13 @@ export function ProductCard(props: { product: ProductSm; next: string }) {
             ? calcElapsedMinutes(elapsedMinutes)
             : elapsedMinutes.substring(11, 16)}
         </div>
-        {!viewCount || !offerCount || !wishCount ? (
-          <div className="text-caption c-text3">
-            조회 {viewCount?.toLocaleString()} &#183; 거래 요청 {offerCount} &#183; 찜 {wishCount}
-          </div>
-        ) : (
-          <></>
-        )}
+        <div className="text-caption c-text3">
+          {`조회 ${viewCount?.toLocaleString() ?? 0}`}
+          &#183;
+          {`거래요청 ${offerCount?.toLocaleString() ?? 0}`}
+          &#183;
+          {`찜 ${wishCount?.toLocaleString() ?? 0}`}
+        </div>
       </div>
     </div>
   );

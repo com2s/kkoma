@@ -11,13 +11,15 @@ import { NoKids } from "@/components/home/noKids";
 import { KidSummary } from "@/types/kid";
 import { isLogin } from "@/utils/getAccessToken";
 import { useRouter } from "next/navigation";
-import { getRecommendAPI } from "@/services/product";
+import { getHourlyProductAPI, getRecommendAPI } from "@/services/product";
 import { ProductSm } from "@/types/product";
+import HourlyProductList from "@/components/home/hourlyProductList";
 
 export default function Home() {
   const [kidList, setKidList] = useState<Array<KidSummary>>([]);
   const [selectedName, setSelectedName] = useState<string | null>(null);
   const [recommend, setRecommend] = useState<Array<ProductSm>>([]);
+  const [hourly, setHourly] = useState<Array<ProductSm>>([]);
   const router = useRouter();
 
   const getKidList = async () => {
@@ -30,6 +32,11 @@ export default function Home() {
     setRecommend(res);
   };
 
+  const getHourlyProducts = async () => {
+    const res = await getHourlyProductAPI();
+    setHourly(res);
+  };
+
   const canAccess = async () => {
     if (!(await isLogin())) {
       router.replace("/welcome");
@@ -39,6 +46,7 @@ export default function Home() {
   useEffect(() => {
     canAccess();
     getKidList();
+    getHourlyProducts();
   }, []);
 
   useEffect(() => {
@@ -64,6 +72,11 @@ export default function Home() {
           </>
         ) : (
           <NoKids />
+        )}
+        {hourly && hourly.length > 0 ? (
+          <HourlyProductList title={"최근 찜이 많았던 상품"} products={hourly} />
+        ) : (
+          <></>
         )}
       </div>
     </div>

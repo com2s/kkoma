@@ -1,18 +1,15 @@
-"use client";
-
 import { ProductSm } from "@/types/product";
 import styles from "./productCard.module.scss";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
 interface Product {
   product: ProductSm;
+  num: number;
 }
 
-export default function ProductCard({ product }: Product) {
-  const router = useRouter();
+export default function ProductCardWithNum({ product, num }: Product) {
   return (
-    <div className={styles.card} onClick={() => router.push(`/lists/${product.id}`)}>
+    <div className={styles.card}>
       <div style={{ position: "relative", width: "100%", aspectRatio: 1 / 1 }}>
         <Image
           src={product.thumbnailImage}
