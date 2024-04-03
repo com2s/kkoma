@@ -3,11 +3,13 @@ package com.ssafy.kkoma.api.product.controller;
 import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
 import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
 import com.ssafy.kkoma.api.product.dto.ProductSummary;
+import com.ssafy.kkoma.api.product.dto.hourly.ProductHourlyWished;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
 import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
 import com.ssafy.kkoma.api.product.service.CategoryPreferenceService;
 import com.ssafy.kkoma.api.product.service.ProductService;
 import com.ssafy.kkoma.api.product.service.ViewHistoryService;
+import com.ssafy.kkoma.api.redis.service.RedisService;
 import com.ssafy.kkoma.domain.product.constant.CategoryPreferenceType;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
@@ -17,10 +19,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Tag(name = "Product")
@@ -32,6 +37,7 @@ public class ProductController {
     private final ProductService productService;
     private final CategoryPreferenceService categoryPreferenceService;
     private final ViewHistoryService viewHistoryService;
+    private final RedisService redisService;
 
     @Tag(name = "Product")
     @Operation(
@@ -113,6 +119,22 @@ public class ProductController {
     ) String keyword) {
         List<String> response = productService.getAutoCompleteKeyword(keyword);
         return ResponseEntity.ok(ApiUtils.success(response));
+    }
+
+    @Tag(name = "Product")
+    @Operation(
+        summary = "시간별 찜수 상위 4개 상품글 조회",
+            description = "[[노션](https://www.notion.so/todays-jiwoo/4-489f86dd7e1a4c9488d1ede5020e0b8c?pvs=4)]",
+        security = { @SecurityRequirement(name = "bearer-key") }
+    )
+    @GetMapping("/hourly/wish")
+    public ResponseEntity<ApiUtils.ApiResult<List<String>>> getHourlyMostWishedProducts() throws IOException {
+        String data = redisService.getValues("hourlyWishedProductList");
+
+        ObjectMapper mapper = new ObjectMapper();
+        ArrayList list = mapper.readValue(data, new ArrayList<ProductHourlyWished>().getClass());
+
+        return ResponseEntity.ok(ApiUtils.success(list));
     }
 
 }
