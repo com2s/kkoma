@@ -2,14 +2,15 @@ package com.ssafy.kkoma.domain.product.repository;
 
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.kkoma.api.area.service.AreaService;
 import com.ssafy.kkoma.api.product.dto.hourly.ProductHourlyWished;
+import com.ssafy.kkoma.api.product.dto.hourly.QProductHourlyWished;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
 import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.domain.product.entity.Product;
@@ -96,27 +97,28 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 		order by wish_count_on_hour;
 	 */
 	@Override
-	public Page<ProductHourlyWished> getHourlyMostWishedProducts(int limit, LocalDateTime now, Pageable pageable) {
+	public List<ProductHourlyWished> getHourlyMostWishedProducts(int limit, LocalDateTime now) {
 		LocalDateTime endTime = now.withMinute(0).withSecond(0).withNano(0);
 		LocalDateTime startTime = endTime.minusHours(1);
-		endTime = endTime.minusNanos(50000);
+		endTime = endTime.minusNanos(5000);
 
 		log.info("계산에 고려되는 createdAt 시간은 {} ~ {}", startTime, endTime);
 
 		NumberPath<Long> aliasWishCount = Expressions.numberPath(Long.class, "hourlyWishCount");
 
 		JPAQuery<ProductHourlyWished> query = queryFactory
-				.select(Projections.bean(
-								ProductHourlyWished.class,
-								wishList.product.id.as("id"),
-								product.thumbnailImage.as("thumbnailImage"),
-								product.title.as("title"),
-								product.price.as("price"),
-								product.status.as("status"),
-								product.createdAt.as("createdAt"),
-								product.wishCount.as("wishCount"),
-								product.viewCount.as("viewCount"),
-								product.offerCount.as("offerCount"),
+				.select(
+						new QProductHourlyWished(
+								product.id,
+								product.thumbnailImage,
+								product.title,
+								product.title, // dealPlace
+								product.status,
+								product.price,
+								product.wishCount, //elapsedMinutes
+								product.wishCount,
+								product.viewCount,
+								product.offerCount,
 								wishList.id.count().as(aliasWishCount)
 						)
 				)
@@ -129,9 +131,19 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 				.orderBy(aliasWishCount.desc())
 				.limit(limit);
 
-		List<ProductHourlyWished> contents = query.fetch();
+		return query.fetch();
 
-		return PageableExecutionUtils.getPage(contents, pageable, query::fetchCount);
+//		return PageableExecutionUtils.getPage(contents, pageable, query::fetchCount);
 	}
+
+//	private StringExpression getDealPlace(NumberPath<Long> regionCode) {
+//		return Expressions.stringTemplate("{0}", regionCode);
+//
+//		return areaService.findAreaById(regionCode.).getFullArea();
+//	}
+//
+//	private NumberExpression getElapsedMinutes(NumberPath<Long> createdAt) {
+//		return (createdAt != null) ? Duration.between(createdAt, LocalDateTime.now()) : null;
+//	}
 
 }

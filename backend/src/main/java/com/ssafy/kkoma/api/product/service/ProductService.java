@@ -286,9 +286,8 @@ public class ProductService {
 		return productRepository.findFirstByStatus(ProductType.SALE);
 	}
 
-	public List<ProductHourlyWished> getHourlyMostWishedProducts(int limit, LocalDateTime now, Pageable pageable) {
-		Page<ProductHourlyWished> pageList = productRepository.getHourlyMostWishedProducts(limit, now, pageable);
-		return pageList.getContent();
+	public List<ProductHourlyWished> getHourlyMostWishedProducts(int limit, LocalDateTime now) {
+		return productRepository.getHourlyMostWishedProducts(limit, now);
 	}
 
 }

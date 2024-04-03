@@ -4,27 +4,30 @@ import com.ssafy.kkoma.domain.product.constant.ProductType;
 
 import com.ssafy.kkoma.domain.product.entity.Product;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-@Builder
+@SuperBuilder // 부모 객체를 상속 받는 자식 객체를 만들 때, 부모 객체의 필드값도 지정 가능
 @Getter
 @ToString
+@AllArgsConstructor
+@Data
 public class ProductSummary {
 
-	private Long id;
-	private String thumbnailImage;
-	private String title;
+	protected Long id;
+	protected String thumbnailImage;
+	protected String title;
 
 	@Setter
-	private String dealPlace;
-	private ProductType status;
-	private int price;
-	private Long elapsedMinutes;
-	private Long wishCount;
-	private Long viewCount;
-	private Long offerCount;
+	protected String dealPlace;
+	protected ProductType status;
+	protected int price;
+	protected Long elapsedMinutes;
+	protected Long wishCount;
+	protected Long viewCount;
+	protected Long offerCount;
 
 	public static ProductSummary fromEntity(Product product){
 		LocalDateTime createdAt = product.getCreatedAt();

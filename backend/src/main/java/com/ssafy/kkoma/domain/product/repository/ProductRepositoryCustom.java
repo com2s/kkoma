@@ -7,11 +7,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface ProductRepositoryCustom {
 
 	Page<Product> searchProduct(SearchProductRequest searchProductRequest, Pageable pageable);
 
-	Page<ProductHourlyWished> getHourlyMostWishedProducts(int limit, LocalDateTime now, Pageable pageable);
+	List<ProductHourlyWished> getHourlyMostWishedProducts(int limit, LocalDateTime now);
 
 }
