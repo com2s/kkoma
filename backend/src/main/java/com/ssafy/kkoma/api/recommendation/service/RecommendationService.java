@@ -116,7 +116,7 @@ public class RecommendationService {
         }
 
         if (productSummaries.size() < num) {
-            List<Product> products = productService.findProductForSale();
+            List<Product> products = productService.findProductForSale(memberId);
 
             if (products.isEmpty()) {
                 return new ArrayList<>();

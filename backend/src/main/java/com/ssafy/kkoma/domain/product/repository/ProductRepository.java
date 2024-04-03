@@ -24,6 +24,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
     @Query("select s from Product s where s.member.id!=:memberId AND s.category.id=:categoryId AND s.status=:status ORDER BY s.viewCount DESC")
     List<Product> findByCategoryIdAndStatus(Long memberId, Integer categoryId, ProductType status);
 
-    @Query("select s from Product s where s.status=:status ORDER BY s.wishCount DESC")
-    List<Product> findFirstByStatus(ProductType status);
+    @Query("select s from Product s where s.member.id!=:memberId AND s.status=:status ORDER BY s.wishCount DESC")
+    List<Product> findFirstByStatus(Long memberId, ProductType status);
 }

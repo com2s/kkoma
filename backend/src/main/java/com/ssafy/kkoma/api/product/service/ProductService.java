@@ -292,8 +292,8 @@ public class ProductService {
 		return chatProductResponse;
 	}
 
-	public List<Product> findProductForSale() {
-		return productRepository.findFirstByStatus(ProductType.SALE);
+	public List<Product> findProductForSale(Long memberId) {
+		return productRepository.findFirstByStatus(memberId, ProductType.SALE);
 	}
 
 }
