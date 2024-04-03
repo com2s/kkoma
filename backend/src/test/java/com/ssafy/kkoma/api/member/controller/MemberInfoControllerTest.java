@@ -2,21 +2,22 @@ package com.ssafy.kkoma.api.member.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.kkoma.api.area.service.AreaService;
 import com.ssafy.kkoma.api.member.dto.request.UpdateMemberRequest;
 import com.ssafy.kkoma.api.member.dto.response.*;
 import com.ssafy.kkoma.api.product.dto.OfferedProductInfoResponse;
 import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
 import com.ssafy.kkoma.api.product.dto.ProductSummary;
+import com.ssafy.kkoma.domain.area.entity.Area;
 import com.ssafy.kkoma.domain.area.repository.AreaRepository;
+import com.ssafy.kkoma.domain.deal.entity.Deal;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.offer.constant.OfferType;
 import com.ssafy.kkoma.domain.offer.entity.Offer;
 import com.ssafy.kkoma.domain.product.constant.MyProductType;
 import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.domain.product.entity.Product;
-import com.ssafy.kkoma.factory.MemberFactory;
-import com.ssafy.kkoma.factory.OfferFactory;
-import com.ssafy.kkoma.factory.ProductFactory;
+import com.ssafy.kkoma.factory.*;
 import com.ssafy.kkoma.global.util.CustomMockMvcSpringBootTest;
 import com.ssafy.kkoma.global.util.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -56,6 +57,12 @@ class MemberInfoControllerTest {
 
     @Autowired
     AreaRepository areaRepository;
+
+    @Autowired
+    AreaFactory areaFactory;
+
+    @Autowired
+    DealFactory dealFactory;
 
     @Test
     @Transactional
@@ -135,11 +142,13 @@ class MemberInfoControllerTest {
 
         // 인스턴스 생성
         Member member = memberFactory.createMember();
-        Product soldProduct = productFactory.createProduct(member, ProductType.SOLD);
+        Area area = areaFactory.createArea();
+        Product soldProduct = productFactory.createProduct(member, ProductType.SOLD, area);
         Offer acceptedOffer = offerFactory.createOffer(soldProduct, member, OfferType.ACCEPTED);
+        Deal deal = dealFactory.createDeal(member, soldProduct);
 
         // 예상 응답
-        OfferedProductInfoResponse expectedResponse = OfferedProductInfoResponse.fromEntity(soldProduct, MyProductType.BUY, acceptedOffer.getStatus(), null, null);
+        OfferedProductInfoResponse expectedResponse = OfferedProductInfoResponse.fromEntity(soldProduct, MyProductType.BUY, acceptedOffer.getStatus(), deal.getId(), deal.getSelectedTime(), area);
 
         mockMvc.perform(
                         requestUtil.getRequest("/api/members/products/buy", member)
