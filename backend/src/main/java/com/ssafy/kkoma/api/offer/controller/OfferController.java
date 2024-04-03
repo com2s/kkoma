@@ -7,6 +7,10 @@ import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
 import com.ssafy.kkoma.api.offer.dto.response.SendOfferResponse;
 import com.ssafy.kkoma.api.offer.service.OfferDetailService;
 import com.ssafy.kkoma.api.offer.service.OfferService;
+import com.ssafy.kkoma.global.error.ErrorCode;
+import com.ssafy.kkoma.global.error.ErrorResponse;
+import com.ssafy.kkoma.global.error.exception.BusinessException;
+import com.ssafy.kkoma.global.error.exception.EntityNotFoundException;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfoDto;
 import com.ssafy.kkoma.global.util.ApiUtils;
@@ -42,6 +46,10 @@ public class OfferController {
         @PathVariable("productId") Long productId,
         @RequestBody List<OfferTimeRequest> offerTimeRequestList
     ){
+        if (offerTimeRequestList.isEmpty()) {
+            throw new BusinessException(ErrorCode.LACKING_OFFER_DETAIL);
+        }
+
         Long offerId = offerService.createOffer(memberInfo.getMemberId(), productId);
         SendOfferResponse sendOfferResponse = offerDetailService.createOfferDetail(offerId, offerTimeRequestList);
 

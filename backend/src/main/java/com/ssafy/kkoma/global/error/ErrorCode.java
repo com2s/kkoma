@@ -41,6 +41,7 @@ public enum ErrorCode {
 
     // OfferDetail
     OFFER_DETAIL_NOT_EXISTS(HttpStatus.BAD_REQUEST, "OD-001", "해당 거래에 대한 거래 요청 시간이 존재하지 않습니다."),
+    LACKING_OFFER_DETAIL(HttpStatus.BAD_REQUEST, "OD-002", "1개 이상의 거래 가능 시간 범위를 선택해주세요."),
 
     // Point
     POINT_NOT_EXISTS(HttpStatus.BAD_REQUEST, "POINT-001", "해당 포인트는 존재하지 않습니다."),
