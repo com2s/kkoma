@@ -5,7 +5,7 @@ import Calendar from "@/components/common/calendar";
 import Accept from "@/components/my-trade/accept";
 import { patchOfferAccept } from "@/components/my-trade/my-trade-ftn";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Dialog from "@mui/material/Dialog";
 import IconButton from "@mui/material/IconButton";
@@ -42,6 +42,7 @@ export default function MyTradeCalender({ params: { offerId } }: IParams) {
   const [open, setOpen] = useState(false);
   const [parentDate0, setParentDate0] = useState("");
   const [parentTime0, setParentTime0] = useState("");
+  const [chatRoomId, setChatRoomId] = useState();
 
   const handleDate0 = (data: string) => {
     if (data) {
@@ -65,6 +66,7 @@ export default function MyTradeCalender({ params: { offerId } }: IParams) {
   const handleClickOpen = async () => {
     const res = await patchOfferAccept(offerId, parentDate0, parentTime0);
     console.log(res);
+    setChatRoomId(res.data.chatRoomId);
     setOpen(true);
   };
 
@@ -78,6 +80,10 @@ export default function MyTradeCalender({ params: { offerId } }: IParams) {
       "aria-controls": `simple-tabpanel-${index}`,
     };
   }
+
+  useEffect(() => {
+    console.log(chatRoomId);
+  }, [chatRoomId]);
 
   return (
     <React.Fragment>
@@ -171,7 +177,7 @@ export default function MyTradeCalender({ params: { offerId } }: IParams) {
         <Accept />
         {/* 우선 임시로 닫는 버튼 */}
         <ButtonContainer>
-          <NormalBtn next={() => router.push("")}>채팅 하러 가기</NormalBtn>
+          <NormalBtn next={() => router.push(`/chat/${chatRoomId}`)}>채팅 하러 가기</NormalBtn>
         </ButtonContainer>
       </Dialog>
     </React.Fragment>
