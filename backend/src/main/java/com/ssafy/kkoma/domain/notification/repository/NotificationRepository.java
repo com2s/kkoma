@@ -13,9 +13,9 @@ import java.util.List;
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
-	List<Notification> findByMember(Member member);
+	List<Notification> findByMemberOrderByCreatedAtDesc(Member member);
 
-	Page<Notification> findByMember(Member member, Pageable pageable);
+	Page<Notification> findByMemberOrderByCreatedAtDesc(Member member, Pageable pageable);
 
 	List<Notification> findByMemberAndReadAt(Member member, LocalDateTime readAt);
 

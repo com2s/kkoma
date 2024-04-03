@@ -46,7 +46,7 @@ class NotificationServiceTest {
 		).getTotalElements();
 
 		// then
-		Assertions.assertThat(totalElements).isEqualTo(notificationRepository.findByMember(member).size());
+		Assertions.assertThat(totalElements).isEqualTo(notificationRepository.findByMemberOrderByCreatedAtDesc(member).size());
 	}
 
 }

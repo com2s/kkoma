@@ -4,6 +4,8 @@ import com.ssafy.kkoma.api.notification.dto.response.NotiDetail;
 import com.ssafy.kkoma.domain.point.constant.PointChangeType;
 import com.ssafy.kkoma.domain.product.constant.MyProductType;
 
+import java.text.DecimalFormat;
+
 public class NotiDetailBuilder {
 
     // Singleton
@@ -15,6 +17,7 @@ public class NotiDetailBuilder {
     }
 
     private static final StringBuilder sb = new StringBuilder();
+    private static final DecimalFormat df = new DecimalFormat("#,###");
 
     // 1시간 후 상품 '에어팟' 판매/구매 약속이 예정되어 있어요.
     public NotiDetail scheduledDeal(String productTitle, MyProductType myProductType, Long chatRoomId) {
@@ -41,7 +44,7 @@ public class NotiDetailBuilder {
         sb.setLength(0);
         return new NotiDetail(
             sb.append("상품 '").append(productTitle).append("'의 판매 대금 ")
-                .append(price).append("원이 입금되었어요. (잔액: ").append(balance).append("원").toString(),
+                .append(df.format(price)).append("원이 입금되었어요. (잔액: ").append(df.format(balance)).append("원").toString(),
             "/point"
         );
     }
@@ -51,7 +54,7 @@ public class NotiDetailBuilder {
         sb.setLength(0);
         return new NotiDetail(
             sb.append("상품 '").append(productTitle).append("'의 구매 예치금 ")
-                .append(price).append("원이 반환되었어요. (잔액: ").append(balance).append("원)").toString(),
+                .append(df.format(price)).append("원이 반환되었어요. (잔액: ").append(df.format(balance)).append("원)").toString(),
             "/point"
         );
     }
@@ -60,9 +63,9 @@ public class NotiDetailBuilder {
     public NotiDetail changePoint(PointChangeType pointChangeType, int amount, int balance) {
         sb.setLength(0);
         return new NotiDetail(
-            sb.append("포인트 ").append(amount).append("원이 ")
+            sb.append("포인트 ").append(df.format(amount)).append("원이 ")
                 .append(pointChangeType == PointChangeType.CHARGE ? "충전" : "차감")
-                .append("되었어요. (잔액: ").append(balance).append("원)").toString(),
+                .append("되었어요. (잔액: ").append(df.format(balance)).append("원)").toString(),
             "/point"
         );
     }
