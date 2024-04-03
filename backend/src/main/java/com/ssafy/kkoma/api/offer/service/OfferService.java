@@ -37,9 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional
@@ -110,6 +108,7 @@ public class OfferService {
             offerResponseList.add(OfferResponse.fromEntity(offer));
         }
 
+
         return offerResponseList;
     }
 
@@ -158,9 +157,16 @@ public class OfferService {
     public List<OfferedProductInfoResponse> getNotProgressOfferingProducts(Long memberId) {
         List<Offer> offers = memberService.getMyOffers(memberId);
         List<OfferedProductInfoResponse> productInfoResponses = new ArrayList<>();
+        HashMap<Long, Offer> productIdHashMap = new HashMap<>();
         for (Offer offer : offers) {
             Long productId = offer.getProduct().getId();
+            productIdHashMap.put(productId, offer);
+        }
+
+        for (Map.Entry<Long, Offer> entry : productIdHashMap.entrySet()) {
+            Long productId = entry.getKey();
             Product product = productService.findProductByProductId(productId);
+            Offer offer = entry.getValue();
             OfferType offerType = offer.getStatus();
             ProductType productType = product.getStatus();
             Area area = areaService.findAreaById(product.getLocation().getRegionCode());

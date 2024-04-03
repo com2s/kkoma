@@ -23,10 +23,7 @@ import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -66,6 +63,8 @@ public class RecommendationService {
 
     public List<ProductSummary> recommendProduct(Long memberId, Integer num) throws SQLException, TasteException {
 
+        Random random = new Random();
+
         if (!memberService.existsMemberByMemberId(memberId)) {
             throw new BusinessException(ErrorCode.MEMBER_NOT_EXISTS);
         }
@@ -79,33 +78,53 @@ public class RecommendationService {
         }
 
         initDataModel();
+        List<RecommendedItem> recommendedCategories;
 
         // todo-siyoon optimize
-        List<RecommendedItem> recommendedCategories = userBasedRecommender.recommend(memberId, 3, true);
-//        List<RecommendedItem> itemBasedRecommendations = itemBasedRecommender.recommend(member.getId(), howMany, true); // todo-siyoon use
+        recommendedCategories = userBasedRecommender.recommend(memberId, num, true);
 
-        // todo-siyoon use 'num' as num of result
         List<ProductSummary> productSummaries = new ArrayList<>();
         for (RecommendedItem recommendedCategory : recommendedCategories) {
             Integer categoryId = (int) recommendedCategory.getItemID();
-            List<Product> products = productService.findProductForSaleByCategoryId(categoryId);
-            Optional<Product> result = products.stream().max(Comparator.comparingDouble(p -> (double) p.getWishCount() / (p.getViewCount() + 1)));
+            List<Product> products = productService.findProductForSaleByCategoryId(memberId, categoryId);
 
-            if (result.isPresent()) {
-                Product product = result.get();
-                productSummaries.add(ProductSummary.fromEntity(product));
+            if (products.isEmpty()) {
+                break;
             }
 
-            // todo-siyoon delete
-            if (productSummaries.size() == num) {
-                break;
+            for (int i = 0; i < num; i++) {
+                int randomNumber = random.nextInt(products.size()); // Generate a random integer between 0 and size
+                productSummaries.add(ProductSummary.fromEntity(products.get(randomNumber)));
             }
         }
 
-        if (productSummaries.isEmpty()) {
-            List<Product> products = productService.findProductForSale();
-            if (!products.isEmpty()) {
-                productSummaries.add(ProductSummary.fromEntity(products.get(0)));
+        if (productSummaries.size() < num) {
+            recommendedCategories = itemBasedRecommender.recommend(memberId, num, true);
+            for (RecommendedItem recommendedCategory : recommendedCategories) {
+                Integer categoryId = (int) recommendedCategory.getItemID();
+                List<Product> products = productService.findProductForSaleByCategoryId(memberId, categoryId);
+
+                if (products.isEmpty()) {
+                    break;
+                }
+
+                for (int i = 0; i < num; i++) {
+                    int randomNumber = random.nextInt(products.size()); // Generate a random integer between 0 and size
+                    productSummaries.add(ProductSummary.fromEntity(products.get(randomNumber)));
+                }
+            }
+        }
+
+        if (productSummaries.size() < num) {
+            List<Product> products = productService.findProductForSale(memberId);
+
+            if (products.isEmpty()) {
+                return new ArrayList<>();
+            }
+
+            for (int i = 0; i < num; i++) {
+                int randomNumber = random.nextInt(products.size());
+                productSummaries.add(ProductSummary.fromEntity(products.get(randomNumber)));
             }
         }
 

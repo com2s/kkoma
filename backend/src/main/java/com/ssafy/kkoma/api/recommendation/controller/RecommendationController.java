@@ -26,9 +26,9 @@ public class RecommendationController {
 
     @Tag(name = "Recommendation")
     @GetMapping("/recommend")
-    public ResponseEntity<ApiUtils.ApiResult<List<ProductSummary>>> recommendItems(@MemberInfo MemberInfoDto memberInfoDto) throws SQLException, TasteException {
+    public ResponseEntity<ApiUtils.ApiResult<List<ProductSummary>>> recommendItems(@MemberInfo MemberInfoDto memberInfoDto, @RequestParam Integer num) throws SQLException, TasteException {
         Long memberId = memberInfoDto.getMemberId();
-        List<ProductSummary> recommendedItems = recommendationService.recommendProduct(memberId, 1);
+        List<ProductSummary> recommendedItems = recommendationService.recommendProduct(memberId, num);
         return ResponseEntity.ok(ApiUtils.success(recommendedItems));
     }
 

@@ -249,8 +249,8 @@ public class ProductService {
 		return ProductWishResponse.fromEntity(savedWishList, product);
 	}
 
-	public List<Product> findProductForSaleByCategoryId(Integer categoryId) {
-		return productRepository.findByCategoryIdAndStatus(categoryId, ProductType.SALE);
+	public List<Product> findProductForSaleByCategoryId(Long memberId, Integer categoryId) {
+		return productRepository.findByCategoryIdAndStatus(memberId, categoryId, ProductType.SALE);
 	}
 	
 	public BasePageResponse<WishList, ProductSummary> getMyWishProducts(Long memberId, Pageable pageable) {
@@ -284,8 +284,8 @@ public class ProductService {
 		return chatProductResponse;
 	}
 
-	public List<Product> findProductForSale() {
-		return productRepository.findFirstByStatus(ProductType.SALE);
+	public List<Product> findProductForSale(Long memberId) {
+		return productRepository.findFirstByStatus(memberId, ProductType.SALE);
 	}
 
 	public List<ProductHourlyWishedResponse> getHourlyMostWishedProducts(int limit, LocalDateTime now) {
