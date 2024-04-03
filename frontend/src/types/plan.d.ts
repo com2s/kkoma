@@ -1,6 +1,7 @@
 export interface PlanCard {
   id: number;
   thumbnailImage: string;
+  chatRoomId: number;
   price: number;
   title: string;
   dealPlace: string;

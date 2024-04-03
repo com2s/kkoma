@@ -62,7 +62,7 @@ export default function PointWithdraw() {
     const removedCommaValue: number = Number(amount.replaceAll(",", ""));
     await withDrawPointAPI(removedCommaValue);
     alert(`${amount}포인트가 출금 되었어요`);
-    router.push("/point");
+    router.push("/my-page");
   };
 
   const fetchData = async () => {
