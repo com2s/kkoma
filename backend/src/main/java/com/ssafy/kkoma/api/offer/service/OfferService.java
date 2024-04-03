@@ -1,5 +1,6 @@
 package com.ssafy.kkoma.api.offer.service;
 
+import com.ssafy.kkoma.api.area.service.AreaService;
 import com.ssafy.kkoma.api.chat.service.ChatMessageService;
 import com.ssafy.kkoma.api.deal.dto.request.DecideOfferRequest;
 import com.ssafy.kkoma.api.deal.service.DealService;
@@ -10,9 +11,12 @@ import com.ssafy.kkoma.api.notification.service.NotificationService;
 import com.ssafy.kkoma.api.offer.dto.response.DecideOfferResponse;
 import com.ssafy.kkoma.api.offer.dto.response.OfferResponse;
 import com.ssafy.kkoma.api.point.service.PointHistoryService;
+import com.ssafy.kkoma.api.product.dto.OfferedProductInfoResponse;
 import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
 import com.ssafy.kkoma.api.product.service.ProductService;
+import com.ssafy.kkoma.domain.area.entity.Area;
 import com.ssafy.kkoma.domain.deal.entity.Deal;
+import com.ssafy.kkoma.domain.deal.repository.DealRepository;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.notification.entity.Notification;
 import com.ssafy.kkoma.domain.offer.constant.OfferType;
@@ -35,6 +39,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -48,9 +53,11 @@ public class OfferService {
     private final DealService dealService;
     private final NotificationService notificationService;
     private final PointHistoryService pointHistoryService;
+    private final DealRepository dealRepository;
 
     private final DealReminderScheduler dealReminderJobScheduler;
     private final ChatMessageService chatMessageService;
+    private final AreaService areaService;
 
     public Offer findOfferByOfferId(Long offerId) {
         return offerRepository.findById(offerId)
@@ -75,6 +82,8 @@ public class OfferService {
         Offer offer = Offer.builder().product(product).build();
         offer.setMember(member);
         Long offerId = offerRepository.save(offer).getId();
+
+        product.setOfferCount(product.getOfferCount() + 1);
 
         // 판매자에 거래 요청 수신 알림
         notificationService.createNotification(
@@ -146,16 +155,22 @@ public class OfferService {
         return DecideOfferResponse.fromEntity(acceptedOffer, acceptedDeal);
     }
 
-    public List<ProductInfoResponse> getNotProgressOfferingProducts(Long memberId) {
+    public List<OfferedProductInfoResponse> getNotProgressOfferingProducts(Long memberId) {
         List<Offer> offers = memberService.getMyOffers(memberId);
-
-        List<ProductInfoResponse> productInfoResponses = new ArrayList<>();
+        List<OfferedProductInfoResponse> productInfoResponses = new ArrayList<>();
         for (Offer offer : offers) {
-            if (OfferType.SENT.equals(offer.getStatus()) || OfferType.CANCELLED.equals(offer.getStatus())) {
-                productInfoResponses.add(productService.getProductInfoResponse(offer.getProduct().getId()));
-            }
-            else if (OfferType.ACCEPTED.equals(offer.getStatus()) && ProductType.SOLD.equals(offer.getProduct().getStatus())) {
-                productInfoResponses.add(productService.getProductInfoResponse(offer.getProduct().getId()));
+            Long productId = offer.getProduct().getId();
+            Product product = productService.findProductByProductId(productId);
+            OfferType offerType = offer.getStatus();
+            ProductType productType = product.getStatus();
+            Area area = areaService.findAreaById(product.getLocation().getRegionCode());
+            if (OfferType.SENT.equals(offerType)) {
+                OfferedProductInfoResponse offeredProductInfoResponse = OfferedProductInfoResponse.fromEntity(product, MyProductType.BUY, offerType, null,null, area);
+                productInfoResponses.add(offeredProductInfoResponse);
+            } else if (OfferType.CANCELLED.equals(offerType) || (OfferType.ACCEPTED.equals(offerType) && ProductType.SOLD.equals(productType))) {
+                Deal deal = dealService.findDealByProductId(productId);
+                OfferedProductInfoResponse offeredProductInfoResponse = OfferedProductInfoResponse.fromEntity(product, MyProductType.BUY, offerType, deal.getId(), deal.getSelectedTime(), area);
+                productInfoResponses.add(offeredProductInfoResponse);
             }
         }
 

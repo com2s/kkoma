@@ -14,6 +14,9 @@ import { TransitionProps } from "@mui/material/transitions";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Box, Tab, Tabs, useTheme } from "@mui/material";
 import { useRouter } from "next/navigation";
+import Title from "@/components/common/title";
+import TopBar3 from "@/components/common/top-bar3";
+import { ButtonContainer, NormalBtn } from "@/components/common/buttons";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -33,7 +36,7 @@ interface IParams {
   params: { id: string };
 }
 
-export default function RequestDeal({params: { id }} : IParams) {
+export default function RequestDeal({ params: { id } }: IParams) {
   const [value, setValue] = useState(0);
   const [open, setOpen] = useState(false);
   const [parentDate0, setParentDate0] = useState("");
@@ -60,7 +63,6 @@ export default function RequestDeal({params: { id }} : IParams) {
     }
   };
 
-
   const handleTime0 = (data: string) => {
     setParentTime0(data);
   };
@@ -80,13 +82,14 @@ export default function RequestDeal({params: { id }} : IParams) {
       [parentDate0, parentTime0],
       [parentDate1, parentTime1],
     ];
+    handleSelectedTimes();
 
     const res = await postOffer(id, selectedTimes);
     if (res.success) {
       setOpen(true);
     } else {
       alert("거래 요청을 실패했습니다.");
-      console.log(res.error.errorMessage)
+      console.log(res.error.errorMessage);
     }
   };
 
@@ -95,8 +98,6 @@ export default function RequestDeal({params: { id }} : IParams) {
   };
 
   const handleSelectedTimes = () => {
-    // 임시 배열을 생성하여 선택된 시간들을 추가합니다.
-    // const newSelectedTimes = [...selectedTimes]; // 기존 상태 복사
     const newSelectedTimes = []; // 빈 배열 생성
 
     if (parentDate0 && parentTime0) {
@@ -107,9 +108,6 @@ export default function RequestDeal({params: { id }} : IParams) {
     }
 
     setSelectedTimes(newSelectedTimes); // 새로운 상태 설정
-
-    // 여기서 특정 함수를 실행시키고 싶다면, 아래와 같이 호출할 수 있습니다.
-    // someFunction();
   };
 
   function a11yProps(index: number) {
@@ -121,28 +119,28 @@ export default function RequestDeal({params: { id }} : IParams) {
 
   return (
     <React.Fragment>
-      <TopBar2 />
-      <div className="px-4 my-12 mx-2">
-        <h1>거래하고 싶은 시간을 선택해주세요.</h1>
-        <p className="my-6 text-gray-400">
-          거래 가능 시간은 최대 3개까지 선택할 수 있어요.
-        </p>
-        <Image
-          src="/images/calendar1.svg"
-          alt="달력"
-          width={300}
-          height={300}
-          className="mx-auto my-6"
-        />
-      </div>
+      <TopBar3 />
+      <div className="mt-5"></div>
+      <Title title="거래 희망 일시를 선택해주세요." subtitle="최대 2개까지 선택할 수 있어요" />
+      <Image
+        src="/images/calendar1.svg"
+        alt="달력"
+        width={180}
+        height={180}
+        className="mx-auto my-6"
+      />
       <Box sx={{ borderBottom: 0, borderColor: "divider" }}>
-        {/* 탭 쓰려했으나 캘린더의 반응 문제로 취소 */}
         <Tabs
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
           variant="fullWidth"
-          sx={{ margin: "0 auto", width: "100%", maxWidth: "500px" }}
+          sx={{
+            margin: "0 auto",
+            width: "100%",
+            maxWidth: "500px",
+            gap: "10px",
+          }}
         >
           <Tab
             label={
@@ -153,7 +151,7 @@ export default function RequestDeal({params: { id }} : IParams) {
                     <p className="mt-1 text-[15px]">{parentTime0}</p>
                   </div>
                 ) : (
-                  <p>날짜 선택</p>
+                  <p>일시 선택</p>
                 )}
               </div>
             }
@@ -178,14 +176,16 @@ export default function RequestDeal({params: { id }} : IParams) {
                     <p className="mt-1 text-[15px]">{parentTime1}</p>
                   </div>
                 ) : (
-                  <p>추가 시간 선택</p>
+                  <p>일시 선택</p>
                 )}
               </div>
             }
             {...a11yProps(1)}
             sx={{
-              margin: "8px",
+              margin: "6px",
+              padding: "2px",
               borderRadius: "12px",
+              height: "5rem",
               minWidth: "3rem",
               "&.MuiTab-root": {
                 bgcolor: "#f5f5f5",
@@ -223,7 +223,7 @@ export default function RequestDeal({params: { id }} : IParams) {
         <button
           className="mt-8 mb-8 w-full h-16 bg-primary rounded-xl
          bg-yellow-400 text-black"
-          onClick={() => [handleClickOpen(), handleSelectedTimes()]}
+          onClick={handleClickOpen}
         >
           <h3>선택</h3>
         </button>
@@ -246,7 +246,7 @@ export default function RequestDeal({params: { id }} : IParams) {
         <div className="flex justify-end">
           <IconButton
             color="inherit"
-            onClick={handleClose}
+            onClick={() => router.push("/my-trade")}
             aria-label="close"
             sx={{
               aspectRatio: "1",
@@ -258,17 +258,10 @@ export default function RequestDeal({params: { id }} : IParams) {
             <CloseIcon fontSize="large" />
           </IconButton>
         </div>
-        <RequestDone selectedTimes={selectedTimes}/>
-        {/* 우선 임시로 닫는 버튼 */}
-        <div className="flex justify-center">
-          <button
-            className="mt-8 mb-8 w-full h-16 bg-primary rounded-xl
-         bg-yellow-400 text-black"
-            onClick={() => router.back()}
-          >
-            <h3>돌아가기</h3>
-          </button>
-        </div>
+        <RequestDone selectedTimes={selectedTimes} location="" />
+        <ButtonContainer>
+          <NormalBtn next={() => router.push("/my-trade")}>확인</NormalBtn>
+        </ButtonContainer>
       </Dialog>
     </React.Fragment>
   );

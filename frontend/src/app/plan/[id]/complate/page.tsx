@@ -13,8 +13,6 @@ export default function PlanComplate() {
       <Image src={Hearts} alt="hearts" width={173} height={173} />
       <ButtonContainer>
         <SubBtn next={"/"}>홈 화면</SubBtn>
-        {/* TODO: 리뷰 작성 화면으로 이동*/}
-        <NormalBtn next={"/"}>리뷰 작성하기</NormalBtn>
       </ButtonContainer>
     </div>
   );

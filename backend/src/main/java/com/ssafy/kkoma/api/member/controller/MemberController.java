@@ -2,6 +2,7 @@ package com.ssafy.kkoma.api.member.controller;
 
 import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.api.offer.service.OfferService;
+import com.ssafy.kkoma.api.product.dto.OfferedProductInfoResponse;
 import com.ssafy.kkoma.api.product.dto.ProductInfoResponse;
 import com.ssafy.kkoma.domain.product.constant.ProductType;
 import com.ssafy.kkoma.global.resolver.memberinfo.MemberInfo;
@@ -37,7 +38,7 @@ public class MemberController {
         security = { @SecurityRequirement(name = "bearer-key") }
     )
     @GetMapping("/products")
-    ResponseEntity<ApiUtils.ApiResult<List<ProductInfoResponse>>> getMyProducts(
+    ResponseEntity<ApiUtils.ApiResult<List<?>>> getMyProducts(
         @MemberInfo MemberInfoDto memberInfoDto,
         @RequestParam("type") String type
     ) {
@@ -46,8 +47,6 @@ public class MemberController {
 
         if ("sell".equals(type)) {
             productInfoResponses = memberService.getMySellingProducts(memberId, ProductType.SALE, ProductType.SOLD);
-        } else if ("buy".equals(type)) {
-            productInfoResponses = offerService.getNotProgressOfferingProducts(memberId);
         } else if ("progress".equals(type)) {
             List<ProductInfoResponse> buyingProductResponses = offerService.getProgressOfferingProducts(memberId);
             List<ProductInfoResponse> sellingProductResponses = memberService.getMySellingProducts(memberId, ProductType.PROGRESS);
@@ -57,6 +56,19 @@ public class MemberController {
         }
 
         return ResponseEntity.ok().body(ApiUtils.success(productInfoResponses));
+    }
+
+    @Tag(name = "Member Activity")
+    @Operation(
+            security = { @SecurityRequirement(name = "bearer-key") }
+    )
+    @GetMapping("/products/buy")
+    ResponseEntity<ApiUtils.ApiResult<List<OfferedProductInfoResponse>>> getMyProducts(
+            @MemberInfo MemberInfoDto memberInfoDto
+    ) {
+        Long memberId = memberInfoDto.getMemberId();
+        List<OfferedProductInfoResponse> offeredProductInfoResponses = offerService.getNotProgressOfferingProducts(memberId);
+        return ResponseEntity.ok().body(ApiUtils.success(offeredProductInfoResponses));
     }
 
 }

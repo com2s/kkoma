@@ -1,6 +1,11 @@
+"use client";
+
 import Calendar from "react-calendar";
 import styled from "styled-components";
 import "react-calendar/dist/Calendar.css";
+import { Noto_Sans_KR } from "next/font/google";
+
+const notoSansKr = Noto_Sans_KR({ subsets: ["cyrillic"] });
 
 export const StyledCalendarWrapper = styled.div`
   width: 100%;
@@ -8,10 +13,10 @@ export const StyledCalendarWrapper = styled.div`
   justify-content: center;
   position: relative;
   .react-calendar {
+    font-family: ${notoSansKr.style.fontFamily};
     width: 100%;
-    border: none;
+    border: 1px solid #d9d9d9;
     border-radius: 0.5rem;
-    box-shadow: 4px 2px 10px 0px rgba(0, 0, 0, 0.2);
     padding: 2%;
     padding-top: 18px;
     padding-bottom: 120px;
@@ -22,7 +27,6 @@ export const StyledCalendarWrapper = styled.div`
   .react-calendar__month-view {
     abbr {
       color: #656565;
-      font-family: "Noto Sans KR", sans-serif;
     }
   }
 
@@ -36,11 +40,12 @@ export const StyledCalendarWrapper = styled.div`
   /* 네비게이션 가운데 정렬 */
   .react-calendar__navigation {
     justify-content: center;
+    align-items: center;
   }
 
   /* 네비게이션 폰트 설정 */
   .react-calendar__navigation button {
-    font-weight: 800;
+    font-weight: 600;
     font-size: 1rem;
   }
 
@@ -64,7 +69,7 @@ export const StyledCalendarWrapper = styled.div`
   .react-calendar__month-view__weekdays abbr {
     padding-bottom: 10px;
     text-decoration: none;
-    font-weight: 800;
+    font-weight: 600;
   }
 
   /* 일요일에만 빨간 폰트 */
@@ -80,11 +85,6 @@ export const StyledCalendarWrapper = styled.div`
   /* 오늘 날짜 폰트 컬러 */
   .react-calendar__tile--now {
     background: none;
-    abbr {
-      color: #ff682e;
-      font-size: 1.1rem;
-      font-weight: 700;
-    }
   }
 
   /* 네비게이션 월 스타일 적용 */
@@ -104,7 +104,7 @@ export const StyledCalendarWrapper = styled.div`
 
   /* 일 날짜 간격 */
   .react-calendar__tile {
-    padding: 5px 0px 18px;
+    padding: 12px;
     position: relative;
   }
 
@@ -125,13 +125,12 @@ export const StyledCalendarWrapper = styled.div`
   .react-calendar__tile:enabled:focus,
   .react-calendar__tile--active {
     background-color: #ffcf00;
-    border-radius: 0.3rem;
+    border-radius: 50%;
   }
 
   .red {
     abbr {
       color: #e52d2b;
-      font-size: 1.1rem;
       font-weight: 700;
     }
   }
@@ -155,7 +154,7 @@ export const StyledDelete = styled.div`
   line-height: 1.6rem;
   border-radius: 15px;
   font-size: 0.8rem;
-  font-weight: 800;
+  font-weight: 700;
   &:hover {
     transform: scale(1.1);
   }
@@ -177,7 +176,7 @@ export const StyledDate = styled.div`
   line-height: 1.6rem;
   border-radius: 15px;
   font-size: 0.8rem;
-  font-weight: 800;
+  font-weight: 600;
   &:hover {
     transform: scale(1.1);
   }

@@ -25,6 +25,7 @@ import ShareLocationIcon from "@mui/icons-material/ShareLocation";
 import { sendUnWishAPI, sendWishAPI } from "@/services/wish";
 import { ButtonContainer, NormalBtn, SubBtn } from "@/components/common/buttons";
 import { StaticMap } from "@/components/common/staticmap";
+import { getMyPoints } from "@/components/common/common-ftn";
 
 interface IParams {
   params: { id: string };
@@ -59,28 +60,30 @@ export default function ProductDetail({ params: { id } }: IParams) {
   };
 
   const handleRequest = async (id: string) => {
-    const isBuyable = await getIsBuyable(id);
-    if (isBuyable.success) {
-      router.push(`/lists/${id}/request`);
+    if (product?.data.status === "SALE") {
+      const res = await getMyPoints();
+      const myPoints = await res.data.balance;
+      if (product && Number(myPoints) > product?.data.price) {
+        router.push(`/lists/${id}/request`);
+      } else {
+        alert("포인트가 부족합니다. 먼저 포인트를 충전해주세요.");
+        router.push("/point/charge");
+      }
     } else {
-      alert(isBuyable.error.errorMessage);
+      alert("이미 거래중이거나 거래 완료된 상품입니다.");
     }
-  };
-
-  const handleNull = () => {
-    return null;
   };
 
   const settings = {
     // centerMode: true,
     autoplay: product && product.data.productImages.length > 1 ? true : false,
     // 이동부터 다음 이동까지의 시간
-    autoplaySpeed: 2000,
+    autoplaySpeed: 5000,
     dots: true,
     arrows: false,
     infinite: product && product.data.productImages.length > 1 ? true : false,
     // 이동하는데 걸리는 시간
-    speed: 500,
+    speed: 750,
     slidesToShow: 1,
     slidesToScroll: 1,
   };
@@ -107,8 +110,8 @@ export default function ProductDetail({ params: { id } }: IParams) {
         </div>
         <Profile propsId={id} memberSummary={product?.data.memberSummary} />
         <Content propsId={id} product={product?.data} />
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1">
+        <div className="flex items-start justify-between gap-2">
+          <div className="flex items-start gap-1 min-w-fit">
             <ShareLocationIcon className="c-text1" />
             <div className={`min-w-fit text-body2 ${styles.dealPlace}`}>거래 장소</div>
           </div>
@@ -125,9 +128,7 @@ export default function ProductDetail({ params: { id } }: IParams) {
         </ButtonContainer>
       ) : (
         <ButtonContainer>
-          <div onClick={() => handleRequest(id)} className="w-full">
-            <NormalBtn next={handleNull}>거래 요청</NormalBtn>
-          </div>
+          <NormalBtn next={() => handleRequest(id)}>거래 요청</NormalBtn>
           <SubBtn next={`/chat/${product?.data.chatRoomId}`}>채팅 문의</SubBtn>
         </ButtonContainer>
       )}

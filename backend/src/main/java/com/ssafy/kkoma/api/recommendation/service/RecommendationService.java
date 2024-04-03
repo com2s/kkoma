@@ -44,15 +44,15 @@ public class RecommendationService {
     private ItemSimilarity itemSimilarity;
     private GenericItemBasedRecommender itemBasedRecommender;
 
-    private final static int MAX_NUM_OF_RECOMMENDED_ITEMS = 4;
-    private final static int DEFAULT_NUM_OF_RECOMMENDED_ITEMS = 1;
+    private final static int MAX_NUM_OF_RECOMMENDED_ITEMS = 8;
+    private final static int DEFAULT_NUM_OF_RECOMMENDED_ITEMS = 4;
 
 
     private void initDataModel() throws SQLException, TasteException {
         dataModel = new MySQLJDBCDataModel(dataSource, "category_preference", "member_id", "category_id", "preference", null);
         userSimilarity = new PearsonCorrelationSimilarity(dataModel);
         itemSimilarity = new PearsonCorrelationSimilarity(dataModel);
-        userNeighborhood = new NearestNUserNeighborhood(1, userSimilarity, dataModel);
+        userNeighborhood = new NearestNUserNeighborhood(3, userSimilarity, dataModel);
         userBasedRecommender = new GenericBooleanPrefUserBasedRecommender(dataModel, userNeighborhood, userSimilarity);
         itemBasedRecommender = new GenericItemBasedRecommender(dataModel, itemSimilarity);
     }

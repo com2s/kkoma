@@ -7,14 +7,12 @@ import MyPageList from "@/components/my-page/my-page-list";
 import Navigation from "@/components/common/navigation";
 import Link from "next/link";
 
-export default async function MyPage() {
+export default function MyPage() {
   return (
     <div className={styles.container}>
       <TopBar />
       <MyProfile />
-      <Link href={"/point"}>
-        <MyPoints />
-      </Link>
+      <MyPoints next="/point" />
       <MyPageList />
       <Navigation />
     </div>

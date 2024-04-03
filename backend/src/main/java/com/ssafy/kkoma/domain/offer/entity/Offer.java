@@ -51,6 +51,10 @@ public class Offer extends BaseTimeEntity {
 		this.cancelledAt = null;
 	}
 
+	public void setStatus(OfferType status) {
+		this.status = status;
+	}
+
 	public void setMember(Member member) {
 		this.member = member;
 		member.getOffers().add(this);

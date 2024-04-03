@@ -72,7 +72,7 @@ export default function Chatting() {
     const innerHeight = window.innerHeight;
     const heightGap = initialInnerHeight - innerHeight;
     const top = heightGap;
-    el.scrollTo(0, top);
+    el.scrollTo({ top: top, behavior: "smooth" });
   };
 
   const sendChat = () => {
@@ -94,10 +94,7 @@ export default function Chatting() {
   }, []);
 
   useEffect(() => {
-    if (
-      product &&
-      (product.status === "SOLD" || product.status === "PROGRESS")
-    ) {
+    if (product && (product.status === "SOLD" || product.status === "PROGRESS")) {
       const myId = Number(LocalStorage.getItem("memberId"));
       if (product.buyerId !== myId && product.sellerId !== myId) {
         setCanChat(false);
@@ -122,27 +119,46 @@ export default function Chatting() {
       <section className={styles.chatBody}>
         {chatList && chatList.length > 0 ? (
           chatList.map((item, k) => (
-            <div
-              key={k}
-              className={
-                item.memberProfile.id === 2 ? styles.chatRight : styles.chatLeft
-              }
-            >
-              <Image
-                className={styles.profile}
-                src={item.memberProfile.profileImage}
-                alt="profile"
-                width={30}
-                height={30}
-              />
-              <div className={styles.chatBox}>
-                <span className={styles.nickname}>
-                  {item.memberProfile.nickname}
-                </span>
-                <span className={styles.content}>{item.content}</span>
-                <span className={styles.time}>{item.sentTime}</span>
-              </div>
-            </div>
+            <>
+              {item.memberProfile.id === 0 ? (
+                <div className="bg-gray-100 w-full py-3 rounded-lg text-center c-text2">
+                  {item.content}
+                </div>
+              ) : (
+                <div
+                  key={k}
+                  className={
+                    item.memberProfile.id === Number(LocalStorage.getItem("memberId"))
+                      ? styles.chatRight
+                      : styles.chatLeft
+                  }
+                >
+                  <Image
+                    src={item.memberProfile.profileImage}
+                    alt="profile"
+                    width={32}
+                    height={32}
+                    style={{ objectFit: "cover", borderRadius: "50%" }}
+                    className="aspect-square"
+                  />
+                  <div className={styles.chatBox}>
+                    <span className={styles.nickname}>
+                      {item.memberProfile.id === product?.sellerId
+                        ? `👑${item.memberProfile.nickname}`
+                        : `${item.memberProfile.nickname}`}
+                    </span>
+                    <span
+                      className={
+                        item.memberProfile.id === product?.sellerId ? styles.seller : styles.content
+                      }
+                    >
+                      {item.content}
+                    </span>
+                    <span className={styles.time}>{item.sentTime}</span>
+                  </div>
+                </div>
+              )}
+            </>
           ))
         ) : (
           <></>

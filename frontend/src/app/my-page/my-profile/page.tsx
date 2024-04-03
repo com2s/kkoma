@@ -5,7 +5,7 @@ import MyInfoEditor from "@/components/my-page/my-profile/my-profile-edit";
 import MyInfoSummary from "@/components/my-page/my-profile/my-profile-summary";
 import MyPosts from "@/components/my-page/my-profile/my-profile-posts";
 
-export default async function MyProfileDetail() {
+export default function MyProfileDetail() {
   return (
     <div className={styles.container}>
       <TopBar2 />

@@ -42,7 +42,7 @@ export default function CreatePost() {
   const [price, setPrice] = useState<number | null>();
   const [content, setContent] = useState("");
   const [images, setImages] = useState<{ url: string; file: File }[]>([]);
-  const [location, setLocation] = useState(""); // TODO: 위치 정보 입력 받기
+  const [location, setLocation] = useState("");
   const [regionCode, setRegionCode] = useState("");
   const [lng, setLng] = useState(0);
   const [lat, setLat] = useState(0);
@@ -143,7 +143,7 @@ export default function CreatePost() {
     }
 
     // 확인 대화 상자 표시
-    if (!window.confirm("게시글을 제출하시겠습니까?")) {
+    if (!window.confirm("판매글을 등록할까요?")) {
       return;
     }
 

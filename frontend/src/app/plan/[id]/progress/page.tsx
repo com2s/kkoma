@@ -13,8 +13,12 @@ export default function DealProgress() {
   const code = query.get("code");
 
   const acceptDeal = async () => {
-    await acceptDealAPI({ dealId: params.id, code: code });
-    router.replace(`/plan/${params.id}/complate`);
+    const res = await acceptDealAPI({ dealId: params.id, code: code });
+    if (res) {
+      router.replace(`/plan/${params.id}/complate`);
+    } else {
+      router.replace(`/plan`);
+    }
   };
 
   useEffect(() => {

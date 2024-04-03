@@ -48,10 +48,10 @@ export const acceptDealAPI = async ({ dealId, code }: DealInfo) => {
       console.log("success deal accept", res.success);
       return res.data;
     } else {
-      //TODO: error 페이지로 이동
-      throw new Error(res.error.errorMessage);
+      if (res.error.errorCode === "DEAL-004") {
+        alert(res.error.errorMessage);
+      }
+      return null;
     }
-  } catch (e: any) {
-    //TODO: error 페이지로 이동
-  }
+  } catch (e: any) {}
 };

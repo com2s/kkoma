@@ -50,7 +50,7 @@ export const withDrawPointAPI = async (amount: number) => {
     const res = await APIModule({
       action: `/points`,
       method: "POST",
-      data: { type: "CHARGE", amount: amount },
+      data: { type: "WITHDRAW", amount: amount },
     });
     if (res.success) {
       return res.data;
