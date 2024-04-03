@@ -133,7 +133,7 @@ export default function MyProfileEdit() {
                 <Avatar
                   src={image?.url ?? ""}
                   alt="Profile Image"
-                  // sx={{ width: 56, height: 56 }}
+                  // sx={{ width: 90, height: 90 }}
                   className={`${styles.responsiveImg} mx-4`}
                 />
                 <input
