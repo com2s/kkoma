@@ -3,7 +3,7 @@ package com.ssafy.kkoma.factory;
 import com.ssafy.kkoma.api.recommendation.CategoryPreference;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.product.entity.Category;
-import com.ssafy.kkoma.domain.product.entity.CategoryPreferenceRepository;
+import com.ssafy.kkoma.domain.product.repository.CategoryPreferenceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package com.ssafy.kkoma.domain.product.entity;
+package com.ssafy.kkoma.domain.product.repository;
 
 import com.ssafy.kkoma.api.recommendation.CategoryPreference;
 import org.springframework.data.jpa.repository.JpaRepository;

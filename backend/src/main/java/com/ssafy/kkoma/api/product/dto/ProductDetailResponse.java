@@ -12,19 +12,26 @@ import java.util.List;
 public class ProductDetailResponse {
 
     private Long id;
+
     private List<String> productImages;
+
+    private String categoryName;
     private String title;
     private String description;
-    private String categoryName;
     private int price;
+    private Long elapsedMinutes;
+
+    private Long chatRoomId;
+
     private ProductType status;
+
     private String dealPlace;
     private Double x;
     private Double y;
-    private Long elapsedMinutes;
+
     private MemberSummaryResponse memberSummary;
-    private Long chatRoomId;
     private boolean wish;
+
     private Long wishCount;
     private Long offerCount;
     private Long viewCount;
