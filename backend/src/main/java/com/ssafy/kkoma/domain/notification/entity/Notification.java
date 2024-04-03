@@ -41,4 +41,8 @@ public class Notification extends BaseTimeEntity {
 	public void setReadAt() {
 		this.readAt = LocalDateTime.now();
 	}
+
+	public void updateDestination(String destination) {
+		this.destination = destination;
+	}
 }

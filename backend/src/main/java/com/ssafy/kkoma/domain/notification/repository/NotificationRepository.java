@@ -19,4 +19,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 
 	List<Notification> findByMemberAndReadAt(Member member, LocalDateTime readAt);
 
+	List<Notification> findByDestination(String destination);
+
 }

@@ -19,6 +19,7 @@ import com.ssafy.kkoma.domain.deal.entity.Deal;
 import com.ssafy.kkoma.domain.deal.repository.DealRepository;
 import com.ssafy.kkoma.domain.member.entity.Member;
 import com.ssafy.kkoma.domain.notification.entity.Notification;
+import com.ssafy.kkoma.domain.notification.repository.NotificationRepository;
 import com.ssafy.kkoma.domain.offer.constant.OfferType;
 import com.ssafy.kkoma.domain.offer.entity.Offer;
 import com.ssafy.kkoma.domain.offer.repository.OfferRepository;
@@ -51,7 +52,8 @@ public class OfferService {
     private final DealService dealService;
     private final NotificationService notificationService;
     private final PointHistoryService pointHistoryService;
-    private final DealRepository dealRepository;
+
+    private final NotificationRepository notificationRepository;
 
     private final DealReminderScheduler dealReminderJobScheduler;
     private final ChatMessageService chatMessageService;
@@ -149,6 +151,12 @@ public class OfferService {
                     product.getTitle(), product.getPrice(), rejectedBuyer.getPoint().getBalance()
                 );
             }
+        }
+
+        // 알림 destination 변경
+        List<Notification> offerNotiList = notificationRepository.findByDestination("/my-trade/" + product.getId());
+        for (Notification n : offerNotiList) {
+            n.updateDestination("/my-trade");
         }
 
         return DecideOfferResponse.fromEntity(acceptedOffer, acceptedDeal, product.getChatRoom().getId());
