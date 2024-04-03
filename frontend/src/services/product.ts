@@ -60,10 +60,24 @@ export const getRecommendAPI = async () => {
   } catch (e: any) {}
 };
 
-export const getHourlyProductAPI = async () => {
+export const getWishProductAPI = async () => {
   try {
     const res = await APIModule({
       action: `/products/hourly/wish`,
+      method: "GET",
+    });
+    if (res.success) {
+      return res.data;
+    } else {
+      new Error(res.error.errorMessage);
+    }
+  } catch (e: any) {}
+};
+
+export const getViewProductAPI = async () => {
+  try {
+    const res = await APIModule({
+      action: `/products/hourly/view`,
       method: "GET",
     });
     if (res.success) {

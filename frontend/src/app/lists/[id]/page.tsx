@@ -63,7 +63,7 @@ export default function ProductDetail({ params: { id } }: IParams) {
     if (product?.data.status === "SALE") {
       const res = await getMyPoints();
       const myPoints = await res.data.balance;
-      if (product && Number(myPoints) > product?.data.price) {
+      if (product && Number(myPoints) >= product?.data.price) {
         router.push(`/lists/${id}/request`);
       } else {
         alert("포인트가 부족합니다. 먼저 포인트를 충전해주세요.");

@@ -65,7 +65,6 @@ export default function MyTradeCalender({ params: { offerId } }: IParams) {
 
   const handleClickOpen = async () => {
     const res = await patchOfferAccept(offerId, parentDate0, parentTime0);
-    console.log(res);
     setChatRoomId(res.data.chatRoomId);
     setOpen(true);
   };

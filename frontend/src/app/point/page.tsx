@@ -79,7 +79,7 @@ export default function Point() {
                     </div>
                   </div>
                 ) : (
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-start gap-2">
                     <div className="bg-gray-100 rounded-lg p-2">
                       {item.pointChangeType === "CHARGE" ? (
                         <AccountBalanceIcon
@@ -94,7 +94,7 @@ export default function Point() {
                       )}
                     </div>
                     <div>
-                      <div className="text-body truncate w-40">
+                      <div className="text-body whitespace-nowrap text-wrap w-30">
                         {item.pointChangeType === "CHARGE" ? "포인트 충전" : "포인트 출금"}
                       </div>
                       <div className="text-caption c-text3">{`${item.date.substring(

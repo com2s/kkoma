@@ -32,7 +32,7 @@ export default function MyProfile() {
       {success === false && <h2>프로필 조회 실패</h2>}
       {success === true && summary && (
         <>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 w-full">
             <div className={styles.responsiveImg} style={{ position: "relative" }}>
               <Image
                 src={summary?.profileImage}
