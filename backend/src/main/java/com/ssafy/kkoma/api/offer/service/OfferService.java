@@ -83,6 +83,8 @@ public class OfferService {
         offer.setMember(member);
         Long offerId = offerRepository.save(offer).getId();
 
+        product.setOfferCount(product.getOfferCount() + 1);
+
         // 판매자에 거래 요청 수신 알림
         notificationService.createNotification(
             product.getMember(),

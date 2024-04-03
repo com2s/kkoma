@@ -23,21 +23,13 @@ export default function KakaoOauth() {
           refreshToken: process.env.NEXT_PUBLIC_REFRESHTOKEN,
           refreshTokenExpireTime: "2024-04-10T01:32:02.000Z",
           grantType: "Bearer",
-          memberId: 2,
+          memberId: 6,
         }
       : await kakaoLoginAPI(code);
 
     if (obj) {
-      setItemWithExpireTime(
-        "accessToken",
-        obj.accessToken,
-        obj.accessTokenExpireTime
-      );
-      setItemWithExpireTime(
-        "refreshToken",
-        obj.refreshToken,
-        obj.refreshTokenExpireTime
-      );
+      setItemWithExpireTime("accessToken", obj.accessToken, obj.accessTokenExpireTime);
+      setItemWithExpireTime("refreshToken", obj.refreshToken, obj.refreshTokenExpireTime);
       LocalStorage.setItem("grantType", obj.grantType);
       LocalStorage.setItem("memberId", obj.memberId);
 

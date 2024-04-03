@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getMyProducts } from "@/components/my-trade/my-trade-ftn";
+import { getBuyProducts, getMyProducts } from "@/components/my-trade/my-trade-ftn";
 import { Deal } from "@/types/status";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
@@ -26,8 +26,7 @@ export default function MyBuy() {
 
   useEffect(() => {
     const fetchBuying = async () => {
-      const myProducts = await getMyProducts("buy");
-      console.log("MyBuy: ", myProducts);
+      const myProducts = await getBuyProducts();
       setDeals(myProducts.data);
       setSuccess(myProducts.success);
     };
@@ -38,10 +37,7 @@ export default function MyBuy() {
     setSelectedChip(chip);
   };
 
-  const handleMenuClick = (
-    event: React.MouseEvent<HTMLElement>,
-    dealId: number
-  ) => {
+  const handleMenuClick = (event: React.MouseEvent<HTMLElement>, dealId: number) => {
     setAnchorEl(event.currentTarget);
     setOpenMenuId(dealId); // 메뉴가 열린 카드의 ID 저장
   };
@@ -65,11 +61,11 @@ export default function MyBuy() {
       selectedChip === "모두"
         ? true
         : selectedChip === "요청 중"
-        ? deal.status === "SENT"
-        : selectedChip === "요청 취소"
-        ? deal.status === "CANCELLED"
+        ? deal.offerStatus === "SENT"
+        : selectedChip === "요청 거절"
+        ? deal.offerStatus === "REJECTED"
         : selectedChip === "거래 완료"
-        ? deal.status === "SOLD"
+        ? deal.offerStatus === "ACCEPTED" && deal.status === "SOLD"
         : false
     )
     .sort((a, b) => a.elapsedMinutes - b.elapsedMinutes);
@@ -85,7 +81,7 @@ export default function MyBuy() {
   return (
     <React.Fragment>
       <Stack direction="row" spacing={1.5} className={styles.chips}>
-        {["모두", "요청 중", "요청 취소", "거래 완료"].map((chip) => (
+        {["모두", "요청 중", "요청 거절", "거래 완료"].map((chip) => (
           <Chip
             key={chip}
             label={chip}
@@ -102,12 +98,7 @@ export default function MyBuy() {
         {filteredDeals.length === 0 && (
           <NoContents>
             <h4 className="c-text3">구매한 상품이 없어요</h4>
-            <Image
-              src={"/images/Empty-BOX.png"}
-              alt="empty"
-              width={100}
-              height={100}
-            />
+            <Image src={"/images/Empty-BOX.png"} alt="empty" width={100} height={100} />
             <SmallBtn next={"/lists"}>상품 찾으러 가기</SmallBtn>
           </NoContents>
         )}
