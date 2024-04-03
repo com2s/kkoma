@@ -26,7 +26,7 @@ export default function PointCharge() {
     const removedCommaValue: number = Number(amount.replaceAll(",", ""));
     await chargePointAPI(removedCommaValue);
     alert(`${amount}포인트가 충전됐어요`);
-    router.push("/point");
+    router.push("/my-page");
   };
   return (
     <div className="flex flex-col justify-center">
