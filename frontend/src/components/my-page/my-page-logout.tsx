@@ -7,14 +7,28 @@ import { postLogOut } from "@/components/common/common-ftn";
 export default function MyPageLogout() {
   const clickLogOut = async () => {
     if (window.confirm("로그아웃 하시겠습니까?")) {
-      const logOut = await postLogOut();
-      console.log(logOut);
-      if (logOut.success) {
-        console.log("로그아웃 성공");
-        window.location.href = "/welcome";
-      } else {
+      // const logOut = await postLogOut();
+      // console.log(logOut);
+      // if (logOut.success) {
+      //   console.log("로그아웃 성공");
+      //   window.location.href = "/welcome";
+      // } else {
+      //   console.error("로그아웃 실패");
+      // }
+      try {
+        const logOut = await postLogOut();
+        console.log(logOut);
+        if (logOut.success) {
+          localStorage.clear();
+          console.log("로그아웃 성공");
+          window.location.href = "/welcome";
+        } else {
+          console.error("로그아웃 실패");
+        }
+      } catch (err) {
         console.error("로그아웃 실패");
       }
+
     } else {
       console.log("로그아웃 취소");
     }
