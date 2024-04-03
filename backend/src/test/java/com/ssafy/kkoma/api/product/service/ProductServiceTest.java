@@ -450,7 +450,7 @@ class ProductServiceTest {
 		for (ProductHourlyViewedResponse p : result1) {
 			log.info("지난 정시~정시 1시간 동안 조회수가 가장 많았던 순서대로: {}개", p.getHourlyViewCount());
 		}
-		if (!result1.isEmpty()) saveRedisValue(RedisKeyName.hourlyViewedProductList, result1);
+		redisService.saveHourlyData(RedisKeyName.hourlyViewedProductList, result1);
 
 		List<ProductHourlyWishedResponse> result2 = productService.getHourlyMostWishedProducts(4, LocalDateTime.now());
 		log.info("[찜 수] result 개수 {}", result2.size());
@@ -458,18 +458,7 @@ class ProductServiceTest {
 		for (ProductHourlyWishedResponse p : result2) {
 			log.info("지난 정시~정시 1시간 동안 찜이 가장 많았던 순서대로: {}개", p.getHourlyWishCount());
 		}
-		if (!result2.isEmpty()) saveRedisValue(RedisKeyName.hourlyWishedProductList, result2);
-	}
-
-	private void saveRedisValue(RedisKeyName redisKeyName, Object data) {
-		LocalDateTime now = LocalDateTime.now();
-		int prevHour = now.minusHours(1).getHour();
-		int prevprevHour = now.minusHours(2).getHour();
-
-		if (redisService.getValues(redisKeyName.toString() + prevHour).equals("false")) {
-			redisService.setValues(redisKeyName.toString() + prevHour, data);
-			redisService.deleteValues(redisKeyName.toString() + prevprevHour);
-		}
+		redisService.saveHourlyData(RedisKeyName.hourlyWishedProductList, result2);
 	}
 
 }

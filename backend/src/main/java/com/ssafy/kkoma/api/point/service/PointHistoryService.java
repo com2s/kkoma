@@ -9,6 +9,8 @@ import com.ssafy.kkoma.domain.point.entity.Point;
 import com.ssafy.kkoma.domain.point.entity.PointHistory;
 import com.ssafy.kkoma.domain.point.repository.PointHistoryRepository;
 import com.ssafy.kkoma.domain.product.entity.Product;
+import com.ssafy.kkoma.global.error.ErrorCode;
+import com.ssafy.kkoma.global.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -31,6 +33,9 @@ public class PointHistoryService {
 		Point point = member.getPoint();
 
 		if (pointChangeType == PointChangeType.PAY || pointChangeType == PointChangeType.WITHDRAW) {
+			if (point.getBalance() - amount < 0) {
+				throw new BusinessException(ErrorCode.BALANCE_BELOW_ZERO);
+			}
 			point.subBalance(amount);
 		} else {
 			point.addBalance(amount);

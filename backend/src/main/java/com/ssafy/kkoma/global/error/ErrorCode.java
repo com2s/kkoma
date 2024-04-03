@@ -41,10 +41,12 @@ public enum ErrorCode {
 
     // OfferDetail
     OFFER_DETAIL_NOT_EXISTS(HttpStatus.BAD_REQUEST, "OD-001", "해당 거래에 대한 거래 요청 시간이 존재하지 않습니다."),
+    LACKING_OFFER_DETAIL(HttpStatus.BAD_REQUEST, "OD-002", "1개 이상의 거래 가능 시간 범위를 선택해주세요."),
 
     // Point
     POINT_NOT_EXISTS(HttpStatus.BAD_REQUEST, "POINT-001", "해당 포인트는 존재하지 않습니다."),
     POINT_NOT_ENOUGH(HttpStatus.BAD_REQUEST, "POINT-002", "포인트가 부족하여 거래 요청을 할 수 없습니다."),
+    BALANCE_BELOW_ZERO(HttpStatus.BAD_REQUEST, "POINT-003", "포인트 잔액이 0원 미만이 되도록 인출할 수 없습니다."),
 
     // DEAL
     DEAL_NOT_EXISTS(HttpStatus.BAD_REQUEST, "DEAL-001", "해당 거래는 존재하지 않습니다."),
