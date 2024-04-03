@@ -60,7 +60,6 @@ export default function RequestDone({ sellerId, selectedTimes, location }: Child
           <span className="text-body mx-2">{timeEntry.time}</span>
         </div>
       ))}
-      <LocationOnOutlinedIcon />
       <span className="text-body">{location}</span>
     </div>
   );

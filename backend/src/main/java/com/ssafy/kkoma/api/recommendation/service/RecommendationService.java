@@ -1,8 +1,10 @@
 package com.ssafy.kkoma.api.recommendation.service;
 
+import com.ssafy.kkoma.api.area.service.AreaService;
 import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.api.product.dto.ProductSummary;
 import com.ssafy.kkoma.api.product.service.ProductService;
+import com.ssafy.kkoma.domain.area.entity.Area;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.global.error.ErrorCode;
 import com.ssafy.kkoma.global.error.exception.BusinessException;
@@ -33,6 +35,7 @@ public class RecommendationService {
     private final DataSource dataSource;
     private final MemberService memberService;
     private final ProductService productService;
+    private final AreaService areaService;
 
     private DataModel dataModel;
     private UserSimilarity userSimilarity;
@@ -43,6 +46,7 @@ public class RecommendationService {
 
     private final static int MAX_NUM_OF_RECOMMENDED_ITEMS = 8;
     private final static int DEFAULT_NUM_OF_RECOMMENDED_ITEMS = 4;
+    private final static int DEFAULT_NUM_OF_RECOMMENDED_CATEGORIES = 4;
 
 
     private void initDataModel() throws SQLException, TasteException {
@@ -81,36 +85,54 @@ public class RecommendationService {
         List<RecommendedItem> recommendedCategories;
 
         // todo-siyoon optimize
-        recommendedCategories = userBasedRecommender.recommend(memberId, num, true);
+        recommendedCategories = userBasedRecommender.recommend(memberId, DEFAULT_NUM_OF_RECOMMENDED_CATEGORIES, true);
 
         List<ProductSummary> productSummaries = new ArrayList<>();
         for (RecommendedItem recommendedCategory : recommendedCategories) {
             Integer categoryId = (int) recommendedCategory.getItemID();
+            log.info("[User based recommendation] categoryId={}", categoryId);
             List<Product> products = productService.findProductForSaleByCategoryId(memberId, categoryId);
 
+            log.info("[User based recommendation] size={}", products.size());
             if (products.isEmpty()) {
-                break;
+                continue;
             }
 
-            for (int i = 0; i < num; i++) {
-                int randomNumber = random.nextInt(products.size()); // Generate a random integer between 0 and size
-                productSummaries.add(ProductSummary.fromEntity(products.get(randomNumber)));
+            log.info("[User based recommendation] num={}", num);
+            log.info("[User based recommendation] productSummaries.size()={}", productSummaries.size());
+
+            for (int i = 0; i < products.size() && productSummaries.size() < num; i++) {
+                Product product = products.get(i);
+                log.info("[User based recommendation] product={}", product.toString());
+                Area area = areaService.findAreaById(product.getLocation().getRegionCode());
+                productSummaries.add(ProductSummary.fromEntity(product, area));
+            }
+            if (productSummaries.size() == num) {
+                break;
             }
         }
 
         if (productSummaries.size() < num) {
-            recommendedCategories = itemBasedRecommender.recommend(memberId, num, true);
+            recommendedCategories = itemBasedRecommender.recommend(memberId, DEFAULT_NUM_OF_RECOMMENDED_CATEGORIES, true);
             for (RecommendedItem recommendedCategory : recommendedCategories) {
                 Integer categoryId = (int) recommendedCategory.getItemID();
+                log.info("[Item based recommendation] categoryId={}", categoryId);
                 List<Product> products = productService.findProductForSaleByCategoryId(memberId, categoryId);
 
+                log.info("[Item based recommendation] size={}", products.size());
                 if (products.isEmpty()) {
-                    break;
+                    continue;
                 }
 
-                for (int i = 0; i < num; i++) {
-                    int randomNumber = random.nextInt(products.size()); // Generate a random integer between 0 and size
-                    productSummaries.add(ProductSummary.fromEntity(products.get(randomNumber)));
+                for (int i = 0; i < products.size() && productSummaries.size() < num; i++) {
+                    Product product = products.get(i);
+                    log.info("[Item based recommendation] product={}", product.toString());
+                    Area area = areaService.findAreaById(product.getLocation().getRegionCode());
+                    productSummaries.add(ProductSummary.fromEntity(product, area));
+                }
+
+                if (productSummaries.size() == num) {
+                    break;
                 }
             }
         }
@@ -118,13 +140,16 @@ public class RecommendationService {
         if (productSummaries.size() < num) {
             List<Product> products = productService.findProductForSale(memberId);
 
+            log.info("[Random recommendation] size={}", products.size());
             if (products.isEmpty()) {
-                return new ArrayList<>();
+                return productSummaries;
             }
 
-            for (int i = 0; i < num; i++) {
-                int randomNumber = random.nextInt(products.size());
-                productSummaries.add(ProductSummary.fromEntity(products.get(randomNumber)));
+            for (int i = 0; i < products.size() && productSummaries.size() < num; i++) {
+                Product product = products.get(i);
+                log.info("[Random recommendation] product={}", product.toString());
+                Area area = areaService.findAreaById(product.getLocation().getRegionCode());
+                productSummaries.add(ProductSummary.fromEntity(product, area));
             }
         }
 
