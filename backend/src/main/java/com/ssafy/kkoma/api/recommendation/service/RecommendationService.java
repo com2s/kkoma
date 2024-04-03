@@ -1,8 +1,10 @@
 package com.ssafy.kkoma.api.recommendation.service;
 
+import com.ssafy.kkoma.api.area.service.AreaService;
 import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.api.product.dto.ProductSummary;
 import com.ssafy.kkoma.api.product.service.ProductService;
+import com.ssafy.kkoma.domain.area.entity.Area;
 import com.ssafy.kkoma.domain.product.entity.Product;
 import com.ssafy.kkoma.global.error.ErrorCode;
 import com.ssafy.kkoma.global.error.exception.BusinessException;
@@ -33,6 +35,7 @@ public class RecommendationService {
     private final DataSource dataSource;
     private final MemberService memberService;
     private final ProductService productService;
+    private final AreaService areaService;
 
     private DataModel dataModel;
     private UserSimilarity userSimilarity;
@@ -101,9 +104,9 @@ public class RecommendationService {
             for (int i = 0; i < products.size() && productSummaries.size() < num; i++) {
                 Product product = products.get(i);
                 log.info("[User based recommendation] product={}", product.toString());
-                productSummaries.add(ProductSummary.fromEntity(product));
+                Area area = areaService.findAreaById(product.getLocation().getRegionCode());
+                productSummaries.add(ProductSummary.fromEntity(product, area));
             }
-
             if (productSummaries.size() == num) {
                 break;
             }
@@ -124,7 +127,8 @@ public class RecommendationService {
                 for (int i = 0; i < products.size() && productSummaries.size() < num; i++) {
                     Product product = products.get(i);
                     log.info("[Item based recommendation] product={}", product.toString());
-                    productSummaries.add(ProductSummary.fromEntity(product));
+                    Area area = areaService.findAreaById(product.getLocation().getRegionCode());
+                    productSummaries.add(ProductSummary.fromEntity(product, area));
                 }
 
                 if (productSummaries.size() == num) {
@@ -144,7 +148,8 @@ public class RecommendationService {
             for (int i = 0; i < products.size() && productSummaries.size() < num; i++) {
                 Product product = products.get(i);
                 log.info("[Random recommendation] product={}", product.toString());
-                productSummaries.add(ProductSummary.fromEntity(product));
+                Area area = areaService.findAreaById(product.getLocation().getRegionCode());
+                productSummaries.add(ProductSummary.fromEntity(product, area));
             }
         }
 
