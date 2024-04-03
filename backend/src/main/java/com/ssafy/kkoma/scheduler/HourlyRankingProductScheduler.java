@@ -1,6 +1,7 @@
 package com.ssafy.kkoma.scheduler;
 
 import com.ssafy.kkoma.api.product.dto.hourly.ProductHourlyWished;
+import com.ssafy.kkoma.api.product.dto.hourly.ProductHourlyWishedResponse;
 import com.ssafy.kkoma.api.product.service.ProductService;
 import com.ssafy.kkoma.api.redis.service.RedisService;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +34,7 @@ public class HourlyRankingProductScheduler {
     @Scheduled(cron = "0 0 0/1 * * *", zone = "Asia/Seoul") // 1시간 마다 실행 (01:00, 02:00, 03:00, ...)
     public void getMostWishedProducts() {
         log.info("[scheduler] getMostWishedProducts가 실행됩니다. at {}", LocalDateTime.now());
-        List<ProductHourlyWished> productList = productService.getHourlyMostWishedProducts(20, LocalDateTime.now());
+        List<ProductHourlyWishedResponse> productList = productService.getHourlyMostWishedProducts(20, LocalDateTime.now());
         redisService.setValues("hourlyWishedProductList", productList);
     }
 }

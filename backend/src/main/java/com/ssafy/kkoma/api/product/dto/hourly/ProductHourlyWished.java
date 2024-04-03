@@ -9,6 +9,8 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
@@ -16,14 +18,20 @@ import lombok.experimental.SuperBuilder;
 public class ProductHourlyWished extends ProductSummary {
 
     @Setter
-    private Long hourlyWishCount; // 지난 1시간 동안 몇 명의 사람들이 찜을 눌렀는가 (현재 13:00이라면, 12:00~12:59 생성된 row만 고려)
+    private Long hourlyWishCount;
+
+    private Long regionCode;
+    private LocalDateTime createdAt;
 
     @QueryProjection
     public ProductHourlyWished(
-        Long id, String thumbnailImage, String title, String dealPlace, ProductType status, int price,
-        Long elapsedMinutes, Long wishCount, Long viewCount, Long offerCount, Long hourlyWishCount
+        Long id, String thumbnailImage, String title, ProductType status,
+        int price, Long wishCount, Long viewCount, Long offerCount,
+        Long hourlyWishCount, Long regionCode, LocalDateTime createdAt
     ) {
-        super(id, thumbnailImage, title, dealPlace, status, price, elapsedMinutes, wishCount, viewCount, offerCount);
+        super(id, thumbnailImage, title, status, price, wishCount, viewCount, offerCount);
         this.hourlyWishCount = hourlyWishCount;
+        this.regionCode = regionCode;
+        this.createdAt = createdAt;
     }
 }

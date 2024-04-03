@@ -8,6 +8,7 @@ import com.ssafy.kkoma.api.member.dto.response.MemberSummaryResponse;
 import com.ssafy.kkoma.api.member.service.MemberService;
 import com.ssafy.kkoma.api.product.dto.*;
 import com.ssafy.kkoma.api.product.dto.hourly.ProductHourlyWished;
+import com.ssafy.kkoma.api.product.dto.hourly.ProductHourlyWishedResponse;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
 import com.ssafy.kkoma.api.product.dto.response.ChatProductResponse;
 import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
@@ -286,8 +287,22 @@ public class ProductService {
 		return productRepository.findFirstByStatus(ProductType.SALE);
 	}
 
-	public List<ProductHourlyWished> getHourlyMostWishedProducts(int limit, LocalDateTime now) {
-		return productRepository.getHourlyMostWishedProducts(limit, now);
+	public List<ProductHourlyWishedResponse> getHourlyMostWishedProducts(int limit, LocalDateTime now) {
+		List<ProductHourlyWished> productList = productRepository.getHourlyMostWishedProducts(limit, now);
+		List<ProductHourlyWishedResponse> result = new ArrayList<>();
+
+		for (ProductHourlyWished productHourlyWished : productList) {
+
+			String dealPlace = areaService.findAreaById(productHourlyWished.getRegionCode()).getFullArea();
+			productHourlyWished.setDealPlace(dealPlace);
+
+			Long elapsedMinutes = Duration.between(productHourlyWished.getCreatedAt(), LocalDateTime.now()).toMinutes();
+			productHourlyWished.setElapsedMinutes(elapsedMinutes);
+
+			result.add(new ProductHourlyWishedResponse(productHourlyWished));
+		}
+
+		return result;
 	}
 
 }

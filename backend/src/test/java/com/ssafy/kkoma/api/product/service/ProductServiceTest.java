@@ -6,10 +6,11 @@ import com.ssafy.kkoma.api.product.dto.ProductCreateRequest;
 import com.ssafy.kkoma.api.product.dto.ProductDetailResponse;
 import com.ssafy.kkoma.api.product.dto.ProductSummary;
 import com.ssafy.kkoma.api.product.dto.ProductWishResponse;
-import com.ssafy.kkoma.api.product.dto.hourly.ProductHourlyWished;
+import com.ssafy.kkoma.api.product.dto.hourly.ProductHourlyWishedResponse;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
 import com.ssafy.kkoma.api.product.dto.response.ChatProductResponse;
 import com.ssafy.kkoma.api.product.dto.response.SearchProductResponse;
+import com.ssafy.kkoma.api.redis.service.RedisService;
 import com.ssafy.kkoma.domain.area.entity.Area;
 import com.ssafy.kkoma.domain.location.entity.Location;
 import com.ssafy.kkoma.domain.member.constant.MemberType;
@@ -61,6 +62,9 @@ class ProductServiceTest {
 
 	@Autowired
 	private ProductService productService;
+
+	@Autowired
+	private RedisService redisService;
 
 	@Autowired
 	private MemberFactory memberFactory;
@@ -307,7 +311,7 @@ class ProductServiceTest {
 	}
 
 	@Test
-	@Transactional
+//	@Transactional
 	void 지난_한_시간_동안_찜수_탑텐_상품글_조회() {
 
 		// 1) given
@@ -350,17 +354,19 @@ class ProductServiceTest {
 			wish = wishListRepository.save(wish);
 		}
 
-		List<ProductHourlyWished> result = productService.getHourlyMostWishedProducts(4, now);
+		List<ProductHourlyWishedResponse> result = productService.getHourlyMostWishedProducts(4, now);
 		log.info("result 개수 {}", result.size());
 
 		// 3) then : 최종 순위 => 상품3(4명) / 상품2(3명) / 상품1(2명) / 상품0(1명)
 
 		long answer = NUM - 1;
-		for (ProductHourlyWished p : result) {
+		for (ProductHourlyWishedResponse p : result) {
 			log.info("지난 정시~정시 1시간 동안 찜 수가 가장 많았던 순서대로: {}개", p.getHourlyWishCount());
 			Assertions.assertThat(p.getHourlyWishCount()).isEqualTo(answer);
 			answer--;
 		}
+
+//		redisService.setValues("hourlyWishedProductList", result);
 
 	}
 

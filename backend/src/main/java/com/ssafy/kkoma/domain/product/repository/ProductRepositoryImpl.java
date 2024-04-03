@@ -8,7 +8,6 @@ import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.kkoma.api.area.service.AreaService;
 import com.ssafy.kkoma.api.product.dto.hourly.ProductHourlyWished;
 import com.ssafy.kkoma.api.product.dto.hourly.QProductHourlyWished;
 import com.ssafy.kkoma.api.product.dto.request.SearchProductRequest;
@@ -112,14 +111,14 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 								product.id,
 								product.thumbnailImage,
 								product.title,
-								product.title, // dealPlace
 								product.status,
 								product.price,
-								product.wishCount, //elapsedMinutes
 								product.wishCount,
 								product.viewCount,
 								product.offerCount,
-								wishList.id.count().as(aliasWishCount)
+								wishList.id.count().as(aliasWishCount),
+								product.location.regionCode,
+								product.createdAt
 						)
 				)
 				.from(wishList)
@@ -132,18 +131,6 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 				.limit(limit);
 
 		return query.fetch();
-
-//		return PageableExecutionUtils.getPage(contents, pageable, query::fetchCount);
 	}
-
-//	private StringExpression getDealPlace(NumberPath<Long> regionCode) {
-//		return Expressions.stringTemplate("{0}", regionCode);
-//
-//		return areaService.findAreaById(regionCode.).getFullArea();
-//	}
-//
-//	private NumberExpression getElapsedMinutes(NumberPath<Long> createdAt) {
-//		return (createdAt != null) ? Duration.between(createdAt, LocalDateTime.now()) : null;
-//	}
 
 }
