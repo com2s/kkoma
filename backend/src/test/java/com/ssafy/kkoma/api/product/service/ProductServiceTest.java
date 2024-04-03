@@ -377,7 +377,7 @@ class ProductServiceTest {
 	}
 
 	@Test
-//	@Transactional
+	@Transactional
 	void 지난_한_시간_동안_조회수_탑4_상품글_조회() {
 
 		// 1) given
@@ -436,7 +436,7 @@ class ProductServiceTest {
 			answer--;
 		}
 
-		redisService.setValues("hourlyViewedProductList", result);
+//		redisService.setValues("hourlyViewedProductList", result);
 
 	}
 
