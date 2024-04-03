@@ -151,7 +151,7 @@ public class OfferService {
             }
         }
 
-        return DecideOfferResponse.fromEntity(acceptedOffer, acceptedDeal);
+        return DecideOfferResponse.fromEntity(acceptedOffer, acceptedDeal, product.getChatRoom().getId());
     }
 
     public List<OfferedProductInfoResponse> getNotProgressOfferingProducts(Long memberId) {
