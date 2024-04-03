@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: recommand-api
+  labels:
+    app: recommand
 
 spec:
   selector:
@@ -22,3 +24,17 @@ spec:
           envFrom:
             - secretRef:
                 name: api-secret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: recommand-svc
+spec:
+  ports:
+    - name: service
+      nodePort: 5000
+      port: 5000
+      targetPort: 5000
+  selector:
+    app: recommand
