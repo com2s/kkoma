@@ -39,13 +39,13 @@ export default function UserProfile({ propsId, memberSummary }: UserProfileProps
               />
             </div>
             <div className={`${styles.nickname} min-w-32 text-pretty mr-1 `}>
-              <h4 className="">{memberSummary.nickname ?? "닉네임 미등록"}</h4>
-              <span className="text-slate-500">
+              <h4 className="text-body !font-bold">{memberSummary.nickname ?? "닉네임 미등록"}</h4>
+              <span className="c-text3 text-caption">
                 {memberSummary.preferredPlace ?? "지역 미등록"}
               </span>
             </div>
           </div>
-          <ArrowForwardIosIcon />
+          <ArrowForwardIosIcon style={{ width: "15px" }} />
         </div>
       )}
     </div>

@@ -32,19 +32,23 @@ export default function MyProfile() {
       {success === false && <h2>프로필 조회 실패</h2>}
       {success === true && summary && (
         <>
-          <div className={styles.responsiveImg} style={{ position: "relative" }}>
-            <Image
-              src={summary?.profileImage}
-              alt="Profile Image"
-              fill
-              style={{ objectFit: "cover", borderRadius: "50%" }}
-            />
+          <div className="flex items-center gap-3">
+            <div className={styles.responsiveImg} style={{ position: "relative" }}>
+              <Image
+                src={summary?.profileImage}
+                alt="Profile Image"
+                fill
+                style={{ objectFit: "cover", borderRadius: "50%" }}
+              />
+            </div>
+            <div className={`${styles.nickname} min-w-32 text-pretty mr-1 `}>
+              <h4 className="text-body !font-bold">{summary?.nickname ?? "닉네임 미등록"}</h4>
+              <span className="c-text3 text-caption">
+                {summary?.preferredPlace ?? "주소 미등록"}
+              </span>
+            </div>
           </div>
-          <div className={`${styles.nickname} min-w-32 text-pretty mr-1 `}>
-            <h4 className="">{summary?.nickname ?? "닉네임 미등록"}</h4>
-            <span className="text-slate-400">{summary?.preferredPlace ?? "주소 미등록"}</span>
-          </div>
-          <ArrowForwardIosIcon className="text-center" />
+          <ArrowForwardIosIcon style={{ width: "15px" }} />
         </>
       )}
     </div>

@@ -1,15 +1,15 @@
 .container {
-    // height: calc(100vh - 80px);
-    // @include flex(flex-start, flex-start, column);
-    overflow: auto;
-    margin: rem(10) rem(6) rem(110);
+  // height: calc(100vh - 80px);
+  // @include flex(flex-start, flex-start, column);
+  overflow: auto;
+  margin: 0 0 rem(110);
 }
 
 .ul {
-    li {
-        height: rem(60);
-        padding: rem(10);
-        margin: rem(10);
-        border: rem(1) solid #000;
-    }
+  li {
+    height: rem(60);
+    padding: rem(10);
+    margin: rem(10);
+    border: rem(1) solid #000;
+  }
 }

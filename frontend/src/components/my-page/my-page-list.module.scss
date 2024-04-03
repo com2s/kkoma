@@ -1,16 +1,19 @@
 .myList {
-    ul li {
-        margin-bottom: rem(5);
-        padding: rem(10);
+  ul li {
+    margin-bottom: rem(5);
 
-        div {
-            width: 100%;
-            span {
-                font-size: rem(16);
-                font-weight: 500;
-                padding: rem(5) rem(20);
-                width: 100%;
-            }
-        }
+    a {
+      padding-left: 0;
+      padding-right: 0;
     }
+
+    div {
+      width: 100%;
+      span {
+        font-size: rem(16);
+        font-weight: 500;
+        width: 100%;
+      }
+    }
+  }
 }
