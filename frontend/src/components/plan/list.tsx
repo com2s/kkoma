@@ -17,6 +17,7 @@ export function DealCard(deal: PlanCard, key: number, router: AppRouterInstance)
         product={{
           id: deal.id,
           thumbnailImage: deal.thumbnailImage,
+          chatRoomId: deal.chatRoomId,
           dealPlace: deal.dealPlace,
           title: deal.title,
           price: deal.price,
@@ -26,7 +27,7 @@ export function DealCard(deal: PlanCard, key: number, router: AppRouterInstance)
           offerCount: deal.offerCount,
           viewCount: deal.viewCount,
         }}
-        next={`/chat/${deal.id}`}
+        next={`/chat/${deal.chatRoomId}`}
       />
       <button
         className="flex bg-slate-50 text-caption w-full rounded-sm py-1 justify-center my-2"
