@@ -112,4 +112,19 @@ public class Product extends BaseTimeEntity {
 		chatRoom.setProduct(this);
 	}
 
+	@Override
+	public String toString() {
+		return "Product{" +
+				"id=" + id + "\n" +
+				", member=" + member.getId() + "\n" +
+				", category=" + category.getId() + "\n" +
+				", location=" + location.getId() + "\n" +
+				", title='" + title + "\n" +
+				", status=" + status + "\n" +
+				", viewCount=" + viewCount + "\n" +
+				", wishCount=" + wishCount + "\n" +
+				", offerCount=" + offerCount + "\n" +
+				'}';
+	}
+
 }
