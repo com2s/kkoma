@@ -257,8 +257,8 @@ public class ProductService {
 		return ProductWishResponse.fromEntity(savedWishList, product);
 	}
 
-	public List<Product> findProductForSaleByCategoryId(Integer categoryId) {
-		return productRepository.findByCategoryIdAndStatus(categoryId, ProductType.SALE);
+	public List<Product> findProductForSaleByCategoryId(Long memberId, Integer categoryId) {
+		return productRepository.findByCategoryIdAndStatus(memberId, categoryId, ProductType.SALE);
 	}
 	
 	public BasePageResponse<WishList, ProductSummary> getMyWishProducts(Long memberId, Pageable pageable) {

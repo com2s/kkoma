@@ -108,6 +108,7 @@ public class OfferService {
             offerResponseList.add(OfferResponse.fromEntity(offer));
         }
 
+
         return offerResponseList;
     }
 
