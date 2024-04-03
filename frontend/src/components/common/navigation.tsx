@@ -21,13 +21,14 @@ const Header = () => {
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down(370));
+  const isCheckScreen = useMediaQuery(theme.breakpoints.up(0));
 
   const StyledFab = styled(Fab)(({ theme }) => {
     return {
       width: isSmallScreen ? "60px" : "80px",
       height: isSmallScreen ? "60px" : "80px",
       position: "absolute",
-      zIndex: 1,
+      zIndex: 1000,
       top: isSmallScreen ? "-24px" : "-30px", // Adjust top position as well if needed
       left: 0,
       right: 0,
@@ -41,7 +42,7 @@ const Header = () => {
   });
 
   const [size, setSize] = useState({ width: 50, height: 50 });
-  const [isHidden, setIsHidden] = useState(false);
+  const [isHidden, setIsHidden] = useState(true);
 
   useEffect(() => {
     const updateSize = () => {
@@ -77,6 +78,8 @@ const Header = () => {
         }}
         elevation={0} // 기본 그림자 제거
       >
+        {isCheckScreen && (
+          <>
         <BottomNavigation
           showLabels
           value={value}
@@ -89,34 +92,39 @@ const Header = () => {
           }}
         >
           <BottomNavigationAction
-            label="거래 일정"
+            label="거래일정"
             icon={<EventAvailableIcon />}
             component={Link}
             href="/plan"
-            // 화면 크기가 400px 이하일 때는 패딩 없애기
-            sx={{ minWidth: "55px" }}
+            // 화면 크기가 370px 이하일 때는 패딩 없애기
+            sx={{ minWidth: "55px", padding: isSmallScreen ? "0" : "6px" }}
           />
           <BottomNavigationAction
             label="내 거래"
             icon={<FormatListBulletedRoundedIcon />}
             component={Link}
             href="/my-trade"
-            sx={{ minWidth: "55px" }}
+            sx={{ minWidth: "55px", padding: isSmallScreen ? "0" : "6px" }}
           />
-          <BottomNavigationAction label="1" disabled sx={{ width: "0px" }} hidden={isHidden} />
+          <BottomNavigationAction
+            label=" "
+            disabled
+            sx={{ width: "0px" }}
+            hidden={isHidden}
+          />
           <BottomNavigationAction
             label="모아보기"
             icon={<GridViewRoundedIcon />}
             component={Link}
             href="/lists"
-            sx={{ minWidth: "55px" }}
+            sx={{ minWidth: "55px", padding: isSmallScreen ? "0" : "6px" }}
           />
           <BottomNavigationAction
             label="내 정보"
             icon={<PersonOutlineIcon />}
             component={Link}
             href="/my-page"
-            sx={{ minWidth: "55px" }}
+            sx={{ minWidth: "55px", padding: isSmallScreen ? "0" : "6px" }}
           />
         </BottomNavigation>
         <Link
@@ -142,6 +150,8 @@ const Header = () => {
             />
           </StyledFab>
         </Link>
+        </>
+        )}
       </AppBar>
     </header>
   );
