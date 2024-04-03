@@ -164,12 +164,12 @@ public class OfferService {
             OfferType offerType = offer.getStatus();
             ProductType productType = product.getStatus();
             Area area = areaService.findAreaById(product.getLocation().getRegionCode());
-            if (OfferType.SENT.equals(offerType) || OfferType.CANCELLED.equals(offerType) || OfferType.REJECTED.equals(offerType)|| (OfferType.ACCEPTED.equals(offerType) && ProductType.SOLD.equals(productType)) ) {
+            if (OfferType.SENT.equals(offerType)) {
+                OfferedProductInfoResponse offeredProductInfoResponse = OfferedProductInfoResponse.fromEntity(product, MyProductType.BUY, offerType, null,null, area);
+                productInfoResponses.add(offeredProductInfoResponse);
+            } else if (OfferType.CANCELLED.equals(offerType) || (OfferType.ACCEPTED.equals(offerType) && ProductType.SOLD.equals(productType))) {
                 Deal deal = dealService.findDealByProductId(productId);
-                OfferedProductInfoResponse offeredProductInfoResponse = OfferedProductInfoResponse.fromEntity(product, MyProductType.BUY, offerType,
-                        deal != null ? deal.getId() : null,
-                        deal != null ? deal.getSelectedTime() : null,
-                        area);
+                OfferedProductInfoResponse offeredProductInfoResponse = OfferedProductInfoResponse.fromEntity(product, MyProductType.BUY, offerType, deal.getId(), deal.getSelectedTime(), area);
                 productInfoResponses.add(offeredProductInfoResponse);
             }
         }
