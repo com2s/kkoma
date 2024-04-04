@@ -103,7 +103,7 @@ exec 폴더 내 포팅 메뉴얼 참조
     <tr>
         <td align="center">
             <a href="#">
-            <img src="https://api.dicebear.com/8.x/big-smile/svg?seed=532914183365172048" width="100px" alt="김이현"/>
+            <img src="https://thumbnail6.coupangcdn.com/thumbnails/remote/230x230ex/image/rs_quotation_api/tqp1v6ni/f76dc5ed5ada4f968ca7f9d0e96d9e17.jpg" width="100px" alt="김이현"/>
                 <br/>
                 <b>김이현</b>
             </a>
@@ -112,7 +112,7 @@ exec 폴더 내 포팅 메뉴얼 참조
         </td>
         <td align="center">
             <a href="#">
-            <img src="https://api.dicebear.com/8.x/big-smile/svg?seed=Cuddles" width="100px" alt="조형준"/>
+            <img src="https://thumbnail6.coupangcdn.com/thumbnails/remote/230x230ex/image/rs_quotation_api/ed3y3bml/b85629c20207415da6d71a6c80133246.jpg" width="100px" alt="조형준"/>
                 <br/>
                 <b>조형준</b>
             </a>
@@ -121,7 +121,7 @@ exec 폴더 내 포팅 메뉴얼 참조
         </td>
         <td align="center">
             <a href="#">
-            <img src="https://api.dicebear.com/8.x/big-smile/svg?seed=973428650843541737" width="100px"/>
+            <img src="https://thumbnail15.coupangcdn.com/thumbnails/remote/292x292q65ex/image/rs_quotation_api/sfljdb3g/a0514217b99140b69bde6cb66d2ee914.jpg" width="100px"/>
                 <br/>
                 <b>유소연</b>
             </a>
@@ -130,7 +130,7 @@ exec 폴더 내 포팅 메뉴얼 참조
         </td>
         <td align="center">
             <a href="#">
-            <img src="https://api.dicebear.com/8.x/big-smile/svg?seed=817256432089621410" width="100px"/>
+            <img src="https://thumbnail10.coupangcdn.com/thumbnails/remote/230x230ex/image/rs_quotation_api/qzykqm6l/436d92c7ede34878a8cceb0253d5e019.jpg" width="100px"/>
                 <br/>
                 <b>이수현</b>
             </a>
@@ -139,7 +139,7 @@ exec 폴더 내 포팅 메뉴얼 참조
         </td>
         <td align="center">
             <a href="#">
-            <img src="https://api.dicebear.com/8.x/big-smile/svg?seed=306531512782191659" width="100px"/>
+            <img src="https://thumbnail13.coupangcdn.com/thumbnails/remote/292x292q65ex/image/retail/images/99212757171500-b264f16c-f06d-4156-aee1-6f6dffc3d11e.jpg" width="100px"/>
                 <br/>
                 <b>최지우</b>
             </a>
@@ -148,7 +148,7 @@ exec 폴더 내 포팅 메뉴얼 참조
         </td>
         <td align="center">
             <a href="#">
-            <img src="https://api.dicebear.com/8.x/big-smile/svg?seed=John-doe" width="100px"/>
+            <img src="https://thumbnail9.coupangcdn.com/thumbnails/remote/230x230ex/image/rs_quotation_api/zc09dr10/5263a0ec068e427b8827e6e2ebfeaa6d.jpg" width="100px"/>
                 <br/>
                 <b>황인규</b>
             </a>
