@@ -67,7 +67,7 @@ export default function Point() {
                       />
                     </div>
                     <div>
-                      <div className="text-body whitespace-nowrap text-wrap	w-30">
+                      <div className="text-body whitespace-pre-wrap text-wrap	w-30">
                         {item.productInfo.title}
                       </div>
                       <div className="text-caption c-text3">{`${item.date.substring(
