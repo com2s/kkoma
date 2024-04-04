@@ -274,16 +274,16 @@ export default function CreatePost() {
           />
           <div
             onClick={() => handleClickOpen(0)}
-            className="flex items-center justify-between border-b pb-3"
+            className="flex items-center justify-between border-b pb-3 w-full"
           >
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-full">
               <LocationOnOutlinedIcon className="c-text2" />
               {location && location !== "" && dealPlace ? (
                 <div className="text-body2">
                   {location} {dealPlace}
                 </div>
               ) : (
-                <div className="text-body">거래 장소 설정</div>
+                <div className="text-body min-w-fit">거래 장소 설정</div>
               )}
             </div>
             <NavigateNextOutlinedIcon className="c-text2 min-w-fit" />
