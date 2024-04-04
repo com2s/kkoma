@@ -65,7 +65,7 @@
 **백엔드 아키텍쳐**
 ![erd](backend/src/main/resources/static/bearch.png)
 
-[ERD 다이어그램](https://www.erdcloud.com/d/rP2zPYyrDgw8qbwxj)
+**ERD 다이어그램**
 ![erd](backend/src/main/resources/static/erd.png)
 
 **외부 문서**
@@ -100,7 +100,7 @@ exec 폴더 내 포팅 메뉴얼 참조
 
 # 👨‍👩‍👧‍👦 팀 소개 
 
-**삼성 청년 SW 아카데미** 10기 서울 3반 8조
+**삼성 청년 SW 아카데미** 10기 서울 3반 8조 깻잎마을방범대
 
 <table>
   <tbody>
