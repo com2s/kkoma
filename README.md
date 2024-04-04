@@ -1,9 +1,17 @@
+![logo](backend/src/main/resources/static/logo.png)
+
 #### 목차
 
 1. [프로젝트 소개](#-프로젝트 소개)   
 2. [서비스 소개](#-주요-기능)  
 5. [팀 소개](#-팀-소개)  
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 <br>
 <br>
 <br>
@@ -24,6 +32,12 @@
 >
 > **기능 구현** : 2024.03.11 - 2024.04.04 (4주)
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 <br>
 <br>
 <br>
@@ -57,33 +71,51 @@
 
 ### 🦜 설계
 
-- [ERD 다이어그램](https://www.erdcloud.com/d/rP2zPYyrDgw8qbwxj)
+**인프라 아키텍쳐**
 
+![erd](backend/src/main/resources/static/infraarch.png)
+
+**백엔드 아키텍쳐**
+
+![erd](backend/src/main/resources/static/bearch.png)
+
+**ERD 다이어그램**
+
+![erd](backend/src/main/resources/static/erd.png)
+
+**외부 문서**
 - [와이어프레임](https://www.figma.com/file/rtugKRau06UXVcB2W1WwzH/KKOMA?type=design&node-id=144%3A5737&mode=design&t=KrA32jhI4t51iAsZ-1)
+
+<br>
+
+### 🌈 브랜딩
+
+**로고**
+
+![Group_191](/uploads/e0edc3683fcb4b7fa876820faf5af453/Group_191.png)
+
+**디자인 시스템**
+
+![Group_189](/uploads/c2fbddd71fb8637f53cf4e6906e07f71/Group_189.png)
+
+![Group_179](/uploads/f99bee61a4297f6176ae75e1cd103cf9/Group_179.png)
 
 <br>
 
 ### 🦆 주요 기능
 
-|구분|설명| BE 담당 | FE 담당 |
-|:---|:---|:---|:---|
-|거래|- 거래 요청 시 거래를 위한 금액을 미리 출금하고 서버에서 관리하여 사기 방지<br>- 거래 완료를 위해 QR 코드를 태그하는 방식을 사용|🐰김이현<br>🦝이수현<br>🐷조형준<br>🐹유소연|🐼최지우<br>🐻황인규|
-|추천|- 협업 필터링을 활용하여 사용자가 원할 것 같은 거래글을 보여줌|🐷조형준|🐼최지우|
-|검색|- ...|🐹유소연|🐼최지우|
-|채팅|- WebSocket을 이용한 실시간 채팅 |🐰김이현|🐼최지우|
-|알림|- ...|🦝이수현|🐻황인규|
-|인증|- 카카오 소셜 로그인을 이용한 사용자 인증|🐷조형준|🐼최지우|
-
-<br>
-
-### 🦢 시연 영상
-![...](https://lulu-animation.com/wp-content/uploads/2022/05/test-gif.gif)
+|구분| 설명                                                                             | BE 담당 | FE 담당 |
+|:---|:-------------------------------------------------------------------------------|:---|:---|
+|거래| - 거래 요청 시 거래를 위한 금액을 미리 출금하고 서버에서 관리하여 사기 방지<br>- 거래 완료를 위해 QR 코드를 태그하는 방식을 사용 |🐰김이현<br>🦝이수현<br>🐷조형준<br>🐹유소연|🐼최지우<br>🐻황인규|
+|추천| - 협업 필터링을 활용하여 사용자가 원할 것 같은 거래글을 보여줌                                           |🐷조형준|🐼최지우|
+|검색| - Trie 구조를 사용한 검색어 자동완성 기능 구현                                                  |🐹유소연|🐼최지우|
+|채팅| - WebSocket을 이용한 실시간 채팅                                                        |🐰김이현|🐼최지우|
+|알림| - Spring Scheduler를 활용해 거래 한 시간 전 reminder 알림 및 인기 상품 글 조회                     |🦝이수현|🐻황인규|
+|인증| - 카카오 소셜 로그인을 이용한 사용자 인증                                                       |🐷조형준|🐼최지우|
 
 <br>
 
 ### 🕊 실행방법
-
-[포팅 메뉴얼 바로가기](#)
 
 exec 폴더 내 포팅 메뉴얼 참조
 
@@ -93,17 +125,23 @@ exec 폴더 내 포팅 메뉴얼 참조
 <br>
 <br>
 <br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 # 👨‍👩‍👧‍👦 팀 소개 
 
-**삼성 청년 SW 아카데미** 10기 서울 3반 8조
+**삼성 청년 SW 아카데미** 10기 서울 3반 8조 깻잎마을방범대
 
 <table>
   <tbody>
     <tr>
         <td align="center">
             <a href="#">
-            <img src="https://api.dicebear.com/8.x/big-smile/svg?seed=532914183365172048" width="100px" alt="김이현"/>
+            <img src="https://thumbnail6.coupangcdn.com/thumbnails/remote/230x230ex/image/rs_quotation_api/tqp1v6ni/f76dc5ed5ada4f968ca7f9d0e96d9e17.jpg" width="100px" alt="김이현"/>
                 <br/>
                 <b>김이현</b>
             </a>
@@ -112,7 +150,7 @@ exec 폴더 내 포팅 메뉴얼 참조
         </td>
         <td align="center">
             <a href="#">
-            <img src="https://api.dicebear.com/8.x/big-smile/svg?seed=Cuddles" width="100px" alt="조형준"/>
+            <img src="https://thumbnail6.coupangcdn.com/thumbnails/remote/230x230ex/image/rs_quotation_api/ed3y3bml/b85629c20207415da6d71a6c80133246.jpg" width="100px" alt="조형준"/>
                 <br/>
                 <b>조형준</b>
             </a>
@@ -121,7 +159,7 @@ exec 폴더 내 포팅 메뉴얼 참조
         </td>
         <td align="center">
             <a href="#">
-            <img src="https://api.dicebear.com/8.x/big-smile/svg?seed=973428650843541737" width="100px"/>
+            <img src="https://thumbnail15.coupangcdn.com/thumbnails/remote/292x292q65ex/image/rs_quotation_api/sfljdb3g/a0514217b99140b69bde6cb66d2ee914.jpg" width="100px"/>
                 <br/>
                 <b>유소연</b>
             </a>
@@ -130,7 +168,7 @@ exec 폴더 내 포팅 메뉴얼 참조
         </td>
         <td align="center">
             <a href="#">
-            <img src="https://api.dicebear.com/8.x/big-smile/svg?seed=817256432089621410" width="100px"/>
+            <img src="https://thumbnail10.coupangcdn.com/thumbnails/remote/230x230ex/image/rs_quotation_api/qzykqm6l/436d92c7ede34878a8cceb0253d5e019.jpg" width="100px"/>
                 <br/>
                 <b>이수현</b>
             </a>
@@ -139,7 +177,7 @@ exec 폴더 내 포팅 메뉴얼 참조
         </td>
         <td align="center">
             <a href="#">
-            <img src="https://api.dicebear.com/8.x/big-smile/svg?seed=306531512782191659" width="100px"/>
+            <img src="https://thumbnail13.coupangcdn.com/thumbnails/remote/292x292q65ex/image/retail/images/99212757171500-b264f16c-f06d-4156-aee1-6f6dffc3d11e.jpg" width="100px"/>
                 <br/>
                 <b>최지우</b>
             </a>
@@ -148,7 +186,7 @@ exec 폴더 내 포팅 메뉴얼 참조
         </td>
         <td align="center">
             <a href="#">
-            <img src="https://api.dicebear.com/8.x/big-smile/svg?seed=John-doe" width="100px"/>
+            <img src="https://thumbnail9.coupangcdn.com/thumbnails/remote/230x230ex/image/rs_quotation_api/zc09dr10/5263a0ec068e427b8827e6e2ebfeaa6d.jpg" width="100px"/>
                 <br/>
                 <b>황인규</b>
             </a>
