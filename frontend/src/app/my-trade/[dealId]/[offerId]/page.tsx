@@ -176,7 +176,7 @@ export default function MyTradeCalender({ params: { offerId } }: IParams) {
         <Accept />
         {/* 우선 임시로 닫는 버튼 */}
         <ButtonContainer>
-          <NormalBtn next={() => router.push(`/chat/${chatRoomId}`)}>채팅 하러 가기</NormalBtn>
+          <NormalBtn next={() => router.replace(`/chat/${chatRoomId}`)}>채팅 하러 가기</NormalBtn>
         </ButtonContainer>
       </Dialog>
     </React.Fragment>
