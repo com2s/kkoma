@@ -23,20 +23,18 @@
 
 # 🐓 서비스 소개 
 
-**서비스 명** : 꼬꼬마켓 🐔
-
-...
+**서비스 명** : 꼬꼬마켓
 
 <br>
 
-### 🦢 특징
-    ✔ 
-    ✔ 
+### 🐣 특징
+    ✔ 육아용품에 특화된 중고 거래 플랫폼
+    ✔ 사용자 성향을 기반으로 한 거래글 추천 기능 
 
 
 <br>
 
-### 🦅 기술 스택
+### 🐥 기술 스택
 |구분|기술|
 |:---|:---|
 |Infra|<img src="https://img.shields.io/badge/AWS EC2-FF9900?style=flat-square&logo=amazonec2&logoColor=white"><img src="https://img.shields.io/badge/NGINX-009639?style=flat-square&logo=nginx&logoColor=white"><img src="https://img.shields.io/badge/DOCKER-2496ED?style=flat-square&logo=docker&logoColor=white"><img src="https://img.shields.io/badge/UBUNTU-E95420?style=flat-square&logo=ubuntu&logoColor=white"><img src="https://img.shields.io/badge/JENKINS-D24939?style=flat-square&logo=jenkins&logoColor=white">|
@@ -69,7 +67,7 @@
 
 <br>
 
-### 🐣 시연 영상
+### 🦢 시연 영상
 ![...](https://lulu-animation.com/wp-content/uploads/2022/05/test-gif.gif)
 
 <br>
@@ -87,7 +85,7 @@ exec 폴더 내 포팅 메뉴얼 참조
 <br>
 <br>
 
-# 🐥 팀 소개 
+# 👨‍👩‍👧‍👦 팀 소개 
 
 **삼성 청년 SW 아카데미** 10기 서울 3반 8조
 
