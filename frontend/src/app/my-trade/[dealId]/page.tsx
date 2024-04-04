@@ -55,7 +55,7 @@ export default function MyRequest({ params: { dealId } }: IParams) {
 
   const clickRequest = (times: Requester["offerTimes"], id: number) => {
     setOfferTime(times);
-    router.push(`/my-trade/${dealId}/${id}`);
+    router.replace(`/my-trade/${dealId}/${id}`);
   };
 
   return (
