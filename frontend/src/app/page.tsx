@@ -24,6 +24,7 @@ export default function Home() {
   const [recommend, setRecommend] = useState<Array<ProductSm>>([]);
   const [bestWishProducts, setBestWishProducts] = useState<Array<ProductSm>>([]);
   const [bestViewProducts, setBestViewProducts] = useState<Array<ProductSm>>([]);
+  const [canAccess, setCanAccess] = useState<boolean>(false);
   const router = useRouter();
 
   const getKidList = async () => {
@@ -46,18 +47,27 @@ export default function Home() {
     setBestViewProducts(res);
   };
 
-  const canAccess = async () => {
+  const getLoginInfo = async () => {
     if (!(await isLogin())) {
+      setCanAccess(false);
       router.replace("/welcome");
+    } else {
+      setCanAccess(true);
+      return true;
     }
   };
 
   useEffect(() => {
-    canAccess();
-    getKidList();
-    getWishProducts();
-    getViewProducts();
+    getLoginInfo();
   }, []);
+
+  useEffect(() => {
+    if (canAccess) {
+      getKidList();
+      getWishProducts();
+      getViewProducts();
+    }
+  }, [canAccess]);
 
   useEffect(() => {
     if (kidList && kidList.length > 0) {

@@ -59,9 +59,16 @@ export function DealList() {
       {list && list.length > 0 ? (
         list.map((i, k) => {
           if (
-            k !== list.length &&
-            i?.selectedTime.substring(0, 10) !== list[k + 1]?.selectedTime.substring(0, 10)
+            k !== 0 &&
+            list[k - 1]?.selectedTime.substring(0, 10) !== i?.selectedTime.substring(0, 10)
           ) {
+            return (
+              <div key={k} className="w-full">
+                <div className="text-body2">{i.selectedTime.substring(0, 10)}</div>
+                {DealCard(i, k, router)}
+              </div>
+            );
+          } else if (k === 0) {
             return (
               <div key={k} className="w-full">
                 <div className="text-body2">{i.selectedTime.substring(0, 10)}</div>
