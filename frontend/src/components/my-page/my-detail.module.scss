@@ -1,0 +1,23 @@
+.container {
+  // height: calc(100vh - 80px);
+  // @include flex(flex-start, flex-start, column);
+  overflow: auto;
+}
+
+.nickname {
+  width: 50%;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0;
+  // 줄바꿈 시 단어를 분리하지 않음
+  word-break: keep-all;
+}
+
+.responsiveImg {
+  width: rem(96);
+  height: rem(96);
+  border-radius: 50%;
+}

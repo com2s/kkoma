@@ -1,0 +1,19 @@
+.myList {
+  ul li {
+    margin-bottom: rem(5);
+
+    a {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    div {
+      width: 100%;
+      span {
+        font-size: rem(16);
+        font-weight: 500;
+        width: 100%;
+      }
+    }
+  }
+}

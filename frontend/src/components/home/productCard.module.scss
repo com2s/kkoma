@@ -1,0 +1,11 @@
+.card {
+  // @include flex(flex-start, flex-start, column);
+  width: 45%;
+  img {
+    width: 100%;
+    border-radius: rem(15);
+  }
+  span {
+    display: block;
+  }
+}

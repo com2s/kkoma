@@ -1,0 +1,11 @@
+.join {
+  @include flex(center, center, column);
+  margin-top: rem(130);
+}
+
+.loginBtn {
+  @include flex();
+  position: absolute;
+  bottom: rem(10);
+  width: 100%;
+}

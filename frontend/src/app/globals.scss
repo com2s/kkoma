@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  min-width: 320px;
+  max-width: 600px;
+  margin: 0 auto;
+  // border: 1px solid black;
+
+  // 스크롤바 숨기기
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  ::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
+}
+
+body {
+  padding: rem(16) rem(26);
+}
+
+.box {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.box::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+
+//font
+
+@for $i from 1 through length($headingFontList) {
+  /* 리스트 길이 만큼 순회 */
+  h#{$i} {
+    font-size: nth($headingFontList, $i);
+    font-weight: bold;
+    color: $color-text1;
+    line-height: normal;
+  }
+}
+
+.text-body {
+  font-size: $fs-5;
+  font-weight: $fw-medium;
+  color: $color-text1;
+}
+
+.text-body2 {
+  font-size: $fs-6;
+  font-weight: $fw-medium;
+  color: $color-text1;
+}
+
+.text-caption {
+  font-size: $fs-7;
+  font-weight: $fw-medium;
+  color: $color-text1;
+  line-height: normal;
+}
+
+.text-button {
+  font-size: $fs-4;
+  font-weight: $fw-medium;
+  color: $color-text1;
+}
+
+.text-logo {
+  font-family: "Oliver";
+  font-size: $fs-3;
+  color: $color-text1;
+}
+
+.text-big-logo {
+  font-family: "Oliver";
+  font-size: rem(40);
+  color: $color-text1;
+}
+
+.text-deco {
+  font-family: "UhBeeSe_hyun";
+  font-size: $fs-3;
+  color: $color-text1;
+}
+
+.c-text2 {
+  color: $color-text2;
+}
+
+.c-text3 {
+  color: $color-text3;
+}
+
+.c-main {
+  color: $color-red;
+}
+
+.react-calendar__tile {
+  padding: 0;
+  aspect-ratio: 1/1;
+}

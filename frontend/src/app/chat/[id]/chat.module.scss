@@ -1,0 +1,100 @@
+.chat {
+  @include flex(flex-start, center, column);
+  gap: rem(28);
+  box-sizing: border-box;
+  width: 100%;
+  .product {
+    position: fixed;
+    width: calc(100% - rem(52));
+    min-width: calc($min-width - rem(52));
+    max-width: calc($max-width - rem(52));
+    top: rem(58);
+    background-color: white;
+    box-shadow: 0 15px 15px 0 white;
+  }
+  .chatBody {
+    overflow-y: auto;
+    padding: rem(58) 0 rem(58);
+    width: 100%;
+    .profile {
+      border-radius: 50%;
+    }
+    .nickname {
+      @include text-body2;
+      color: $color-text2;
+      display: block;
+    }
+    .time {
+      @include text-caption;
+      color: $color-text3;
+      display: block;
+    }
+    .chatRight {
+      @include flex(flex-start, flex-end, row-reverse);
+      gap: rem(10);
+      margin: rem(10) 0;
+      .chatBox {
+        @include flex(flex-end, flex-start, column);
+        gap: rem(5);
+        width: 100%;
+        .content {
+          display: block;
+          background-color: $color-light-yellow;
+          padding: rem(5) rem(10);
+          border-radius: rem(10);
+          word-break: break-all;
+        }
+      }
+    }
+    .chatLeft {
+      @include flex(flex-start, flex-end, row);
+      gap: rem(10);
+      margin: rem(10) 0;
+      .chatBox {
+        @include flex(flex-start, flex-start, column);
+        gap: rem(5);
+        width: 100%;
+        .content {
+          display: block;
+          background-color: $color-light-yellow;
+          padding: rem(5) rem(10);
+          border-radius: rem(10);
+        }
+      }
+    }
+  }
+  .inputLine {
+    @include text-body2;
+    @include flex(center, space-between, row);
+    gap: 4%;
+    width: 100%;
+    min-width: $min-width;
+    max-width: $max-width;
+    background-color: white;
+    position: fixed;
+    bottom: 0;
+    padding: rem(10) rem(52) rem(10) 0;
+    box-shadow: 0 -15px 15px 0 white;
+
+    input {
+      width: 100%;
+      border: 1px solid $color-text4;
+      border-radius: rem(10);
+      padding: rem(10) rem(5);
+    }
+
+    button {
+      background-color: $color-yellow;
+      border-radius: 50%;
+      padding: rem(10);
+    }
+  }
+}
+
+.seller {
+  display: block;
+  background-color: $color-pink;
+  padding: rem(5) rem(10);
+  border-radius: rem(10);
+  word-break: break-all;
+}

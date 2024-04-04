@@ -1,0 +1,49 @@
+.container {
+  // height: calc(100vh - 80px);
+  // @include flex(flex-start, flex-start, column);
+  overflow: auto;
+  margin: 0 0 rem(140);
+}
+
+.chips {
+  padding: rem(1) rem(4);
+}
+
+.box {
+  margin: 0 !important;
+}
+
+.chip {
+  margin-top: rem(4);
+}
+
+.card {
+  border: rem(0);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: rem(15) 0;
+
+  .cardMiddle {
+    width: 55%;
+  }
+}
+
+.fab {
+  @include flex(center, flex-end, row);
+  position: fixed;
+  bottom: rem(80);
+  z-index: 1100;
+  border-radius: 50%;
+  width: calc(100% - rem(52));
+  max-width: calc(600px - rem(52));
+  min-width: calc(320px - rem(52));
+  .btn {
+    background-color: $color-yellow;
+    border-radius: 50%;
+    padding: rem(10);
+    color: $color-text1;
+    @include sha-drop;
+  }
+}

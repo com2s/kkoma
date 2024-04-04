@@ -1,0 +1,33 @@
+.header {
+  position: fixed;
+  top: 0;
+  bottom: auto;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  // 하단 그림자 효과가 필요할 경우...
+  // box-shadow: 0px rem(2) rgba(0, 0, 0, 0.1);
+  @include flex(center, space-between, row);
+  background-color: white;
+  min-width: 320px;
+  max-width: 600px;
+  margin: auto;
+  width: 100%;
+  padding: rem(20) rem(24);
+  .logo {
+    @include flex(center, flex-start, row);
+    gap: rem(10);
+    font-size: 1.1rem;
+    // font-family: 'Noto Sans KR', sans-serif;
+  }
+  .notifications {
+    color: $color-text2;
+    display: flex;
+    height: rem(32);
+    width: rem(64);
+  }
+}
+
+.headerSpacer {
+  height: rem(65); // 상단 바의 높이와 동일하게 설정
+}

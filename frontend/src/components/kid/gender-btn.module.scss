@@ -1,0 +1,34 @@
+.container {
+  @include flex(center, space-between, row);
+  gap: rem(10);
+  width: 100%;
+}
+
+.btn {
+  @include text-body;
+  color: $color-text1;
+  background-color: $color-text4;
+  margin: auto;
+  flex: 1;
+  height: rem(130);
+  border-radius: rem(15);
+  overflow: hidden;
+  transition: all 0.2s linear;
+  outline: none;
+
+  &:hover {
+    transform: scale(0.9);
+  }
+
+  &.selected {
+    transform: scale(0.9);
+  }
+}
+
+.man {
+  background-color: $color-pink;
+}
+
+.woman {
+  background-color: $color-light-yellow;
+}

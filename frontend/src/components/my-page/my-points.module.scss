@@ -1,0 +1,28 @@
+.container {
+  width: 100%;
+  background-color: $color-pink;
+  border-radius: 15px;
+  padding: 0px;
+  margin-bottom: 20px;
+  // 너비가 432px 이상이면..
+  @media (min-width: 432px) {
+    padding: 10px;
+  }
+}
+
+.btn {
+  flex: 1;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: white;
+  color: white;
+  border: none;
+  font-weight: bold;
+  padding: 3px;
+  margin: 0 8px;
+  cursor: pointer;
+  &:hover {
+    background-color: whitesmoke;
+    border: none;
+  }
+}

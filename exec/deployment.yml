@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: recommand-api-svc
+spec:
+  ports:
+    - name: service
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: recommand-api
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recommand-api
+  labels:
+    app: recommand-api
+
+spec:
+  selector:
+    matchLabels:
+      app: recommand-api
+
+  template:
+    metadata:
+      name: recommand-pod
+      labels:
+        app: recommand-api
+
+    spec:
+      containers:
+        - name: recommand-api
+          image: loverduck97/kkoma-backend:latest
+          imagePullPolicy: Always
+          ports:
+            - protocol: TCP
+              containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: api-secret
