@@ -87,14 +87,7 @@
 
 <br>
 
-### 🦢 시연 영상
-![...](https://lulu-animation.com/wp-content/uploads/2022/05/test-gif.gif)
-
-<br>
-
 ### 🕊 실행방법
-
-[포팅 메뉴얼 바로가기](#)
 
 exec 폴더 내 포팅 메뉴얼 참조
 
