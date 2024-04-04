@@ -88,6 +88,20 @@
 
 <br>
 
+### 🌈 브랜딩
+
+**로고**
+
+![Group_191](/uploads/e0edc3683fcb4b7fa876820faf5af453/Group_191.png)
+
+**디자인 시스템**
+
+![Group_189](/uploads/c2fbddd71fb8637f53cf4e6906e07f71/Group_189.png)
+
+![Group_179](/uploads/f99bee61a4297f6176ae75e1cd103cf9/Group_179.png)
+
+<br>
+
 ### 🦆 주요 기능
 
 |구분| 설명                                                                             | BE 담당 | FE 담당 |
