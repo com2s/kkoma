@@ -8,7 +8,7 @@ import {
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-export default function ErrorPage() {
+export default function NotFound() {
   const router = useRouter();
 
   return (
@@ -20,8 +20,8 @@ export default function ErrorPage() {
           width={100}
           height={100}
         />
-        <h2 className="text-center">죄송합니다. 잠시 후 시도해주세요</h2>
-        <h4 className="c-text3">서버와의 연결이 원활하지 않아요</h4>
+        <h2 className="text-center">요청하신 페이지를 찾을 수 없어요</h2>
+        <h4 className="c-text3">주소가 맞는지 확인해주세요</h4>
       </div>
       <div>
         <ButtonContainer>
