@@ -12,6 +12,12 @@
 <br>
 <br>
 <br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 # 🐔 프로젝트 소개
 
@@ -26,6 +32,12 @@
 >
 > **기능 구현** : 2024.03.11 - 2024.04.04 (4주)
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 <br>
 <br>
 <br>
@@ -60,17 +72,19 @@
 ### 🦜 설계
 
 **인프라 아키텍쳐**
+
 ![erd](backend/src/main/resources/static/infraarch.png)
 
 **백엔드 아키텍쳐**
+
 ![erd](backend/src/main/resources/static/bearch.png)
 
 **ERD 다이어그램**
+
 ![erd](backend/src/main/resources/static/erd.png)
 
 **외부 문서**
 - [와이어프레임](https://www.figma.com/file/rtugKRau06UXVcB2W1WwzH/KKOMA?type=design&node-id=144%3A5737&mode=design&t=KrA32jhI4t51iAsZ-1)
-
 
 <br>
 
@@ -91,6 +105,12 @@
 
 exec 폴더 내 포팅 메뉴얼 참조
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 <br>
 <br>
 <br>
