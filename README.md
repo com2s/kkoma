@@ -57,16 +57,9 @@
 
 ### 🦜 설계
 
-**아키텍처**
+- [ERD 다이어그램](https://www.erdcloud.com/d/rP2zPYyrDgw8qbwxj)
 
-![...](https://lulu-animation.com/wp-content/uploads/2022/05/test-gif.gif)
-
-**ERD 다이어그램**
-
-![...](https://lulu-animation.com/wp-content/uploads/2022/05/test-gif.gif)
-
-- [API 명세서](#)
-- [와이어프레임](#)
+- [와이어프레임](https://www.figma.com/file/rtugKRau06UXVcB2W1WwzH/KKOMA?type=design&node-id=144%3A5737&mode=design&t=KrA32jhI4t51iAsZ-1)
 
 <br>
 
