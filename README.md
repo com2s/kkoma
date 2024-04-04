@@ -1,3 +1,5 @@
+![logo](backend/src/main/resources/static/logo.png)
+
 #### 목차
 
 1. [프로젝트 소개](#-프로젝트 소개)   
@@ -57,9 +59,17 @@
 
 ### 🦜 설계
 
+**인프라 아키텍쳐**
+![erd](backend/src/main/resources/static/infraarch.png)
+
+**백엔드 아키텍쳐**
+![erd](backend/src/main/resources/static/bearch.png)
+
 - [ERD 다이어그램](https://www.erdcloud.com/d/rP2zPYyrDgw8qbwxj)
+![erd](backend/src/main/resources/static/erd.png)
 
 - [와이어프레임](https://www.figma.com/file/rtugKRau06UXVcB2W1WwzH/KKOMA?type=design&node-id=144%3A5737&mode=design&t=KrA32jhI4t51iAsZ-1)
+
 
 <br>
 
