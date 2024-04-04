@@ -60,10 +60,13 @@
 
 |구분|설명| BE 담당 | FE 담당 |
 |:---|:---|:---|:---|
-|거래 글 추천||🐷조형준|🐼최지우|
+|거래|- 거래 요청 시 거래를 위한 금액을 미리 출금하고 서버에서 관리하여 사기 방지<br>- 거래 완료를 위해 QR 코드를 태그하는 방식을 사용|🐰김이현<br>🦝이수현<br>🐷조형준<br>🐹유소연|🐼최지우<br>🐻황인규|
+|추천|- 협업 필터링을 활용하여 사용자가 원할 것 같은 거래글을 보여줌|🐷조형준|🐼최지우|
+|검색||🐹유소연|🐼최지우|
 |채팅||🐰김이현|🐼최지우|
-|검색||🐹유소연||
-|...|| 🦝이수현|🐻황인규|
+|알림||🦝이수현|🐻황인규|
+|인증|- 카카오 소셜 로그인을 이용한 사용자 인증|🐷조형준|🐼최지우|
+
 
 <br>
 
@@ -94,57 +97,57 @@ exec 폴더 내 포팅 메뉴얼 참조
     <tr>
         <td align="center">
             <a href="#">
-            <img src="https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg" width="100px" alt="김이현"/>
+            <img src="https://api.dicebear.com/8.x/big-smile/svg?seed=532914183365172048" width="100px" alt="김이현"/>
                 <br/>
                 <b>김이현</b>
             </a>
             <br/>
-            <sub>팀장</sub>
+            <sub>BE</sub>
         </td>
         <td align="center">
             <a href="#">
-            <img src="https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg" width="100px" alt="김이현"/>
+            <img src="https://api.dicebear.com/8.x/big-smile/svg?seed=Cuddles" width="100px" alt="조형준"/>
                 <br/>
                 <b>조형준</b>
             </a>
             <br/>
-            <sub>팀원</sub>
+            <sub>BE</sub>
         </td>
         <td align="center">
             <a href="#">
-            <img src="https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg" width="100px" alt="김이현"/>
+            <img src="https://api.dicebear.com/8.x/big-smile/svg?seed=973428650843541737" width="100px"/>
                 <br/>
                 <b>유소연</b>
             </a>
             <br/>
-            <sub>팀원</sub>
+            <sub>BE / Infra</sub>
         </td>
         <td align="center">
             <a href="#">
-            <img src="https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg" width="100px" alt="김이현"/>
+            <img src="https://api.dicebear.com/8.x/big-smile/svg?seed=817256432089621410" width="100px"/>
                 <br/>
                 <b>이수현</b>
             </a>
             <br/>
-            <sub>팀원</sub>
+            <sub>BE / Infra</sub>
         </td>
         <td align="center">
             <a href="#">
-            <img src="https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg" width="100px" alt="김이현"/>
+            <img src="https://api.dicebear.com/8.x/big-smile/svg?seed=306531512782191659" width="100px"/>
                 <br/>
                 <b>최지우</b>
             </a>
             <br/>
-            <sub>팀원</sub>
+            <sub>FE</sub>
         </td>
         <td align="center">
             <a href="#">
-            <img src="https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg" width="100px" alt="김이현"/>
+            <img src="https://api.dicebear.com/8.x/big-smile/svg?seed=John-doe" width="100px"/>
                 <br/>
                 <b>황인규</b>
             </a>
             <br/>
-            <sub>팀원</sub>
+            <sub>FE</sub>
         </td>
     </tr>
   </tbody>
