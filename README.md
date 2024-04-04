@@ -58,9 +58,11 @@
 ### 🦜 설계
 
 **아키텍처**
+
 ![...](https://lulu-animation.com/wp-content/uploads/2022/05/test-gif.gif)
 
 **ERD 다이어그램**
+
 ![...](https://lulu-animation.com/wp-content/uploads/2022/05/test-gif.gif)
 
 - [API 명세서](#)
